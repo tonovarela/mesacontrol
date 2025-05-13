@@ -1,5 +1,51 @@
-<ejs-grid #grid [dataSource]='registros()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
-[allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid" allowReordering='true'
-[allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
-[pageSettings]='pageSettings'>
-</ejs-grid>
+<div class="w-full h-full flex flex-col pt-10">
+    <ejs-grid #grid [dataSource]='ordenesMetrics()' [filterSettings]="filterSettings " (dataBound)='dataBound()'
+        [allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid" allowReordering='true' [allowFiltering]=true
+        allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+        <e-columns>
+            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=50>
+            </e-column>
+            <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width="50">
+            </e-column>
+            <e-column field='NumCliente' [allowFiltering]="true" headerText='Cliente' width=50>
+            </e-column>
+            <e-column field='CantidadEntregar' [allowFiltering]="true" headerText='Cantidad entregar' width=50>
+                <ng-template #template let-data>
+                    <div class="flex flex-col">
+                        <span>{{data.CantidadEntregar | number:'1.0-0'}}</span>
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column field='SituacionOrden' [allowFiltering]="true" headerText='Situacion' width=50>
+            </e-column>
+            <e-column field='EstatusOrden' [allowFiltering]="true" headerText='Estatus' width=50>
+            </e-column>
+            <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=50>
+                <ng-template #template let-data>
+                    <div class="flex flex-col">
+                        <span>{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column field='FechaEntrega' [allowFiltering]="false" headerText='Entrega' width=50>
+                <ng-template #template let-data>
+                    <div class="flex flex-col">
+                        <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
+                    </div>
+                </ng-template>
+            </e-column>
+        </e-columns>
+    </ejs-grid>
+
+
+    <!-- NombreTrabajo:    string;
+    TipoProd:         string;
+    NumCliente:       string;
+    NombreCliente:    string;
+    CantidadEntregar: string;
+    SituacionOrden:   string;
+    EstatusOrden:     string;
+    FechaEmision:     Date;
+    FechaEntrega:     Date; -->
+
+</div>

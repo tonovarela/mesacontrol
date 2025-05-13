@@ -23,8 +23,7 @@ export class HeaderComponent implements OnInit {
                           .map(link => {link.setAttribute('disabled', 'true');return link;});        
     _links.forEach(link =>this.linksThemeMap.set(link.getAttribute('href')?.includes('dark')?"dark":'light', link));      
     if(('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches){      
-      const  esDark= localStorage.getItem('color-theme') === 'dark';      
-      console.log('esDark',esDark);
+      const  esDark= localStorage.getItem('color-theme') === 'dark';            
       this.setTema({esDark});          
     }else{
       this.setTema({esDark:false});
@@ -37,8 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  private setTema(props: { esDark: boolean }) {
-    console.log('setTema', props);
+  private setTema(props: { esDark: boolean }) {    
     if (props.esDark) {
       document.documentElement.classList.add('dark');
       this.linksThemeMap.get('dark')?.removeAttribute('disabled');
