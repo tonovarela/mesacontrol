@@ -1,59 +1,38 @@
-# Mesacontrol
+# MesaControl
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
+MesaControl es una aplicación desarrollada con Angular que utiliza TailwindCSS, PrimeNG y Syncfusion para crear una interfaz de usuario moderna y funcional. Este proyecto incluye características como un diseño adaptable, soporte para temas oscuros y claros, y componentes reutilizables.
 
-## Development server
+## Características
 
-To start a local development server, run:
+- **Framework**: Angular 19.
+- **Estilos**: TailwindCSS con integración de `tailwindcss-primeui` y `flowbite`.
+- **Componentes**: Uso de PrimeNG y Syncfusion para tablas y otros elementos interactivos.
+- **Temas**: Soporte para temas oscuros y claros.
+- **Rutas**: Configuración modular con alias definidos en `tsconfig.json`.
+- **Responsive**: Diseño adaptable para diferentes tamaños de pantalla.
 
-```bash
-ng serve
-```
+## Estructura del Proyecto
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```plaintext
+.editorconfig
+.gitignore
+[angular.json](http://_vscodecontentref_/0)
+[package.json](http://_vscodecontentref_/1)
+[README.md](http://_vscodecontentref_/2)
+[tailwind.config.js](http://_vscodecontentref_/3)
+[tsconfig.app.json](http://_vscodecontentref_/4)
+[tsconfig.json](http://_vscodecontentref_/5)
+[tsconfig.spec.json](http://_vscodecontentref_/6)
+src/
+  [index.html](http://_vscodecontentref_/7)
+  main.ts
+  [styles.css](http://_vscodecontentref_/8)
+  app/
+    app.component.ts
+    [app.component.html](http://_vscodecontentref_/9)
+    app.component.css
+    shared/
+      header/
+      sidebar/
+    layout/
+    pages/
