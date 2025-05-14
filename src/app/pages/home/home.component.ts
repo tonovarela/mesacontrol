@@ -7,18 +7,22 @@ import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { MetricsService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 
 
 @Component({
   selector: 'app-home',
   imports: [CommonModule,PrimeModule, FormsModule, SynfusionModule],
   templateUrl: './home.component.html',
+  providers: [DetailRowService],
   styleUrl: './home.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HomeComponent extends BaseGridComponent implements OnInit {
 
   ordenesMetrics = signal<OrdenMetrics[]>([]);
+  public wrapSettings?: TextWrapSettingsModel;
   cargando = signal(false);
   protected minusHeight = 0;
   private metricsService = inject(MetricsService);
@@ -40,6 +44,7 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
     try {
       const response = await firstValueFrom(this.metricsService.listar())
       this.ordenesMetrics.set(response.ordenes)
+      this.wrapSettings = { wrapMode: 'Content' };
     }
     catch (error) {
       console.error('Error al cargar la información:', error);
