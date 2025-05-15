@@ -9,11 +9,12 @@ import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { DetailRowService } from '@syncfusion/ej2-angular-grids'
+import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,PrimeModule, FormsModule, SynfusionModule],
+  imports: [CommonModule,PrimeModule, FormsModule, SynfusionModule,AuditComponent],
   templateUrl: './home.component.html',
   providers: [DetailRowService],
   styleUrl: './home.component.css',

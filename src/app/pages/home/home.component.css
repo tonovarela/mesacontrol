@@ -1,6 +1,7 @@
 
 .e-grid .e-rowcell {
-  font-size: 11px;
+  font-size: 12px;
   padding: 3px 21px;     
   @apply  font-roboto
 }
+

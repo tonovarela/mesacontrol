@@ -40,40 +40,32 @@
                     </div>
                 </ng-template>
             </e-column>
-            <e-column  [allowFiltering]="false" headerText='Prueba de color' width="*">
+            <e-column  [allowFiltering]="false" headerText='Prueba de color' width=110>
                 <ng-template #template let-data>
                     <div class="flex flex-row">
-                        <!-- <p-toggleswitch [ngModel]="true"  [disabled]="true"/> -->
-                        <img src="assets/img/audit.svg" alt="Color" class="w-6 h-6 ml-2" />
-
+                        <!-- <p-toggleswitch [ngModel]="true"  [disabled]="true"/> -->                        
+                        <audit-svg/>
+                    
                     </div>
                 </ng-template>
             </e-column>
-            <e-column  [allowFiltering]="false" headerText='Dummy blanco' width="*">
-                <ng-template #template let-data>
-                    <div class="flex flex-row">
-                        <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
-                        <img src="assets/img/audit.svg" alt="Color" class="w-6 h-6 ml-2" />
-                    </div>
-                </ng-template>
-            </e-column>
-            <e-column  [allowFiltering]="false" headerText='Dummy vestido' width="*">
+            <e-column  [allowFiltering]="false" headerText='Dummy blanco' width=110>
                 <ng-template #template let-data>
                     <div class="flex flex-row">
                         <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
-                        <img src="assets/img/audit.svg" alt="Color" class="w-6 h-6 ml-2" />
+                        <audit-svg/>
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column  [allowFiltering]="false" headerText='Dummy vestido' width=110>
+                <ng-template #template let-data>
+                    <div class="flex flex-row">
+                        <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
+                        <audit-svg/>                                                
                     </div>
 
                 </ng-template>
-            </e-column>
-            <e-column  [allowFiltering]="false" headerText='Maqueta' width="*">
-                <ng-template #template let-data>
-                    <div class="flex flex-row">
-                        <!-- <p-toggleswitch [ngModel]="true"  [disabled]="true"/> -->
-                        <img src="assets/img/audit.svg" alt="Color" class="w-6 h-6 ml-2" />
-                    </div>
-                </ng-template>
-            </e-column>
+            </e-column>            
         </e-columns>
     </ejs-grid>
  </div>
