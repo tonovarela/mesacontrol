@@ -44,7 +44,7 @@
                 <ng-template #template let-data>
                     <div class="flex flex-row">
                         <!-- <p-toggleswitch [ngModel]="true"  [disabled]="true"/> -->                        
-                        <audit-svg />
+                        <audit-svg (click)="ir('prueba_color',data)" [enabled]="true" />
                     
                     </div>
                 </ng-template>
@@ -53,7 +53,7 @@
                 <ng-template #template let-data>
                     <div class="flex flex-row">
                         <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
-                        <audit-svg/>
+                        <audit-svg (click)="ir('dummy_blanco',data)"  [enabled]="false"/>
                     </div>
                 </ng-template>
             </e-column>
@@ -61,7 +61,7 @@
                 <ng-template #template let-data>
                     <div class="flex flex-row">
                         <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
-                        <audit-svg/>                                                
+                        <audit-svg (click)="ir('dummy_vestido',data)" [enabled]="false"/>                                                
                     </div>
 
                 </ng-template>

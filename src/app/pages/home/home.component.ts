@@ -10,11 +10,12 @@ import { CommonModule } from '@angular/common';
 import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
+import { Router, RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,PrimeModule, FormsModule, SynfusionModule,AuditComponent],
+  imports: [RouterModule,CommonModule,PrimeModule, FormsModule, SynfusionModule,AuditComponent],
   templateUrl: './home.component.html',
   providers: [DetailRowService],
   styleUrl: './home.component.css',
@@ -23,6 +24,7 @@ import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 export default class HomeComponent extends BaseGridComponent implements OnInit {
 
   ordenesMetrics = signal<OrdenMetrics[]>([]);
+  router = inject(Router);
   public wrapSettings?: TextWrapSettingsModel;
   cargando = signal(false);
   protected minusHeight = 0;
@@ -54,7 +56,15 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
       this.cargando.set(false);
     }
 
+  }
 
+  ir(ruta:string,ordenMetrics:OrdenMetrics){    
+    console.log(ordenMetrics);
+    
+    //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
+    //TODO: Guardar en el estado la ordenMetrics 
+    
+    this.router.navigate([`/checklist/${ruta}`]);
   }
 
 

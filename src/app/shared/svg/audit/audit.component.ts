@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'audit-svg',
@@ -7,4 +7,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './audit.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuditComponent  { }
+export class AuditComponent  { 
+
+  enabled = input.required<boolean>()
+}
