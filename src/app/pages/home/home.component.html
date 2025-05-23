@@ -42,26 +42,30 @@
             </e-column>
             <e-column  [allowFiltering]="false" headerText='Prueba de color' width=110>
                 <ng-template #template let-data>
-                    <div class="flex flex-row">
+                    <div class="flex flex-row gap-2">
                         <!-- <p-toggleswitch [ngModel]="true"  [disabled]="true"/> -->                        
                         <audit-svg (click)="ir('prueba_color',data)" [enabled]="true" />
+                        <details-svg/>
+                        
                     
                     </div>
                 </ng-template>
             </e-column>
             <e-column  [allowFiltering]="false" headerText='Dummy blanco' width=110>
                 <ng-template #template let-data>
-                    <div class="flex flex-row">
+                    <div class="flex flex-row gap-2">
                         <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
-                        <audit-svg (click)="ir('dummy_blanco',data)"  [enabled]="false"/>
+                        <audit-svg (click)="ir('dummy_blanco',data)"  [enabled]="true"/>
+                        <details-svg/>
                     </div>
                 </ng-template>
             </e-column>
             <e-column  [allowFiltering]="false" headerText='Dummy vestido' width=110>
                 <ng-template #template let-data>
-                    <div class="flex flex-row">
+                    <div class="flex flex-row gap-2">
                         <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
-                        <audit-svg (click)="ir('dummy_vestido',data)" [enabled]="false"/>                                                
+                        <audit-svg (click)="ir('dummy_vestido',data)" [enabled]="true"/>                                                
+                        <details-svg/>
                     </div>
 
                 </ng-template>
