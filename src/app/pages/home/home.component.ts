@@ -7,7 +7,7 @@ import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { MetricsService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { ColumnModel, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { Router, RouterModule } from '@angular/router';
@@ -27,12 +27,24 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   ordenesMetrics = signal<OrdenMetrics[]>([]);
   router = inject(Router);
   public wrapSettings?: TextWrapSettingsModel;
-  cargando = signal(false);
+
+  
+  public firstGroup? :ColumnModel[];
+
+
+  public cargando = signal(false);
   protected minusHeight = 0;
   private metricsService = inject(MetricsService);
 
+
   constructor() {
     super();
+
+    this.firstGroup=[
+      { headerText: 'Prueba de color',template:"#varela", width: 100, textAlign: 'Center'},
+      { headerText: 'Dummy blanco', width: 100, textAlign: 'Center'},
+      { headerText: 'Dummy vestido', width: 100, textAlign: 'Center'},
+    ];
   }
   
   ngOnInit(): void {
@@ -60,11 +72,10 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   }
 
   ir(ruta:string,ordenMetrics:OrdenMetrics){    
-    console.log(ordenMetrics);
-    
+    //console.log(ordenMetrics);    
+
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
-    //TODO: Guardar en el estado la ordenMetrics 
-    
+    //TODO: Guardar en el estado la ordenMetrics     
     this.router.navigate([`/checklist/${ruta}`]);
   }
 

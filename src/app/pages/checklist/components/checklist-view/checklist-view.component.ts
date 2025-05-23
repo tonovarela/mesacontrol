@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray,  Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { Option } from '../../interfaces/Option';
+import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
+
 @Component({
   selector: 'checklist-view',
   imports: [ReactiveFormsModule,CommonModule,RouterModule],
@@ -14,8 +17,9 @@ export class ChecklistViewComponent {
   checklistForm!: FormGroup;
   router = inject(Router);
  
-  checkList = input.required<any[]>();
-  nombreModulo = input.required<string>();
+  checkList = input.required<Option[]>();
+  title = input.required<string>();
+  onSave = output<CheckListAnswered>();
  
 
 
@@ -27,9 +31,6 @@ export class ChecklistViewComponent {
       observaciones: ['', Validators.maxLength(200)] // Ejemplo de validación
     });    
   }
-
-
-
   
   get opciones(): FormArray {
     return this.checklistForm.get('opciones') as FormArray;
@@ -47,15 +48,16 @@ export class ChecklistViewComponent {
 
   onSubmit(): void {
     if (this.checklistForm.valid) {
-      console.log('Formulario enviado:', this.checklistForm.value);
+      //console.log('Formulario enviado:', this.checklistForm.value);
       // Aquí puedes mapear los valores de 'opciones' de nuevo a tus objetos si es necesario
       const formValue = this.checklistForm.value;
       const checkList = this.checkList() as any;
-      const selectedOptions = formValue.opciones
+      const selectedOptions:Option[] = formValue.opciones
         .map((checked: boolean, i: number) => ({ ...checkList[i], checked }))
-        .filter((option:any) => option.checked);
-      console.log('Opciones seleccionadas:', selectedOptions);
-      console.log('Observaciones:', formValue.observaciones);
+        //.filter((option:any) => option.checked);
+      //console.log('Opciones seleccionadas:', selectedOptions);
+      //console.log('Observaciones:', formValue.observaciones);      
+      this.onSave.emit({ selectedOptions, observations: formValue.observaciones });
     }
   }
 
