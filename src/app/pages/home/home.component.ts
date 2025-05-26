@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, type OnInit, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, type OnInit, signal, ViewChild } from '@angular/core';
 import { PrimeModule } from '../../lib/prime.module';
 import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
@@ -7,36 +7,39 @@ import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { MetricsService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { ColumnModel, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import {  ColumnModel, GroupService, TextWrapSettingsModel,templateCompiler } from '@syncfusion/ej2-angular-grids';
 import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { Router, RouterModule } from '@angular/router';
 import { DetailsComponent } from '@app/shared/svg/details/details.component';
 
 
+
+
+
 @Component({
   selector: 'app-home',
-  imports: [RouterModule,CommonModule,PrimeModule, FormsModule, SynfusionModule,AuditComponent,DetailsComponent],
+  imports: [RouterModule,CommonModule,PrimeModule, FormsModule, SynfusionModule,AuditComponent,DetailsComponent,],
   templateUrl: './home.component.html',
-  providers: [DetailRowService],
+  providers: [DetailRowService,GroupService],
   styleUrl: './home.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class HomeComponent extends BaseGridComponent implements OnInit {
+export default class HomeComponent extends BaseGridComponent implements OnInit,AfterViewInit {
 
-  ordenesMetrics = signal<OrdenMetrics[]>([]);
+
+
+
+  ordenesMetrics = signal<OrdenMetrics[]>([]);  
   router = inject(Router);
+  cargando = signal(false);
+
   public wrapSettings?: TextWrapSettingsModel;
-
-  
-  public firstGroup? :ColumnModel[];
-
-
-  public cargando = signal(false);
   protected minusHeight = 0;
   private metricsService = inject(MetricsService);
-
-
+  public stackChecklist: any[] = [];
+  public firstGroup: ColumnModel[] = [];
+  @ViewChild('stackedColTemplate') public colTemplate: any; 
   constructor() {
     super();
 
@@ -46,9 +49,38 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
       { headerText: 'Dummy vestido', width: 100, textAlign: 'Center'},
     ];
   }
-  
+
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.stackChecklist=[{
+        headerText: 'Entrega al cliente',                      
+        columns:[
+        { headerText: 'Prueba de color',width: 100, textAlign: 'Center',template:this.colTemplate, templateFn: templateCompiler(this.colTemplate)},
+        { headerText: 'Dummy blanco', width: 150, textAlign: 'Center',template:this.colTemplate,templateFn: templateCompiler(this.colTemplate)},
+        { headerText: 'Dummy vestido', width: 150, textAlign: 'Center' ,template:this.colTemplate,templateFn: templateCompiler(this.colTemplate)},
+        ],        
+      },
+      {headerText:'Seccion 2',      
+        columns:[
+        { headerText: 'Prueba de color',width: 100, textAlign: 'Center',template:this.colTemplate, templateFn: templateCompiler(this.colTemplate)},
+        { headerText: 'Dummy blanco', width: 150, textAlign: 'Center',template:this.colTemplate,templateFn: templateCompiler(this.colTemplate)},
+        { headerText: 'Dummy vestido', width: 150, textAlign: 'Center' ,template:this.colTemplate,templateFn: templateCompiler(this.colTemplate)},
+      ]}
+      ];
+    },100);
+    
+    
+    
+  }
+
+
   ngOnInit(): void {
     this.autoFitColumns = false;
+   
+    
+    
+    
 
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
