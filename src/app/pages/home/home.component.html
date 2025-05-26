@@ -1,19 +1,27 @@
+<div id="customTemplate" type="text/x-template" >
+    <ng-template #template let-data>
+        <div class="flex flex-col">
+            <span>{{data.NoOrden}}</span>
+        </div>
+    </ng-template>
+    <div class="flex flex-col">        
+    </div>
+</div>
 <div class="w-full h-full flex flex-col pt-10">
-    <ejs-grid #grid [dataSource]='ordenesMetrics()'
-    [textWrapSettings]='wrapSettings'
-     [filterSettings]="filterSettings " (dataBound)='dataBound()'
-        [allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid" allowReordering='true' [allowFiltering]=true
-        allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+    <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings " 
+        (dataBound)='dataBound()' [allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid"
+        allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
+        [pageSettings]='pageSettings'>
         <e-columns>
             <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
             </e-column>
-            <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
+            <!-- <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
             </e-column>
             <e-column field='NumCliente' [allowFiltering]="true" headerText='# cliente' width=110>
-            </e-column>
+            </e-column> -->
             <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=250>
             </e-column>
-            <e-column field='Vendedor' [allowFiltering]="true"  width=250>
+            <e-column field='Vendedor' [allowFiltering]="true" width=250>
             </e-column>
             <e-column field='CantidadEntregar' [allowFiltering]="true" headerText='Cantidad entregar' width=100>
                 <ng-template #template let-data>
@@ -39,37 +47,38 @@
                         <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
                     </div>
                 </ng-template>
-            </e-column>
-            <e-column  [allowFiltering]="false" headerText='Prueba de color' width=110>
-                <ng-template #template let-data>
-                    <div class="flex flex-row gap-2">
-                        <!-- <p-toggleswitch [ngModel]="true"  [disabled]="true"/> -->                        
-                        <audit-svg (click)="ir('prueba_color',data)" [enabled]="true" />
-                        <details-svg/>
-                        
-                    
-                    </div>
-                </ng-template>
-            </e-column>
-            <e-column  [allowFiltering]="false" headerText='Dummy blanco' width=110>
-                <ng-template #template let-data>
-                    <div class="flex flex-row gap-2">
-                        <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
-                        <audit-svg (click)="ir('dummy_blanco',data)"  [enabled]="true"/>
-                        <details-svg/>
-                    </div>
-                </ng-template>
-            </e-column>
-            <e-column  [allowFiltering]="false" headerText='Dummy vestido' width=110>
-                <ng-template #template let-data>
-                    <div class="flex flex-row gap-2">
-                        <!-- <p-toggleswitch [ngModel]="true" [disabled]="true" /> -->
-                        <audit-svg (click)="ir('dummy_vestido',data)" [enabled]="true"/>                                                
-                        <details-svg/>
-                    </div>
-
-                </ng-template>
-            </e-column>            
+            </e-column>                                       
+            <ng-container *ngFor="let column of stackChecklist">
+                <e-column  
+                textAlign="Center"
+                          [headerText]="column.headerText"                                                    
+                          [columns]="column.columns"
+                          [width]="column.width"
+                          >                                                         
+                </e-column>                                    
+            </ng-container>
         </e-columns>
-    </ejs-grid>
- </div>
+
+     
+        
+    </ejs-grid> 
+
+    <ng-template #stackedColTemplate let-data>
+        <div class="flex flex-row gap-2"> 
+        <audit-svg [enabled]="true" />
+        <details-svg /> 
+        </div>
+      </ng-template>
+  
+</div>
+
+
+
+<!-- <div  id="varela" >
+
+    ---
+    <div class="flex flex-row gap-2"> 
+    <audit-svg [enabled]="true" />
+    <details-svg />    
+    </div>
+</div> -->
