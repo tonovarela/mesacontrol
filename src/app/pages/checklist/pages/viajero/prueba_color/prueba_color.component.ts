@@ -1,12 +1,11 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ChecklistViewComponent } from '../components/checklist-view/checklist-view.component';
-import { Option } from '../interfaces/Option';
-import { CheckListAnswered } from '../interfaces/CheckListAnswered';
-
+import { ChecklistViewComponent } from '../../../components/checklist-view/checklist-view.component';
+import { CheckListAnswered } from '../../../interfaces/CheckListAnswered';
+import { Option } from '../../../interfaces/Option';
 
 @Component({
-  selector: 'app-prueba-color', 
+  
   imports:[ChecklistViewComponent],
   templateUrl: './prueba_color.component.html',
   styleUrl: './prueba_color.component.css',

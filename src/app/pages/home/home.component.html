@@ -49,36 +49,60 @@
                 </ng-template>
             </e-column>                                       
             <ng-container *ngFor="let column of stackChecklist">
-                <e-column  
-                textAlign="Center"
+                <e-column  textAlign="Center"
                           [headerText]="column.headerText"                                                    
                           [columns]="column.columns"
-                          [width]="column.width"
-                          >                                                         
+                          [width]="column.width">                                                         
                 </e-column>                                    
             </ng-container>
-        </e-columns>
-
-     
-        
+        </e-columns>            
     </ejs-grid> 
 
-    <ng-template #stackedColTemplate let-data>
-        <div class="flex flex-row gap-2"> 
-        <audit-svg [enabled]="true" />
+
+      <ng-template #clientePruebaColor let-data >
+        <div class="flex flex-row gap-2">                                     
+        <audit-svg [enabled]="true"  (click)="ir('cliente/prueba_color',data)"/>
         <details-svg /> 
         </div>
       </ng-template>
-  
+
+      <ng-template #clienteDummyVestido let-data >
+        <div class="flex flex-row gap-2">                         
+        <audit-svg [enabled]="true" (click)="ir('cliente/dummy_vestido',data)" />
+        <details-svg /> 
+        </div>
+      </ng-template>
+      
+
+      <ng-template #viajeroPruebaColor let-data >
+        <div class="flex flex-row gap-2">                         
+        <audit-svg [enabled]="true" (click)="ir('viajero/prueba_color',data)"  />
+        <details-svg /> 
+        </div>
+      </ng-template>
+
+      <ng-template #viajeroDummyBlanco let-data >
+        <div class="flex flex-row gap-2">                         
+        <audit-svg [enabled]="true" (click)="ir('viajero/dummy_blanco',data)" />
+        <details-svg /> 
+        </div>
+      </ng-template>
+
+      <ng-template #viajeroDummyVestido let-data >
+        <div class="flex flex-row gap-2">                         
+        <audit-svg [enabled]="true" (click)="ir('/viajero/dummy_vestido',data)" />
+        <details-svg /> 
+        </div>
+      </ng-template>
+
+
+      <ng-template #viajeroSobre let-data >
+        <div class="flex flex-row gap-2">                         
+        <audit-svg [enabled]="true" (click)="ir('/viajero/sobre',data)" />
+        <details-svg /> 
+        </div>
+      </ng-template>
+
+
 </div>
 
-
-
-<!-- <div  id="varela" >
-
-    ---
-    <div class="flex flex-row gap-2"> 
-    <audit-svg [enabled]="true" />
-    <details-svg />    
-    </div>
-</div> -->

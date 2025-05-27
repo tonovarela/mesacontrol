@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ChecklistViewComponent } from '../components/checklist-view/checklist-view.component';
-import { Option } from '../interfaces/Option';
-import { CheckListAnswered } from '../interfaces/CheckListAnswered';
+import { ChecklistViewComponent } from '../../../components/checklist-view/checklist-view.component';
+import { Option } from '../../../interfaces/Option';
+import { CheckListAnswered } from '../../../interfaces/CheckListAnswered';
 
 @Component({
-  selector: 'app-dummy-blanco',
+  
   imports: [ChecklistViewComponent],
   templateUrl: './dummy_blanco.component.html',
   styleUrl: './dummy_blanco.component.css',
