@@ -3,8 +3,12 @@ import { provideRouter, withHashLocation } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeng/themes/aura';
+import Material from '@primeng/themes/material';
 import { provideHttpClient } from '@angular/common/http';
+//import MyPreset from './mypreset';
+//import MyPreset from './mypreset';
+
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes,withHashLocation()),
@@ -12,9 +16,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     providePrimeNG({
       theme:{
-        preset:Aura,
+        preset:Material,
         options:{
-          
+        
           darkModeSelector:".dark"
         }
       }

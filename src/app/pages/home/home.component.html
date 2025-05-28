@@ -13,15 +13,15 @@
         allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
         [pageSettings]='pageSettings'>
         <e-columns>
-            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
+            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=80>
             </e-column>
-            <!-- <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
+             <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
             </e-column>
-            <e-column field='NumCliente' [allowFiltering]="true" headerText='# cliente' width=110>
+            <!--<e-column field='NumCliente' [allowFiltering]="true" headerText='# cliente' width=110>
             </e-column> -->
-            <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=250>
+            <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
             </e-column>
-            <e-column field='Vendedor' [allowFiltering]="true" width=250>
+            <e-column field='Vendedor' [allowFiltering]="true" width=150>
             </e-column>
             <e-column field='CantidadEntregar' [allowFiltering]="true" headerText='Cantidad entregar' width=100>
                 <ng-template #template let-data>
@@ -30,10 +30,10 @@
                     </div>
                 </ng-template>
             </e-column>
-            <e-column field='SituacionOrden' [allowFiltering]="true" headerText='Situacion' width=100>
+            <!-- <e-column field='SituacionOrden' [allowFiltering]="true" headerText='Situacion' width=100>
             </e-column>
             <e-column field='EstatusOrden' [allowFiltering]="true" headerText='Estatus' width=120>
-            </e-column>
+            </e-column> -->
             <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
                 <ng-template #template let-data>
                     <div class="flex flex-col">
@@ -61,45 +61,42 @@
 
       <ng-template #clientePruebaColor let-data >
         <div class="flex flex-row gap-2">                                     
-        <audit-svg [enabled]="true"  (click)="ir('cliente/prueba_color',data)"/>
-        <details-svg /> 
+        <audit-svg [enabled]="true"   (onClick)="ir('/cliente/prueba_color',data)" />        
         </div>
       </ng-template>
 
       <ng-template #clienteDummyVestido let-data >
         <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (click)="ir('cliente/dummy_vestido',data)" />
-        <details-svg /> 
+        <audit-svg [enabled]="true" (onClick)="ir('/cliente/dummy_vestido',data)" />
         </div>
       </ng-template>
       
 
       <ng-template #viajeroPruebaColor let-data >
         <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (click)="ir('viajero/prueba_color',data)"  />
-        <details-svg /> 
+        <audit-svg [enabled]="true"    (onClick)="ir('/viajero/prueba_color',data)"  />        
         </div>
       </ng-template>
 
       <ng-template #viajeroDummyBlanco let-data >
         <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (click)="ir('viajero/dummy_blanco',data)" />
-        <details-svg /> 
+        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_blanco',data)" />
+        
         </div>
       </ng-template>
 
       <ng-template #viajeroDummyVestido let-data >
         <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (click)="ir('/viajero/dummy_vestido',data)" />
-        <details-svg /> 
+        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_vestido',data)" />
+        
         </div>
       </ng-template>
 
 
       <ng-template #viajeroSobre let-data >
         <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (click)="ir('/viajero/sobre',data)" />
-        <details-svg /> 
+        <audit-svg [enabled]="true" (onClick)="ir('/viajero/sobre',data)" />
+        
         </div>
       </ng-template>
 

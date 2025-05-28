@@ -19,9 +19,7 @@ import { DetailsComponent } from '@app/shared/svg/details/details.component';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterModule,CommonModule,PrimeModule, FormsModule, SynfusionModule,AuditComponent,
-    DetailsComponent
-  ],
+  imports: [RouterModule,CommonModule,PrimeModule, FormsModule, SynfusionModule,AuditComponent ],
   templateUrl: './home.component.html',
   providers: [DetailRowService],
   styleUrl: './home.component.css',
@@ -56,17 +54,17 @@ export default class HomeComponent extends BaseGridComponent implements OnInit,A
       this.stackChecklist=[{       
         headerText: 'Liberación al cliente',                      
         columns:[
-        { headerText: 'Prueba de color',width: 150, textAlign: 'Center',template:this.clientePruebaColor, templateFn: templateCompiler(this.clientePruebaColor)},        
-        { headerText: 'Dummy vestido', width: 150, textAlign: 'Center' ,template:this.clienteDummyVestido,templateFn: templateCompiler(this.clienteDummyVestido)},
+        { headerText: 'Prueba de color',width: 110, textAlign: 'Center',template:this.clientePruebaColor, templateFn: templateCompiler(this.clientePruebaColor)},        
+        { headerText: 'Dummy vestido', width: 110, textAlign: 'Center' ,template:this.clienteDummyVestido,templateFn: templateCompiler(this.clienteDummyVestido)},
         ],        
       },
       {
         headerText:'Liberación de sobre viajero',      
         columns:[
-        {headerText: 'Prueba de color',width: 150,textAlign: 'Center',template:this.viajeroPruebaColor, templateFn: templateCompiler(this.viajeroPruebaColor)},
-        {headerText: 'Dummy blanco', width: 150, textAlign: 'Center',template:this.viajeroDummyBlanco,templateFn: templateCompiler(this.viajeroDummyBlanco)},
-        {headerText: 'Dummy vestido', width: 150, textAlign: 'Center' ,template:this.viajeroDummyVestido,templateFn: templateCompiler(this.viajeroDummyVestido)},
-        {headerText: 'Sobre viajero', width: 150, textAlign: 'Center',template:this.viajeroSobre,templateFn: templateCompiler(this.viajeroSobre)},
+        {headerText: 'Prueba de color',width: 100,textAlign: 'Center',template:this.viajeroPruebaColor, templateFn: templateCompiler(this.viajeroPruebaColor)},
+        {headerText: 'Dummy blanco', width: 100, textAlign: 'Center',template:this.viajeroDummyBlanco,templateFn: templateCompiler(this.viajeroDummyBlanco)},
+        {headerText: 'Dummy vestido', width: 100, textAlign: 'Center' ,template:this.viajeroDummyVestido,templateFn: templateCompiler(this.viajeroDummyVestido)},
+        {headerText: 'Sobre viajero', width: 100, textAlign: 'Center',template:this.viajeroSobre,templateFn: templateCompiler(this.viajeroSobre)},
       ]}
       ];
     },100);
