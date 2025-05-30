@@ -95,23 +95,13 @@
         
         </div>
       </ng-template>
-
-
 </div>
-
-{{puedeDefinirOrdenMetrics()?'si':'no'}}
-
-
-
-
 <!-- ...existing code... -->
 <p-dialog header="Editar Orden" [modal]="true" [visible]="puedeDefinirOrdenMetrics()" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
     <ng-template #headless>
         <form (ngSubmit)="guardarOrdenMetricsPorDefinir()" #formOrden="ngForm" class="p-8">            
-            <!-- Campos informativos de la OP -->
-             
-            <div class="mb-6 grid grid-cols-2 gap-4">
-            
+            <!-- Campos informativos de la OP -->             
+            <div class="mb-6 grid grid-cols-2 gap-4">            
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Vendedor</label>
                     <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.NombreTrabajo" disabled>
@@ -137,8 +127,12 @@
             </div>
             <!-- Campo editable existente -->
             <div class="mb-6">
+                
                 <label for="tipoProd" class="block mb-2 text-sm font-medium text-gray-700">Tipo de producto</label>
                 <select
+                    [ngModel]="ordenMetricsPorDefinir()?.TipoProd"
+                    (ngModelChange)="actualizarTipoProd($event)"
+                    
                     id="tipoProd"
                     name="tipoProd"                
                     required

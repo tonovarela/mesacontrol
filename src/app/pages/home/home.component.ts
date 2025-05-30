@@ -101,6 +101,21 @@ export default class HomeComponent extends BaseGridComponent implements OnInit, 
     this.cargarInformacion();
 
   }
+  actualizarTipoProd(tipo:string){
+    this.ordenMetricsPorDefinir.update((ordenMetrics) => {      
+      if (!ordenMetrics) {
+        return null;
+      }
+      // Actualizar el tipo de producto en la ordenMetrics
+      return {
+        ...ordenMetrics,
+        tipoProducto: tipo 
+      };
+    });
+
+    console.log('Tipo seleccionado:', tipo);
+
+  }
 
   onSelectOrder(ordenMetrics: OrdenMetrics | null) {
     if (!ordenMetrics) {
@@ -141,6 +156,7 @@ export default class HomeComponent extends BaseGridComponent implements OnInit, 
   }
 
   guardarOrdenMetricsPorDefinir() {
+    console.log('Guardando ordenMetricsPorDefinir:', this.ordenMetricsPorDefinir());
     this.ordenMetricsPorDefinir.set(null);
   }
 
