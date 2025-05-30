@@ -17,4 +17,8 @@ export class MetricsService {
   listar(){
     return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/orden/listar`);
   }
+
+  buscarPorPatron(patron: string) {
+    return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/orden/buscar`,{patron});
+  }
 }

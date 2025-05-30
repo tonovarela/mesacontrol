@@ -2,6 +2,8 @@ export interface ResponseOrdenMetrics {
     ordenes: OrdenMetrics[];
 }
 
+
+
 export interface OrdenMetrics {
     NoOrden:          string;
     NombreTrabajo:    string;
@@ -14,4 +16,7 @@ export interface OrdenMetrics {
     FechaEmision:     Date;
     FechaEntrega:     Date;
 }
+
+
+
 

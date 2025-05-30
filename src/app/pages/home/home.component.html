@@ -1,3 +1,4 @@
+<search-metrics (onSelectOrder)="onSelectOrder($event)"></search-metrics>
 <div id="customTemplate" type="text/x-template" >
     <ng-template #template let-data>
         <div class="flex flex-col">
@@ -7,7 +8,7 @@
     <div class="flex flex-col">        
     </div>
 </div>
-<div class="w-full h-full flex flex-col pt-10">
+<div class="w-full h-full flex flex-col pt-2">
     <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings " 
         (dataBound)='dataBound()' [allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid"
         allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
@@ -17,8 +18,7 @@
             </e-column>
              <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
             </e-column>
-            <!--<e-column field='NumCliente' [allowFiltering]="true" headerText='# cliente' width=110>
-            </e-column> -->
+            
             <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
             </e-column>
             <e-column field='Vendedor' [allowFiltering]="true" width=150>
@@ -29,11 +29,7 @@
                         <span>{{data.CantidadEntregar | number:'1.0-0'}}</span>
                     </div>
                 </ng-template>
-            </e-column>
-            <!-- <e-column field='SituacionOrden' [allowFiltering]="true" headerText='Situacion' width=100>
-            </e-column>
-            <e-column field='EstatusOrden' [allowFiltering]="true" headerText='Estatus' width=120>
-            </e-column> -->
+            </e-column>            
             <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
                 <ng-template #template let-data>
                     <div class="flex flex-col">
@@ -103,3 +99,73 @@
 
 </div>
 
+{{puedeDefinirOrdenMetrics()?'si':'no'}}
+
+
+
+
+<!-- ...existing code... -->
+<p-dialog header="Editar Orden" [modal]="true" [visible]="puedeDefinirOrdenMetrics()" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+    <ng-template #headless>
+        <form (ngSubmit)="guardarOrdenMetricsPorDefinir()" #formOrden="ngForm" class="p-8">            
+            <!-- Campos informativos de la OP -->
+             
+            <div class="mb-6 grid grid-cols-2 gap-4">
+            
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Vendedor</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.NombreTrabajo" disabled>
+                </div>
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">N° Orden</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.NoOrden" disabled>
+                </div>
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Cliente</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.NumCliente" disabled>
+                </div>
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Cantidad a entregar</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.CantidadEntregar |  number:'1.0-0'" disabled>
+
+                </div>
+
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Fecha Emisión</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.FechaEmision | date:'dd-MM-yyyy'" disabled>
+                </div>
+            </div>
+            <!-- Campo editable existente -->
+            <div class="mb-6">
+                <label for="tipoProd" class="block mb-2 text-sm font-medium text-gray-700">Tipo de producto</label>
+                <select
+                    id="tipoProd"
+                    name="tipoProd"                
+                    required
+                    class="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >                
+            @for( tipo of catalogoTiposProductos; track tipo.id ) {
+                    <option [value]="tipo.id" >{{tipo.value}}</option>
+            }
+                </select>
+            </div>
+            <div class="flex justify-end gap-4">
+                <button
+                    type="submit"
+                    [disabled]="formOrden.invalid"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition"
+                >
+                    Guardar
+                </button>
+                <button
+                    type="button"
+                    (click)="cerrarOrdenMetricsPorDefinir()"
+                    class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded shadow transition"
+                >
+                    Cerrar
+                </button>
+            </div>
+        </form>
+    </ng-template>
+</p-dialog>
+<!-- ...existing code... -->
