@@ -55,6 +55,76 @@
       "EstatusOrden": "Por producir",
       "FechaEmision": "2025-03-07",
       "FechaEntrega": "2025-12-31"
+    },
+    {
+      "id": "0136",
+      "NoOrden": "L35613",
+      "NombreTrabajo": "2026 MITSUBISHI WARRANTY POLICY AND MAINTENANCE MANUAL JT675506 PO466989",
+      "TipoProd": "MA",
+      "NumCliente": "19338",
+      "Vendedor": "Claudia Ivonne Aceves Paniagua",
+      "NombreCliente": "TWEDDLE GROUP",
+      "CantidadEntregar": "18032.0",
+      "SituacionOrden": "Abierta",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-04-29",
+      "FechaEntrega": "2025-12-31"
+    },
+    {
+      "id": "5026",
+      "NoOrden": "L35270",
+      "NombreTrabajo": "BOLSAS DE PAPEL MARCA KURT GEIGER - EMPAQUE M",
+      "TipoProd": "CD",
+      "NumCliente": "10035",
+      "Vendedor": "Ana Denise Solano",
+      "NombreCliente": "EL PALACIO DE HIERRO",
+      "CantidadEntregar": "4200.0",
+      "SituacionOrden": "Abierta",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-03-12",
+      "FechaEntrega": "2025-12-31"
+    },
+    {
+      "id": "a47e",
+      "NoOrden": "L35698",
+      "NombreTrabajo": "BOLSA MEDIANA RETAIL SAMSONITE MAYO 2025 4501307511",
+      "TipoProd": "ET",
+      "NumCliente": "15540",
+      "Vendedor": "Lourdes Ramirez Pacheco",
+      "NombreCliente": "SAMSONITE MEXICO",
+      "CantidadEntregar": "10000.0",
+      "SituacionOrden": "Abierta",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-05-12",
+      "FechaEntrega": "2025-05-30"
+    },
+    {
+      "id": "5b1d",
+      "NoOrden": "L35271",
+      "NombreTrabajo": "BOLSAS DE PAPEL MARCA KURT GEIGER - EMPAQUE S",
+      "TipoProd": "BOL",
+      "NumCliente": "10035",
+      "Vendedor": "Ana Denise Solano",
+      "NombreCliente": "EL PALACIO DE HIERRO",
+      "CantidadEntregar": "31400.0",
+      "SituacionOrden": "Abierta",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-03-12",
+      "FechaEntrega": "2025-12-31"
+    },
+    {
+      "id": "2f3f",
+      "NoOrden": "L35605",
+      "NombreTrabajo": "FAJILLAS ANIVERSARIO",
+      "TipoProd": "EMPL",
+      "NumCliente": "17679",
+      "Vendedor": "Claudia Patiño Rodriguez",
+      "NombreCliente": "NESPRESSO MEXICO",
+      "CantidadEntregar": "5500.0",
+      "SituacionOrden": "Abierta",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-04-28",
+      "FechaEntrega": "2025-05-07"
     }
   ]
 }

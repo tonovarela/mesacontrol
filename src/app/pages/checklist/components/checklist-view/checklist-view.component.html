@@ -9,9 +9,8 @@
 
 <form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">    
     <div class="px-6 pb-4" formArrayName="opciones">                
-        <pre>{{checkList() | json}}</pre>
-        
-        <pre>{{checklistForm.value | json }}</pre>    
+        <!-- <pre>{{checkList() | json}}</pre>         -->
+        <!-- <pre>{{checklistForm.value | json }}</pre>     -->
         <ul>            
             @for(opcionCtrl of opciones.controls;track opcionCtrl; let i = $index){
                 <li class="flex i mb-1">
@@ -20,12 +19,11 @@
                 <li  class="flex items-center mb-3">                                                                                    
                         <div class="card flex justify-center">
                             <p-selectbutton 
-                            [options]="isOptional(i)?optionOptional:optionsStrict" 
-                            formControlName="i"
+                            [options]="isOptional(i)?optionOptional:optionsStrict"                             
                             size="small" 
                             allowEmpty="false"
                             optionLabel="name"  
-                            (onOptionClick)="onOptionClick($event)"                            
+                            (onOptionClick)="onOptionClick($event,i)"                            
                              >                                                                                                            
                                 <ng-template #item let-item>                                
                                     {{item.name}}                                

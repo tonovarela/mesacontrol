@@ -68,6 +68,10 @@ export class ChecklistViewComponent {
     return this.checkList()[index] ? (this.checkList()[index] as any).optional : false;
   }
 
+private  obtenerIdOpcion(index: number): number {
+    return this.checkList()[index] ? (this.checkList()[index] as any).id : -1;
+  }
+
   
   regresar(): void {
     this.router.navigate(['/home']);
@@ -88,8 +92,12 @@ export class ChecklistViewComponent {
 
   }
 
-  onOptionClick(option: any): void {
-    console.log('Opción seleccionada:', option);
+  onOptionClick(event: any,indexPregunta:number): void {
+    const iPregunta= this.obtenerIdOpcion(indexPregunta);
+    const { value } = event.option;
+    //console.log(event.option.value);    
+    console.log(`Opción seleccionada: ${value}`,'ID Pregunta:', iPregunta);
+    //console.log('Opción seleccionada:', option);
   }
 
 }
