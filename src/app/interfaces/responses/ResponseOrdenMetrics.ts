@@ -5,9 +5,11 @@ export interface ResponseOrdenMetrics {
 
 
 export interface OrdenMetrics {
+    id:              string;
     NoOrden:          string;
     NombreTrabajo:    string;
     TipoProd:         string;
+    Vendedor:          string;
     NumCliente:       string;
     NombreCliente:    string;
     CantidadEntregar: string;

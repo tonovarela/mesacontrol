@@ -46,7 +46,7 @@ export abstract class BaseGridComponent implements OnDestroy {
     }
 
 
-    protected dataBound() {
+    protected dataBound() {    
 
         if (!this.autoFitColumns) {
             return;

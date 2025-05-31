@@ -8,7 +8,7 @@ import { PrimeModule } from '@app/lib/prime.module';
 
 @Component({
   selector: 'checklist-view',
-  imports: [ReactiveFormsModule,FormsModule, CommonModule, RouterModule,PrimeModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterModule, PrimeModule],
   templateUrl: './checklist-view.component.html',
   styleUrl: './checklist-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,23 +23,36 @@ export class ChecklistViewComponent {
   onSave = output<CheckListAnswered>();
 
 
-  paymentOptions: any[] = [
+  optionsStrict: any[] = [
     { name: 'Aceptado', value: 1 },
     { name: 'Rechazado', value: 2 },
-    { name: 'No aplica', value: 3 }
-];
+  
+  ];
 
-value!: number;
-
-
-
+  optionOptional: any[] = [    
+    { name: 'Aceptado', value: 1 },
+    { name: 'Rechazado', value: 2 },
+    { name: 'No aplica', value: 0 },
+  ];
+  
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    console.log('checkList', this.checkList());
+    // this.checklistForm = this.fb.group({
+    //   opciones: this.fb.array(this.checkList().map((opcion: any) => { id: opcion }  )),      
+    // });
     this.checklistForm = this.fb.group({
-      opciones: this.fb.array(this.checkList().map((opcion: any) => this.fb.control(opcion.checked))),
-      observaciones: ['', Validators.maxLength(200)] // Ejemplo de validación
-    });
+      opciones: this.fb.array(
+        this.checkList().map((opcion: any) =>
+          this.fb.control(null, this.isOptionalByOption(opcion) ? [] : [Validators.required])
+        )
+      ),
+    }); 
+  }
+
+  private isOptionalByOption(opcion: any): boolean {
+    return opcion.optional ?? false;
   }
 
   get opciones(): FormArray {
@@ -51,12 +64,19 @@ value!: number;
     return this.checkList()[index] ? (this.checkList()[index] as any).label : '';
   }
 
+  isOptional(index: number): boolean {
+    return this.checkList()[index] ? (this.checkList()[index] as any).optional : false;
+  }
+
+  
   regresar(): void {
     this.router.navigate(['/home']);
   }
 
 
   onSubmit(): void {
+    console.log('Formulario enviado:', this.checklistForm.value);
+    console.log('Formulario enviado:', this.checklistForm.value);
     if (!this.checklistForm.valid) {
       return
     }
@@ -66,6 +86,10 @@ value!: number;
       .map((checked: boolean, i: number) => ({ ...checkList[i], checked }))
     this.onSave.emit({ selectedOptions });
 
+  }
+
+  onOptionClick(option: any): void {
+    console.log('Opción seleccionada:', option);
   }
 
 }

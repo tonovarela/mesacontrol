@@ -6,26 +6,32 @@
     </div>
     <p class="text-gray-600 dark:text-gray-400 text-sm">Selecciona las opciones completadas:</p>
 </div>  
-<div class="card flex justify-center">
-    <p-selectbutton [options]="paymentOptions" [(ngModel)]="value" size="small"  optionLabel="name" optionValue="value" />
-</div>  
-<form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">    
-    <div class="px-6 pb-4" formArrayName="opciones">
-        
-        <ul>
-            @for(opcionCtrl of opciones.controls;track opcionCtrl; let i = $index){
-                <li  class="flex items-center mb-3">                        
-                    
 
-                    <div class="flex items-center gap-2">
-                        <input [id]="'opcion' + i" type="checkbox" [formControlName]="i"
-                        class="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500 dark:focus:ring-offset-gray-800">
-                        <input [id]="'opcion' + i" type="checkbox" [formControlName]="i"
-                        class="form-checkbox h-5 w-5 text-red-600 rounded focus:ring-blue-500 dark:focus:ring-offset-gray-800">
-                    </div>
-                    
-                    
-                    <label [for]="'opcion' + i" class="ml-3 block text-sm font-medium text-gray-700 dark:text-gray-300">{{ obtenerLabelOpcion(i)}}</label>
+<form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">    
+    <div class="px-6 pb-4" formArrayName="opciones">                
+        <pre>{{checkList() | json}}</pre>
+        
+        <pre>{{checklistForm.value | json }}</pre>    
+        <ul>            
+            @for(opcionCtrl of opciones.controls;track opcionCtrl; let i = $index){
+                <li class="flex i mb-1">
+                    <label [for]="'opcion' + i" class=" block text-sm font-medium text-gray-700 dark:text-gray-300">{{$index+1}}.-{{ obtenerLabelOpcion(i)}}</label>                    
+                </li>
+                <li  class="flex items-center mb-3">                                                                                    
+                        <div class="card flex justify-center">
+                            <p-selectbutton 
+                            [options]="isOptional(i)?optionOptional:optionsStrict" 
+                            formControlName="i"
+                            size="small" 
+                            allowEmpty="false"
+                            optionLabel="name"  
+                            (onOptionClick)="onOptionClick($event)"                            
+                             >                                                                                                            
+                                <ng-template #item let-item>                                
+                                    {{item.name}}                                
+                                </ng-template>
+                                </p-selectbutton>
+                        </div>                                                                                                                                      
                 </li>
             }                                
         </ul>

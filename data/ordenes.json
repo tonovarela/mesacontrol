@@ -1,0 +1,60 @@
+{
+  "ordenes": [
+    {
+      "id": "2ff2",
+      "NoOrden": "L34636.2",
+      "NombreTrabajo": "LIBRO 25 AÑOS - REIMPRESION",
+      "TipoProd": "LI",
+      "NumCliente": "13042",
+      "Vendedor": "Paula Cruz Estrada",
+      "NombreCliente": "MARGARITA MARIA CORTES CHAPULA",
+      "CantidadEntregar": "5000.0",
+      "SituacionOrden": "Abierta",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-03-18",
+      "FechaEntrega": "2025-03-19"
+    },
+    {
+      "id": "0ae6",
+      "NoOrden": "L35205",
+      "NombreTrabajo": "ESTUCHE VOLTAREN SOFTGEL 25MG 10 CT",
+      "TipoProd": "FD",
+      "NumCliente": "24989",
+      "Vendedor": "Claudia Patiño Rodriguez",
+      "NombreCliente": "DHL METROPOLITAN LOGISTICS SC MEXICO",
+      "CantidadEntregar": "60000.0",
+      "SituacionOrden": "Cerrada",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-03-03",
+      "FechaEntrega": "2025-12-31"
+    },
+    {
+      "id": "c749",
+      "NoOrden": "L35613",
+      "NombreTrabajo": "2026 MITSUBISHI WARRANTY POLICY AND MAINTENANCE MANUAL JT675506 PO466989",
+      "TipoProd": "FD",
+      "NumCliente": "19338",
+      "Vendedor": "Claudia Ivonne Aceves Paniagua",
+      "NombreCliente": "TWEDDLE GROUP",
+      "CantidadEntregar": "18032.0",
+      "SituacionOrden": "Abierta",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-04-29",
+      "FechaEntrega": "2025-12-31"
+    },
+    {
+      "id": "b460",
+      "NoOrden": "L35247",
+      "NombreTrabajo": "MI PRIMER TARJETA PALACIO",
+      "TipoProd": "ET",
+      "NumCliente": "10035",
+      "Vendedor": "Ana Denise Solano",
+      "NombreCliente": "EL PALACIO DE HIERRO",
+      "CantidadEntregar": "1000.0",
+      "SituacionOrden": "Cerrada",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-03-07",
+      "FechaEntrega": "2025-12-31"
+    }
+  ]
+}

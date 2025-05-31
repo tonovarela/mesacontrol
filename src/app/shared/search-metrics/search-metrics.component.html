@@ -8,14 +8,16 @@ inputStyleClass="pl-16   rounded-md shadow-md bg-transparent border-0 w-full out
 [emptyMessage]="cargandoBusqueda()?'Buscando':'No se encontraron resultados'" field="op"
 [suggestions]="OPsBusqueda()" (completeMethod)="OnQueryChanged()">
 <ng-template let-op pTemplate="item">
-  <div class="grid grid-cols-12 gap-1  items-center  cursor-pointer  rounded-lg">
-    <div class="col-start-1 col-end-12  m-0">
-      <div class="flex flex-col md:flex-row items-center justify-around  gap-5 space-x-1  ">
-        <div class="text-gray-900 text-pretty text-sm">{{op.NoOrden}}  <span class="font-bold  text-gray-700"> {{op.NombreTrabajo}}</span>                 
-          <div class="text-gray-900 text-sm">{{op.CantidadEntregar | number:'1.0-0' }} piezas </div>    
+  <div class="grid grid-cols-12 gap-1  items-center  cursor-pointer  rounded-lg">    
+      <div class="flex flex-col md:flex-row items-center justify-around  gap-5 space-x-1  w-full">
+        <div class="text-gray-900 text-pretty text-sm">{{op.NoOrden}} 
+           <span class="font-bold  text-gray-700"> {{op.NombreTrabajo}}</span>                 
+           <div class="flex flex-col md:flex-row items-start gap-2">
+            <div class="text-gray-900 text-sm">{{op.TipoProd}}  </div>    
+            <div class="text-gray-900 text-sm">{{op.CantidadEntregar | number:'1.0-0' }} piezas </div>    
+           </div>          
         </div>                                
-      </div>                                            
-    </div>
+      </div>                                                
   </div>
 </ng-template>
 </p-autoComplete>

@@ -1,24 +1,24 @@
 <search-metrics (onSelectOrder)="onSelectOrder($event)"></search-metrics>
-<div id="customTemplate" type="text/x-template" >
+<div id="customTemplate" type="text/x-template">
     <ng-template #template let-data>
         <div class="flex flex-col">
             <span>{{data.NoOrden}}</span>
         </div>
     </ng-template>
-    <div class="flex flex-col">        
+    <div class="flex flex-col">
     </div>
 </div>
 <div class="w-full h-full flex flex-col pt-2">
-    <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings " 
+    <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings "
         (dataBound)='dataBound()' [allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid"
         allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
         [pageSettings]='pageSettings'>
         <e-columns>
             <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=80>
             </e-column>
-             <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
+            <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
             </e-column>
-            
+
             <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
             </e-column>
             <e-column field='Vendedor' [allowFiltering]="true" width=150>
@@ -26,10 +26,10 @@
             <e-column field='CantidadEntregar' [allowFiltering]="true" headerText='Cantidad entregar' width=100>
                 <ng-template #template let-data>
                     <div class="flex flex-col">
-                        <span>{{data.CantidadEntregar | number:'1.0-0'}}</span>
+                        <span>{{data.CantidadEntregar | number}}</span>
                     </div>
                 </ng-template>
-            </e-column>            
+            </e-column>
             <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
                 <ng-template #template let-data>
                     <div class="flex flex-col">
@@ -43,119 +43,178 @@
                         <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
                     </div>
                 </ng-template>
-            </e-column>                                       
-            <ng-container *ngFor="let column of stackChecklist">
-                <e-column  textAlign="Center"
-                          [headerText]="column.headerText"                                                    
-                          [columns]="column.columns"
-                          [width]="column.width">                                                         
-                </e-column>                                    
-            </ng-container>
-        </e-columns>            
-    </ejs-grid> 
+            </e-column>
+
+            <e-column width=100>
+                <ng-template #headerTemplate>
+                    <p class="font-bold  text-orange-700"> Cliente</p>
+                    <h1>Prueba de color</h1>                
+                </ng-template>
+                <ng-template #template let-data>
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="true" (onClick)="ir('/cliente/prueba_color',data)" />
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column  width=100>
+                <ng-template #headerTemplate>
+                    <p class="font-bold  text-orange-700"> Cliente</p>
+                    <h1>Dummy vestido</h1>                
+                </ng-template>
+                <ng-template #template let-data>
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="true" (onClick)="ir('/cliente/dummy_vestido',data)" />
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column  width=100>
+                <ng-template #headerTemplate>
+                    <p class="font-bold  text-pink-700"> Sobre viajero</p>
+                    <h1>Prueba de color</h1>                
+                </ng-template>
+                <ng-template #template let-data>
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="true" (onClick)="ir('/viajero/prueba_color',data)" />
+                    </div>
+                </ng-template>
+            </e-column>
+
+            <e-column width=100>
+                <ng-template #headerTemplate>
+                    <p class="font-bold  text-pink-700"> Sobre viajero</p>
+                    <h1>Dummy blanco</h1>                
+                </ng-template>
+                <ng-template #template let-data>
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_blanco',data)" />
+                    </div>
+                </ng-template>
+            </e-column>
+
+            <e-column  width=100>
+                <ng-template #headerTemplate>
+                    <p class="font-bold  text-pink-700"> Sobre viajero</p>
+                    <h1>Dummy vestido</h1>                
+                </ng-template>
+                <ng-template #template let-data>
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_vestido',data)" />
+                    </div>
+                </ng-template>
+            </e-column>
+
+            <e-column headerText='Sobre viajero' width=100>
+                <ng-template #headerTemplate>
+                    <p class="font-bold  text-pink-700"> Sobre viajero</p>
+                    <h1>Liberación</h1>                
+                </ng-template>
+                <ng-template #template let-data>
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_vestido',data)" />
+                    </div>
+                </ng-template>
+            </e-column>
+        </e-columns>
+    </ejs-grid>
 
 
-      <ng-template #clientePruebaColor let-data >
-        <div class="flex flex-row gap-2">                                     
-        <audit-svg [enabled]="true"   (onClick)="ir('/cliente/prueba_color',data)" />        
-        </div>
-      </ng-template>
-
-      <ng-template #clienteDummyVestido let-data >
-        <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (onClick)="ir('/cliente/dummy_vestido',data)" />
-        </div>
-      </ng-template>
-      
-
-      <ng-template #viajeroPruebaColor let-data >
-        <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true"    (onClick)="ir('/viajero/prueba_color',data)"  />        
-        </div>
-      </ng-template>
-
-      <ng-template #viajeroDummyBlanco let-data >
-        <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_blanco',data)" />
-        
-        </div>
-      </ng-template>
-
-      <ng-template #viajeroDummyVestido let-data >
-        <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_vestido',data)" />
-        
-        </div>
-      </ng-template>
+    <!-- this.stackChecklist = [{
+        headerText: 'Liberación al cliente',
+        columns: [
+          { headerText: 'Prueba de color', width: 110, textAlign: 'Center', template: this.clientePruebaColor, templateFn: templateCompiler(this.clientePruebaColor) },
+          { headerText: 'Dummy vestido', width: 110, textAlign: 'Center', template: this.clienteDummyVestido, templateFn: templateCompiler(this.clienteDummyVestido) }],
+      },
+      {
+        headerText: 'Liberación de sobre viajero',
+        columns: [
+          { headerText: 'Prueba de color', width: 100, textAlign: 'Center', template: this.viajeroPruebaColor, templateFn: templateCompiler(this.viajeroPruebaColor) },
+          { headerText: 'Dummy blanco', width: 100, textAlign: 'Center', template: this.viajeroDummyBlanco, templateFn: templateCompiler(this.viajeroDummyBlanco) },
+          { headerText: 'Dummy vestido', width: 100, textAlign: 'Center', template: this.viajeroDummyVestido, templateFn: templateCompiler(this.viajeroDummyVestido) },
+          { headerText: 'Sobre viajero', width: 100, textAlign: 'Center', template: this.viajeroSobre, templateFn: templateCompiler(this.viajeroSobre) },
+        ]
+      }
+      ];
+    },  1000); -->
 
 
-      <ng-template #viajeroSobre let-data >
-        <div class="flex flex-row gap-2">                         
-        <audit-svg [enabled]="true" (onClick)="ir('/viajero/sobre',data)" />
-        
-        </div>
-      </ng-template>
+
 </div>
 <!-- ...existing code... -->
-<p-dialog header="Editar Orden" [modal]="true" [visible]="puedeDefinirOrdenMetrics()" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+<p-dialog header="Editar Orden" [modal]="true" [visible]="puedeDefinirOrdenMetrics()" [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
     <ng-template #headless>
-        <form (ngSubmit)="guardarOrdenMetricsPorDefinir()" #formOrden="ngForm" class="p-8">            
-            <!-- Campos informativos de la OP -->             
-            <div class="mb-6 grid grid-cols-2 gap-4">            
-                <div>
-                    <label class="block mb-1 text-sm font-medium text-gray-700">Vendedor</label>
-                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.NombreTrabajo" disabled>
-                </div>
+        <form (ngSubmit)="guardarOrdenMetricsPorDefinir()" #formOrden="ngForm" class="p-8">
+            <!-- Campos informativos de la OP -->
+            <div class="mb-6 grid sm:grid-cols-2  gap-4">
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">N° Orden</label>
-                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.NoOrden" disabled>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        [value]="ordenMetricsPorDefinir()?.NoOrden" disabled>
                 </div>
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Vendedor</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        [value]="ordenMetricsPorDefinir()?.NombreTrabajo" disabled>
+                </div>
+
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Cliente</label>
-                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.NumCliente" disabled>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        [value]="ordenMetricsPorDefinir()?.NombreCliente" disabled>
                 </div>
+
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Cantidad a entregar</label>
-                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.CantidadEntregar |  number:'1.0-0'" disabled>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        [value]="ordenMetricsPorDefinir()?.CantidadEntregar |  number:'1.0-0'" disabled>
 
+                </div>
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Vendedor</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        [value]="ordenMetricsPorDefinir()?.Vendedor " disabled>
+                </div>
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Estatus</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        [value]="ordenMetricsPorDefinir()?.EstatusOrden " disabled>
                 </div>
 
                 <div>
                     <label class="block mb-1 text-sm font-medium text-gray-700">Fecha Emisión</label>
-                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100" [value]="ordenMetricsPorDefinir()?.FechaEmision | date:'dd-MM-yyyy'" disabled>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        [value]="ordenMetricsPorDefinir()?.FechaEmision | date:'dd-MM-yyyy'" disabled>
                 </div>
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-700">Fecha Entrega</label>
+                    <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        [value]="ordenMetricsPorDefinir()?.FechaEntrega | date:'dd-MM-yyyy'" disabled>
+                </div>
+
+            </div>
+            <div class="mb-6">
+                <label class="block mb-2 text-sm font-medium text-gray-700">Código de producto:
+                    {{ordenMetricsPorDefinir()?.TipoProd}}</label>
+
             </div>
             <!-- Campo editable existente -->
             <div class="mb-6">
-                
                 <label for="tipoProd" class="block mb-2 text-sm font-medium text-gray-700">Tipo de producto</label>
-                <select
-                    [ngModel]="ordenMetricsPorDefinir()?.TipoProd"
-                    (ngModelChange)="actualizarTipoProd($event)"
-                    
-                    id="tipoProd"
-                    name="tipoProd"                
-                    required
-                    class="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >                
-            @for( tipo of catalogoTiposProductos; track tipo.id ) {
-                    <option [value]="tipo.id" >{{tipo.value}}</option>
-            }
+                <select [ngModel]="ordenMetricsPorDefinir()?.TipoProd" (ngModelChange)="actualizarTipoProd($event)"
+                    id="tipoProd" name="tipoProd" required
+                    class="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    @for( tipo of catalogoTiposProductos; track tipo.id ) {
+                    <option [value]="tipo.id">{{tipo.value}}</option>
+                    }
                 </select>
             </div>
             <div class="flex justify-end gap-4">
-                <button
-                    type="submit"
-                    [disabled]="formOrden.invalid"
-                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition"
-                >
+                <button type="submit" [disabled]="formOrden.invalid"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition">
                     Guardar
                 </button>
-                <button
-                    type="button"
-                    (click)="cerrarOrdenMetricsPorDefinir()"
-                    class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded shadow transition"
-                >
+                <button type="button" (click)="cerrarOrdenMetricsPorDefinir()"
+                    class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded shadow transition">
                     Cerrar
                 </button>
             </div>
