@@ -38,17 +38,19 @@ export class ChecklistViewComponent {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    console.log('checkList', this.checkList());
-    // this.checklistForm = this.fb.group({
-    //   opciones: this.fb.array(this.checkList().map((opcion: any) => { id: opcion }  )),      
-    // });
+   
+   
     this.checklistForm = this.fb.group({
       opciones: this.fb.array(
-        this.checkList().map((opcion: any) =>
-          this.fb.control(null, this.isOptionalByOption(opcion) ? [] : [Validators.required])
+        this.checkList().map((opcion: Option) =>
+          this.fb.group({
+            ...opcion,
+            answer: ['', this.isOptionalByOption(opcion) ? [] : [Validators.required]],
+            comments: ['']
+          })
         )
       ),
-    }); 
+    });
   }
 
   private isOptionalByOption(opcion: any): boolean {
@@ -68,36 +70,48 @@ export class ChecklistViewComponent {
     return this.checkList()[index] ? (this.checkList()[index] as any).optional : false;
   }
 
-private  obtenerIdOpcion(index: number): number {
-    return this.checkList()[index] ? (this.checkList()[index] as any).id : -1;
-  }
-
   
   regresar(): void {
     this.router.navigate(['/home']);
   }
 
+  onOptionClick(event: any,indexPregunta:number): void {
+    //const iPregunta= this.obtenerIdOpcion(indexPregunta);
+    const { value } = event.option;        
+    this.opciones.at(indexPregunta).setValue({ ...this.opciones.at(indexPregunta).value, answer: value });   
+  }
 
-  onSubmit(): void {
-    console.log('Formulario enviado:', this.checklistForm.value);
-    console.log('Formulario enviado:', this.checklistForm.value);
+
+
+
+
+
+  onSubmit(): void {  
     if (!this.checklistForm.valid) {
       return
     }
     const formValue = this.checklistForm.value;
+    
     const checkList = this.checkList() as any;
-    const selectedOptions: Option[] = formValue.opciones
-      .map((checked: boolean, i: number) => ({ ...checkList[i], checked }))
+    const selectedOptions = [
+       ...formValue.opciones.map((option: any, i: number) => ({
+        ...checkList[i],
+        answer: option.answer,
+        isMissingComments : option.answer ==2 && option.comments.length==0,
+        comments:option.answer !=2?'':option.comments
+      }))
+    ];
+
+
+    const canSave = selectedOptions.filter((option: any) => option.isMissingComments).length == 0;
+    if (!canSave) {
+      alert('Debe ingresar un comentario para las opciones rechazadas');
+      return;
+    }      
     this.onSave.emit({ selectedOptions });
 
   }
 
-  onOptionClick(event: any,indexPregunta:number): void {
-    const iPregunta= this.obtenerIdOpcion(indexPregunta);
-    const { value } = event.option;
-    //console.log(event.option.value);    
-    console.log(`Opción seleccionada: ${value}`,'ID Pregunta:', iPregunta);
-    //console.log('Opción seleccionada:', option);
-  }
+  
 
 }

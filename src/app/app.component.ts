@@ -18,8 +18,7 @@ export class AppComponent {
   constructor() {
     setTimeout(() => {
       this.uiService.cargarSidebar();
-      initFlowbite();
-      //this.cargarCatalogos();
+      initFlowbite();      
     }, 1000);
   }
 

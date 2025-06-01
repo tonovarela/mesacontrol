@@ -1,5 +1,11 @@
-import { Option } from "./Option";
+import { Option } from './Option';
 
 export interface CheckListAnswered {
-    selectedOptions: Option[],    
+    selectedOptions: OptionAnswered[],    
+}
+
+export interface OptionAnswered extends Option {
+    answer: string;
+    comments: string;
+    isMissingComments: boolean;
 }

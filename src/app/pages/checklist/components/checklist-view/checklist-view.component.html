@@ -1,48 +1,60 @@
-
 <div class="px-6 py-4">
     <div class="space-x-3">
         <span class="text-xl font-semibold text-gray-500 dark:text-gray-400 mb-2">CheckList</span>
         <span class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">{{title()}}</span>
     </div>
     <p class="text-gray-600 dark:text-gray-400 text-sm">Selecciona las opciones completadas:</p>
-</div>  
+</div>
 
-<form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">    
-    <div class="px-6 pb-4" formArrayName="opciones">                
-        <!-- <pre>{{checkList() | json}}</pre>         -->
-        <!-- <pre>{{checklistForm.value | json }}</pre>     -->
-        <ul>            
+<form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">
+    <div class="px-6 pb-4" formArrayName="opciones">        
+        <ul>
             @for(opcionCtrl of opciones.controls;track opcionCtrl; let i = $index){
+            <div [formGroupName]="i">
                 <li class="flex i mb-1">
-                    <label [for]="'opcion' + i" class=" block text-sm font-medium text-gray-700 dark:text-gray-300">{{$index+1}}.-{{ obtenerLabelOpcion(i)}}</label>                    
+                    <label [for]="'opcion' + i" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{$index+1}}.-{{ obtenerLabelOpcion(i) }}
+                    </label>
                 </li>
-                <li  class="flex items-center mb-3">                                                                                    
-                        <div class="card flex justify-center">
-                            <p-selectbutton 
-                            [options]="isOptional(i)?optionOptional:optionsStrict"                             
-                            size="small" 
-                            allowEmpty="false"
-                            optionLabel="name"  
-                            (onOptionClick)="onOptionClick($event,i)"                            
-                             >                                                                                                            
-                                <ng-template #item let-item>                                
-                                    {{item.name}}                                
-                                </ng-template>
-                                </p-selectbutton>
-                        </div>                                                                                                                                      
+                <li class="flex items-center mb-3">
+                    <div class="card flex justify-center">
+                        <p-selectbutton [options]="isOptional(i)?optionOptional:optionsStrict" size="small"
+                            allowEmpty="false" optionLabel="name" (onOptionClick)="onOptionClick($event,i)">
+                            <ng-template #item let-item>
+                                {{item.name}}
+                            </ng-template>
+                        </p-selectbutton>
+                    </div>
                 </li>
-            }                                
+                <div
+  class="transition-all duration-300 overflow-hidden py-3 "
+  [ngClass]="{
+    'max-h-0 opacity-0 pointer-events-none': opcionCtrl.get('answer')?.value !== 2,
+    'max-h-20 opacity-100': opcionCtrl.get('answer')?.value === 2
+  }"
+>
+  <p-floatlabel variant="on">
+    <textarea
+      pTextarea
+      id="over_label"
+      rows="2"
+      cols="50"
+      style="resize: none"
+      class="w-full h-full rounded-sm border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      formControlName="comments"></textarea>
+    <label for="on_label">Motivo de rechazo</label>
+  </p-floatlabel>
+</div>
+            </div>
+            }
         </ul>
     </div>
-    
     <div class="px-6 py-3 bg-gray-50 dark:bg-gray-700 flex justify-between space-x-3">
-        <button
-        (click)="regresar()"
-         type="button"
+        <button (click)="regresar()" type="button"
             class="px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 dark:focus:ring-offset-gray-800">
             Regresar
         </button>
-        <div class="flex space-x-3">            
+        <div class="flex space-x-3">
             <button type="submit" [disabled]="!checklistForm.valid"
                 class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800">
                 Guardar
