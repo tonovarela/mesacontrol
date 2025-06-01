@@ -125,6 +125,20 @@
       "EstatusOrden": "Por producir",
       "FechaEmision": "2025-04-28",
       "FechaEntrega": "2025-05-07"
+    },
+    {
+      "id": "2bab",
+      "NoOrden": "L35270",
+      "NombreTrabajo": "BOLSAS DE PAPEL MARCA KURT GEIGER - EMPAQUE M",
+      "TipoProd": "LIB",
+      "NumCliente": "10035",
+      "Vendedor": "Ana Denise Solano",
+      "NombreCliente": "EL PALACIO DE HIERRO",
+      "CantidadEntregar": "4200.0",
+      "SituacionOrden": "Abierta",
+      "EstatusOrden": "Por producir",
+      "FechaEmision": "2025-03-12",
+      "FechaEntrega": "2025-12-31"
     }
   ]
 }
