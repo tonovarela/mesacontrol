@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { Option } from '../../interfaces/Option';
 import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
 import { PrimeModule } from '@app/lib/prime.module';
+import { UiService } from '@app/services';
 
 @Component({
   selector: 'checklist-view',
@@ -19,6 +20,8 @@ export class ChecklistViewComponent {
   router = inject(Router);
 
   checkList = input.required<Option[]>();
+
+  private uiService = inject(UiService);
   title = input.required<string>();
   onSave = output<CheckListAnswered>();
 
@@ -105,7 +108,8 @@ export class ChecklistViewComponent {
 
     const canSave = selectedOptions.filter((option: any) => option.isMissingComments).length == 0;
     if (!canSave) {
-      alert('Debe ingresar un comentario para las opciones rechazadas');
+      this.uiService.mostrarAlertaError('','Debe ingresar un comentario para las opciones rechazadas');
+      
       return;
     }      
     this.onSave.emit({ selectedOptions });

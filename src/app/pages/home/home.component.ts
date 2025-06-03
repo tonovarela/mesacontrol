@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { MetricsService } from '@app/services';
+import { MetricsService,UiService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
@@ -12,6 +12,7 @@ import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { Router, RouterModule } from '@angular/router';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
+
 
 @Component({
   selector: 'app-home',
@@ -26,12 +27,14 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
 
   protected minusHeight = 0;
   private metricsService = inject(MetricsService);
+  private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
 
-
-
+  public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);  
   public ordenesMetrics = computed(() => this._ordenesMetrics());
   public ordenMetricsPorDefinir = signal<OrdenMetrics | null>(null);
+
+
   public router = inject(Router);
   public cargando = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
@@ -54,7 +57,6 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
     super();
   }
 
-  puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);  
 
   ngOnInit(): void {
     this.autoFitColumns = false;
@@ -82,11 +84,11 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
     this.cargando.set(true);
     try {
       this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
-      const response = await firstValueFrom(this.metricsService.listar())      
-      this._ordenesMetrics.set(response)      
+      const response = await firstValueFrom(this.metricsService.listar())            
+      this._ordenesMetrics.set(response.ordenes)      
     }
     catch (error) {
-      console.error('Error al cargar la información:', error);
+      this.uiService.mostrarAlertaError('Error al cargar la información', 'No se pudo cargar la información de las órdenes de métricas. Por favor, inténtelo más tarde.');      
     }
     finally {
       this.cargando.set(false);
@@ -105,8 +107,7 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
   }
 
   async guardarOrdenMetricsPorDefinir() {    
-    const ordenMetrics = this.ordenMetricsPorDefinir();
-    console.log('Guardando ordenMetricsPorDefinir:', ordenMetrics);
+    const ordenMetrics = this.ordenMetricsPorDefinir();    
     await firstValueFrom(this.metricsService.agregarOrden(ordenMetrics!));
     this.cargarInformacion();
     this.ordenMetricsPorDefinir.set(null);

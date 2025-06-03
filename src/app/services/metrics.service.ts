@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { OrdenMetrics, ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { environment } from '@environments/environment.development';
 
@@ -7,7 +7,7 @@ import { environment } from '@environments/environment.development';
   providedIn: 'root'
 })
 export class MetricsService {
-
+  private readonly APIDATA=environment.apiData
 
   //private _ordenesMetrics = signal<OrdenMetrics[]>([]);
   //ordenes= computed(() => this._ordenesMetrics());
@@ -18,8 +18,8 @@ export class MetricsService {
 
 
   listar(){
-    return this.http.get<OrdenMetrics[]>(`http://localhost:3000/ordenes`);
-    //return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/orden/listar`);
+    return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/orden`);
+    
   }
 
   buscarPorPatron(patron: string) {
@@ -29,8 +29,8 @@ export class MetricsService {
 
   agregarOrden(orden: OrdenMetrics) {
 
-    return this.http.post(`http://localhost:3000/ordenes`,{...orden});
-    //this._ordenesMetrics.update(ordenes => [...ordenes, orden]);
+    const {NoOrden,TipoProd} = orden;
+    return this.http.post(`${this.API_URL}/api/orden`,{orden:{NoOrden,TipoProd}});    
   }
 
 }
