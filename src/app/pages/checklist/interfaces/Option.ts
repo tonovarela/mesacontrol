@@ -3,7 +3,8 @@ export type Option = {
     id:number;
     label: string;    
     optional?: boolean;     
-
-
-    //disabled?: boolean; // Opcional, si no se necesita, se puede omitir    
+    answer: number | null; // Opcional, si no se necesita, se puede omitir
+    comments?: string; // Opcional, si no se necesita, se puede omitir    
+    answered: boolean; // Indica si la opción ha sido respondida
+    
 }

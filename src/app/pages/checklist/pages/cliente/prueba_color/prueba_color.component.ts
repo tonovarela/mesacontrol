@@ -13,12 +13,13 @@ import { Option } from '../../../interfaces/Option';
 })
 export default class PruebaColorComponent { 
  
-checkList:Option[] = [ // Tus datos de opciones
-    { id: 1, label: 'Plotter Preprensa' ,optional: false },
-    { id: 2, label: 'Responsiva Cliente',optional: false     },
-    { id: 3, label: 'Máscara de acabados (opc)', optional: true },    
-    { id: 4, label: 'Etiqueta de ID', optional: false },
+  checkList:Option[] = [ // Tus datos de opciones
+    { id: 1, label: 'Plotter Preprensa' ,optional: false       , answer: 1, comments: '', answered: true },
+    { id: 2, label: 'Responsiva Cliente'  ,optional:false      , answer: 1, comments: '', answered: true },
+    { id: 3, label: 'Máscara de acabados (opc)',optional: true , answer: null, comments: '', answered: false },    
+    { id: 4, label: 'Etiqueta de ID', optional: false          , answer: null, comments: '', answered: false },
   ];
+
 
   onSave(checkList: CheckListAnswered) {
     console.log('Guardando checklist:', checkList);

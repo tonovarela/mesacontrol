@@ -42,13 +42,15 @@ export class ChecklistViewComponent {
 
   ngOnInit(): void {
    
+
+    console.log('checkList', this.checkList());
    
     this.checklistForm = this.fb.group({
       opciones: this.fb.array(
         this.checkList().map((opcion: Option) =>
           this.fb.group({
             ...opcion,
-            answer: ['', this.isOptionalByOption(opcion) ? [] : [Validators.required]],
+            answer: [opcion.answer, this.isOptionalByOption(opcion) ? [] : [Validators.required]],
             comments: ['']
           })
         )
@@ -108,10 +110,11 @@ export class ChecklistViewComponent {
 
     const canSave = selectedOptions.filter((option: any) => option.isMissingComments).length == 0;
     if (!canSave) {
-      this.uiService.mostrarAlertaError('','Debe ingresar un comentario para las opciones rechazadas');
-      
+      this.uiService.mostrarAlertaError('','Debe ingresar un comentario para las opciones rechazadas');      
       return;
     }      
+    const esRechazado = selectedOptions.filter((option: any) => option.answer == 2).length > 0;
+    console.log('esRechazado', esRechazado);
     this.onSave.emit({ selectedOptions });
 
   }

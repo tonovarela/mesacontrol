@@ -13,12 +13,12 @@ import { CheckListAnswered } from '../../../interfaces/CheckListAnswered';
 export  default class DummyVestidoComponent {
 
   checkList:Option[] = [ // Tus datos de opciones
-    { id: 1, label: 'Dummy Vestino 1' },
-    { id: 2, label: 'Dummy Vestino 2' },
-    { id: 3, label: 'Dummy Vestino 3' },
-    { id: 4, label: 'Dummy Vestino 4' },
-    { id: 5, label: 'Dummy Vestino 5' }
+    { id: 1, label: 'Plotter Preprensa' ,optional: false       , answer: null, comments: '', answered: false },
+    { id: 2, label: 'Responsiva Cliente'  ,optional:false      , answer: null, comments: '', answered: false },
+    { id: 3, label: 'Máscara de acabados (opc)',optional: true , answer: null, comments: '', answered: false },    
+    { id: 4, label: 'Etiqueta de ID', optional: false          , answer: null, comments: '', answered: false },
   ];
+
 
   onSave(checkList: CheckListAnswered) {
     console.log('Guardando checklist:', checkList);

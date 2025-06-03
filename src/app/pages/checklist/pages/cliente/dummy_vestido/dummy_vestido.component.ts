@@ -13,11 +13,11 @@ import { CheckListAnswered } from '../../../interfaces/CheckListAnswered';
 export  default class DummyVestidoComponent {
 
   checkList:Option[] = [ // Tus datos de opciones
-    { id: 1, label: 'Dummy Vestino 1', optional: false },
-    { id: 2, label: 'Dummy Vestino 2', optional: false },
-    { id: 3, label: 'Dummy Vestino 3', optional: false },
-    { id: 4, label: 'Dummy Vestino 4', optional: false },
-    { id: 5, label: 'Dummy Vestino 5', optional: true },
+    { id: 1, label: 'Dummy Vestino 1', optional: false , answered: true, answer: 1, comments: ''},
+    { id: 2, label: 'Dummy Vestino 2', optional: false , answered: false, answer: null, comments: ''},
+    { id: 3, label: 'Dummy Vestino 3', optional: false , answered: false, answer: null, comments: ''},
+    { id: 4, label: 'Dummy Vestino 4', optional: false , answered: false, answer: null, comments: ''},
+    { id: 5, label: 'Dummy Vestino 5', optional: true  , answered: false, answer: null, comments: ''},
   ];
 
   onSave(checkList: CheckListAnswered) {

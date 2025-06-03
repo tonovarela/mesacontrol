@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, type OnInit, signal, ViewChild } from '@angular/core';
+import {  ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
 import { PrimeModule } from '../../lib/prime.module';
 import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';

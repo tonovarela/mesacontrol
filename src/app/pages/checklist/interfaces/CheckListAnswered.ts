@@ -5,7 +5,7 @@ export interface CheckListAnswered {
 }
 
 export interface OptionAnswered extends Option {
-    answer: string;
+    
     comments: string;
     isMissingComments: boolean;
 }
