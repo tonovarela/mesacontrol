@@ -16,9 +16,17 @@
         <e-columns>
             <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=80>
             </e-column>
+            <e-column field='descripcionEstado' [allowFiltering]="true" headerText='Estado' width=80>
+                <ng-template #template let-data>
+                    <div class="flex flex-col uppercase" [ngClass]="data.descripcionEstado == 'En proceso' ? 'text-yellow-500' : 
+                                data.descripcionEstado == 'Finalizado' ? 'text-green-500' : ''">
+                        <span>{{data.descripcionEstado}}</span>
+                    </div>
+                </ng-template>
+            </e-column>
             <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
             </e-column>
-            <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=80>
+            <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=150>
             </e-column>
 
             <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
@@ -46,17 +54,18 @@
                     </div>
                 </ng-template>
             </e-column>
-            @for(col of columnasAuditoria; track col.ruta) {
+            @for(col of columnasAuditoria; track col.indice) {
                 <e-column [width]="100">
                     <ng-template #headerTemplate>
                         <p class="font-bold" [ngClass]="col.color">{{col.titulo}}</p>
                         <h1>{{col.subtitulo}}</h1>
                     </ng-template>
                     <ng-template #template let-data>
-                        <div class="flex flex-row gap-2">
+                        <div class="flex flex-row gap-2">                                  
                             <audit-svg 
+                                [color]="colorChecklist(data,col)"
                                 [enabled]="esAuditHabilitado(data, col)" 
-                                (onClick)="esAuditHabilitado(data, col) ? ir(col.ruta, data) : null" />
+                                (onClick)="esAuditHabilitado(data, col) ? ir(data) : null" />
                         </div>
                     </ng-template>
                 </e-column>

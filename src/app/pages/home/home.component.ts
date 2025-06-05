@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { MetricsService,UiService } from '@app/services';
+import { MetricsService,UiService,CheckListService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
@@ -27,6 +27,7 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
 
   protected minusHeight = 0;
   private metricsService = inject(MetricsService);
+  private checkListService = inject(CheckListService);  
   private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
 
@@ -55,27 +56,45 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
 
   constructor() {
     super();
+    
+    
   }
 
 
   columnasAuditoria = [
-    {
+    {      
+      indice:1,
       titulo: 'Cliente',
-      subtitulo: 'Prueba de color',
-      ruta: '/cliente/prueba_color',
+      subtitulo: 'Prueba de color',      
       color: 'text-orange-700',
+      colorImagen: (data:any)=>{
+        if (!data.pruebaColor_checklist || data.id_estado == "2") {
+          return 'text-gray-500';
+        }
+        if (data.pruebaColor_idEstado=="3"){
+        return 'text-red-700';
+        }
+        return data.id_checklist_actual === data.pruebaColor_checklist ? 'text-green-700' : 'text-red-700';
+
+      },
       check: (data: any) => {
-        if (!data.pruebaColor_checklist) {
+        if (!data.pruebaColor_checklist ) {
           return false;
         }
         return data.id_checklist_actual === data.pruebaColor_checklist
       }
     },
     {
+      indice:2,
       titulo: 'Cliente',
-      subtitulo: 'Dummy vestido',
-      ruta: '/cliente/dummy_vestido',
+      subtitulo: 'Dummy vestido',      
       color: 'text-orange-700',
+      colorImagen: (data:any)=>{
+        if (!data.dummyVestido_checklist || data.id_estado == "2") {
+          return 'text-gray-500';
+        }
+        return data.id_checklist_actual === data.dummyVestido_checklist ? 'text-green-700' : 'text-red-700';
+      },
       check: (data: any) => {
         if (!data.clienteDummyVestido_checklist) {
           return false;
@@ -84,10 +103,16 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
       }
     },
     {
+      indice:3,
       titulo: 'Sobre viajero',
-      subtitulo: 'Prueba de color',
-      ruta: '/viajero/prueba_color',
+      subtitulo: 'Prueba de color',      
       color: 'text-pink-700',
+      colorImagen: (data:any)=>{
+        if (!data.viajeroPruebaColor_checkList || data.id_estado == "2") {
+          return 'text-gray-500';
+        }
+        return data.id_checklist_actual === data.viajeroPruebaColor_checkList ? 'text-green-700' : 'text-red-700';
+      },
       check: (data: any) => {
         if (!data.viajeroPruebaColor_checkList) {
           return false;
@@ -96,22 +121,35 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
       }
     },
     {
+      indice:4,
       titulo: 'Sobre viajero',
-      subtitulo: 'Dummy blanco',
-      ruta: '/viajero/dummy_blanco',
+      subtitulo: 'Dummy blanco',      
       color: 'text-pink-700',
+      colorImagen: (data:any)=>{
+        
+        if (!data.viajeroDummyBlanco_checkList || data.id_estado == "2") {
+          return 'text-gray-500';
+        }
+        return data.id_checklist_actual === data.viajeroDummyBlanco_checkList ? 'text-green-700' : 'text-red-700';
+      },
       check: (data: any) => {
-        if (!data.viajeroDummyBlanco_checkList) {
+        if (!data.viajeroDummyBlanco_checkList ) {
           return false;
         }
         return data.id_checklist_actual === data.viajeroDummyBlanco_checkList
       }
     },
     {
+      indice:5, 
       titulo: 'Sobre viajero',
-      subtitulo: 'Dummy vestido',
-      ruta: '/viajero/dummy_vestido',
+      subtitulo: 'Dummy vestido',    
       color: 'text-pink-700',
+      colorImagen: (data:any)=>{
+        if (!data.viajeroDummyVestido_checkList || data.id_estado == "2") {
+          return 'text-gray-500';
+        }
+        return data.id_checklist_actual === data.viajeroDummyVestido_checkList ? 'text-green-700' : 'text-red-700';
+      },
       check: (data: any) => {
         if (!data.viajeroDummyVestido_checkList) {
           return false;
@@ -120,10 +158,17 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
       }
     },
     {
+      indice:6,
       titulo: 'Sobre viajero',
       subtitulo: 'Liberación',
-      ruta: '/viajero/dummy_vestido',
+    
       color: 'text-pink-700',
+      colorImagen: (data:any)=>{
+        if (!data.viajeroLiberacion_checkList || data.id_estado == "2") {
+          return 'text-gray-500';
+        }
+        return data.id_checklist_actual === data.viajeroLiberacion_checkList ? 'text-green-700' : 'text-red-700';
+      },
       check: (data: any) => {
         if (!data.viajeroLiberacion_checkList) {
           return false;
@@ -132,9 +177,16 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
       }
     }
   ];
+
+
+  colorChecklist(data: any,col:any): string {
+    return col.colorImagen(data);
+  }
   
-  esAuditHabilitado(data: any, col: any): boolean {
-    
+  esAuditHabilitado(data: any, col: any): boolean {    
+    if (data.id_estado =="2"){
+      return false;
+    }
     return col.check(data);
   }
 
@@ -143,6 +195,8 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
     this.autoFitColumns = false;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
+    
+    
   }
 
   actualizarTipoProd(tipo: string) {
@@ -176,12 +230,16 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
     }
   }
 
-  ir(ruta: string, ordenMetrics: OrdenMetrics) {
+  async ir(ordenMetrics: OrdenMetrics) {
     const {NoOrden,id_checklist_actual}= ordenMetrics
-    console.log({NoOrden,id_checklist_actual});    
+    //console.log({NoOrden,id_checklist_actual});    
+    this.checkListService.id_checkListCurrent = id_checklist_actual;
+    this.checkListService.op_metrics = NoOrden;
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
     //TODO: Guardar en el estado la ordenMetrics         
-    this.router.navigate([`/checklist/${ruta}`]);
+    //this.metricsService. = id_checklist_actual;
+    this.router.navigate([`/rollcall`]);
+    //this.router.navigate([`/checklist/${ruta}`]);
   }
 
   cerrarOrdenMetricsPorDefinir() {

@@ -1,5 +1,8 @@
 <div class="max-w-3xl mx-auto border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg rounded-lg overflow-hidden">
-    <checklist-view [checkList]="checkList"  title="Cliente dummy vestido" 
+    @if(checkList()) {        
+    <checklist-view [checkList]="checkList()!.options"  [title]="title()" 
     (onSave)="onSave($event)"
-    ></checklist-view>   
+    ></checklist-view>       
+    }            
+    
 </div>

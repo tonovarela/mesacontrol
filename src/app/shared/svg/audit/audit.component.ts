@@ -13,6 +13,7 @@ export class AuditComponent  {
   enabled = input.required<boolean>();
   
   onClick = output<void>();
+  color = input<string>('text-gray-500');
 
   
   

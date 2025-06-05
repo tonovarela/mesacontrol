@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, input, output } from '@angu
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Option } from '../../interfaces/Option';
-import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
+import { CheckListAnswered, OptionAnswered } from '../../interfaces/CheckListAnswered';
 import { PrimeModule } from '@app/lib/prime.module';
 import { UiService } from '@app/services';
 import { CheckComponent } from '@app/shared/svg/check/check.component';
@@ -39,8 +39,7 @@ export class ChecklistViewComponent {
     { name: 'No aplica', value: 0 },
   ];
   constructor(private fb: FormBuilder) { }
-  ngOnInit(): void {  
-    //console.log('checkList', this.checkList());   
+  ngOnInit(): void {      
     this.checklistForm = this.fb.group({
       opciones: this.fb.array(
         this.checkList().map((opcion: Option) =>
@@ -91,27 +90,27 @@ export class ChecklistViewComponent {
     if (!this.checklistForm.valid) {
       return
     }
-    const formValue = this.checklistForm.value;
-    
-    const checkList = this.checkList() as any;
-    const selectedOptions = [
-       ...formValue.opciones.filter((option:any)=>!option.answered).map((option: any, i: number) => ({
+    const formValue = this.checklistForm.value;    
+    const checkList = this.checkList() as Option[];
+    const selectedOptions:OptionAnswered[] = [
+       ...formValue.opciones.filter((option:Option)=>!option.answered)
+                  .map((option: OptionAnswered, i: number) => ({
         ...checkList[i],
         answer: option.answer,
         isMissingComments : option.answer ==2 && option.comments.length==0,
         comments:option.answer !=2?'':option.comments
       }))
     ];
-
-
-    const canSave = selectedOptions.filter((option: any) => option.isMissingComments  ).length == 0;
+    const canSave = selectedOptions.filter((option: OptionAnswered) => option.isMissingComments  ).length == 0;
     if (!canSave) {
       this.uiService.mostrarAlertaError('','Debe ingresar un comentario para las opciones rechazadas');      
       return;
     }      
-    const esRechazado = selectedOptions.filter((option: any) => option.answer == 2).length > 0;
-    console.log('esRechazado', esRechazado);
-    this.onSave.emit({ selectedOptions });
+    const isRefused = selectedOptions.filter((option: any) => option.answer == 2).length > 0;    
+    //console.log('isRefused', isRefused);
+    const optionsAnswered =selectedOptions.filter((option: OptionAnswered) =>!option.answered );
+
+    this.onSave.emit({ optionsAnswered, isRefused });
 
   }
 

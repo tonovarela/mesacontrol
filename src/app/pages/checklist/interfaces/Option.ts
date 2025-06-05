@@ -1,6 +1,6 @@
 
 export type Option = {
-    id:number;
+    id:string;
     label: string;    
     optional?: boolean;     
     answer: number | null; // Opcional, si no se necesita, se puede omitir
