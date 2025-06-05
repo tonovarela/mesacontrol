@@ -6,10 +6,11 @@ import { Option } from '../../interfaces/Option';
 import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
 import { PrimeModule } from '@app/lib/prime.module';
 import { UiService } from '@app/services';
+import { CheckComponent } from '@app/shared/svg/check/check.component';
 
 @Component({
   selector: 'checklist-view',
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterModule, PrimeModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterModule, PrimeModule,CheckComponent],
   templateUrl: './checklist-view.component.html',
   styleUrl: './checklist-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,14 +38,9 @@ export class ChecklistViewComponent {
     { name: 'Rechazado', value: 2 },
     { name: 'No aplica', value: 0 },
   ];
-  
   constructor(private fb: FormBuilder) { }
-
-  ngOnInit(): void {
-   
-
-    console.log('checkList', this.checkList());
-   
+  ngOnInit(): void {  
+    //console.log('checkList', this.checkList());   
     this.checklistForm = this.fb.group({
       opciones: this.fb.array(
         this.checkList().map((opcion: Option) =>
@@ -58,7 +54,7 @@ export class ChecklistViewComponent {
     });
   }
 
-  private isOptionalByOption(opcion: any): boolean {
+  private isOptionalByOption(opcion: any): boolean {    
     return opcion.optional ?? false;
   }
 
@@ -99,7 +95,7 @@ export class ChecklistViewComponent {
     
     const checkList = this.checkList() as any;
     const selectedOptions = [
-       ...formValue.opciones.map((option: any, i: number) => ({
+       ...formValue.opciones.filter((option:any)=>!option.answered).map((option: any, i: number) => ({
         ...checkList[i],
         answer: option.answer,
         isMissingComments : option.answer ==2 && option.comments.length==0,
@@ -108,7 +104,7 @@ export class ChecklistViewComponent {
     ];
 
 
-    const canSave = selectedOptions.filter((option: any) => option.isMissingComments).length == 0;
+    const canSave = selectedOptions.filter((option: any) => option.isMissingComments  ).length == 0;
     if (!canSave) {
       this.uiService.mostrarAlertaError('','Debe ingresar un comentario para las opciones rechazadas');      
       return;

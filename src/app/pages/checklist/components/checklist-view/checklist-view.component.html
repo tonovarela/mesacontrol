@@ -52,9 +52,13 @@
             @else
             {
                 <li class="flex i mb-5">
-                    <label [for]="'opcion' + i" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {{$index+1}}.-{{ obtenerLabelOpcion(i) }}  ✔️
+                    <div class="flex items-center gap-4 align-middle">
+                        <label [for]="'opcion' + i" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            {{$index+1}}.-{{ obtenerLabelOpcion(i) }}                                                  
                     </label>
+                    <check-svg/>
+                    </div>
+                    
                 </li>
                 
             }

@@ -58,6 +58,87 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
   }
 
 
+  columnasAuditoria = [
+    {
+      titulo: 'Cliente',
+      subtitulo: 'Prueba de color',
+      ruta: '/cliente/prueba_color',
+      color: 'text-orange-700',
+      check: (data: any) => {
+        if (!data.pruebaColor_checklist) {
+          return false;
+        }
+        return data.id_checklist_actual === data.pruebaColor_checklist
+      }
+    },
+    {
+      titulo: 'Cliente',
+      subtitulo: 'Dummy vestido',
+      ruta: '/cliente/dummy_vestido',
+      color: 'text-orange-700',
+      check: (data: any) => {
+        if (!data.clienteDummyVestido_checklist) {
+          return false;
+        }
+        return data.id_checklist_actual === data.clienteDummyVestido_checklist
+      }
+    },
+    {
+      titulo: 'Sobre viajero',
+      subtitulo: 'Prueba de color',
+      ruta: '/viajero/prueba_color',
+      color: 'text-pink-700',
+      check: (data: any) => {
+        if (!data.viajeroPruebaColor_checkList) {
+          return false;
+        }
+        return data.id_checklist_actual === data.viajeroPruebaColor_checkList
+      }
+    },
+    {
+      titulo: 'Sobre viajero',
+      subtitulo: 'Dummy blanco',
+      ruta: '/viajero/dummy_blanco',
+      color: 'text-pink-700',
+      check: (data: any) => {
+        if (!data.viajeroDummyBlanco_checkList) {
+          return false;
+        }
+        return data.id_checklist_actual === data.viajeroDummyBlanco_checkList
+      }
+    },
+    {
+      titulo: 'Sobre viajero',
+      subtitulo: 'Dummy vestido',
+      ruta: '/viajero/dummy_vestido',
+      color: 'text-pink-700',
+      check: (data: any) => {
+        if (!data.viajeroDummyVestido_checkList) {
+          return false;
+        }
+        return data.id_checklist_actual === data.viajeroDummyVestido_checkList
+      }
+    },
+    {
+      titulo: 'Sobre viajero',
+      subtitulo: 'Liberación',
+      ruta: '/viajero/dummy_vestido',
+      color: 'text-pink-700',
+      check: (data: any) => {
+        if (!data.viajeroLiberacion_checkList) {
+          return false;
+        }
+        return data.id_checklist_actual === data.viajeroLiberacion_checkList
+      }
+    }
+  ];
+  
+  esAuditHabilitado(data: any, col: any): boolean {
+    
+    return col.check(data);
+  }
+
+
   ngOnInit(): void {
     this.autoFitColumns = false;
     this.iniciarResizeGrid(this.minusHeight);
@@ -96,7 +177,8 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
   }
 
   ir(ruta: string, ordenMetrics: OrdenMetrics) {
-    //console.log(ordenMetrics);    
+    const {NoOrden,id_checklist_actual}= ordenMetrics
+    console.log({NoOrden,id_checklist_actual});    
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
     //TODO: Guardar en el estado la ordenMetrics         
     this.router.navigate([`/checklist/${ruta}`]);

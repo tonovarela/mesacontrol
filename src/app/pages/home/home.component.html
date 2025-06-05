@@ -18,6 +18,8 @@
             </e-column>
             <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
             </e-column>
+            <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=80>
+            </e-column>
 
             <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
             </e-column>
@@ -44,102 +46,144 @@
                     </div>
                 </ng-template>
             </e-column>
-
+            @for(col of columnasAuditoria; track col.ruta) {
+                <e-column [width]="100">
+                    <ng-template #headerTemplate>
+                        <p class="font-bold" [ngClass]="col.color">{{col.titulo}}</p>
+                        <h1>{{col.subtitulo}}</h1>
+                    </ng-template>
+                    <ng-template #template let-data>
+                        <div class="flex flex-row gap-2">
+                            <audit-svg 
+                                [enabled]="esAuditHabilitado(data, col)" 
+                                (onClick)="esAuditHabilitado(data, col) ? ir(col.ruta, data) : null" />
+                        </div>
+                    </ng-template>
+                </e-column>
+                }
+<!-- 
             <e-column width=100>
                 <ng-template #headerTemplate>
                     <p class="font-bold  text-orange-700"> Cliente</p>
-                    <h1>Prueba de color</h1>                
+                    <h1>Prueba de color</h1>
                 </ng-template>
                 <ng-template #template let-data>
+
+                    @if(data.id_checklist_actual){
+
+                    @if(data.id_checklist_actual==data.pruebaColor_checklist){
                     <div class="flex flex-row gap-2">
                         <audit-svg [enabled]="true" (onClick)="ir('/cliente/prueba_color',data)" />
                     </div>
+                    }@else{
+                        <div class="flex flex-row gap-2">
+                            <audit-svg [enabled]="false" />
+                        </div>
+                    }
+                    }@else{
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="false" />
+                    </div>
+                    }
                 </ng-template>
             </e-column>
-            <e-column  width=100>
+            <e-column width=100>
                 <ng-template #headerTemplate>
                     <p class="font-bold  text-orange-700"> Cliente</p>
-                    <h1>Dummy vestido</h1>                
+                    <h1>Dummy vestido</h1>
                 </ng-template>
                 <ng-template #template let-data>
+                    @if(data.id_checklist_actual){                        
                     <div class="flex flex-row gap-2">
                         <audit-svg [enabled]="true" (onClick)="ir('/cliente/dummy_vestido',data)" />
                     </div>
+                    }@else{
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="false" />
+                    </div>
+                    }
+
                 </ng-template>
             </e-column>
-            <e-column  width=100>
+            <e-column width=100>
                 <ng-template #headerTemplate>
                     <p class="font-bold  text-pink-700"> Sobre viajero</p>
-                    <h1>Prueba de color</h1>                
+                    <h1>Prueba de color</h1>
                 </ng-template>
                 <ng-template #template let-data>
+
+                    @if(data.id_checklist_actual){
                     <div class="flex flex-row gap-2">
                         <audit-svg [enabled]="true" (onClick)="ir('/viajero/prueba_color',data)" />
                     </div>
+                    }@else{
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="false" />
+                    </div>
+                    }
+                </ng-template>
+            </e-column>
+
+            <e-column width=100>
+                <ng-template #headerTemplate>
+
+                    <p class="font-bold  text-pink-700"> Sobre viajero</p>
+                    <h1>Dummy blanco</h1>
+                </ng-template>
+                <ng-template #template let-data>
+                    @if(data.id_checklist_actual){
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_blanco',data)" />
+                    </div>
+
+                    }@else{
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="false" />
+                    </div>
+                    }
                 </ng-template>
             </e-column>
 
             <e-column width=100>
                 <ng-template #headerTemplate>
                     <p class="font-bold  text-pink-700"> Sobre viajero</p>
-                    <h1>Dummy blanco</h1>                
+                    <h1>Dummy vestido</h1>
                 </ng-template>
                 <ng-template #template let-data>
-                    <div class="flex flex-row gap-2">
-                        <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_blanco',data)" />
-                    </div>
-                </ng-template>
-            </e-column>
-
-            <e-column  width=100>
-                <ng-template #headerTemplate>
-                    <p class="font-bold  text-pink-700"> Sobre viajero</p>
-                    <h1>Dummy vestido</h1>                
-                </ng-template>
-                <ng-template #template let-data>
+                    @if(data.id_checklist_actual){
                     <div class="flex flex-row gap-2">
                         <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_vestido',data)" />
                     </div>
+                    }@else{
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="false" />
+                    </div>
+                    }
+
                 </ng-template>
             </e-column>
 
             <e-column headerText='Sobre viajero' width=100>
                 <ng-template #headerTemplate>
                     <p class="font-bold  text-pink-700"> Sobre viajero</p>
-                    <h1>Liberación</h1>                
+                    <h1>Liberación</h1>
                 </ng-template>
                 <ng-template #template let-data>
+                    @if(data.id_checklist_actual){
                     <div class="flex flex-row gap-2">
                         <audit-svg [enabled]="true" (onClick)="ir('/viajero/dummy_vestido',data)" />
                     </div>
+                    }@else{
+                    <div class="flex flex-row gap-2">
+                        <audit-svg [enabled]="false" />
+                    </div>
+                    }
                 </ng-template>
-            </e-column>
+            </e-column> -->
         </e-columns>
     </ejs-grid>
-
-
-    <!-- this.stackChecklist = [{
-        headerText: 'Liberación al cliente',
-        columns: [
-          { headerText: 'Prueba de color', width: 110, textAlign: 'Center', template: this.clientePruebaColor, templateFn: templateCompiler(this.clientePruebaColor) },
-          { headerText: 'Dummy vestido', width: 110, textAlign: 'Center', template: this.clienteDummyVestido, templateFn: templateCompiler(this.clienteDummyVestido) }],
-      },
-      {
-        headerText: 'Liberación de sobre viajero',
-        columns: [
-          { headerText: 'Prueba de color', width: 100, textAlign: 'Center', template: this.viajeroPruebaColor, templateFn: templateCompiler(this.viajeroPruebaColor) },
-          { headerText: 'Dummy blanco', width: 100, textAlign: 'Center', template: this.viajeroDummyBlanco, templateFn: templateCompiler(this.viajeroDummyBlanco) },
-          { headerText: 'Dummy vestido', width: 100, textAlign: 'Center', template: this.viajeroDummyVestido, templateFn: templateCompiler(this.viajeroDummyVestido) },
-          { headerText: 'Sobre viajero', width: 100, textAlign: 'Center', template: this.viajeroSobre, templateFn: templateCompiler(this.viajeroSobre) },
-        ]
-      }
-      ];
-    },  1000); -->
-
-
-
 </div>
-<!-- ...existing code... -->
+
 <p-dialog header="Editar Orden" [modal]="true" [visible]="puedeDefinirOrdenMetrics()" [style]="{ width: '50rem' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
     <ng-template #headless>
@@ -221,4 +265,3 @@
         </form>
     </ng-template>
 </p-dialog>
-<!-- ...existing code... -->

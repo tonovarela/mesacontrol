@@ -5,19 +5,33 @@ export interface ResponseOrdenMetrics {
 
 
 export interface OrdenMetrics {
-    id:              string;
-    NoOrden:          string;
-    NombreTrabajo:    string;
-    TipoProd:         string;
-    Vendedor:          string;
-    NumCliente:       string;
-    NombreCliente:    string;
+    NoOrden: string;
+    NombreTrabajo: string;
+    TipoProd: string;
+    NumCliente: string;
+    Vendedor: string;
+    NombreCliente: string;
     CantidadEntregar: string;
-    SituacionOrden:   string;
-    EstatusOrden:     string;
-    FechaEmision:     Date;
-    FechaEntrega:     Date;
+    SituacionOrden: string;
+    EstatusOrden: string;
+    FechaEmision: Date;
+    FechaEntrega: Date;
+    id_checklist_actual: string;
+    pruebaColor_checklist?: string;
+    pruebaColor_idEstado?: string;
+    clienteDummyVestido_checklist?: string;
+    clienteDummyVestido_idEstado?: string;
+    viajeroPruebaColor_checkList?: string;
+    viajeroPruebaColor_idEstado?: string;
+    viajeroDummyBlanco_checkList?: string;
+    viajeroDummyBlanco_idEstado?: string;
+    viajeroDummyVestido_checkList?: string;
+    viajeroDummyVestido_idEstado?: string;
+    viajeroLiberacion_checkList?: string;
+    viajeroLiberacion_idEstado?: string;
 }
+
+
 
 
 
