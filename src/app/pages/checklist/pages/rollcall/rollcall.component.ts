@@ -19,6 +19,8 @@ export default class RollcallComponent implements OnInit {
 
   checkList = computed(() => this.checkListService._checkList());
 
+  opMetrics = computed(() => this.checkListService.op_metrics);
+
   title = computed(() => {
     const detail = this.checkList();
     return detail ? `${detail.detail?.categoria} ${detail.detail?.tipoPrueba}` || 'Checklist' : 'Cargando...';

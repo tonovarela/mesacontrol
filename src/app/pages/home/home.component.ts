@@ -1,10 +1,10 @@
-import {  ChangeDetectionStrategy, Component, computed, inject, OnInit, signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { PrimeModule } from '../../lib/prime.module';
 import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { MetricsService,UiService,CheckListService } from '@app/services';
+import { MetricsService, UiService, CheckListService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
@@ -22,16 +22,16 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
   styleUrl: './home.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class HomeComponent extends BaseGridComponent implements OnInit{
+export default class HomeComponent extends BaseGridComponent implements OnInit {
 
 
   protected minusHeight = 0;
   private metricsService = inject(MetricsService);
-  private checkListService = inject(CheckListService);  
+  private checkListService = inject(CheckListService);
   private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
 
-  public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);  
+  public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
   public ordenesMetrics = computed(() => this._ordenesMetrics());
   public ordenMetricsPorDefinir = signal<OrdenMetrics | null>(null);
 
@@ -56,44 +56,57 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
 
   constructor() {
     super();
-    
-    
+
+
   }
 
 
   columnasAuditoria = [
-    {      
-      indice:1,
+    {
+      indice: 1,
       titulo: 'Cliente',
-      subtitulo: 'Prueba de color',      
+      subtitulo: 'Prueba de color',
       color: 'text-orange-700',
-      colorImagen: (data:any)=>{
-        if (!data.pruebaColor_checklist || data.id_estado == "2") {
-          return 'text-gray-500';
-        }
-        if (data.pruebaColor_idEstado=="3"){
-        return 'text-red-700';
-        }
-        return data.id_checklist_actual === data.pruebaColor_checklist ? 'text-green-700' : 'text-red-700';
-
+      colorImagen: (data: any) => {
+        const estadoMap: Record<string, string> = {          
+          "2": 'fill-white  py-1 rounded-full bg-lime-700',
+          "3": 'fill-white  py-1 rounded-full bg-pink-600',
+          "4": 'fill-white py-1 rounded-full bg-gray-400'
+        };
+        const clase = estadoMap[data.clientePruebaColor_idEstado];
+        if (data.id_checklist_actual === data.clientePruebaColor_checklist  && data.id_estado != "3") {
+          return 'fill-white py-1 rounded-full bg-purple-600';   
+           }
+        if (clase) return clase;
+        return 'fill-gray-400';      
       },
       check: (data: any) => {
-        if (!data.pruebaColor_checklist ) {
+        if (!data.clientePruebaColor_checklist) {
           return false;
         }
-        return data.id_checklist_actual === data.pruebaColor_checklist
+        return data.id_checklist_actual === data.clientePruebaColor_checklist
       }
     },
     {
-      indice:2,
+      indice: 2,
       titulo: 'Cliente',
-      subtitulo: 'Dummy vestido',      
+      subtitulo: 'Dummy vestido',
       color: 'text-orange-700',
-      colorImagen: (data:any)=>{
-        if (!data.dummyVestido_checklist || data.id_estado == "2") {
-          return 'text-gray-500';
+      colorImagen: (data: any) => {
+       
+        if (data.clienteDummyVestido_idEstado == "2") {
+          return 'fill-white  py-1 rounded-full bg-lime-700';
         }
-        return data.id_checklist_actual === data.dummyVestido_checklist ? 'text-green-700' : 'text-red-700';
+        if (data.clienteDummyVestido_idEstado == "3") {
+          return 'fill-white  py-1 rounded-full bg-pink-600';
+        }
+        if (data.clienteDummyVestido_idEstado == "4") {
+          return 'fill-white py-1 rounded-full bg-gray-400';
+        }
+        if (data.id_checklist_actual === data.clienteDummyVestido_checklist ) {
+          return 'fill-white py-1 rounded-full bg-purple-600';
+        }        
+        return 'fill-gray-400';  
       },
       check: (data: any) => {
         if (!data.clienteDummyVestido_checklist) {
@@ -103,15 +116,25 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
       }
     },
     {
-      indice:3,
+      indice: 3,
       titulo: 'Sobre viajero',
-      subtitulo: 'Prueba de color',      
+      subtitulo: 'Prueba de color',
       color: 'text-pink-700',
-      colorImagen: (data:any)=>{
-        if (!data.viajeroPruebaColor_checkList || data.id_estado == "2") {
-          return 'text-gray-500';
+      colorImagen: (data: any) => {
+        
+        if (data.viajeroPruebaColor_idEstado == "2") {
+          return 'fill-white  py-1 rounded-full bg-lime-700';
         }
-        return data.id_checklist_actual === data.viajeroPruebaColor_checkList ? 'text-green-700' : 'text-red-700';
+        if (data.viajeroPruebaColor_idEstado == "3") {
+          return 'fill-white  py-1 rounded-full bg-pink-600';
+        }
+        if (data.viajeroPruebaColor_idEstado == "4") {
+          return 'fill-white py-1 rounded-full bg-gray-400';
+        }
+        if (data.id_checklist_actual === data.viajeroPruebaColor_checkList && data.id_estado =="1") {
+          return 'fill-white py-1 rounded-full bg-purple-600';
+        }        
+        return 'fill-gray-400'; 
       },
       check: (data: any) => {
         if (!data.viajeroPruebaColor_checkList) {
@@ -121,34 +144,54 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
       }
     },
     {
-      indice:4,
+      indice: 4,
       titulo: 'Sobre viajero',
-      subtitulo: 'Dummy blanco',      
+      subtitulo: 'Dummy blanco',
       color: 'text-pink-700',
-      colorImagen: (data:any)=>{
+      colorImagen: (data: any) => {
         
-        if (!data.viajeroDummyBlanco_checkList || data.id_estado == "2") {
-          return 'text-gray-500';
+        if (data.viajeroDummyBlanco_idEstado == "2") {
+          return 'fill-white  py-1 rounded-full bg-lime-700';
         }
-        return data.id_checklist_actual === data.viajeroDummyBlanco_checkList ? 'text-green-700' : 'text-red-700';
+        if (data.viajeroDummyBlanco_idEstado == "3") {
+          return 'fill-white  py-1 rounded-full bg-pink-600';
+        }
+        if (data.viajeroDummyBlanco_idEstado == "4") {
+          return 'fill-white py-1 rounded-full bg-gray-400';
+        }
+        if (data.id_checklist_actual === data.viajeroDummyBlanco_checkList && data.id_estado == "1") {
+          return 'fill-white py-1 rounded-full bg-purple-600';
+        }        
+        return 'fill-gray-400'; 
       },
       check: (data: any) => {
-        if (!data.viajeroDummyBlanco_checkList ) {
+        if (!data.viajeroDummyBlanco_checkList) {
           return false;
         }
         return data.id_checklist_actual === data.viajeroDummyBlanco_checkList
       }
     },
     {
-      indice:5, 
+      indice: 5,
       titulo: 'Sobre viajero',
-      subtitulo: 'Dummy vestido',    
+      subtitulo: 'Dummy vestido',
       color: 'text-pink-700',
-      colorImagen: (data:any)=>{
-        if (!data.viajeroDummyVestido_checkList || data.id_estado == "2") {
-          return 'text-gray-500';
+      colorImagen: (data: any) => {
+       
+        if (data.viajeroDummyVestido_idEstado == "2") {
+          return 'fill-white  py-1 rounded-full bg-lime-700';
         }
-        return data.id_checklist_actual === data.viajeroDummyVestido_checkList ? 'text-green-700' : 'text-red-700';
+        if (data.viajeroDummyVestido_idEstado == "3") {
+          return 'fill-white  py-1 rounded-full bg-pink-600';
+        }
+        if (data.viajeroDummyVestido_idEstado == "4") {
+          return 'fill-white py-1 rounded-full bg-gray-400';
+        }
+        if (data.id_checklist_actual === data.viajeroDummyVestido_checkList && data.id_estado == "1") {
+          return 'fill-white py-1 rounded-full bg-purple-600';
+        }
+        
+        return 'fill-gray-400'; 
       },
       check: (data: any) => {
         if (!data.viajeroDummyVestido_checkList) {
@@ -158,16 +201,35 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
       }
     },
     {
-      indice:6,
+      indice: 6,
       titulo: 'Sobre viajero',
       subtitulo: 'Liberación',
-    
       color: 'text-pink-700',
-      colorImagen: (data:any)=>{
-        if (!data.viajeroLiberacion_checkList || data.id_estado == "2") {
-          return 'text-gray-500';
+      colorImagen: (data: any) => {
+
+        if (data.id_checklist_actual === data.viajeroLiberacion_checkList && data.id_estado== "1") {
+       return 'fill-white py-1 rounded-full bg-purple-600';
+
         }
-        return data.id_checklist_actual === data.viajeroLiberacion_checkList ? 'text-green-700' : 'text-red-700';
+
+
+        if (data.viajeroLiberacion_idEstado == "1" && !(data.id_checklist_actual === data.viajeroLiberacion_checkList) ) {
+          return 'fill-gray-700';
+        }
+        if (data.viajeroLiberacion_idEstado == "2") {
+          return 'fill-white  py-1 rounded-full bg-lime-700';
+        }
+        if (data.viajeroLiberacion_idEstado == "3") {
+          return 'fill-white  py-1 rounded-full bg-pink-600';
+        }
+        if (data.viajeroLiberacion_idEstado == "4") {
+          return 'fill-white py-1 rounded-full bg-gray-400';
+        }
+        if (data.id_checklist_actual === data.viajeroLiberacion_checkList && data.id_estado == "1") {
+          return 'fill-white py-1 rounded-full bg-purple-600';
+        }
+       
+        return 'fill-gray-700';
       },
       check: (data: any) => {
         if (!data.viajeroLiberacion_checkList) {
@@ -179,12 +241,12 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
   ];
 
 
-  colorChecklist(data: any,col:any): string {
+  colorChecklist(data: any, col: any): string {
     return col.colorImagen(data);
   }
-  
-  esAuditHabilitado(data: any, col: any): boolean {    
-    if (data.id_estado =="2"){
+
+  esAuditHabilitado(data: any, col: any): boolean {
+    if (data.id_estado == "2") {
       return false;
     }
     return col.check(data);
@@ -195,8 +257,8 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
     this.autoFitColumns = false;
     this.iniciarResizeGrid(this.minusHeight);
     this.cargarInformacion();
-    
-    
+
+
   }
 
   actualizarTipoProd(tipo: string) {
@@ -219,11 +281,11 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
     this.cargando.set(true);
     try {
       this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
-      const response = await firstValueFrom(this.metricsService.listar())            
-      this._ordenesMetrics.set(response.ordenes)      
+      const response = await firstValueFrom(this.metricsService.listar())
+      this._ordenesMetrics.set(response.ordenes)
     }
     catch (error) {
-      this.uiService.mostrarAlertaError('Error al cargar la información', 'No se pudo cargar la información de las órdenes de métricas. Por favor, inténtelo más tarde.');      
+      this.uiService.mostrarAlertaError('Error al cargar la información', 'No se pudo cargar la información de las órdenes de métricas. Por favor, inténtelo más tarde.');
     }
     finally {
       this.cargando.set(false);
@@ -231,7 +293,7 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
   }
 
   async ir(ordenMetrics: OrdenMetrics) {
-    const {NoOrden,id_checklist_actual}= ordenMetrics
+    const { NoOrden, id_checklist_actual } = ordenMetrics
     //console.log({NoOrden,id_checklist_actual});    
     this.checkListService.id_checkListCurrent = id_checklist_actual;
     this.checkListService.op_metrics = NoOrden;
@@ -246,8 +308,8 @@ export default class HomeComponent extends BaseGridComponent implements OnInit{
     this.ordenMetricsPorDefinir.set(null);
   }
 
-  async guardarOrdenMetricsPorDefinir() {    
-    const ordenMetrics = this.ordenMetricsPorDefinir();    
+  async guardarOrdenMetricsPorDefinir() {
+    const ordenMetrics = this.ordenMetricsPorDefinir();
     await firstValueFrom(this.metricsService.agregarOrden(ordenMetrics!));
     this.cargarInformacion();
     this.ordenMetricsPorDefinir.set(null);
