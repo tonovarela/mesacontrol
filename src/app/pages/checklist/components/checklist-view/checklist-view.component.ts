@@ -17,15 +17,14 @@ import { CheckComponent } from '@app/shared/svg/check/check.component';
 })
 export class ChecklistViewComponent {
 
-  checklistForm!: FormGroup;
-  router = inject(Router);
-
-  checkList = input.required<Option[]>();
-
+  public checklistForm!: FormGroup;
+  private router = inject(Router);  
   private uiService = inject(UiService);
+
+  isSaving = input<boolean>(false);
+  checkList = input.required<Option[]>();
   title = input.required<string>();
   onSave = output<CheckListAnswered>();
-
 
   optionsStrict: any[] = [
     { name: 'Aceptado', value: 1 },

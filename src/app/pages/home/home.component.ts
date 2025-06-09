@@ -38,28 +38,13 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
 
   public router = inject(Router);
   public cargando = signal(false);
+  public guardandoOrdenMetrics = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
   public stackChecklist: any[] = [];
-  public catalogoTiposProductos = [
-    { id: "AUTOPOP", value: "Autopops" },
-    { id: "BOL", value: "Bolsas" },
-    { id: "CAG", value: "Catálogos / Folletos" },
-    { id: "CD", value: "Calendarios" },
-    { id: "EMPL", value: "Empaque Plegadizo" },
-    { id: "EST", value: "Estuches" },
-    { id: "ET", value: "Etiquetas" },
-    { id: "FD", value: "Folder / Sobres" },
-    { id: "LIB", value: "Libretas / Agendas" },
-    { id: "MA", value: "Dipticos / Tripticos" },
-    { id: "VIN", value: "Viniles / Floorgraphics" }
-  ];
-
+  public catalogoTiposProductos= computed(() => this.metricsService.TipoMateriales());
   constructor() {
     super();
-
-
   }
-
 
   columnasAuditoria = [
     {
@@ -68,17 +53,20 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
       subtitulo: 'Prueba de color',
       color: 'text-orange-700',
       colorImagen: (data: any) => {
-        const estadoMap: Record<string, string> = {          
-          "2": 'fill-white  py-1 rounded-full bg-lime-700',
-          "3": 'fill-white  py-1 rounded-full bg-pink-600',
-          "4": 'fill-white py-1 rounded-full bg-gray-400'
-        };
-        const clase = estadoMap[data.clientePruebaColor_idEstado];
-        if (data.id_checklist_actual === data.clientePruebaColor_checklist  && data.id_estado != "3") {
-          return 'fill-white py-1 rounded-full bg-purple-600';   
-           }
-        if (clase) return clase;
-        return 'fill-gray-400';      
+
+        if (data.clientePruebaColor_idEstado == "2") {
+          return 'fill-white  py-1 rounded-full bg-lime-700';
+        }
+        if (data.clientePruebaColor_idEstado == "3") {
+          return 'fill-white  py-1 rounded-full bg-pink-600';
+        }
+        if (data.clientePruebaColor_idEstado == "4") {
+          return 'fill-white py-1 rounded-full bg-gray-400';
+        }
+        if (data.id_checklist_actual === data.clientePruebaColor_checklist ) {
+          return 'fill-white py-1 rounded-full bg-purple-600';
+        }        
+        return 'fill-gray-400';             
       },
       check: (data: any) => {
         if (!data.clientePruebaColor_checklist) {
@@ -207,15 +195,12 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
       color: 'text-pink-700',
       colorImagen: (data: any) => {
 
-        if (data.id_checklist_actual === data.viajeroLiberacion_checkList && data.id_estado== "1") {
-       return 'fill-white py-1 rounded-full bg-purple-600';
-
-        }
+        
 
 
-        if (data.viajeroLiberacion_idEstado == "1" && !(data.id_checklist_actual === data.viajeroLiberacion_checkList) ) {
-          return 'fill-gray-700';
-        }
+        // if (data.viajeroLiberacion_idEstado == "1" && !(data.id_checklist_actual === data.viajeroLiberacion_checkList) ) {
+        //   return 'fill-gray-700';
+        // }
         if (data.viajeroLiberacion_idEstado == "2") {
           return 'fill-white  py-1 rounded-full bg-lime-700';
         }
@@ -229,7 +214,7 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
           return 'fill-white py-1 rounded-full bg-purple-600';
         }
        
-        return 'fill-gray-700';
+        return 'fill-gray-400';
       },
       check: (data: any) => {
         if (!data.viajeroLiberacion_checkList) {
@@ -293,15 +278,14 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   }
 
   async ir(ordenMetrics: OrdenMetrics) {
-    const { NoOrden, id_checklist_actual } = ordenMetrics
-    //console.log({NoOrden,id_checklist_actual});    
+    const { NoOrden, id_checklist_actual } = ordenMetrics    
     this.checkListService.id_checkListCurrent = id_checklist_actual;
     this.checkListService.op_metrics = NoOrden;
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
     //TODO: Guardar en el estado la ordenMetrics         
-    //this.metricsService. = id_checklist_actual;
+    
     this.router.navigate([`/rollcall`]);
-    //this.router.navigate([`/checklist/${ruta}`]);
+    
   }
 
   cerrarOrdenMetricsPorDefinir() {
@@ -309,8 +293,10 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   }
 
   async guardarOrdenMetricsPorDefinir() {
+    this.guardandoOrdenMetrics.set(true);
     const ordenMetrics = this.ordenMetricsPorDefinir();
     await firstValueFrom(this.metricsService.agregarOrden(ordenMetrics!));
+    this.guardandoOrdenMetrics.set(false);
     this.cargarInformacion();
     this.ordenMetricsPorDefinir.set(null);
   }

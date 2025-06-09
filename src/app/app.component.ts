@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { initFlowbite } from 'flowbite';
-import { UiService } from './services';
+import { MetricsService, UiService } from './services';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,9 @@ import { UiService } from './services';
 export class AppComponent {
   isDarkMode = signal(false);
   public uiService = inject(UiService);
+  private metricsService = inject(MetricsService);
   constructor() {
+    this.metricsService.cargarCatalogoTipoMateriales();
     setTimeout(() => {
       this.uiService.cargarSidebar();
       initFlowbite();      

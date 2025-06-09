@@ -1,16 +1,21 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable } from '@angular/core';
+import {  computed, inject, Injectable, signal } from '@angular/core';
+import { ResponseMateriales } from '@app/interfaces/responses/ResponseMateriales';
 import { OrdenMetrics, ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { TipoMaterial } from '@app/interfaces/TipoMaterial';
 import { environment } from '@environments/environment.development';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class MetricsService {
-  private readonly APIDATA=environment.apiData
 
-  //private _ordenesMetrics = signal<OrdenMetrics[]>([]);
-  //ordenes= computed(() => this._ordenesMetrics());
+  private _tipoMateriales = signal<TipoMaterial[]>([]);
+  
+
+  TipoMateriales = computed(() => this._tipoMateriales());  
+
 
   http =inject(HttpClient)
    private readonly API_URL = environment.apiUrl;
@@ -20,6 +25,13 @@ export class MetricsService {
   listar(){
     return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/orden`);
     
+  }
+
+   cargarCatalogoTipoMateriales() {
+     this.http.get<ResponseMateriales>(`${this.API_URL}/api/orden/materiales`)
+     .subscribe(response=>{
+        this._tipoMateriales.set(response.tipoMateriales);
+     });
   }
 
   buscarPorPatron(patron: string) {

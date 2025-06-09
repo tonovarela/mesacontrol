@@ -3,6 +3,7 @@
     @if(checkList()) {        
     <checklist-view [checkList]="checkList()!.options"  [title]="title()" 
     (onSave)="onSave($event)"
+    [isSaving]="isSaving()"
     ></checklist-view>       
     }            
     

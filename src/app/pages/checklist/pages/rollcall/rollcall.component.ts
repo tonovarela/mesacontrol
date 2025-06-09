@@ -20,6 +20,7 @@ export default class RollcallComponent implements OnInit {
   checkList = computed(() => this.checkListService._checkList());
 
   opMetrics = computed(() => this.checkListService.op_metrics);
+  isSaving = signal<boolean>(false);
 
   title = computed(() => {
     const detail = this.checkList();
@@ -32,6 +33,7 @@ export default class RollcallComponent implements OnInit {
   }
 
   async onSave(checkList: CheckListAnswered) {
+    this.isSaving.set(true);
     const {isRefused,optionsAnswered} = checkList;
     const checkListCurrent = this.checkListService._checkList()?.detail;
     const {id_checklist,op_metrics} = checkListCurrent! ;
@@ -51,11 +53,12 @@ export default class RollcallComponent implements OnInit {
       }
     });    
     this.checkListService.id_checkListCurrent = id_checklist;
-     const response=await firstValueFrom(this.checkListService.saveChecklist({orden: op_metrics,isRefused,optionsAprobed,optionsRejected, id_checklist}));
+     await firstValueFrom(this.checkListService.saveChecklist({orden: op_metrics,isRefused,optionsAprobed,optionsRejected, id_checklist}));          
      this.checkListService.removeCheckList();              
-     //console.log(response);
-    
+     this.isSaving.set(false);
 
+     
+  
 
   }
 
