@@ -278,9 +278,11 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   }
 
   async ir(ordenMetrics: OrdenMetrics) {
+    console.log('Ir a la orden metrics', ordenMetrics);
     const { NoOrden, id_checklist_actual } = ordenMetrics    
+    this.checkListService.currentMetricsOP.set(ordenMetrics);
     this.checkListService.id_checkListCurrent = id_checklist_actual;
-    this.checkListService.op_metrics = NoOrden;
+    //this.checkListService.op_metrics = NoOrden;
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
     //TODO: Guardar en el estado la ordenMetrics         
     

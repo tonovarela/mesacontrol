@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResponseGetCheckList } from '@app/interfaces/responses/ResponseGetCheckList';
+import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { CheckListDisplay } from '@app/pages/checklist/interfaces/CheckListAnswered';
 import { environment } from '@environments/environment.development';
 import { firstValueFrom, of } from 'rxjs';
@@ -33,11 +34,14 @@ export class CheckListService  {
   
   
   id_checkListCurrent ='';
-  op_metrics="";
-  _checkList  = signal<CheckListDisplay | null >(null);  
-  checkList = computed(() => this._checkList());
-  router = inject(Router);
 
+  
+
+  private _checkList  = signal<CheckListDisplay | null >(null);  
+  
+  public currentMetricsOP = signal<OrdenMetrics | null >(null);
+  router = inject(Router);
+  checkList = computed(() => this._checkList());
   constructor() { }
   
   saveChecklist(props:PropsSaveCheckList) {    
@@ -47,8 +51,9 @@ export class CheckListService  {
   
 
   async loadChecklist()  {
+    const opMetrics = this.currentMetricsOP()?.NoOrden || '';
      try {      
-         const observable =this.http.get<ResponseGetCheckList>(`${this.API_URL}/api/checklist/${this.id_checkListCurrent}?orden=${this.op_metrics}`);
+         const observable =this.http.get<ResponseGetCheckList>(`${this.API_URL}/api/checklist/${this.id_checkListCurrent}?orden=${opMetrics}`);
           const {checkList:detail,checkListDetalle } = await firstValueFrom(observable);                      
           const options = checkListDetalle.map((item) => ({
             id: item.id,
@@ -67,7 +72,10 @@ export class CheckListService  {
    
  removeCheckList() {
   this._checkList.set(null);
-  this.router.navigate(['/home']);
+  this.currentMetricsOP.set(null);
+  this.id_checkListCurrent = '';
+  
+  
  }
 
 }

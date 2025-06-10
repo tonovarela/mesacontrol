@@ -39,6 +39,7 @@ export class ChecklistViewComponent {
   ];
   constructor(private fb: FormBuilder) { }
   ngOnInit(): void {      
+    //this.checkList = null
     this.checklistForm = this.fb.group({
       opciones: this.fb.array(
         this.checkList().map((opcion: Option) =>
