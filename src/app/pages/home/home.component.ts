@@ -12,6 +12,7 @@ import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { Router, RouterModule } from '@angular/router';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
+import { columnas } from './data/columnas';
 
 
 @Component({
@@ -46,184 +47,12 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
     super();
   }
 
-  columnasAuditoria = [
-    {
-      indice: 1,
-      titulo: 'Cliente',
-      subtitulo: 'Prueba de color',
-      color: 'text-orange-700',
-      colorImagen: (data: any) => {
-
-        if (data.clientePruebaColor_idEstado == "2") {
-          return 'fill-white  py-1 rounded-full bg-lime-700';
-        }
-        if (data.clientePruebaColor_idEstado == "3") {
-          return 'fill-white  py-1 rounded-full bg-pink-600';
-        }
-        if (data.clientePruebaColor_idEstado == "4") {
-          return 'fill-white py-1 rounded-full bg-gray-400';
-        }
-        if (data.id_checklist_actual === data.clientePruebaColor_checklist ) {
-          return 'fill-white py-1 rounded-full bg-purple-600';
-        }        
-        return 'fill-gray-400';             
-      },
-      check: (data: any) => {
-        if (!data.clientePruebaColor_checklist) {
-          return false;
-        }
-        return data.id_checklist_actual === data.clientePruebaColor_checklist
-      }
-    },
-    {
-      indice: 2,
-      titulo: 'Cliente',
-      subtitulo: 'Dummy vestido',
-      color: 'text-orange-700',
-      colorImagen: (data: any) => {
-       
-        if (data.clienteDummyVestido_idEstado == "2") {
-          return 'fill-white  py-1 rounded-full bg-lime-700';
-        }
-        if (data.clienteDummyVestido_idEstado == "3") {
-          return 'fill-white  py-1 rounded-full bg-pink-600';
-        }
-        if (data.clienteDummyVestido_idEstado == "4") {
-          return 'fill-white py-1 rounded-full bg-gray-400';
-        }
-        if (data.id_checklist_actual === data.clienteDummyVestido_checklist ) {
-          return 'fill-white py-1 rounded-full bg-purple-600';
-        }        
-        return 'fill-gray-400';  
-      },
-      check: (data: any) => {
-        if (!data.clienteDummyVestido_checklist) {
-          return false;
-        }
-        return data.id_checklist_actual === data.clienteDummyVestido_checklist
-      }
-    },
-    {
-      indice: 3,
-      titulo: 'Sobre viajero',
-      subtitulo: 'Prueba de color',
-      color: 'text-pink-700',
-      colorImagen: (data: any) => {
-        
-        if (data.viajeroPruebaColor_idEstado == "2") {
-          return 'fill-white  py-1 rounded-full bg-lime-700';
-        }
-        if (data.viajeroPruebaColor_idEstado == "3") {
-          return 'fill-white  py-1 rounded-full bg-pink-600';
-        }
-        if (data.viajeroPruebaColor_idEstado == "4") {
-          return 'fill-white py-1 rounded-full bg-gray-400';
-        }
-        if (data.id_checklist_actual === data.viajeroPruebaColor_checkList && data.id_estado =="1") {
-          return 'fill-white py-1 rounded-full bg-purple-600';
-        }        
-        return 'fill-gray-400'; 
-      },
-      check: (data: any) => {
-        if (!data.viajeroPruebaColor_checkList) {
-          return false;
-        }
-        return data.id_checklist_actual === data.viajeroPruebaColor_checkList
-      }
-    },
-    {
-      indice: 4,
-      titulo: 'Sobre viajero',
-      subtitulo: 'Dummy blanco',
-      color: 'text-pink-700',
-      colorImagen: (data: any) => {
-        
-        if (data.viajeroDummyBlanco_idEstado == "2") {
-          return 'fill-white  py-1 rounded-full bg-lime-700';
-        }
-        if (data.viajeroDummyBlanco_idEstado == "3") {
-          return 'fill-white  py-1 rounded-full bg-pink-600';
-        }
-        if (data.viajeroDummyBlanco_idEstado == "4") {
-          return 'fill-white py-1 rounded-full bg-gray-400';
-        }
-        if (data.id_checklist_actual === data.viajeroDummyBlanco_checkList && data.id_estado == "1") {
-          return 'fill-white py-1 rounded-full bg-purple-600';
-        }        
-        return 'fill-gray-400'; 
-      },
-      check: (data: any) => {
-        if (!data.viajeroDummyBlanco_checkList) {
-          return false;
-        }
-        return data.id_checklist_actual === data.viajeroDummyBlanco_checkList
-      }
-    },
-    {
-      indice: 5,
-      titulo: 'Sobre viajero',
-      subtitulo: 'Dummy vestido',
-      color: 'text-pink-700',
-      colorImagen: (data: any) => {
-       
-        if (data.viajeroDummyVestido_idEstado == "2") {
-          return 'fill-white  py-1 rounded-full bg-lime-700';
-        }
-        if (data.viajeroDummyVestido_idEstado == "3") {
-          return 'fill-white  py-1 rounded-full bg-pink-600';
-        }
-        if (data.viajeroDummyVestido_idEstado == "4") {
-          return 'fill-white py-1 rounded-full bg-gray-400';
-        }
-        if (data.id_checklist_actual === data.viajeroDummyVestido_checkList && data.id_estado == "1") {
-          return 'fill-white py-1 rounded-full bg-purple-600';
-        }
-        
-        return 'fill-gray-400'; 
-      },
-      check: (data: any) => {
-        if (!data.viajeroDummyVestido_checkList) {
-          return false;
-        }
-        return data.id_checklist_actual === data.viajeroDummyVestido_checkList
-      }
-    },
-    {
-      indice: 6,
-      titulo: 'Sobre viajero',
-      subtitulo: 'Liberación',
-      color: 'text-pink-700',
-      colorImagen: (data: any) => {
-
-        
+  columnasAuditoria = columnas;
 
 
-        // if (data.viajeroLiberacion_idEstado == "1" && !(data.id_checklist_actual === data.viajeroLiberacion_checkList) ) {
-        //   return 'fill-gray-700';
-        // }
-        if (data.viajeroLiberacion_idEstado == "2") {
-          return 'fill-white  py-1 rounded-full bg-lime-700';
-        }
-        if (data.viajeroLiberacion_idEstado == "3") {
-          return 'fill-white  py-1 rounded-full bg-pink-600';
-        }
-        if (data.viajeroLiberacion_idEstado == "4") {
-          return 'fill-white py-1 rounded-full bg-gray-400';
-        }
-        if (data.id_checklist_actual === data.viajeroLiberacion_checkList && data.id_estado == "1") {
-          return 'fill-white py-1 rounded-full bg-purple-600';
-        }
-       
-        return 'fill-gray-400';
-      },
-      check: (data: any) => {
-        if (!data.viajeroLiberacion_checkList) {
-          return false;
-        }
-        return data.id_checklist_actual === data.viajeroLiberacion_checkList
-      }
-    }
-  ];
+  fechaLiberacion(data: any,col:any)  {
+    return col.obtenerFechaLiberacion(data);
+  }
 
 
   colorChecklist(data: any, col: any): string {

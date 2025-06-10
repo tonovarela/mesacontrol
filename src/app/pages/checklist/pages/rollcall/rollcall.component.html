@@ -4,10 +4,10 @@
     </div>    
    
     @if(checkList()!=null) {        
-        <pre>
+        <!-- <pre>
             {{checkList()!.options | json}}
     
-        </pre>
+        </pre> -->
     <checklist-view 
     [checkList]="checkList()!.options || []"  
     [title]="title()" 

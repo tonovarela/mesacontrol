@@ -60,19 +60,31 @@
                         </ng-template>
                     </e-column>
                     @for(col of columnasAuditoria; track col.indice) {
-                        <e-column [width]="100">
+                        <e-column [width]="150">
                             <ng-template #headerTemplate>
                                 <p class="font-bold" [ngClass]="col.color">{{col.titulo}}</p>
                                 <h1>{{col.subtitulo}}</h1>
                             </ng-template>
                             <ng-template #template let-data>                        
+                                @let estaHabilitado=esAuditHabilitado(data, col);
+                                @let colorSVG=colorChecklist(data,col);          
+                                @let liberacion=fechaLiberacion(data,col);                                
                                 @if (data.id_checklist_actual){
-                                    <div class="flex flex-row gap-2">                                                              
-                                        <audit-svg 
-                                            [color]="colorChecklist(data,col)"
-                                            [enabled]="esAuditHabilitado(data, col)" 
-                                            (onClick)="esAuditHabilitado(data, col) ? ir(data) : null" />
-                                    </div>
+                                    <div class="flex   flex-row w-full">                                        
+                                            <div class="h-full flex flex-row  space-x-2 w-full rounded-lg shadow bg-white dark:bg-gray-800 p-1 cursor-pointer"
+                                            
+                                              (click)="estaHabilitado ? ir(data) : null">                                                                                                
+                                                    <audit-svg  [color]="colorSVG" [enabled]="true" />                                                                                                
+                                                    <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">
+                                                        @if(liberacion){
+                                                            {{liberacion | date:'dd-MM-yyyy hh:mm a' }} 
+                                                            
+                                                        }@else{
+                                                            <span >--------</span>
+                                                        }                                                
+                                                </div>                                            
+                                        </div>
+                                    </div>                                                              
                                 }@else{
                                     <div class="flex flex-row gap-2 text-center text-pink-900">
                                       ---------
