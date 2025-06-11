@@ -75,19 +75,14 @@ export class ChecklistViewComponent   {
     return this.checklistForm.get('opciones') as FormArray;
   }
 
-  // Método para obtener el label de la opción, necesitarás adaptarlo a cómo almacenas tus labels
-  obtenerLabelOpcion(index: number): string {
-    return this.options()[index] ? (this.options()[index] as any).label : '';
+
+
+  get_Option(id_opcion:string): Option | null {
+    const option = this.options().find((option: Option) => option.id === id_opcion);
+    return option ? option : null;
   }
 
-  getOption(index: number): Option | null {
-    return this.options()[index] ? (this.options()[index] as Option): null;
-  }
-  
 
-  isOptional(index: number): boolean {
-    return this.options()[index] ? (this.options()[index] as any).optional : false;
-  }
 
   
   regresar(): void {
@@ -97,7 +92,7 @@ export class ChecklistViewComponent   {
 
   onOptionClick(event: any,indexPregunta:number): void {
     //const iPregunta= this.obtenerIdOpcion(indexPregunta);
-    const { value } = event.option;        
+    const { value } = event.option;            
     this.opciones.at(indexPregunta).setValue({ ...this.opciones.at(indexPregunta).value, answer: value });   
   }
 
@@ -115,7 +110,6 @@ export class ChecklistViewComponent   {
 
 
   onSubmit(): void {  
-
    if (!this.checklistForm.valid) {
     return;
    }
@@ -124,7 +118,7 @@ export class ChecklistViewComponent   {
     const selectedOptions:OptionAnswered[] = [
        ...formValue.opciones.filter((option:Option)=>!option.answered)
                   .map((option: OptionAnswered, i: number) => ({
-        ...checkList[i],
+        ...checkList.find((opcion: Option) => opcion.id === option.id),
         answer: option.answer,
         isMissingComments : option.answer ==2 && option.comments.length==0,
         comments:option.answer !=2?'':option.comments
@@ -137,9 +131,7 @@ export class ChecklistViewComponent   {
     }      
     const isRefused = selectedOptions.filter((option: any) => option.answer == 2).length > 0;        
     const optionsAnswered =selectedOptions.filter((option: OptionAnswered) =>!option.answered );
-    //console.log('optionsAnswered', selectedOptions);
-    //console.log('isRefused', isRefused);
-    
+        
     this.onSave.emit({ optionsAnswered, isRefused });
 
   }
