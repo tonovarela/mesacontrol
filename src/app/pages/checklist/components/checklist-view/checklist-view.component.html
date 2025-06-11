@@ -6,6 +6,8 @@
     <p class="text-gray-600 dark:text-gray-400 text-sm">Selecciona las opciones:</p>
 </div>
 
+{{isCompleteFormRequired()}}
+
 <form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">
     <div class="px-6 pb-4" formArrayName="opciones">        
         <ul>
@@ -88,7 +90,7 @@
         </button>
         <div class="flex space-x-3">
             @if (!isSaving()){
-                <button type="submit" 
+                <button type="submit"  [disabled]="checklistForm.invalid || isSaving()"
                 class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-600">
                 Guardar
             </button>

@@ -5,7 +5,7 @@
      
     @if(checkList()!=null) {                
     <checklist-view     
-    [checkList]="options()"  
+    [checkList]="checkList()!"  
     [title]="title()" 
     (onSave)="onSave($event)"
     [isSaving]="isSaving()"

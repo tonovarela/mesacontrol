@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, input, OnDestroy, output } from '@angular/core';
+import {  ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Option } from '../../interfaces/Option';
-import { CheckListAnswered, OptionAnswered } from '../../interfaces/CheckListAnswered';
+import { CheckListAnswered, CheckListDisplay, OptionAnswered } from '../../interfaces/CheckListAnswered';
 import { PrimeModule } from '@app/lib/prime.module';
 import { UiService } from '@app/services';
 import { LogEventComponent } from '../log-event/log-event.component';
@@ -23,9 +23,19 @@ export class ChecklistViewComponent   {
   private uiService = inject(UiService);
 
   isSaving = input<boolean>(false);
-  checkList = input<Option[]>([]);
+  checkList = input.required<CheckListDisplay>();
   title = input.required<string>();
   onSave = output<CheckListAnswered>();
+
+  options =computed(() => {
+    return this.checkList()?.options || [];
+  });
+
+  canSaveFragment = computed(()=> {
+    const detail = this.checkList()?.detail;
+    return detail ? detail.id_estado=="3" : false;
+  }
+  );
 
   optionsStrict: any[] = [
     { name: 'Aceptado', value: 1 },
@@ -42,10 +52,11 @@ export class ChecklistViewComponent   {
   
   
   ngOnInit(): void { 
-    
+
+      
     this.checklistForm = this.fb.group({
       opciones: this.fb.array(
-        this.checkList().map((opcion: Option) =>
+        this.options().map((opcion: Option) =>
           this.fb.group({
             ...opcion,
             answer: [opcion.answer, this.isOptionalByOption(opcion) ? [] : [Validators.required]],
@@ -66,16 +77,16 @@ export class ChecklistViewComponent   {
 
   // Método para obtener el label de la opción, necesitarás adaptarlo a cómo almacenas tus labels
   obtenerLabelOpcion(index: number): string {
-    return this.checkList()[index] ? (this.checkList()[index] as any).label : '';
+    return this.options()[index] ? (this.options()[index] as any).label : '';
   }
 
   getOption(index: number): Option | null {
-    return this.checkList()[index] ? (this.checkList()[index] as Option): null;
+    return this.options()[index] ? (this.options()[index] as Option): null;
   }
   
 
   isOptional(index: number): boolean {
-    return this.checkList()[index] ? (this.checkList()[index] as any).optional : false;
+    return this.options()[index] ? (this.options()[index] as any).optional : false;
   }
 
   
@@ -94,13 +105,22 @@ export class ChecklistViewComponent   {
 
 
 
+  isCompleteFormRequired = computed(() => {
+    if (this.canSaveFragment()) {
+      return true;     
+    }
+    return this.checklistForm.valid;                  
+  });
+    
+
 
   onSubmit(): void {  
-    if (!this.checklistForm.valid) {
-      return
-    }
+
+   if (!this.checklistForm.valid) {
+    return;
+   }
     const formValue = this.checklistForm.value;    
-    const checkList = this.checkList() as Option[];
+    const checkList = this.options() as Option[];
     const selectedOptions:OptionAnswered[] = [
        ...formValue.opciones.filter((option:Option)=>!option.answered)
                   .map((option: OptionAnswered, i: number) => ({
@@ -117,6 +137,9 @@ export class ChecklistViewComponent   {
     }      
     const isRefused = selectedOptions.filter((option: any) => option.answer == 2).length > 0;        
     const optionsAnswered =selectedOptions.filter((option: OptionAnswered) =>!option.answered );
+    //console.log('optionsAnswered', selectedOptions);
+    //console.log('isRefused', isRefused);
+    
     this.onSave.emit({ optionsAnswered, isRefused });
 
   }
