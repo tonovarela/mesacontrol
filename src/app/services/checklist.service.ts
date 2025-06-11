@@ -9,10 +9,9 @@ import { environment } from '@environments/environment.development';
 import { firstValueFrom, of } from 'rxjs';
 
 export type  PropsSaveCheckList={
-  orden: string; 
-  
-  id_checklist:string;
-  isRefused: boolean; // Indica si la lista de verificación fue rechazada
+  orden: string;   
+  id_usuario: string;
+  id_checklist:string;  
   optionsAprobed: any[]; // Opciones respondidas por el usuario
   optionsRejected: any[]; // Opciones rechazadas por el usuario
 }
@@ -56,24 +55,35 @@ export class CheckListService  {
      try {      
          const observable =this.http.get<ResponseGetCheckList>(`${this.API_URL}/api/checklist/${this.id_checkListCurrent}?orden=${opMetrics}`);
           const {checkList:detail,checkListDetalle } = await firstValueFrom(observable);                      
-          const logEvent:LogEvent =
-          {
-            type: LogEventType.REJECTED,
-            by: "tonovarela",
-            date: new Date(),
-            extraInformation: "No se pudo completar la verificación"
-          };
+          // const logEvent:LogEvent =
+          // {
+          //   type: LogEventType.REJECTED,
+          //   by: "tonovarela",
+          //   date: new Date(),
+          //   extraInformation: "No se pudo completar la verificación"
+          // };
 
+          
           const options = checkListDetalle.map((item) => ({
             id: item.id,
             label: item.label,
             optional: item.optional === '1', 
-            answer: item.answer,
-            answered: item.answer!=null,
-            logEvents: item.id === "1b87138d-5e2b-410f-9444-6e47f2ee717d" ?  [logEvent,{...logEvent,date:new Date, by:"Mata"}]:[], // Si es la opción 0, no tiene eventos
+            answer: item.answer || null,
+            answered:item.answer!=null,          
+            logEvents:[...item.eventos.map(event => {
+              return {
+                id: event.id_bitacora,
+                by: event.nombreUsuario,
+                date: new Date(event.fecha_registro),
+                type: event.evento === 'ACEPTADO' ? LogEventType.ACCEPTED: LogEventType.REJECTED, 
+                extraInformation: event.comments || '',
+              } as LogEvent;
+            })]
             
-          }));          
-          this._checkList.set({detail, options});    
+          })); 
+          //console.log(options);         
+
+          this._checkList.set({detail , options});    
           
         }catch(error) {
           this._checkList.set(null);

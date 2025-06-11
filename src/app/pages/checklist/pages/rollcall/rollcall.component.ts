@@ -44,7 +44,7 @@ export default class RollcallComponent implements OnInit {
 
   async onSave(checkList: CheckListAnswered) {
     this.isSaving.set(true);
-    const { isRefused, optionsAnswered } = checkList;
+    const { optionsAnswered } = checkList;
     const checkListCurrent = this.checkList()?.detail;
     const { id_checklist, op_metrics } = checkListCurrent!;
 
@@ -52,9 +52,7 @@ export default class RollcallComponent implements OnInit {
       return {
         id_checklist,
         id: options.id,
-        answer: options.answer,
-      
-      
+        answer: options.answer,          
       }
     });
     const optionsRejected = optionsAnswered.filter(o => o.answer == 2).map(options => {
@@ -65,7 +63,12 @@ export default class RollcallComponent implements OnInit {
       }
     });
     this.checkListService.id_checkListCurrent = id_checklist;
-    await firstValueFrom(this.checkListService.saveChecklist({ orden: op_metrics, isRefused, optionsAprobed, optionsRejected, id_checklist }));
+    await firstValueFrom(this.checkListService.saveChecklist({ orden: op_metrics,
+                                                               optionsAprobed,
+                                                               optionsRejected, 
+                                                               id_checklist,
+                                                               id_usuario:"93" 
+                                                              }));
     this.checkListService.removeActiveCheckList();
     this.isSaving.set(false);
     this.router.navigate(['/home']);

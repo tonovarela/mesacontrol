@@ -69,12 +69,14 @@
                                 @let estaHabilitado=esAuditHabilitado(data, col);
                                 @let colorSVG=colorChecklist(data,col);          
                                 @let liberacion=fechaLiberacion(data,col);                                
+                                @let sepuedeVisualizar=estaHabilitado || liberacion ;
+
                                 @if (data.id_checklist_actual){
                                     <div class="flex   flex-row w-full">                                        
-                                            <div class="h-full flex flex-row  space-x-2 w-full rounded-lg shadow bg-white dark:bg-gray-800 p-1 cursor-pointer"
-                                            
-                                              (click)="estaHabilitado ? ir(data) : null">                                                                                                
-                                                    <audit-svg  [color]="colorSVG" [enabled]="true" />                                                                                                
+                                            <div class="h-full flex flex-row  space-x-2 w-full rounded-lg shadow bg-white dark:bg-gray-800 p-1 "                                            
+                                            [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
+                                              (click)="sepuedeVisualizar? ir(data) : null">                                                                                                
+                                                    <audit-svg  [color]="colorSVG" [enabled]="sepuedeVisualizar" />                                                                                                
                                                     <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">
                                                         @if(liberacion){
                                                             {{liberacion | date:'dd-MM-yyyy hh:mm a' }} 

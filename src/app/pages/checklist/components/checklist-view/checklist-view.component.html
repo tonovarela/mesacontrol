@@ -5,6 +5,9 @@
     </div>
     <p class="text-gray-600 dark:text-gray-400 text-sm">Selecciona las opciones:</p>
 </div>
+<!-- <pre>
+    {{ checkList | json }}
+</pre> -->
 <form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">
     <div class="px-6 pb-4" formArrayName="opciones">
         <ul>
@@ -44,7 +47,7 @@
                         <label for="on_label">Motivo de rechazo</label>
                     </p-floatlabel>
                 </div>
-
+            
                 <div class="flex flex-col mb-2 space-y-1">
                     @for(event of events; track event){
                     <log-event [logEvent]="event"></log-event>

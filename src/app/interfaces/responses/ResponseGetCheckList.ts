@@ -1,6 +1,25 @@
+
 export interface ResponseGetCheckList {
     checkListDetalle: CheckListDetalle[];
+    
     checkList:        CheckList;
+}
+
+export interface CheckListDetalle {
+    id:       string;
+    label:    string;
+    optional: string;
+    answer?:   number;
+    eventos:  EventResponse[];
+}
+
+export interface EventResponse {
+    id_bitacora:    string;
+    id_usuario:     string;
+    comments:       string;
+    evento:         string;
+    fecha_registro: Date;
+    nombreUsuario:  string;
 }
 
 
@@ -19,9 +38,5 @@ export interface CheckList {
     tipoPrueba:       string;
 }
 
-export interface CheckListDetalle {
-    id:       string;
-    label:    string;
-    optional: string;
-    answer:   null;
-}
+
+
