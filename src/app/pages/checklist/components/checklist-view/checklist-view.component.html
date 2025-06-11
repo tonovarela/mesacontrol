@@ -3,33 +3,33 @@
         <span class="text-xl font-semibold text-gray-500 dark:text-gray-400 mb-2">CheckList</span>
         <span class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">{{title()}}</span>
     </div>
-    <p class="text-gray-600 dark:text-gray-400 text-sm">Selecciona las opciones completadas:</p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm">Selecciona las opciones:</p>
 </div>
 
 <form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">
     <div class="px-6 pb-4" formArrayName="opciones">        
         <ul>
             @for(opcionCtrl of opciones.controls;track opcionCtrl; let i = $index){
+                @let labelOpcion = getOption(i)?.label || 'Opción ' + (i + 1);
+                @let events = getOption(i)?.logEvents || [];
           @if (!opcionCtrl.value.answered )
             {
                 <div [formGroupName]="i">
                     <li class="flex i mb-1">
                         <label [for]="'opcion' + i" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{$index+1}}.-{{ obtenerLabelOpcion(i) }}
+                            {{$index+1}}.-{{ labelOpcion }}
                         </label>
                     </li>
                     <li class="flex items-center mb-3">
                         <div class="card flex justify-center">                        
-                            <p-selectbutton [options]="isOptional(i)?optionOptional:optionsStrict" size="small"
-                                allowEmpty="false" optionLabel="name"  optionValue="value" [multiple]="false"  (onOptionClick)="onOptionClick($event,i)">
+                            <p-selectbutton [options]="isOptional(i)?optionOptional:optionsStrict" size="small" allowEmpty="false" optionLabel="name"  optionValue="value" [multiple]="false"  (onOptionClick)="onOptionClick($event,i)">
                                 <ng-template #item let-item>
                                     {{item.name}}                                
                                 </ng-template>
                             </p-selectbutton>
                         </div>
                     </li>
-                    <div
-      class="transition-all duration-300 overflow-hidden pt-1 "
+                    <div class="transition-all duration-300 overflow-hidden pt-1 "
       [ngClass]="{
         'max-h-0 opacity-0 pointer-events-none': opcionCtrl.get('answer')?.value !== 2,
         'max-h-20 opacity-100': opcionCtrl.get('answer')?.value === 2
@@ -47,18 +47,33 @@
         <label for="on_label">Motivo de rechazo</label>
       </p-floatlabel>
     </div>
+
+                    <div class="flex flex-col mb-2 space-y-1">
+                        @for(event of events; track event){
+                            <log-event [logEvent]="event" ></log-event>
+                        }                                                                                           
+                      </div>
                 </div>
             }
             @else
             {
-                <li class="flex i mb-5">
-                    <div class="flex items-center gap-4 align-middle">
-                        <label [for]="'opcion' + i" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            {{$index+1}}.-{{ obtenerLabelOpcion(i) }}                                                  
-                    </label>
-                    <check-svg/>
+                
+                <li class="flex flex-col gap-2  i ">
+                    <div class="flex ">
+                        <!-- <check-svg/> -->
+                        <div class="flex items-center gap-4 align-middle">
+                            <label [for]="'opcion' + i" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {{$index+1}}.-{{ labelOpcion }}                                                  
+                        </label>                                           
+                        </div>                   
                     </div>
                     
+                    <div  class="flex flex-col mb-2 space-y-1">
+                        @for(event of events; track event){
+                            <log-event [logEvent]="event" ></log-event>
+                        }                                                                                           
+                      </div>
+                
                 </li>
                 
             }
@@ -73,7 +88,7 @@
         </button>
         <div class="flex space-x-3">
             @if (!isSaving()){
-                <button type="submit" [disabled]="!checklistForm.valid"
+                <button type="submit" 
                 class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 disabled:bg-gray-300 dark:disabled:bg-gray-600">
                 Guardar
             </button>

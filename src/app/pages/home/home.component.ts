@@ -28,7 +28,7 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
 
   protected minusHeight = 0;
   private metricsService = inject(MetricsService);
-  private checkListService = inject(CheckListService);
+  public checkListService = inject(CheckListService);
   private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
 
@@ -41,10 +41,11 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   public cargando = signal(false);
   public guardandoOrdenMetrics = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
-  public stackChecklist: any[] = [];
+  
   public catalogoTiposProductos= computed(() => this.metricsService.TipoMateriales());
   constructor() {
     super();
+    this.checkListService.removeActiveCheckList();
   }
 
   columnasAuditoria = columnas;
@@ -106,15 +107,13 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
     }
   }
 
-  async ir(ordenMetrics: OrdenMetrics) {
-    console.log('Ir a la orden metrics', ordenMetrics);
-    const { NoOrden, id_checklist_actual } = ordenMetrics    
+  async ir(ordenMetrics: OrdenMetrics) {    
+    const {  id_checklist_actual } = ordenMetrics    
     this.checkListService.currentMetricsOP.set(ordenMetrics);
-    this.checkListService.id_checkListCurrent = id_checklist_actual;
-    //this.checkListService.op_metrics = NoOrden;
+    this.checkListService.id_checkListCurrent = id_checklist_actual;    
+    await this.checkListService.loadChecklist();
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
-    //TODO: Guardar en el estado la ordenMetrics         
-    
+    //TODO: Guardar en el estado la ordenMetrics             
     this.router.navigate([`/rollcall`]);
     
   }

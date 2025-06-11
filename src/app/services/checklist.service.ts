@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ResponseGetCheckList } from '@app/interfaces/responses/ResponseGetCheckList';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { CheckListDisplay } from '@app/pages/checklist/interfaces/CheckListAnswered';
+import { LogEvent, LogEventType } from '@app/pages/checklist/interfaces/LogEvent';
 import { environment } from '@environments/environment.development';
 import { firstValueFrom, of } from 'rxjs';
 
@@ -29,19 +30,19 @@ export type Option = {
   providedIn: 'root'
 })
 export class CheckListService  {
+
+
   private readonly API_URL = environment.apiUrl
   private http = inject(HttpClient)
-  
-  
-  id_checkListCurrent ='';
-
-  
-
   private _checkList  = signal<CheckListDisplay | null >(null);  
-  
+  private router = inject(Router);
+
+
+  public id_checkListCurrent ='';
+  public checkList = computed(() => this._checkList());
   public currentMetricsOP = signal<OrdenMetrics | null >(null);
-  router = inject(Router);
-  checkList = computed(() => this._checkList());
+  
+
   constructor() { }
   
   saveChecklist(props:PropsSaveCheckList) {    
@@ -55,14 +56,24 @@ export class CheckListService  {
      try {      
          const observable =this.http.get<ResponseGetCheckList>(`${this.API_URL}/api/checklist/${this.id_checkListCurrent}?orden=${opMetrics}`);
           const {checkList:detail,checkListDetalle } = await firstValueFrom(observable);                      
+          const logEvent:LogEvent =
+          {
+            type: LogEventType.REJECTED,
+            by: "tonovarela",
+            date: new Date(),
+            extraInformation: "No se pudo completar la verificación"
+          };
+
           const options = checkListDetalle.map((item) => ({
             id: item.id,
             label: item.label,
             optional: item.optional === '1', 
             answer: item.answer,
-            answered: item.answer!=null 
+            answered: item.answer!=null,
+            logEvents: item.id === "1b87138d-5e2b-410f-9444-6e47f2ee717d" ?  [logEvent,{...logEvent,date:new Date, by:"Mata"}]:[], // Si es la opción 0, no tiene eventos
+            
           }));          
-          this._checkList.set({detail,options});    
+          this._checkList.set({detail, options});    
           
         }catch(error) {
           this._checkList.set(null);
@@ -70,7 +81,7 @@ export class CheckListService  {
         }
  }
    
- removeCheckList() {
+ removeActiveCheckList() {
   this._checkList.set(null);
   this.currentMetricsOP.set(null);
   this.id_checkListCurrent = '';

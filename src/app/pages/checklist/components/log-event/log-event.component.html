@@ -1,0 +1,20 @@
+
+@if(logEvent().type=='ACCEPTED')
+{
+<div
+    class="flex items-center gap-2 pl-4 py-1 border-l-4 border-green-400 bg-green-50 dark:bg-green-900/30 text-xs animate-fade-in rounded">
+    <span class="font-semibold text-green-700">Aprobado</span>
+    <span class="ml-2 text-xs text-gray-400">por {{logEvent().by}} - {{logEvent().date | date:'dd-MM-yyyy hh:mm a'   }}</span>
+</div>
+}
+@if(logEvent().type=='REJECTED')
+{
+<div
+    class="flex flex-col gap-1 pl-4 py-1 border-l-4 border-red-400 bg-red-50 dark:bg-red-900/30 text-xs animate-fade-in rounded">
+    <div>
+        <span class="font-semibold text-red-700">Rechazado</span>
+        <span class="ml-2 text-xs text-gray-400">por {{logEvent().by}} - {{logEvent().date | date:'dd-MM-yyyy hh:mm a' }}</span>
+    </div>
+    <div class="text-xs text-red-500">{{logEvent()!.extraInformation || ''}}</div>
+</div>
+}

@@ -1,4 +1,4 @@
-import { CheckList, CheckListDetalle } from '@app/interfaces/responses/ResponseGetCheckList';
+import { CheckList } from '@app/interfaces/responses/ResponseGetCheckList';
 import { Option } from './Option';
 
 export interface CheckListAnswered {

@@ -1,15 +1,11 @@
-<div class="max-w-3xl mx-auto border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg rounded-lg overflow-hidden">
+<div class="max-w-4xl mx-auto border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg rounded-lg overflow-hidden">
     <div class="flex items-center justify-between text-center p-4 bg-gray-100 dark:bg-gray-700">
         <h1 class="w-full font-bold">{{opMetrics() }}</h1>
-    </div>    
-   
-    @if(checkList()!=null) {        
-        <!-- <pre>
-            {{checkList()!.options | json}}
-    
-        </pre> -->
-    <checklist-view 
-    [checkList]="checkList()!.options || []"  
+    </div>     
+     
+    @if(checkList()!=null) {                
+    <checklist-view     
+    [checkList]="options()"  
     [title]="title()" 
     (onSave)="onSave($event)"
     [isSaving]="isSaving()"

@@ -1,28 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, input, OnDestroy, output } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Option } from '../../interfaces/Option';
 import { CheckListAnswered, OptionAnswered } from '../../interfaces/CheckListAnswered';
 import { PrimeModule } from '@app/lib/prime.module';
 import { UiService } from '@app/services';
-import { CheckComponent } from '@app/shared/svg/check/check.component';
+import { LogEventComponent } from '../log-event/log-event.component';
+
 
 @Component({
   selector: 'checklist-view',
-  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterModule, PrimeModule,CheckComponent],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterModule, PrimeModule,LogEventComponent],
   templateUrl: './checklist-view.component.html',
   styleUrl: './checklist-view.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChecklistViewComponent {
+export class ChecklistViewComponent   {
 
   public checklistForm!: FormGroup;
   private router = inject(Router);  
   private uiService = inject(UiService);
 
   isSaving = input<boolean>(false);
-  checkList = input.required<Option[]>();
+  checkList = input<Option[]>([]);
   title = input.required<string>();
   onSave = output<CheckListAnswered>();
 
@@ -38,8 +39,10 @@ export class ChecklistViewComponent {
     { name: 'No aplica', value: 0 },
   ];
   constructor(private fb: FormBuilder) { }
-  ngOnInit(): void {      
-    //this.checkList = null
+  
+  
+  ngOnInit(): void { 
+    
     this.checklistForm = this.fb.group({
       opciones: this.fb.array(
         this.checkList().map((opcion: Option) =>
@@ -66,6 +69,11 @@ export class ChecklistViewComponent {
     return this.checkList()[index] ? (this.checkList()[index] as any).label : '';
   }
 
+  getOption(index: number): Option | null {
+    return this.checkList()[index] ? (this.checkList()[index] as Option): null;
+  }
+  
+
   isOptional(index: number): boolean {
     return this.checkList()[index] ? (this.checkList()[index] as any).optional : false;
   }
@@ -73,6 +81,7 @@ export class ChecklistViewComponent {
   
   regresar(): void {
     this.router.navigate(['/home']);
+  
   }
 
   onOptionClick(event: any,indexPregunta:number): void {
@@ -106,10 +115,8 @@ export class ChecklistViewComponent {
       this.uiService.mostrarAlertaError('','Debe ingresar un comentario para las opciones rechazadas');      
       return;
     }      
-    const isRefused = selectedOptions.filter((option: any) => option.answer == 2).length > 0;    
-    //console.log('isRefused', isRefused);
+    const isRefused = selectedOptions.filter((option: any) => option.answer == 2).length > 0;        
     const optionsAnswered =selectedOptions.filter((option: OptionAnswered) =>!option.answered );
-
     this.onSave.emit({ optionsAnswered, isRefused });
 
   }
