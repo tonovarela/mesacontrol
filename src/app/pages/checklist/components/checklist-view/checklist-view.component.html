@@ -5,9 +5,6 @@
     </div>
     <p class="text-gray-600 dark:text-gray-400 text-sm">Selecciona las opciones:</p>
 </div>
-<!-- <pre>
-    {{ checkList | json }}
-</pre> -->
 <form [formGroup]="checklistForm" (ngSubmit)="onSubmit()">
     <div class="px-6 pb-4" formArrayName="opciones">
         <ul>
@@ -18,8 +15,7 @@
             @let events = option?.logEvents || [];
             <div [formGroupName]="i">
             @if (!opcionCtrl.value.answered )
-            {
-            
+            {            
                 <li class="flex i mb-1">
                     <label [for]="'opcion' + i" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                         {{$index+1}}.-{{ labelOpcion }}
@@ -28,8 +24,9 @@
                 <li class="flex items-center mb-3">
                     <div class="card flex justify-center">
                         <p-selectbutton [options]="option?.optional?optionOptional:optionsStrict" size="small"
-                            allowEmpty="false" optionLabel="name" optionValue="value" [multiple]="false"
-                            (onOptionClick)="onOptionClick($event,i)">
+                             optionLabel="name" optionValue="value" [multiple]="false"
+                            unselectable="false"
+                            (onChange)="onOptionChange($event,i)">
                             <ng-template #item let-item>
                                 {{item.name}}
                             </ng-template>
@@ -87,6 +84,7 @@
             class="px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500 dark:focus:ring-offset-gray-800">
             Regresar
         </button>
+        @if(canSave()){
         <div class="flex space-x-3">
             @if (!isSaving()){
             <button type="submit" [disabled]="checklistForm.invalid || isSaving()"
@@ -107,5 +105,6 @@
             }
 
         </div>
+    }
     </div>
 </form>

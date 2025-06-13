@@ -14,16 +14,18 @@
         <search-metrics (onSelectOrder)="onSelectOrder($event)"></search-metrics>
     
         <div class="w-full h-full flex flex-col pt-2">
-            <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings "
-                (dataBound)='dataBound()' [allowExcelExport]='true' AutoFitAll="false" [height]="heightGrid"
+            <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings "   
+            [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'                 
+            rowHeight='40'                 
+                (dataBound)='dataBound()' [allowExcelExport]='true'  [height]="heightGrid"                
                 allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
                 [pageSettings]='pageSettings'>
                 <e-columns>
-                    <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
+                    <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden'  width=100>
                     </e-column>
-                    <e-column field='descripcionEstado' [allowFiltering]="true" headerText='Estado' width=120>
+                    <e-column field='descripcionEstado' [allowFiltering]="true" headerText='Estado' width=100>
                         <ng-template #template let-data>
-                            <div class="flex flex-col uppercase text-white px-3 text-center rounded-md" [ngClass]="data.id_estado  == '1' ? 'bg-yellow-500' : 
+                            <div class="flex flex-col uppercase text-white p-1 text-center   rounded-md" [ngClass]="data.id_estado  == '1' ? 'bg-yellow-500' : 
                                         data.id_estado == '2' ? 'bg-green-500' : ''">
                                 <span>{{data.descripcionEstado}}</span>
                             </div>
@@ -31,7 +33,7 @@
                     </e-column>
                     <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
                     </e-column>
-                    <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=150>
+                    <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=150>                    
                     </e-column>
         
                     <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
@@ -70,14 +72,14 @@
                                 @let colorSVG=colorChecklist(data,col);          
                                 @let liberacion=fechaLiberacion(data,col);                                
                                 @let sepuedeVisualizar=estaHabilitado || liberacion ;
-
+                                @let id_checkActual=getCheckListKey(data,col);                                
                                 @if (data.id_checklist_actual){
-                                    <div class="flex   flex-row w-full">                                        
-                                            <div class="h-full flex flex-row  space-x-2 w-full rounded-lg shadow bg-white dark:bg-gray-800 p-1 "                                            
-                                            [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
-                                              (click)="sepuedeVisualizar? ir(data) : null">                                                                                                
+                                    <div class="flex  w-full">                                        
+                                            <div class="w-full h-full flex flex-row    rounded-lg shadow bg-white dark:bg-gray-800  py-1"
+                                            [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"                                            
+                                              (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">                                                                                                
                                                     <audit-svg  [color]="colorSVG" [enabled]="sepuedeVisualizar" />                                                                                                
-                                                    <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">
+                                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">
                                                         @if(liberacion){
                                                             {{liberacion | date:'dd-MM-yyyy hh:mm a' }} 
                                                             
@@ -156,16 +158,26 @@
 
             </div>
             <div class="mb-6">
-                <label class="block mb-2 text-sm font-medium text-gray-700">Código de producto:
-                    {{ordenMetricsPorDefinir()?.TipoProd}}</label>
+                @if(ordenMetricsPorDefinir()?.TipoProd!=null){
+                    <label class="block mb-2 text-sm font-medium text-gray-700">Código de producto:
+                        {{ordenMetricsPorDefinir()?.TipoProd}}</label>
+                }@else{
+                    <span class="block mb-2 text-sm  font-medium text-white bg-pink-600 p-2 rounded-md">Código de producto:  <b>{{ordenMetricsPorDefinir()?.TipoProdReal}}</b> no es reconocido, favor de especificar</span>
+                }
+                
 
             </div>
             
             <div class="mb-6">
+                
                 <label for="tipoProd" class="block mb-2 text-sm font-medium text-gray-700">Tipo de producto</label>
                 <select [ngModel]="ordenMetricsPorDefinir()?.TipoProd" (ngModelChange)="actualizarTipoProd($event)"
                     id="tipoProd" name="tipoProd" required
-                    class="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">                    
+                   
+                    @if(ordenMetricsPorDefinir()?.TipoProd== null) {
+                        <option value="null" selected>Sin especificar</option>
+                    }                    
                     @for( tipo of catalogoTiposProductos(); track tipo.id ) {
                     <option [value]="tipo.id">{{tipo.value}}</option>
                     }
@@ -177,8 +189,9 @@
                     Cerrar
                 </button>
                 @if( !guardandoOrdenMetrics()){                    
-                <button type="submit" [disabled]="formOrden.invalid "
-                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition">
+                <button type="submit" 
+                [disabled]="ordenMetricsPorDefinir()?.TipoProd== null"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition disabled:bg-gray-300">
                     Guardar
                 </button>
                 }@else{                    

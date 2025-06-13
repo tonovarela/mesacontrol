@@ -103,7 +103,8 @@ export const columnas = columnasConfig.map(col => ({
   titulo: col.titulo,
   subtitulo: col.subtitulo,
   color: col.color,
-  sePuedeVerHistorico:(data:any)=> puedeVerHistorico(data[col.estadoKey]),
+  getCheckListKey:(data:any)=> data[col.checklistKey],
+  //sePuedeVerHistorico:(data:any)=> puedeVerHistorico(data[col.estadoKey]),
   obtenerFechaLiberacion: (data: any) => data[col.fechaKey],
   colorImagen: (data: any) => getColorImagen(data, col.estadoKey, col.checklistKey, col.estadoExtra),
   check: (data: any) => getCheck(data, col.checklistKey)

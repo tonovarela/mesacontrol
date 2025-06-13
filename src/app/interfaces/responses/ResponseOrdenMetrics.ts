@@ -8,6 +8,7 @@ export interface OrdenMetrics {
     NoOrden: string;
     NombreTrabajo: string;
     TipoProd: string;
+    TipoProdReal?: string;
     NumCliente: string;
     Vendedor: string;
     NombreCliente: string;

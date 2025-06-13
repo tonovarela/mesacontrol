@@ -59,6 +59,9 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   colorChecklist(data: any, col: any): string {
     return col.colorImagen(data);
   }
+  getCheckListKey(data: any, col: any): string {
+    return col.getCheckListKey(data);
+  }
 
   esAuditHabilitado(data: any, col: any): boolean {
     if (data.id_estado == "2") {
@@ -107,10 +110,17 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
     }
   }
 
-  async ir(ordenMetrics: OrdenMetrics) {    
+  async ir(ordenMetrics: OrdenMetrics,actual: {id_checkActual: string, liberacion?: Date}) {    
+    const { id_checkActual, liberacion } = actual;
+
     const {  id_checklist_actual } = ordenMetrics    
     this.checkListService.currentMetricsOP.set(ordenMetrics);
-    this.checkListService.id_checkListCurrent = id_checklist_actual;    
+    if (liberacion){
+      this.checkListService.id_checkListCurrent = id_checkActual;    
+    }else{
+      this.checkListService.id_checkListCurrent = id_checklist_actual;
+    }    
+    //console.log(ordenMetrics);
     await this.checkListService.loadChecklist();
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
     //TODO: Guardar en el estado la ordenMetrics             

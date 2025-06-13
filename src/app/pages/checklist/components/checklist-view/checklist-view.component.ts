@@ -59,7 +59,9 @@ export class ChecklistViewComponent   {
         this.options().map((opcion: Option) =>
           this.fb.group({
             ...opcion,
-            answer: [opcion.answer, this.isOptionalByOption(opcion) ? [] : [Validators.required]],
+            answer: [opcion.answer, 
+              //this.isOptionalByOption(opcion) ? [] :
+               [Validators.required]],
             comments: ['']
           })
         )
@@ -67,9 +69,9 @@ export class ChecklistViewComponent   {
     });
   }
 
-  private isOptionalByOption(opcion: any): boolean {    
-    return opcion.optional ?? false;
-  }
+  // private isOptionalByOption(opcion: any): boolean {    
+  //   return opcion.optional ?? false;
+  // }
 
   get opciones(): FormArray {
     return this.checklistForm.get('opciones') as FormArray;
@@ -90,13 +92,12 @@ export class ChecklistViewComponent   {
   
   }
 
-  onOptionClick(event: any,indexPregunta:number): void {
-    //const iPregunta= this.obtenerIdOpcion(indexPregunta);
-    const { value } = event.option;            
+  
+
+  onOptionChange(event: any, indexPregunta: number): void {    
+    const { value } = event;            
     this.opciones.at(indexPregunta).setValue({ ...this.opciones.at(indexPregunta).value, answer: value });   
   }
-
-
 
 
 
@@ -107,6 +108,11 @@ export class ChecklistViewComponent   {
     return this.checklistForm.valid;                  
   });
     
+
+
+  canSave = computed(() => {
+    return this.checkList().detail?.id_estado !="2";
+  });
 
 
   onSubmit(): void {  
@@ -129,8 +135,11 @@ export class ChecklistViewComponent   {
       this.uiService.mostrarAlertaError('','Debe ingresar un comentario para las opciones rechazadas');      
       return;
     }      
-    const isRefused = selectedOptions.filter((option: any) => option.answer == 2).length > 0;        
-    const optionsAnswered =selectedOptions.filter((option: OptionAnswered) =>!option.answered );
+    const isRefused = selectedOptions.filter((option: any) => option.answer == 2 ).length > 0;        
+    const optionsAnswered =selectedOptions.filter((option: OptionAnswered) =>!option.answered || option.answer !=null );
+
+    const justOneOptionAnswered = optionsAnswered.length == 1 ;
+    console.log(justOneOptionAnswered);    
         
     this.onSave.emit({ optionsAnswered, isRefused });
 
