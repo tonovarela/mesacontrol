@@ -12,7 +12,7 @@ type ColumnaConfig = {
 const columnasConfig: ColumnaConfig[] = [
   {
     indice: 1,
-    titulo: 'Cliente',
+    titulo: 'Liberacion al Cliente',
     subtitulo: 'Prueba de color',
     color: 'text-orange-700',
     fechaKey: 'clientePruebaColor_fechaLiberacion',
@@ -21,7 +21,7 @@ const columnasConfig: ColumnaConfig[] = [
   },
   {
     indice: 2,
-    titulo: 'Cliente',
+    titulo: 'Liberacion al Cliente',
     subtitulo: 'Dummy vestido',
     color: 'text-orange-700',
     fechaKey: 'cliente_dummyVestido_fechaLiberacion',
@@ -30,7 +30,7 @@ const columnasConfig: ColumnaConfig[] = [
   },
   {
     indice: 3,
-    titulo: 'Sobre viajero',
+    titulo: 'Liberacion sobre viajero',
     subtitulo: 'Prueba de color',
     color: 'text-pink-700',
     fechaKey: 'viajeroPruebaColor_fechaLiberacion',
@@ -40,7 +40,7 @@ const columnasConfig: ColumnaConfig[] = [
   },
   {
     indice: 4,
-    titulo: 'Sobre viajero',
+    titulo: 'Liberación sobre viajero',
     subtitulo: 'Dummy blanco',
     color: 'text-pink-700',
     fechaKey: 'viajeroDummyBlanco_fechaLiberacion',

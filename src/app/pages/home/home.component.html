@@ -16,7 +16,7 @@
         <div class="w-full h-full flex flex-col pt-2">
             <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings "   
             [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'                 
-            rowHeight='40'                 
+            rowHeight='35'                 
                 (dataBound)='dataBound()' [allowExcelExport]='true'  [height]="heightGrid"                
                 allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
                 [pageSettings]='pageSettings'>
@@ -25,7 +25,7 @@
                     </e-column>
                     <e-column field='descripcionEstado' [allowFiltering]="true" headerText='Estado' width=100>
                         <ng-template #template let-data>
-                            <div class="flex flex-col uppercase text-white p-1 text-center   rounded-md" [ngClass]="data.id_estado  == '1' ? 'bg-yellow-500' : 
+                            <div class="flex flex-col uppercase text-white  text-center   rounded-md" [ngClass]="data.id_estado  == '1' ? 'bg-yellow-500' : 
                                         data.id_estado == '2' ? 'bg-green-500' : ''">
                                 <span>{{data.descripcionEstado}}</span>
                             </div>
@@ -40,7 +40,7 @@
                     </e-column>
                     <e-column field='Vendedor' [allowFiltering]="true" width=150>
                     </e-column>
-                    <e-column field='CantidadEntregar' [allowFiltering]="true" headerText='Cantidad entregar' width=100>
+                    <e-column field='CantidadEntregar' [allowFiltering]="true" textAlign="right" headerText='Cantidad entregar' width=100>
                         <ng-template #template let-data>
                             <div class="flex flex-col">
                                 <span>{{data.CantidadEntregar | number}}</span>
@@ -64,8 +64,11 @@
                     @for(col of columnasAuditoria; track col.indice) {
                         <e-column [width]="150">
                             <ng-template #headerTemplate>
-                                <p class="font-bold" [ngClass]="col.color">{{col.titulo}}</p>
-                                <h1>{{col.subtitulo}}</h1>
+                                <div class="flex flex-col items-center justify-center">
+                                    <p class="font-bold" [ngClass]="col.color">{{col.titulo}}</p>
+                                    <h1>{{col.subtitulo}}</h1>
+                                </div>
+                                
                             </ng-template>
                             <ng-template #template let-data>                        
                                 @let estaHabilitado=esAuditHabilitado(data, col);
