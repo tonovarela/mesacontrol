@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { columnas } from './data/columnas';
 
@@ -28,21 +28,24 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
 
   protected minusHeight = 0;
   private metricsService = inject(MetricsService);
-  public checkListService = inject(CheckListService);
+  private checkListService = inject(CheckListService);
   private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
+  private _verPendientes= signal<boolean>(true);
+  private router = inject(Router);
+  private activatedRouter = inject(ActivatedRoute);
+
 
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
   public ordenesMetrics = computed(() => this._ordenesMetrics());
+  public verPendientes = computed(() => this._verPendientes());
   public ordenMetricsPorDefinir = signal<OrdenMetrics | null>(null);
-
-
-  public router = inject(Router);
   public cargando = signal(false);
   public guardandoOrdenMetrics = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
-  
   public catalogoTiposProductos= computed(() => this.metricsService.TipoMateriales());
+
+
   constructor() {
     super();
     this.checkListService.removeActiveCheckList();
@@ -54,6 +57,9 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   fechaLiberacion(data: any,col:any)  {
     return col.obtenerFechaLiberacion(data);
   }
+
+
+  
 
 
   colorChecklist(data: any, col: any): string {
@@ -72,11 +78,16 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.autoFitColumns = false;
-    this.iniciarResizeGrid(this.minusHeight);
-    this.cargarInformacion();
-
-
+    this.autoFitColumns = false;    
+    setTimeout(() => {
+      this.iniciarResizeGrid(this.minusHeight);    
+    });
+    
+    this.activatedRouter.data.subscribe((data) => {
+      const pendientes = data['pendientes'] || false;      
+      this._verPendientes.set(pendientes);
+      this.cargarInformacion();            
+    });
   }
 
   actualizarTipoProd(tipo: string) {
@@ -96,10 +107,11 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
   }
 
   async cargarInformacion() {
+
     this.cargando.set(true);
     try {
       this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
-      const response = await firstValueFrom(this.metricsService.listar())
+      const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))
       this._ordenesMetrics.set(response.ordenes)
     }
     catch (error) {
@@ -119,8 +131,7 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
       this.checkListService.id_checkListCurrent = id_checkActual;    
     }else{
       this.checkListService.id_checkListCurrent = id_checklist_actual;
-    }    
-    //console.log(ordenMetrics);
+    }        
     await this.checkListService.loadChecklist();
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
     //TODO: Guardar en el estado la ordenMetrics             

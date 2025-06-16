@@ -2,8 +2,7 @@ import { CheckList } from '@app/interfaces/responses/ResponseGetCheckList';
 import { Option } from './Option';
 
 export interface CheckListAnswered {
-    optionsAnswered: OptionAnswered[],    
-    isRefused: boolean; // Indica si el checklist fue rechazado
+    optionsAnswered: OptionAnswered[],        
     
 }
 

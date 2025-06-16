@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { UiService } from '../../services';
+import { UsuarioService } from '@app/services/usuario.service';
+import { Usuario } from '../../interfaces/models/Usuario';
 
 @Component({
   selector: 'app-header',
@@ -11,11 +13,14 @@ import { UiService } from '../../services';
 })
 export class HeaderComponent implements OnInit {
 
-  Foto = computed(() => `${!environment.production?'https://servicios.litoprocess.com':''}/colaboradores/api/foto/XX}`);
+  Foto = computed(() => `${!environment.production?'https://servicios.litoprocess.com':''}/colaboradores/api/foto/${this.usuarioService.StatusSesion()?.usuario?.personal}`);
+  usuarioService = inject(UsuarioService);
   uiService = inject(UiService);
   esDark = false;
   linksThemeMap: Map<string, HTMLLinkElement> = new Map();
 
+
+  Username = computed(() => this.usuarioService.StatusSesion().usuario?.nombre);
 
   ngOnInit(): void {
     const links = Array.from(document.querySelectorAll('link')) as HTMLLinkElement[]; 
@@ -52,6 +57,10 @@ export class HeaderComponent implements OnInit {
 
     }
 
+  }
+
+  cerrarSesion() {
+    this.usuarioService.logout();
   }
 
 }

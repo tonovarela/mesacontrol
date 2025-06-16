@@ -12,5 +12,6 @@ export class LogEventComponent {
 
   logEvent =input.required<LogEvent>();
   
+  
 
  }

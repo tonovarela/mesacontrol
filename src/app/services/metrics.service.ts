@@ -22,8 +22,8 @@ export class MetricsService {
   constructor() { }
 
 
-  listar(){
-    return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/orden`);
+  listar(pendientes:boolean) {
+    return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/orden?pendientes=${pendientes}`);
     
   }
 

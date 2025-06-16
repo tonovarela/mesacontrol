@@ -5,7 +5,11 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 export const routes: Routes = [
   {
     path: 'home', component: MainLayoutComponent,
-    children: [{ path: "", loadComponent: () => import('./pages/home/home.component') }
+    children: [
+      { path: "pendientes",data:{pendientes:true}, loadComponent: () => import('./pages/home/home.component') },
+      { path: "liberadas",data:{pendientes:false},loadComponent: () => import('./pages/home/home.component') },
+      { path:'**', redirectTo: 'pendientes' }
+    
     ]
   },
   {

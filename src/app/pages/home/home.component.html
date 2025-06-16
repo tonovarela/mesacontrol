@@ -1,19 +1,21 @@
 
-@if(cargando()){
+@if(cargando() ){    
     <div class="flex flex-col space-y-6 justify-center items-center py-8">
         <svg class="animate-spin h-24 w-24 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
         </svg>
         <div class="ml-3 text-blue-600 font-medium text-2xl">Cargando datos...</div>  
-      </div>
+      </div>    
 }
 @else {
 
     <div  id="initial">
+        @if(verPendientes()){
         <search-metrics (onSelectOrder)="onSelectOrder($event)"></search-metrics>
+        }
     
-        <div class="w-full h-full flex flex-col pt-2">
+        <div class="flex flex-col pt-2 px-2">
             <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings "   
             [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'                 
             rowHeight='35'                 
@@ -23,14 +25,14 @@
                 <e-columns>
                     <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden'  width=100>
                     </e-column>
-                    <e-column field='descripcionEstado' [allowFiltering]="true" headerText='Estado' width=100>
+                    <!-- <e-column field='descripcionEstado' [allowFiltering]="true" headerText='Estado' width=100>
                         <ng-template #template let-data>
                             <div class="flex flex-col uppercase text-white  text-center   rounded-md" [ngClass]="data.id_estado  == '1' ? 'bg-yellow-500' : 
                                         data.id_estado == '2' ? 'bg-green-500' : ''">
                                 <span>{{data.descripcionEstado}}</span>
                             </div>
                         </ng-template>
-                    </e-column>
+                    </e-column> -->
                     <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
                     </e-column>
                     <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=150>                    
@@ -40,7 +42,7 @@
                     </e-column>
                     <e-column field='Vendedor' [allowFiltering]="true" width=150>
                     </e-column>
-                    <e-column field='CantidadEntregar' [allowFiltering]="true" textAlign="right" headerText='Cantidad entregar' width=100>
+                    <e-column field='CantidadEntregar' [allowFiltering]="true" textAlign="right" headerText='Cantidad' width=100>
                         <ng-template #template let-data>
                             <div class="flex flex-col">
                                 <span>{{data.CantidadEntregar | number}}</span>
@@ -65,8 +67,8 @@
                         <e-column [width]="150">
                             <ng-template #headerTemplate>
                                 <div class="flex flex-col items-center justify-center">
-                                    <p class="font-bold" [ngClass]="col.color">{{col.titulo}}</p>
-                                    <h1>{{col.subtitulo}}</h1>
+                                    <p class="font-bold text-[9px]" [ngClass]="col.color">{{col.titulo}}</p>
+                                    <div class="text-[9px]">{{col.subtitulo}}</div>
                                 </div>
                                 
                             </ng-template>

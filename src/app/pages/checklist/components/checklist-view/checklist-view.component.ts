@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {  ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+
 import { Option } from '../../interfaces/Option';
 import { CheckListAnswered, CheckListDisplay, OptionAnswered } from '../../interfaces/CheckListAnswered';
 import { PrimeModule } from '@app/lib/prime.module';
@@ -26,6 +27,7 @@ export class ChecklistViewComponent   {
   checkList = input.required<CheckListDisplay>();
   title = input.required<string>();
   onSave = output<CheckListAnswered>();
+  lastPageVisited = input<string>();
 
   options =computed(() => {
     return this.checkList()?.options || [];
@@ -36,6 +38,8 @@ export class ChecklistViewComponent   {
     return detail ? detail.id_estado=="3" : false;
   }
   );
+
+  
 
   optionsStrict: any[] = [
     { name: 'Aceptado', value: 1 },
@@ -60,18 +64,13 @@ export class ChecklistViewComponent   {
           this.fb.group({
             ...opcion,
             answer: [opcion.answer, 
-              //this.isOptionalByOption(opcion) ? [] :
-               [Validators.required]],
+              !this.canSaveFragment()?[Validators.required]:[]],
             comments: ['']
           })
         )
       ),
     });
   }
-
-  // private isOptionalByOption(opcion: any): boolean {    
-  //   return opcion.optional ?? false;
-  // }
 
   get opciones(): FormArray {
     return this.checklistForm.get('opciones') as FormArray;
@@ -88,7 +87,7 @@ export class ChecklistViewComponent   {
 
   
   regresar(): void {
-    this.router.navigate(['/home']);
+    this.router.navigate([this.lastPageVisited() || '/home']);
   
   }
 
@@ -131,17 +130,18 @@ export class ChecklistViewComponent   {
       }))
     ];
     const canSave = selectedOptions.filter((option: OptionAnswered) => option.isMissingComments  ).length == 0;
+    
     if (!canSave) {
       this.uiService.mostrarAlertaError('','Debe ingresar un comentario para las opciones rechazadas');      
       return;
     }      
-    const isRefused = selectedOptions.filter((option: any) => option.answer == 2 ).length > 0;        
-    const optionsAnswered =selectedOptions.filter((option: OptionAnswered) =>!option.answered || option.answer !=null );
-
-    const justOneOptionAnswered = optionsAnswered.length == 1 ;
-    console.log(justOneOptionAnswered);    
-        
-    this.onSave.emit({ optionsAnswered, isRefused });
+    
+    const optionsAnswered =selectedOptions.filter((option: OptionAnswered) =>!option.answered && option.answer !=null );    
+    if (this.canSaveFragment() && optionsAnswered.length == 0) {
+      this.uiService.mostrarAlertaError('','Debe seleccionar al menos una opción para guardar el checklist');      
+      return;
+    }               
+    this.onSave.emit({ optionsAnswered });
 
   }
 

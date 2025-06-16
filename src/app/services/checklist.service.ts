@@ -75,6 +75,7 @@ export class CheckListService  {
                 id: event.id_bitacora,
                 by: event.nombreUsuario,
                 date: new Date(event.fecha_registro),
+                urlUserAvatar:`https://servicios.litoprocess.com/colaboradores/api/foto/${event.personal || 'XXX'}`,
                 type: event.evento === 'ACEPTADO' ? LogEventType.ACCEPTED: LogEventType.REJECTED, 
                 extraInformation: event.comments || '',
               } as LogEvent;

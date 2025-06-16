@@ -4,7 +4,7 @@
          @for(ruta of rutas(); track ruta.nombre) {
              <li>
             <a  [routerLink]="ruta.path"    class="pathItem flex items-center p-1 item cursor-pointer" routerLinkActive="selected">
-               <img [src]="ruta.icono" class="w-5 h-5 svg-icon"   />
+               <img [src]="ruta.icono" class="w-8 h-8 svg-icon"   />
                <span class="ms-3">{{ruta.nombre}}</span>
             </a>
          </li>

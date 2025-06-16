@@ -15,6 +15,7 @@ export interface CheckListDetalle {
 
 export interface EventResponse {
     id_bitacora:    string;
+    personal:        string;
     id_usuario:     string;
     comments:       string;
     evento:         string;

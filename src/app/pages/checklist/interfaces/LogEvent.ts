@@ -6,6 +6,8 @@ export enum LogEventType {
     type: LogEventType;
     by: string;
     date: Date;
+    urlUserAvatar?:string;
+    
     extraInformation?: string;
   }
   

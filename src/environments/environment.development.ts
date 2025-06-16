@@ -1,5 +1,8 @@
 export const environment = {
     production: false,
     apiUrl: 'https://servicios.litoprocess.com/mesacontrol2',
-    apiData:'http://localhost:3000' // Local development API endpoint
+    userDev:
+    //{ username:'mrodriguez',password:'17320'}
+    { username:'mestelles',password:'54321'}
+    
 };

@@ -2,11 +2,12 @@
     <div class="flex items-center justify-between text-center p-4 bg-gray-100 dark:bg-gray-700">
         <h1 class="w-full font-bold">{{opMetrics() }}</h1>
     </div>     
-     
+         
     @if(checkList()!=null) {                
     <checklist-view     
     [checkList]="checkList()!"  
     [title]="title()" 
+    [lastPageVisited]="pageService.getPreviousUrl()"    
     (onSave)="onSave($event)"
     [isSaving]="isSaving()"
     ></checklist-view>       

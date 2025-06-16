@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
-import { ChecklistViewComponent } from '../../components/checklist-view/checklist-view.component';
-import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
-import { CheckListService } from '@app/services/checklist.service';
-import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+
+import { ChecklistViewComponent } from '../../components/checklist-view/checklist-view.component';
+import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
+import { CheckListService, PageService } from '@app/services';
+import { CommonModule } from '@angular/common';
+import { UsuarioService } from '@app/services/usuario.service';
 
 
 @Component({
@@ -15,16 +17,20 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class RollcallComponent implements OnInit {
+
+  public pageService = inject(PageService)
+  private usuarioService = inject(UsuarioService);
   ngOnInit(): void {
     if (this.checkList() == null) {
       this.router.navigate(['/home']);
-    }    
+    }
   }
 
   private checkListService = inject(CheckListService);
 
   checkList = computed(() => this.checkListService.checkList());
   router = inject(Router);
+
 
   opMetrics = computed(() => `${this.checkListService.currentMetricsOP()?.NoOrden || ''}  ${this.checkListService.currentMetricsOP()?.NombreTrabajo || ''}`);
   isSaving = signal<boolean>(false);
@@ -35,12 +41,12 @@ export default class RollcallComponent implements OnInit {
   });
 
 
-  options= computed(() => {
-    const detail = this.checkListService.checkList();
-    return detail ? detail.options || [] : [];
-  });
+  // options= computed(() => {
+  //   const detail = this.checkListService.checkList();
+  //   return detail ? detail.options || [] : [];
+  // });
 
-  
+
 
   async onSave(checkList: CheckListAnswered) {
     this.isSaving.set(true);
@@ -52,7 +58,7 @@ export default class RollcallComponent implements OnInit {
       return {
         id_checklist,
         id: options.id,
-        answer: options.answer,          
+        answer: options.answer,
       }
     });
     const optionsRejected = optionsAnswered.filter(o => o.answer == 2).map(options => {
@@ -63,22 +69,20 @@ export default class RollcallComponent implements OnInit {
       }
     });
     this.checkListService.id_checkListCurrent = id_checklist;
-    await firstValueFrom(this.checkListService.saveChecklist({ orden: op_metrics,
-                                                               optionsAprobed,
-                                                               optionsRejected, 
-                                                               id_checklist,
-                                                               id_usuario:"93" 
-                                                              }));
+    const idUsuario = this.usuarioService.StatusSesion()?.usuario?.id || '71';
+    
+    await firstValueFrom(this.checkListService.saveChecklist({
+      orden: op_metrics,
+      optionsAprobed,
+      optionsRejected,
+      id_checklist,
+      id_usuario: `${idUsuario}`
+        }));
     this.checkListService.removeActiveCheckList();
     this.isSaving.set(false);
-    this.router.navigate(['/home']);
-
-
-
+    this.router.navigate([this.pageService.getPreviousUrl()]);
 
   }
-
-
 
 
 }
