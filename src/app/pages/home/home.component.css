@@ -6,5 +6,6 @@
 }
 
 .e-grid .e-gridheader{
+  font-size: 10px;
   @apply rounded-t-lg;
 }

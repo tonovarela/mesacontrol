@@ -28,14 +28,14 @@ export abstract class BaseGridComponent implements OnDestroy {
     protected iniciarResizeGrid(porcentaje: number) {
         
         if (window.innerHeight >= 1000) {
-            porcentaje = 0.20;
-        }
-        
+            porcentaje = 0.25;
+        }            
         this.heightGrid = window.innerHeight - (window.innerHeight * porcentaje);
         const subs1 = this.ResizeHeight().subscribe(x => {
             if (window.innerHeight >= 1000) {
-                porcentaje = 0.20;
+                porcentaje = 0.25;
             }
+            
             this.heightGrid = window.innerHeight - (window.innerHeight * porcentaje);
             this.dataBound();
         });
@@ -55,6 +55,8 @@ export abstract class BaseGridComponent implements OnDestroy {
         if (this.grid == undefined){
             return;
         }
+        //(this.grid as GridComponent).enableStickyHeader =
+        this.grid.enableStickyHeader = true;
         this.grid.resizeSettings = { mode: 'Auto' }
         this.grid.autoFitColumns();
         if (window.innerWidth < 2000) {

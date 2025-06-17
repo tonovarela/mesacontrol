@@ -26,7 +26,7 @@ import { columnas } from './data/columnas';
 export default class HomeComponent extends BaseGridComponent implements OnInit {
 
 
-  protected minusHeight = 0;
+  protected minusHeight = 0.30;
   private metricsService = inject(MetricsService);
   private checkListService = inject(CheckListService);
   private uiService = inject(UiService);

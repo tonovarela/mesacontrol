@@ -1,113 +1,106 @@
-
-@if(cargando() ){    
-    <div class="flex flex-col space-y-6 justify-center items-center py-8">
-        <svg class="animate-spin h-24 w-24 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-        </svg>
-        <div class="ml-3 text-blue-600 font-medium text-2xl">Cargando datos...</div>  
-      </div>    
+@if(cargando() ){
+<div class="flex flex-col space-y-6 justify-center items-center py-8 ">
+    <svg class="animate-spin h-24 w-24 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+    </svg>
+    <div class="ml-3 text-blue-600 font-medium text-2xl">Cargando datos...</div>
+</div>
 }
 @else {
 
-    <div  id="initial">
+<div id="initial" class="flex flex-col">
+    <div class="py-1 px-2  w-full ">
         @if(verPendientes()){
         <search-metrics (onSelectOrder)="onSelectOrder($event)"></search-metrics>
         }
-    
-        <div class="flex flex-col pt-2 px-2">
-            <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings "   
-            [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'                 
-            rowHeight='35'                 
-                (dataBound)='dataBound()' [allowExcelExport]='true'  [height]="heightGrid"                
-                allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
-                [pageSettings]='pageSettings'>
-                <e-columns>
-                    <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden'  width=100>
-                    </e-column>
-                    <!-- <e-column field='descripcionEstado' [allowFiltering]="true" headerText='Estado' width=100>
-                        <ng-template #template let-data>
-                            <div class="flex flex-col uppercase text-white  text-center   rounded-md" [ngClass]="data.id_estado  == '1' ? 'bg-yellow-500' : 
-                                        data.id_estado == '2' ? 'bg-green-500' : ''">
-                                <span>{{data.descripcionEstado}}</span>
-                            </div>
-                        </ng-template>
-                    </e-column> -->
-                    <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
-                    </e-column>
-                    <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=150>                    
-                    </e-column>
-        
-                    <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
-                    </e-column>
-                    <e-column field='Vendedor' [allowFiltering]="true" width=150>
-                    </e-column>
-                    <e-column field='CantidadEntregar' [allowFiltering]="true" textAlign="right" headerText='Cantidad' width=100>
-                        <ng-template #template let-data>
-                            <div class="flex flex-col">
-                                <span>{{data.CantidadEntregar | number}}</span>
-                            </div>
-                        </ng-template>
-                    </e-column>
-                    <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
-                        <ng-template #template let-data>
-                            <div class="flex flex-col">
-                                <span>{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>
-                            </div>
-                        </ng-template>
-                    </e-column>
-                    <e-column field='FechaEntrega' [allowFiltering]="false" headerText='Entrega' width=110>
-                        <ng-template #template let-data>
-                            <div class="flex flex-col">
-                                <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
-                            </div>
-                        </ng-template>
-                    </e-column>
-                    @for(col of columnasAuditoria; track col.indice) {
-                        <e-column [width]="150">
-                            <ng-template #headerTemplate>
-                                <div class="flex flex-col items-center justify-center">
-                                    <p class="font-bold text-[9px]" [ngClass]="col.color">{{col.titulo}}</p>
-                                    <div class="text-[9px]">{{col.subtitulo}}</div>
-                                </div>
-                                
-                            </ng-template>
-                            <ng-template #template let-data>                        
-                                @let estaHabilitado=esAuditHabilitado(data, col);
-                                @let colorSVG=colorChecklist(data,col);          
-                                @let liberacion=fechaLiberacion(data,col);                                
-                                @let sepuedeVisualizar=estaHabilitado || liberacion ;
-                                @let id_checkActual=getCheckListKey(data,col);                                
-                                @if (data.id_checklist_actual){
-                                    <div class="flex  w-full">                                        
-                                            <div class="w-full h-full flex flex-row    rounded-lg shadow bg-white dark:bg-gray-800  py-1"
-                                            [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"                                            
-                                              (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">                                                                                                
-                                                    <audit-svg  [color]="colorSVG" [enabled]="sepuedeVisualizar" />                                                                                                
-                                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">
-                                                        @if(liberacion){
-                                                            {{liberacion | date:'dd-MM-yyyy hh:mm a' }} 
-                                                            
-                                                        }@else{
-                                                            <span >--------</span>
-                                                        }                                                
-                                                </div>                                            
-                                        </div>
-                                    </div>                                                              
-                                }@else{
-                                    <div class="flex flex-row gap-2 text-center text-pink-900">
-                                      ---------
-                                    </div>
-                                }
-                                
-                            </ng-template>
-                        </e-column>
-                        }
-                </e-columns>
-            </ejs-grid>
-        </div>
-        
     </div>
+    <div class="px-1  overflow-auto">
+        <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
+            [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'
+            rowHeight='35' (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid"
+            allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
+            [pageSettings]='pageSettings'>
+            <e-columns>
+                <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
+                </e-column>                
+                <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
+                </e-column>
+                <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=150>
+                </e-column>
+
+                <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
+                </e-column>
+                <e-column field='Vendedor' [allowFiltering]="true" width=150>
+                </e-column>
+                <e-column field='CantidadEntregar' [allowFiltering]="true" textAlign="right" headerText='Cant'
+                    width=100>
+                    <ng-template #template let-data>
+                        <div class="flex flex-col">
+                            <span>{{data.CantidadEntregar | number}}</span>
+                        </div>
+                    </ng-template>
+                </e-column>
+                <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
+                    <ng-template #template let-data>
+                        <div class="flex flex-col">
+                            <span>{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>
+                        </div>
+                    </ng-template>
+                </e-column>
+                <e-column field='FechaEntrega' [allowFiltering]="false" headerText='Entrega' width=110>
+                    <ng-template #template let-data>
+                        <div class="flex flex-col">
+                            <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
+                        </div>
+                    </ng-template>
+                </e-column>
+                @for(col of columnasAuditoria; track col.indice) {
+                <e-column [width]="150">
+                    <ng-template #headerTemplate>
+                        <div class="flex flex-col items-center justify-center">
+                            <p class="font-bold text-[8px]" [ngClass]="col.color">{{col.titulo}}</p>
+                            <div class="text-[8px]">{{col.subtitulo}}</div>
+                        </div>
+
+                    </ng-template>
+                    <ng-template #template let-data>
+                        @let estaHabilitado=esAuditHabilitado(data, col);
+                        @let colorSVG=colorChecklist(data,col);
+                        @let liberacion=fechaLiberacion(data,col);
+                        @let sepuedeVisualizar=estaHabilitado || liberacion ;
+                        @let id_checkActual=getCheckListKey(data,col);
+                        @if (data.id_checklist_actual){
+                        <div class="flex  w-full">
+                            <div class="w-full h-full flex flex-row    rounded-lg shadow bg-white dark:bg-gray-800  py-1"
+                                [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
+                                (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">
+                                <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
+                                <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">
+                                    @if(liberacion){
+                                    {{liberacion | date:'dd-MM-yyyy hh:mm a' }}
+
+                                    }@else{
+                                    <span>--------</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        }@else{
+                        <div class="flex flex-row gap-2 text-center text-pink-900">
+                            ---------
+                        </div>
+                        }
+
+                    </ng-template>
+                </e-column>
+                }
+            </e-columns>
+        </ejs-grid>
+    </div>
+
+</div>
 }
 
 <p-dialog header="Editar Orden" [modal]="true" [visible]="puedeDefinirOrdenMetrics()" [style]="{ width: '50rem' }"
@@ -164,54 +157,56 @@
             </div>
             <div class="mb-6">
                 @if(ordenMetricsPorDefinir()?.TipoProd!=null){
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Código de producto:
-                        {{ordenMetricsPorDefinir()?.TipoProd}}</label>
+                <label class="block mb-2 text-sm font-medium text-gray-700">Código de producto:
+                    {{ordenMetricsPorDefinir()?.TipoProd}}</label>
                 }@else{
-                    <span class="block mb-2 text-sm  font-medium text-white bg-pink-600 p-2 rounded-md">Código de producto:  <b>{{ordenMetricsPorDefinir()?.TipoProdReal}}</b> no es reconocido, favor de especificar</span>
+                <span class="block mb-2 text-sm  font-medium text-white bg-pink-600 p-2 rounded-md">Código de producto:
+                    <b>{{ordenMetricsPorDefinir()?.TipoProdReal}}</b> no es reconocido, favor de especificar</span>
                 }
-                
+
 
             </div>
-            
+
             <div class="mb-6">
-                
+
                 <label for="tipoProd" class="block mb-2 text-sm font-medium text-gray-700">Tipo de producto</label>
                 <select [ngModel]="ordenMetricsPorDefinir()?.TipoProd" (ngModelChange)="actualizarTipoProd($event)"
                     id="tipoProd" name="tipoProd" required
-                    class="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">                    
-                   
+                    class="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+
                     @if(ordenMetricsPorDefinir()?.TipoProd== null) {
-                        <option value="null" selected>Sin especificar</option>
-                    }                    
+                    <option value="null" selected>Sin especificar</option>
+                    }
                     @for( tipo of catalogoTiposProductos(); track tipo.id ) {
                     <option [value]="tipo.id">{{tipo.value}}</option>
                     }
                 </select>
             </div>
-            <div class="flex justify-end gap-4">                
-                <button type="button" [disabled]="guardandoOrdenMetrics()"  (click)="cerrarOrdenMetricsPorDefinir() "
+            <div class="flex justify-end gap-4">
+                <button type="button" [disabled]="guardandoOrdenMetrics()" (click)="cerrarOrdenMetricsPorDefinir() "
                     class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded shadow transition">
                     Cerrar
                 </button>
-                @if( !guardandoOrdenMetrics()){                    
-                <button type="submit" 
-                [disabled]="ordenMetricsPorDefinir()?.TipoProd== null"
+                @if( !guardandoOrdenMetrics()){
+                <button type="submit" [disabled]="ordenMetricsPorDefinir()?.TipoProd== null"
                     class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition disabled:bg-gray-300">
                     Guardar
                 </button>
-                }@else{                    
-                    <button type="button" 
-                    class="flex items-center gap-2 px-4 py-2 bg-blue-600  text-white rounded shadow transition" >
-                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                }@else{
+                <button type="button"
+                    class="flex items-center gap-2 px-4 py-2 bg-blue-600  text-white rounded shadow transition">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                     </svg>
                     Guardando...
-                    </button>
+                </button>
                 }
 
 
-                
+
             </div>
         </form>
     </ng-template>
