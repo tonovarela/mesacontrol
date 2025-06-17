@@ -1,4 +1,3 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { PrimeModule } from '../../lib/prime.module';
 import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
@@ -12,20 +11,22 @@ import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { columnas } from './data/columnas';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, Type } from '@angular/core';
+import { columnas } from '../data/columnas';
+import { TypeSearchMetrics } from '@app/interfaces/type';
 
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-preprensa',
   imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent],
-  templateUrl: './home.component.html',
+  templateUrl: './preprensa.component.html',
   providers: [DetailRowService],
-  styleUrl: './home.component.css',
+  styleUrl: './preprensa.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class HomeComponent extends BaseGridComponent implements OnInit {
+export default class PreprensaComponent extends BaseGridComponent implements OnInit  {
 
-
+  public type= TypeSearchMetrics.PREPRENSA;
   protected minusHeight = 0.30;
   private metricsService = inject(MetricsService);
   private checkListService = inject(CheckListService);
@@ -151,5 +152,4 @@ export default class HomeComponent extends BaseGridComponent implements OnInit {
     this.cargarInformacion();
     this.ordenMetricsPorDefinir.set(null);
   }
-
 }

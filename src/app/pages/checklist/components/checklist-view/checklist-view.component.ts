@@ -87,7 +87,7 @@ export class ChecklistViewComponent   {
 
   
   regresar(): void {
-    this.router.navigate([this.lastPageVisited() || '/home']);
+    this.router.navigate([this.lastPageVisited() || '/preprensa']);
   
   }
 

@@ -22,7 +22,7 @@ export default class RollcallComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   ngOnInit(): void {
     if (this.checkList() == null) {
-      this.router.navigate(['/home']);
+      this.router.navigate(['/preprensa']);
     }
   }
 

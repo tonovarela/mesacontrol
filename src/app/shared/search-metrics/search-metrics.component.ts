@@ -1,42 +1,50 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, output, input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+
 import { PrimeModule } from '@app/lib/prime.module';
 import { MetricsService } from '@app/services';
-import { firstValueFrom, Subject, switchMap } from 'rxjs';
+import {  Subject, switchMap } from 'rxjs';
 
 
-
-
-
-@Component({
+@Component({  
   selector: 'search-metrics',
   imports: [PrimeModule,FormsModule,CommonModule],
   templateUrl: './search-metrics.component.html',
   styleUrl: './search-metrics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchMetricsComponent { 
-  
+export class SearchMetricsComponent implements OnInit { 
 
-  private metrisService = inject(MetricsService);
+  
   public OPsBusqueda = signal<any[]>([]);
   public cargandoBusqueda = signal(false);
   public selectedOP: OrdenMetrics | null = null;
   public valorQuery = "";
-  private valorQuerySubject: Subject<string> = new Subject<string>();
-  onSelectOrder = output<OrdenMetrics | null >();
+  public onSelectOrder = output<OrdenMetrics | null >();
 
+
+
+  public typeSearch = input.required();
+
+
+  private valorQuerySubject: Subject<string> = new Subject<string>();  
+  private metrisService = inject(MetricsService);
+  
 
 
   constructor() {
+    
     this.valorQuerySubject.pipe(
       switchMap(query => { return this.metrisService.buscarPorPatron(query) })
     ).subscribe((response) => {
       this.cargandoBusqueda.set(false);
       this.OPsBusqueda.set(response.ordenes);
     })
+  }
+  ngOnInit(): void {
+    console.log("TypeSearch", this.typeSearch());
   }
 
   async onSelect({ value }: { value: OrdenMetrics }) {

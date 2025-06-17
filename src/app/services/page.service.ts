@@ -20,6 +20,6 @@ export class PageService {
   }
 
   getPreviousUrl(): string {
-    return this.previousUrl || '/home';
+    return this.previousUrl || '/preprensa';
   }
 }

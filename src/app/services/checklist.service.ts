@@ -88,7 +88,7 @@ export class CheckListService  {
           
         }catch(error) {
           this._checkList.set(null);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/preprensa']);
         }
  }
    
