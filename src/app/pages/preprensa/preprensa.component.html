@@ -8,8 +8,7 @@
         <div class="ml-3 text-blue-600 font-medium text-2xl">Cargando datos...</div>
     </div>
     }
-    @else {
-    
+    @else {    
     <div id="initial" class="flex flex-col">
         <div class="py-1 px-2  w-full ">
             @if(verPendientes()){
@@ -28,8 +27,7 @@
                     <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
                     </e-column>
                     <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=150>
-                    </e-column>
-    
+                    </e-column>    
                     <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
                     </e-column>
                     <e-column field='Vendedor' [allowFiltering]="true" width=150>
