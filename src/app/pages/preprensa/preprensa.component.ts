@@ -25,7 +25,7 @@ import { TypeSearchMetrics } from '@app/interfaces/type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class PreprensaComponent extends BaseGridComponent implements OnInit  {
-  @ViewChild('grid') private grid2!: GridComponent;
+  
   public type= TypeSearchMetrics.PREPRENSA;
   protected minusHeight = 0.30;
   private metricsService = inject(MetricsService);
@@ -53,6 +53,13 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   }
 
   columnasAuditoria = columnas;
+
+
+  t(){
+    const drawer = document.getElementById('logo-sidebar');
+    drawer!.classList.toggle('-translate-x-full');
+  }
+  
 
 
   fechaLiberacion(data: any,col:any)  {
@@ -120,9 +127,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     }
     finally {
       this.cargando.set(false);
-      setTimeout(() => {
-        this.grid2.detailRowModule.expandAll();
-      },200); // Esperar un poco para que se renderice el grid antes de expandir
+      
       
     }
   }

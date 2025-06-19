@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component,  inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { UiService } from '@app/services';
 
 interface Ruta {
   nombre: string;
@@ -18,6 +19,7 @@ interface Ruta {
 })
 export class SidebarComponent   implements OnInit,AfterViewInit {
   router = inject(Router);
+  uiService= inject(UiService);
   public rutasPreprensa: Ruta[] = [
     {
       nombre: 'Pendientes',
@@ -48,5 +50,10 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
   }
   ngOnInit(): void {
     
+  }
+
+  closeSidebar() {
+    const checkbox = document.getElementById('sidebar-toggle') as HTMLInputElement;
+    if (checkbox) checkbox.checked = false;
   }
 }

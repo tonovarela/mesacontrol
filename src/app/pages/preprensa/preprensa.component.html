@@ -1,3 +1,7 @@
+<div class="relative">
+
+ 
+
 @if(cargando() ){
     <div class="flex flex-col space-y-6 justify-center items-center py-8 ">
         <svg class="animate-spin h-24 w-24 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -18,7 +22,7 @@
         <div class="px-1  overflow-auto">
             <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
                 [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'
-                rowHeight='35' (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid"
+                rowHeight='30' (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid"
                 allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
                 [pageSettings]='pageSettings'>
                 <e-columns>
@@ -70,7 +74,7 @@
                             @let sepuedeVisualizar=estaHabilitado || liberacion ;
                             @let id_checkActual=getCheckListKey(data,col);
                             @if (data.id_checklist_actual){
-                            <div class="flex  w-full">
+                            <div class="flex  p-1 w-full">
                                 <div class="w-full h-full flex flex-row    rounded-lg shadow bg-white dark:bg-gray-800  py-1"
                                     [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
                                     (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">
@@ -95,14 +99,14 @@
                     </e-column>
                     }
                 </e-columns>
-                <ng-template #detailTemplate let-data>
+                <!-- <ng-template #detailTemplate let-data>
                     <div class="overflow-x-auto  ">
-                      <table class="min-w-min divide-y  my-2 divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 rounded-lg shadow">
+                      <table class="min-w-min divide-y mx-auto  my-2 divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 rounded-lg shadow">
                         <thead>
                             <tr>
                                 @for(col of columnasAuditoria; track col.indice) {
                                   <th class="px-12 py-2 text-xs font-bold text-gray-700 dark:text-gray-200 text-center">
-                                    <div class="flex flex-col items-center">
+                                    <div class="flex flex-col  items-center">
                                       <span [ngClass]="col.color">{{ col.titulo }}</span>
                                       <span class="text-[10px] text-gray-500 dark:text-gray-300">{{ col.subtitulo }}</span>
                                     </div>
@@ -140,7 +144,7 @@
                         </tbody>
                       </table>
                     </div>
-                  </ng-template>
+                </ng-template> -->
                 
             </ejs-grid>
         </div>

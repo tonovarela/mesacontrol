@@ -32,13 +32,14 @@ export class AppComponent implements OnInit,OnDestroy {
 
 
     this.effectLogin = effect(() => {
-      if (this.estatusLogin() === 'LOGIN') {        
+      if (this.estatusLogin() === 'LOGIN') {    
+             
         setTimeout(() => {
           setTimeout(() => {
-            this.uiService.cargarSidebar();
+            //this.uiService.cargarSidebar();
             initFlowbite();      
-          }, 1000);
-        }, 1000);
+          }, 10);
+        }, 500);
       }      
       if (this.estatusLogin() === 'LOGOUT') {
         const esProduccion = environment.production;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { Drawer, DrawerInterface, InstanceOptions } from 'flowbite';
 import swal, { SweetAlertResult } from 'sweetalert2';
 
@@ -7,33 +7,49 @@ import swal, { SweetAlertResult } from 'sweetalert2';
 })
 export class UiService {
 
-  private drawer: DrawerInterface | undefined;
+  //private drawer: DrawerInterface | undefined;
+  //private isOpenSidebar =signal<boolean>(true);
   constructor() { }
 
-  cargarSidebar() {        
-    const options = {
-      placement: 'left',
-      backdrop: false,
-      bodyScrolling: false,
-      edge: false,
-      edgeOffset: ''
-    };
-    const instanceOptions: InstanceOptions = {
-      id: 'logo-sidebar',
-      override: false
-    };
-    const $targetEl = document.getElementById('logo-sidebar');
-    this.drawer = new Drawer($targetEl, options, instanceOptions);
-    this.drawer.init();
+  //cargarSidebar() {        
+    // const options = {
+    //   placement: 'left',
+    //   backdrop: false,
+    //   bodyScrolling: false,
+    //   edge: false,
+    //   edgeOffset: ''
+    // };
+    // const instanceOptions: InstanceOptions = {
+    //   id: 'logo-sidebar',
+    //   override: false
+    // };
+    // const $targetEl = document.getElementById('logo-sidebar');
+    // this.drawer = new Drawer($targetEl, options, instanceOptions);
+    // this.drawer.init();
+//  }
+  toggleSidebar() {    
+    //this.drawer!.toggle();
+    // if (!this.drawer!.isVisible()) {
+    //   this.isOpenSidebar.set(true);
+    //   document.getElementById('logo-sidebar')!.classList.remove('hidden');      
+    // }else{
+    //   this.isOpenSidebar.set(false);
+    //   document.getElementById('logo-sidebar')!.classList.add('hidden');
+    // }    
   }
-  toggleSidebar() {
-    this.drawer!.toggle();
-  }
-  closeSidebar() {
-    if (this.drawer!.isVisible()) {
-      this.drawer!.hide();
-    }
-  }
+
+  // isOpenSideBar = computed(() => {
+  //   return this.isOpenSidebar();
+  // });
+
+
+
+  // closeSidebar() {
+    
+  //   if (this.drawer!.isVisible()) {
+  //     this.drawer!.hide();
+  //   }
+  // }
 
 
 
@@ -49,6 +65,8 @@ export class UiService {
       timer: timer
     });
   }
+
+
 
 
   mostrarLoading() {
