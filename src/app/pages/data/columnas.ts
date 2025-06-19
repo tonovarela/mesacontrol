@@ -50,7 +50,7 @@ const columnasConfig: ColumnaConfig[] = [
   },
   {
     indice: 5,
-    titulo: 'Sobre viajero',
+    titulo: 'Liberación sobre viajero',
     subtitulo: 'Dummy vestido',
     color: 'text-pink-700',
     fechaKey: 'viajeroDummyVestido_fechaLiberacion',
@@ -60,7 +60,7 @@ const columnasConfig: ColumnaConfig[] = [
   },
   {
     indice: 6,
-    titulo: 'Sobre viajero',
+    titulo: 'Liberación sobre viajero',
     subtitulo: 'Liberación',
     color: 'text-pink-700',
     fechaKey: 'viajeroLiberacion_fechaLiberacion',

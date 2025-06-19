@@ -6,12 +6,12 @@ import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { MetricsService, UiService, CheckListService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { GridComponent, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, Type, ViewChild } from '@angular/core';
 import { columnas } from '../data/columnas';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 
@@ -25,7 +25,7 @@ import { TypeSearchMetrics } from '@app/interfaces/type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class PreprensaComponent extends BaseGridComponent implements OnInit  {
-
+  @ViewChild('grid') private grid2!: GridComponent;
   public type= TypeSearchMetrics.PREPRENSA;
   protected minusHeight = 0.30;
   private metricsService = inject(MetricsService);
@@ -120,6 +120,10 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     }
     finally {
       this.cargando.set(false);
+      setTimeout(() => {
+        this.grid2.detailRowModule.expandAll();
+      },200); // Esperar un poco para que se renderice el grid antes de expandir
+      
     }
   }
 

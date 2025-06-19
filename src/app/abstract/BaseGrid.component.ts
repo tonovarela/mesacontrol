@@ -64,6 +64,10 @@ export abstract class BaseGridComponent implements OnDestroy {
         } else {
             this.grid.resizeSettings = { mode: 'Auto' }
         }
+
+        
+        
+        
     }
 
 }
