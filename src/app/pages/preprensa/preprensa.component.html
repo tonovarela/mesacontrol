@@ -157,56 +157,56 @@
         <ng-template #headless>
             <form (ngSubmit)="guardarOrdenMetricsPorDefinir()" #formOrden="ngForm" class="p-8">
                 <!-- Campos informativos de la OP -->
-                <div class="mb-6 grid sm:grid-cols-2  gap-4">
+                <div class="mb-6 grid sm:grid-cols-2  text-gray-700 dark:text-white gap-4">
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">N° Orden</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        <label class="block mb-1 text-sm font-medium ">N° Orden</label>
+                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
                             [value]="ordenMetricsPorDefinir()?.NoOrden" disabled>
                     </div>
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Vendedor</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        <label class="block mb-1 text-sm font-medium ">Vendedor</label>
+                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
                             [value]="ordenMetricsPorDefinir()?.NombreTrabajo" disabled>
                     </div>
     
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Cliente</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        <label class="block mb-1 text-sm font-medium ">Cliente</label>
+                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
                             [value]="ordenMetricsPorDefinir()?.NombreCliente" disabled>
                     </div>
     
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Cantidad a entregar</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        <label class="block mb-1 text-sm font-medium ">Cantidad a entregar</label>
+                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
                             [value]="ordenMetricsPorDefinir()?.CantidadEntregar |  number:'1.0-0'" disabled>
     
                     </div>
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Vendedor</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        <label class="block mb-1 text-sm font-medium ">Vendedor</label>
+                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
                             [value]="ordenMetricsPorDefinir()?.Vendedor " disabled>
                     </div>
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Estatus</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        <label class="block mb-1 text-sm font-medium ">Estatus</label>
+                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
                             [value]="ordenMetricsPorDefinir()?.EstatusOrden " disabled>
                     </div>
     
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Fecha Emisión</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        <label class="block mb-1 text-sm font-medium ">Fecha Emisión</label>
+                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
                             [value]="ordenMetricsPorDefinir()?.FechaEmision | date:'dd-MM-yyyy'" disabled>
                     </div>
                     <div>
-                        <label class="block mb-1 text-sm font-medium text-gray-700">Fecha Entrega</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded bg-gray-100"
+                        <label class="block mb-1 text-sm font-medium ">Fecha Entrega</label>
+                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
                             [value]="ordenMetricsPorDefinir()?.FechaEntrega | date:'dd-MM-yyyy'" disabled>
                     </div>
     
                 </div>
                 <div class="mb-6">
                     @if(ordenMetricsPorDefinir()?.TipoProd!=null){
-                    <label class="block mb-2 text-sm font-medium text-gray-700">Código de producto:
+                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Código de producto:
                         {{ordenMetricsPorDefinir()?.TipoProd}}</label>
                     }@else{
                     <span class="block mb-2 text-sm  font-medium text-white bg-pink-600 p-2 rounded-md">Código de producto:
@@ -216,12 +216,12 @@
     
                 </div>
     
-                <div class="mb-6">
+                <div class="mb-6 text-gray-700 dark:text-white">
     
-                    <label for="tipoProd" class="block mb-2 text-sm font-medium text-gray-700">Tipo de producto</label>
+                    <label for="tipoProd" class="block mb-2 text-sm font-medium ">Tipo de producto</label>
                     <select [ngModel]="ordenMetricsPorDefinir()?.TipoProd" (ngModelChange)="actualizarTipoProd($event)"
                         id="tipoProd" name="tipoProd" required
-                        class="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        class="block w-full px-3 py-2 border border-gray-300 dark:text-slate-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
     
                         @if(ordenMetricsPorDefinir()?.TipoProd== null) {
                         <option value="null" selected>Sin especificar</option>

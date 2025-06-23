@@ -11,14 +11,14 @@
   <ng-template let-op pTemplate="item">
     <div class="grid grid-cols-2  items-center cursor-pointer rounded-lg p-1  text-center">
       <div class="flex justify-start items-center text-gray-900 text-sm font-semibold">
-        <div class="flex space-x-2">
-          <div class="text-gray-800 text-sm  font-bold ">
+        <div class="flex space-x-2 " >
+          <div class="text-gray-800 dark:text-white text-sm  font-bold ">
             {{op.NoOrden}}
           </div>
-          <div class="text-gray-600 text-sm  font-medium font-roboto">
+          <div class="text-gray-600 dark:text-white text-sm  font-medium font-roboto">
             {{op.NombreTrabajo}}
           </div>        
-          <div class="text-gray-700 text-sm font-light">
+          <div class="text-gray-700  dark:text-white text-sm font-light">
             {{op.CantidadEntregar | number:'1.0-0'}} piezas
           </div>        
         </div>      

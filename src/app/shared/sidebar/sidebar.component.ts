@@ -42,11 +42,11 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
   ];
   
   ngAfterViewInit(): void {
-    document.querySelectorAll('.pathItem').forEach((element) => {
-      element.addEventListener('click', () => {        
-        //this.uiService.closeSidebar();
-      });
-    });
+    // document.querySelectorAll('.pathItem').forEach((element) => {
+    //   element.addEventListener('click', () => {        
+    //     //this.uiService.closeSidebar();
+    //   });
+    // });
   }
   ngOnInit(): void {
     
