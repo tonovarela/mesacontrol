@@ -34,8 +34,8 @@ export class MetricsService {
      });
   }
 
-  buscarPorPatron(patron: string) {
-    return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/orden/buscar`,{patron});
+  buscarPorPatron(patron: string,paraProducion:boolean = false) {
+    return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/orden/buscar?produccion=${paraProducion}`,{patron});
   }
 
 

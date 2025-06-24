@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, output, input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, output, input, OnInit, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 
@@ -26,25 +26,30 @@ export class SearchMetricsComponent implements OnInit {
 
 
 
+
+
   public typeSearch = input.required();
 
 
   private valorQuerySubject: Subject<string> = new Subject<string>();  
   private metrisService = inject(MetricsService);
   
+  paraProduccion = computed(() => {
+    return this.typeSearch() === 1;
+  });
 
 
   constructor() {
     
     this.valorQuerySubject.pipe(
-      switchMap(query => { return this.metrisService.buscarPorPatron(query) })
+      switchMap(query => { return this.metrisService.buscarPorPatron(query,this.paraProduccion()) })
     ).subscribe((response) => {
       this.cargandoBusqueda.set(false);
       this.OPsBusqueda.set(response.ordenes);
     })
   }
   ngOnInit(): void {
-    //console.log("TypeSearch", this.typeSearch());
+    console.log("TypeSearch", this.typeSearch());
   }
 
   async onSelect({ value }: { value: OrdenMetrics }) {

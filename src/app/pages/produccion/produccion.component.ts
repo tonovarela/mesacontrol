@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 
@@ -13,6 +14,8 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 export default class ProduccionComponent { 
 
    public type= TypeSearchMetrics.PRODUCCION;
-  onSelectOrder(order: any): void {
+  onSelectOrder(order?: OrdenMetrics ): void {    
+    console.log('Selected order:', order);
+    // Aquí puedes manejar la orden seleccionada, por ejemplo, enviarla a un servicio o
   }
 }
