@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { StatusSesion, StatutLogin } from '@app/interfaces/models/Usuario';
 import { LoginResponse } from '@app/interfaces/responses/LoginResponse';
+import { ResponseOperador } from '@app/interfaces/responses/ResponseOperador';
 
 import { environment } from '@environments/environment.development';
 import { delay, firstValueFrom } from 'rxjs';
@@ -54,6 +55,11 @@ export class UsuarioService {
     
       logout() {  
         this._statusSesion.set({ usuario: undefined, estatus: StatutLogin.LOGOUT });
+      }
+
+
+      buscarOperador(patron:string) {
+          return this.http.post<ResponseOperador>(`${this.URL}/operador/buscar`,{patron})
       }
     
 }

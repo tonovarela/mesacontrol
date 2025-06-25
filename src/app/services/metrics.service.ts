@@ -45,4 +45,7 @@ export class MetricsService {
     return this.http.post(`${this.API_URL}/api/orden`,{orden:{NoOrden,TipoProd}});    
   }
 
+
+  
+
 }

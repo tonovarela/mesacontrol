@@ -1,6 +1,60 @@
-<div id="initial" class="flex flex-col">
+<div id="initial" >
     <div class="py-1 px-2  w-full ">
+        <h1>Buscar Metrics </h1>
         <search-metrics  [typeSearch]="type"   (onSelectOrder)="onSelectOrder($event)"></search-metrics>
-
     </div>
+    <div class="py-1 px-2  w-full ">        
+        <search-employee  placeholder="Buscar operador" (onSelectEmployee)="onSelectOperador($event)" ></search-employee>
+    </div>
+    <div class="py-1 px-2  w-full ">        
+        <search-employee  placeholder="Buscar supervisor" (onSelectEmployee)="onSelectSupervisor($event)" ></search-employee>
+    </div>
+    
+
+    @if(currentOrder() !=null) {       
+        <!-- <h1>{{currentOrder() | json}}</h1> -->
+        @if(currentOrder().length == 0) 
+        {
+            <div class="w-full h-fit overflow-auto border-2 border-spacing-2 border-gray-300 rounded-lg bg-white p-2">
+                <p class="text-center text-gray-500">No se encontraron resultados</p>
+            </div>
+        }
+        @else
+       {        
+        <!-- <pre>
+            {{currentOrder() | json}}
+        </pre> -->
+        <div class="w-full h-fit overflow-auto border-2 border-spacing-2 border-gray-300 rounded-lg bg-white p-2">
+            <table class="mx-auto w-auto bg-white border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100 text-start">
+                        <th class="py-2 px-4 border-b">Proceso</th>
+                        <th class="py-2 px-4 border-b">Componente</th>
+                        <th class="py-2 px-4 border-b">Pliego</th>
+                        <th class="py-2 px-4 border-b">Entrada</th>
+                        <th class="py-2 px-4 border-b">Muestra</th>
+                    </tr>                    
+                </thead>
+                <tbody>
+                @for(orden of currentOrder(); track orden.id_produccion ) { 
+                                       
+                    <tr class="text-center">                    
+                        <td class="p-2 border-b">
+                            <p>{{orden.id_produccion}}</p>
+                            <p>{{ orden.proceso}}</p>
+                        
+                        </td>
+                        <td class="p-2 border-b">{{ orden.componente}}</td>
+                        <td class="p-2 border-b">{{ orden.pliego}}</td>
+                        <td class="p-2 border-b">{{ orden.entrada}}</td>
+                        <td class="p-2 border-b">{{ orden.muestra}}</td>
+                    </tr>
+                }
+                </tbody>                                                                    
+            </table>
+        </div>
+    }       
+
+
+}
 </div>

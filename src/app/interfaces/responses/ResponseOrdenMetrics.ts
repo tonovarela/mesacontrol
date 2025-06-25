@@ -33,6 +33,27 @@ export interface OrdenMetrics {
 }
 
 
+export interface ResponseDetalleOrdenProduccion {
+    detalle: Detalle[];
+}
+
+export interface Detalle {
+    id_produccion: string;
+    orden_metrics: string;
+    proceso:       string;
+    componente:    string;
+    pliego:        string;
+    entrada:       string;
+    muestra:       string;
+}
+
+
+
+
+
+
+
+
 
 
 

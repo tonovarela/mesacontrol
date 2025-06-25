@@ -49,7 +49,7 @@ export class SearchMetricsComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-    console.log("TypeSearch", this.typeSearch());
+ //   console.log("TypeSearch", this.typeSearch());
   }
 
   async onSelect({ value }: { value: OrdenMetrics }) {
