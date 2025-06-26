@@ -44,7 +44,8 @@ export interface Detalle {
     componente:    string;
     pliego:        string;
     entrada:       string;
-    muestra:       string;
+    muestra:       number;
+    tiros:         number;
 }
 
 
