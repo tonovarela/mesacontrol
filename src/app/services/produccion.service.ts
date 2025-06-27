@@ -14,4 +14,16 @@ export class ProduccionService {
         return this.http.get<ResponseDetalleOrdenProduccion>(`${this.API_URL}/api/produccion/detalle/${orden}`);
     }
 
+    actualizarVoBo(id_produccion: string, voBo: boolean) {
+        return this.http.put(`${this.API_URL}/api/produccion/vobo`, { request:{voBo,id_produccion} });
+    }
+
+    finalizarMuestra(request:{id_produccion: string, id_usuario: string}) {
+        return this.http.put(`${this.API_URL}/api/produccion/finalizar`, { request });
+    }
+
+    registrarMuestra(request: any) {
+        return this.http.post(`${this.API_URL}/api/produccion/muestra`, { request });
+    }
+
 }

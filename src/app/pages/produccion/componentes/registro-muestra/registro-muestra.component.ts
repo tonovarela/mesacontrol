@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { PrimeModule } from '@app/lib/prime.module';
-import { SearchEmployeeComponent } from '../search-employee/search-employee.component';
+
 import { environment } from '@environments/environment.development';
 import { Detalle } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { FormsModule } from '@angular/forms';
+import { SearchEmployeeComponent } from '@app/shared/search-employee/search-employee.component';
+import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
 
 interface Operador {
   NoOperador: string;
@@ -12,15 +14,18 @@ interface Operador {
   Avatar: string;
 }
 
+
+
+
 @Component({
   selector: 'registro-muestra',
-  imports: [PrimeModule,CommonModule,SearchEmployeeComponent,FormsModule],
+  imports: [PrimeModule, CommonModule, SearchEmployeeComponent, FormsModule],
   templateUrl: './registro-muestra.component.html',
   styleUrl: './registro-muestra.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegistroMuestraComponent { 
-    BASE_AVATAR_URL = environment.baseAvatarUrl;
+export class RegistroMuestraComponent {
+  BASE_AVATAR_URL = environment.baseAvatarUrl;
   @Input() set muestra(value: any) {
     if (value) {
       this.selectedMuestra.set(value);
@@ -29,24 +34,24 @@ export class RegistroMuestraComponent {
       this.visible.set(false);
     }
   }
-  
+
   @Output() onClose = new EventEmitter<void>();
-  @Output() onSave = new EventEmitter<{muestra: Detalle, operador: string, supervisor: string}>();
+  @Output() onSave = new EventEmitter<RegistroMuestra>();
 
   visible = signal(false);
   selectedMuestra = signal<Detalle | null>(null);
   selectedOperador = signal<Operador | null>(null);
   selectedSupervisor = signal<Operador | null>(null);
 
-  numMuestras: number = 1;
+  numMuestras: number = 0;
   vobo: boolean = false;
 
   onSelectOperador(operador: any) {
-    this.selectedOperador.set({...operador,Avatar: `${this.BASE_AVATAR_URL}/${operador.NoOperador}`});
+    this.selectedOperador.set({ ...operador, Avatar: `${this.BASE_AVATAR_URL}/${operador.NoOperador}` });
   }
 
   onSelectSupervisor(supervisor: any) {
-    this.selectedSupervisor.set({...supervisor, Avatar: `${this.BASE_AVATAR_URL}/${supervisor.NoOperador}`});
+    this.selectedSupervisor.set({ ...supervisor, Avatar: `${this.BASE_AVATAR_URL}/${supervisor.NoOperador}` });
   }
 
   clearOperador() {
@@ -65,11 +70,18 @@ export class RegistroMuestraComponent {
     this.onClose.emit();
   }
   processSamples() {
-    this.onSave.emit({
-      muestra: this.selectedMuestra()!,
+    if (isNaN(this.numMuestras) || +this.numMuestras <= 0) {
+      return;
+    }
+    this.onSave.emit({ 
+      detalle: this.selectedMuestra()!,
+      muestraRegistrada: +this.numMuestras,
       operador: this.selectedOperador()?.NoOperador || '-1',
       supervisor: this.selectedSupervisor()?.NoOperador || '-1'
-    });
+     });
     this.closeDialog();
   }
+
+
+
 }

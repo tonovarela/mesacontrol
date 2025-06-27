@@ -1,0 +1,29 @@
+
+<div class="mb-6 mx-auto max-w-2xl bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 border-b border-gray-100 dark:border-gray-800">
+        <div class="flex items-center mb-2 sm:mb-0">
+            <div class="h-8 w-1 bg-blue-500 dark:bg-blue-400 rounded mr-3"></div>
+            <h2 class="text-lg font-medium text-gray-800 dark:text-gray-200">
+                Información de la Orden
+            </h2>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full text-xs bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
+            {{ order().NoOrden || 'Sin orden' }}
+        </span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 p-4">
+        <div>
+            <p class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Nombre del trabajo</p>
+            <p class="text-gray-700 dark:text-gray-300">{{ order().NombreTrabajo|| 'N/A' }}</p>
+        </div>
+        <div>
+            <p class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Cliente</p>
+            <p class="text-gray-700 dark:text-gray-300">{{ order().NombreCliente || 'N/A' }}</p>
+        </div>
+        <div>
+            <p class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">Cantidad a Entregar</p>
+            <p class="text-gray-700 dark:text-gray-300">{{ order().CantidadEntregar || 'N/A' }}</p>
+        </div>
+    </div>
+    </div>

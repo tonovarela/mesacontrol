@@ -47,11 +47,13 @@ export interface EstadoMuestra {
 export interface Detalle {
     id_produccion: string;
     orden_metrics: string;
+    id_estado: string;
     proceso:       string;
     componente:    string;
     pliego:        string;
     entrada:       string;
     muestra:       number;
+    acumulado:      number;
     tiros:         number;
     voBo:          boolean | string; // Puede ser booleano o string dependiendo del origen de los datos
     id_estado_muestra: number;
