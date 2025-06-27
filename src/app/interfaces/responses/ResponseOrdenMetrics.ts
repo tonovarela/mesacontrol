@@ -35,6 +35,13 @@ export interface OrdenMetrics {
 
 export interface ResponseDetalleOrdenProduccion {
     detalle: Detalle[];
+    estadoMuestras: EstadoMuestra[];
+}
+
+
+export interface EstadoMuestra {
+    id_estado_muestra: number;
+    descripcion: string;
 }
 
 export interface Detalle {
@@ -46,7 +53,10 @@ export interface Detalle {
     entrada:       string;
     muestra:       number;
     tiros:         number;
+    voBo:          boolean | string; // Puede ser booleano o string dependiendo del origen de los datos
+    id_estado_muestra: number;
 }
+
 
 
 

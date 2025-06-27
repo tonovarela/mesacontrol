@@ -22,12 +22,14 @@
                         <th class="py-2 px-4 border-b dark:border-gray-600 text-gray-700 dark:text-gray-300">Entrada</th>
                         <th class="py-2 px-4 border-b dark:border-gray-600 text-gray-700 dark:text-gray-300">Tiros</th>
                         <th class="py-2 px-4 border-b dark:border-gray-600 text-gray-700 dark:text-gray-300">Muestra</th>
+                        <th class="py-2 px-4 border-b dark:border-gray-600 text-gray-700 dark:text-gray-300">Acumulado</th>
+                        <th class="py-2 px-4 border-b dark:border-gray-600 text-gray-700 dark:text-gray-300">VoBo</th>
+                        <th class="py-2 px-4 border-b dark:border-gray-600 text-gray-700 dark:text-gray-300">Estado</th>
                     </tr>                    
                 </thead>
                 <tbody>
                 @for(orden of currentOrder(); track orden.id_produccion ) {                                        
-                    <tr class="text-center hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer"                     
-                    (click)="selectMuestra(orden)"
+                    <tr class="text-center hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer"                                         
                     [ngClass]="{'bg-blue-100 dark:bg-blue-800/30': selectedMuestra()?.id_produccion === orden.id_produccion}">                                            
                         <td class="p-2 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ orden.proceso}}</td>
                         <td class="p-2 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ orden.componente}}</td>
@@ -35,6 +37,43 @@
                         <td class="p-2 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ orden.entrada}}</td>
                         <td class="p-2 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ orden.tiros}}</td>
                         <td class="p-2 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ orden.muestra}}</td>
+                        <td class="p-2 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ orden.acumulado}}</td>                        
+                        <td class="p-2 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">
+                            <div class="flex items-center">
+                                <div class="relative inline-block">
+                                    <input 
+                                        type="checkbox" 
+                                        [id]="orden.id_produccion" 
+                                        [(ngModel)]="orden.voBo"
+                                        class="peer sr-only"
+                                    >
+                                    <label 
+                                        [for]="orden.id_produccion"
+                                        class="flex h-5 w-5 cursor-pointer items-center justify-center rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 transition-colors peer-checked:bg-blue-500 dark:peer-checked:bg-blue-600 peer-checked:border-blue-500 dark:peer-checked:border-blue-600 peer-focus:ring-2 peer-focus:ring-blue-500 dark:peer-focus:ring-blue-400 peer-focus:ring-offset-2 dark:peer-focus:ring-offset-gray-800"
+                                    >
+                                        <svg 
+                                            class="h-3 w-3 text-white opacity-0 transition-opacity peer-checked:opacity-100" 
+                                            xmlns="http://www.w3.org/2000/svg" 
+                                            viewBox="0 0 20 20" 
+                                            fill="currentColor"
+                                        >
+                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                        </svg>
+                                    </label>
+                                </div>
+                                <label for="voboCheck" class="ml-2 block text-sm text-gray-700 dark:text-gray-300 cursor-pointer select-none">                                
+                                </label>
+                            </div>
+                            
+                        </td>
+                        <td class="p-2 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">
+                            @if(orden.id_estado=="1"){
+                                <button class="bg-blue-500 text-md text-white px-1 rounded hover:bg-blue-600" (click)="cerrarMuestra(orden.id_produccion)">Finalizar</button>
+                            }@else{
+                                <span class="text-green-500 dark:text-green-400">✔</span>
+                            }
+
+                        </td>
                     </tr>
                 }
                 </tbody>                                                                    
@@ -43,11 +82,5 @@
     }       
 }
 </div>
-
 <!-- Usa el nuevo componente de diálogo -->
-<registro-muestra
-    [muestra]="selectedMuestra()" 
-    (onClose)="onCloseDialog()" 
-    (onSave)="onSaveMuestra($event)"
-    >
-</registro-muestra>
+<registro-muestra [muestra]="selectedMuestra()"  (onClose)="onCloseDialog()"  (onSave)="onSaveMuestra($event)"></registro-muestra>
