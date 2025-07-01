@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
 
@@ -8,7 +8,7 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 import { Detalle, EstadoMuestra, OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { UiService, ProduccionService, UsuarioService } from '@app/services';
+import { UiService, ProduccionService, UsuarioService, PdfService } from '@app/services';
 import { OrderMetricsComponent } from './componentes/order-metrics/order-metrics.component';
 import { RegistroMuestraComponent } from './componentes/registro-muestra/registro-muestra.component';
 import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
@@ -27,11 +27,15 @@ interface CurrentOrder {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export default class ProduccionComponent {
+export default class ProduccionComponent implements OnInit {
+  ngOnInit(): void {
+    this.pdfService.obtenerPDF().then(() => {console.log('PDF generated successfully'); });
+  }
   public type = TypeSearchMetrics.PRODUCCION;
   private produccionService = inject(ProduccionService);
   private usuarioService = inject(UsuarioService);
   private uiService = inject(UiService);
+  private pdfService = inject(PdfService)
   private _currentOrder = signal<CurrentOrder | null>(null);
   public estadosMuestra = signal<EstadoMuestra[]>([]);
   public selectedMuestra = signal<Detalle | null>(null);
