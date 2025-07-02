@@ -22,12 +22,12 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const formatedDate = `${day}/${month}/${year} ${hours}:${minutes} hrs`;
   const docDefinition: TDocumentDefinitions = {
-    pageSize: 'A5',    
-    pageOrientation: 'landscape',        
-    content: [      
+    pageSize: 'A5',
+    pageOrientation: 'landscape',
+    content: [
       { image: `data:image/png;base64,${logoLito}`,  width: 150, margin: 5, fontSize: 7,  alignment: 'left' },
       {
-        style: 'tableExample',
+        style: 'container',
         table: {
           widths: ['*', '*'],
           body: [
@@ -36,98 +36,98 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
         }
       },
       {
-        style: 'tableExample',
+        style: 'container',
         table: {
           widths: [100, '*'],
           body: [
             [{ text: `Nombre:  `, fillColor: '#cccccc' }, `${props.nombre_trabajo}`],
-            [{ text: `Cliente:`, fillColor: '#cccccc' }, ` ${props.cliente}`]            
+            [{ text: `Cliente:`, fillColor: '#cccccc' }, ` ${props.cliente}`]
           ]
         }
       },
       {
-        style: 'tableExample',
+        style: 'container',
         table: {
           widths: [120, 100, '*', '*', 1],
           body: [
             [
-              { text: 'VALIDACION DE ELEMENTOS', margin: [0, 10, 0, 0],style: 'tableHeader', alignment: 'center', fillColor: '#cccccc',colSpan: 2,rowSpan: 2 },
+              { text: 'VALIDACION DE ELEMENTOS', margin: [0, 10, 0, 0],style: 'tableHeader', alignment: 'center', fillColor: '#cccccc',colSpan: 2,rowSpan: 1 },
               { text: '', alignment: 'left', fillColor: '#cccccc' },
-              { text: 'CUMPLE', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc', colSpan: 3 },
-              { text: '', alignment: 'center' },
-              { text: '', alignment: 'center' }
+              { text: 'CUMPLE', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc', },
+              // { text: '', alignment: 'center' },
+              //  { text: '', alignment: 'center' }
             ],
             [
               { text: '', alignment: 'center' },
               { text: '', alignment: 'center' },
               { text: 'FECHA DE APROBACIÓN', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc' },
-              { text: 'N/A', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc',colSpan: 2 },
-              { text: '', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc' },
-              
+              // { text: 'N/A', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc',colSpan: 2 },
+              // { text: '', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc' },
+
             ],
             [
               { text: 'Liberación al cliente', alignment: 'left',margin: [0, 10, 0, 0],rowSpan:2 },
-              { text: 'Prueba de color', margin: [10, 0, 0, 0] },              
-              { text: props.fecha_liberacion[0]?`${props.fecha_liberacion[0]}`:'', alignment: 'center' },
-              { text: `${!props.fecha_liberacion[0]?'X':''}`, alignment: 'center' ,colSpan: 2},
-              
+              { text: 'Prueba de color', margin: [10, 0, 0, 0] },
+              { text: props.fecha_liberacion[0]?`${props.fecha_liberacion[0]}`:'NO APLICA', alignment: 'center' },
+              // { text: `${!props.fecha_liberacion[0]?'X':''}`, alignment: 'center' ,colSpan: 2},
+
             ],
             [
               { text: '', alignment: 'left'  },
               { text: 'Dummy vestido', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[1]?`${props.fecha_liberacion[1]}`:'', alignment: 'center' },
-              { text: `${!props.fecha_liberacion[1]?'X':''}`, alignment: 'center' ,colSpan: 2},
-              
+              { text: props.fecha_liberacion[1]?`${props.fecha_liberacion[1]}`:'NO APLICA', alignment: 'center' },
+              // { text: `${!props.fecha_liberacion[1]?'X':''}`, alignment: 'center' ,colSpan: 2},
+
             ],
-            
+
             [
               { text: 'Liberación sobre viajero', margin: [0, 25, 0, 0], alignment: 'left' ,rowSpan: 4},
               { text: 'Prueba de color', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[2]?`${props.fecha_liberacion[2]}`:'', alignment: 'center' },
-              { text: `${!props.fecha_liberacion[2]?'X':''}`, alignment: 'center' ,colSpan: 2},
-              
+              { text: props.fecha_liberacion[2]?`${props.fecha_liberacion[2]}`:'NO APLICA', alignment: 'center' },
+              // { text: `${!props.fecha_liberacion[2]?'X':''}`, alignment: 'center' ,colSpan: 2},
+
             ],
             [
               { text: '', alignment: 'left' },
               { text: 'Dummy blanco', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[3]?`${props.fecha_liberacion[3]}`:'', alignment: 'center' },
-              { text: `${!props.fecha_liberacion[3]?'X':''}`, alignment: 'center' ,colSpan: 2},
-              
+              { text: props.fecha_liberacion[3]?`${props.fecha_liberacion[3]}`:'NO APLICA', alignment: 'center' },
+              // { text: `${!props.fecha_liberacion[3]?'X':''}`, alignment: 'center' ,colSpan: 2},
+
             ],
             [
               { text: '', alignment: 'left' },
               { text: 'Dummy vestido', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[4]?`${props.fecha_liberacion[4]}`:'', alignment: 'center' },
-              { text: `${!props.fecha_liberacion[4]?'X':''}`, alignment: 'center' ,colSpan: 2},
-              
+              { text: props.fecha_liberacion[4]?`${props.fecha_liberacion[4]}`:'NO APLICA', alignment: 'center' },
+              // { text: `${!props.fecha_liberacion[4]?'X':''}`, alignment: 'center' ,colSpan: 2},
+
             ],
             [
               { text: '', alignment: 'left' },
               { text: 'Liberacion', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[5]?`${props.fecha_liberacion[5]}`:'', alignment: 'center' },
-              { text: `${!props.fecha_liberacion[5]?'X':''}`, alignment: 'center' ,colSpan: 2},
-              
-            ],        
-            
+              { text: props.fecha_liberacion[5]?`${props.fecha_liberacion[5]}`:'NO APLICA', alignment: 'center' },
+              // { text: `${!props.fecha_liberacion[5]?'X':''}`, alignment: 'center' ,colSpan: 2},
+
+            ],
+
           ]
         }
       },
-      
+
       {
-        style: 'tableExample',
+        style: 'container',
         table: {
           widths: ['*'],
-          body: [            
+          body: [
             [
-                          
+
               { text: `  ${props.usuario}`, alignment: 'center' }
             ]
           ]
         }
       },
-      
+
       {
-        style: 'tableExample',
+        style: 'container',
         table: {
           widths: [50, '*'],
           body: [
@@ -148,7 +148,7 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
         bold: true,
         margin: [0, 0, 0, 10]
       },
-      tableExample: {
+      container: {
         fontSize:8,
         margin: [0, 5, 0, 5]
       },
@@ -165,7 +165,7 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
 
 
 
- 
-  
+
+
   return docDefinition;
 };
