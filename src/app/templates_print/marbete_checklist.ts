@@ -22,6 +22,8 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
   const minutes = String(date.getMinutes()).padStart(2, '0');
   const formatedDate = `${day}/${month}/${year} ${hours}:${minutes} hrs`;
   const docDefinition: TDocumentDefinitions = {
+    pageSize: 'A5',    
+    pageOrientation: 'landscape',        
     content: [      
       { image: `data:image/png;base64,${logoLito}`,  width: 150, margin: 5, fontSize: 7,  alignment: 'left' },
       {
@@ -130,8 +132,8 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
           widths: [50, '*'],
           body: [
             [
-              { text: 'NOTA:', fillColor: '#cccccc' },
-              { 
+              { text: 'NOTA:', fillColor: '#cccccc',fontSize:10 },
+              { fontSize:8,
                 text: 'Por ningun motivo el usuario del sobre viajero debe de manipular los elementos ya que estos son autorizados por el cliente. Si ya terminaste de ocupar el sobre, favor de regresarlo al area responsable ya que otros procesos lo necesitan.',
                 alignment: 'center'
               }
@@ -142,11 +144,12 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
     ],
     styles: {
       header: {
-        fontSize: 14,
+        fontSize: 10,
         bold: true,
         margin: [0, 0, 0, 10]
       },
       tableExample: {
+        fontSize:8,
         margin: [0, 5, 0, 5]
       },
       tableHeader: {
@@ -156,7 +159,7 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
       }
     },
     defaultStyle: {
-      fontSize: 10
+      fontSize: 8
     }
   };
 
