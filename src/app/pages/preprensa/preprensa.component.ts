@@ -6,7 +6,7 @@ import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { MetricsService, UiService, CheckListService, PdfService, UsuarioService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { GridComponent, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import {  TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';

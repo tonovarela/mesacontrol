@@ -1,0 +1,10 @@
+.e-grid .e-rowcell {
+  font-size: 12px; 
+  @apply  font-roboto;
+  
+}
+
+.e-grid .e-gridheader{
+  font-size: 14px;
+  @apply rounded-t-lg;
+}

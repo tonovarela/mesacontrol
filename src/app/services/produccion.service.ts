@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { ResponseDetalleOrdenProduccion } from "@app/interfaces/responses/ResponseOrdenMetrics";
+import { ResponseDetalleOrdenProduccion, ResponseOrdenMetrics } from "@app/interfaces/responses/ResponseOrdenMetrics";
 import { environment } from "@environments/environment.development";
 
 @Injectable({
@@ -9,6 +9,10 @@ import { environment } from "@environments/environment.development";
 export class ProduccionService {
     private readonly API_URL = environment.apiUrl;
     http = inject(HttpClient);
+
+    listar(){
+        return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/produccion`);
+    }
 
     detalle(orden: string) {
         return this.http.get<ResponseDetalleOrdenProduccion>(`${this.API_URL}/api/produccion/detalle/${orden}`);
