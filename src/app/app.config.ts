@@ -3,12 +3,9 @@ import { provideRouter, withHashLocation } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-//import Material from '@primeng/themes/material';
-import Nora from '@primeng/themes/nora';
 import { provideHttpClient } from '@angular/common/http';
 import { definePreset } from '@primeng/themes';
-//import MyPreset from './mypreset';
-//import MyPreset from './mypreset';
+import Nora from '@primeng/themes/nora';
 
 
 const MyPreset = definePreset(Nora, {

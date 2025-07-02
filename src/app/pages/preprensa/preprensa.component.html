@@ -1,6 +1,5 @@
 <div class="relative">
 
- 
 
 @if(cargando() ){
     <div class="flex flex-col space-y-6 justify-center items-center py-8 ">
@@ -14,9 +13,10 @@
     }
     @else {    
     <div id="initial" class="flex flex-col">
-        <div class="py-1 px-2  w-full ">
+        <div class="py-1 px-2 space-x-6  flex flex-row ">
+            <h1 class="text-2xl text-slate-500 " style="white-space: nowrap;"> {{titulo()}}</h1>
             @if(verPendientes()){
-            <search-metrics  [typeSearch]="type"   (onSelectOrder)="onSelectOrder($event)"></search-metrics>
+                <div class="w-full"><search-metrics  [typeSearch]="type"   (onSelectOrder)="onSelectOrder($event)"></search-metrics></div>            
             }
         </div>
         <div class="px-1  overflow-auto">

@@ -48,64 +48,57 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
       {
         style: 'container',
         table: {
-          widths: [120, 100, '*', '*', 1],
+          widths: [120,  '*', '*'],
           body: [
             [
-              { text: 'VALIDACION DE ELEMENTOS', margin: [0, 10, 0, 0],style: 'tableHeader', alignment: 'center', fillColor: '#cccccc',colSpan: 2,rowSpan: 1 },
+              { text: 'VALIDACION DE ELEMENTOS', margin: [0, 10, 0, 0],style: 'tableHeader', alignment: 'center', fillColor: '#cccccc',colSpan: 1,rowSpan: 1 },
               { text: '', alignment: 'left', fillColor: '#cccccc' },
-              { text: 'CUMPLE', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc', },
-              // { text: '', alignment: 'center' },
-              //  { text: '', alignment: 'center' }
+              { text: '', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc', },
+        
             ],
             [
               { text: '', alignment: 'center' },
-              { text: '', alignment: 'center' },
-              { text: 'FECHA DE APROBACIÓN', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc' },
-              // { text: 'N/A', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc',colSpan: 2 },
-              // { text: '', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc' },
+              { text: 'CHECKLIST', alignment: 'center',style: 'tableHeader' },
+              { text: 'FECHA DE APROBACIÓN', style: 'tableHeader', alignment: 'center' },
+        
 
             ],
             [
               { text: 'Liberación al cliente', alignment: 'left',margin: [0, 10, 0, 0],rowSpan:2 },
               { text: 'Prueba de color', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[0]?`${props.fecha_liberacion[0]}`:'NO APLICA', alignment: 'center' },
-              // { text: `${!props.fecha_liberacion[0]?'X':''}`, alignment: 'center' ,colSpan: 2},
+              { text: props.fecha_liberacion[0]?`${props.fecha_liberacion[0]}`:'NO APLICA', alignment: 'center' },        
 
             ],
             [
               { text: '', alignment: 'left'  },
               { text: 'Dummy vestido', margin: [10, 0, 0, 0] },
               { text: props.fecha_liberacion[1]?`${props.fecha_liberacion[1]}`:'NO APLICA', alignment: 'center' },
-              // { text: `${!props.fecha_liberacion[1]?'X':''}`, alignment: 'center' ,colSpan: 2},
+              
 
             ],
 
             [
               { text: 'Liberación sobre viajero', margin: [0, 25, 0, 0], alignment: 'left' ,rowSpan: 4},
               { text: 'Prueba de color', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[2]?`${props.fecha_liberacion[2]}`:'NO APLICA', alignment: 'center' },
-              // { text: `${!props.fecha_liberacion[2]?'X':''}`, alignment: 'center' ,colSpan: 2},
+              { text: props.fecha_liberacion[2]?`${props.fecha_liberacion[2]}`:'NO APLICA', alignment: 'center' },              
 
             ],
             [
               { text: '', alignment: 'left' },
               { text: 'Dummy blanco', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[3]?`${props.fecha_liberacion[3]}`:'NO APLICA', alignment: 'center' },
-              // { text: `${!props.fecha_liberacion[3]?'X':''}`, alignment: 'center' ,colSpan: 2},
+              { text: props.fecha_liberacion[3]?`${props.fecha_liberacion[3]}`:'NO APLICA', alignment: 'center' },              
 
             ],
             [
               { text: '', alignment: 'left' },
               { text: 'Dummy vestido', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[4]?`${props.fecha_liberacion[4]}`:'NO APLICA', alignment: 'center' },
-              // { text: `${!props.fecha_liberacion[4]?'X':''}`, alignment: 'center' ,colSpan: 2},
+              { text: props.fecha_liberacion[4]?`${props.fecha_liberacion[4]}`:'NO APLICA', alignment: 'center' },              
 
             ],
             [
               { text: '', alignment: 'left' },
               { text: 'Liberacion', margin: [10, 0, 0, 0] },
               { text: props.fecha_liberacion[5]?`${props.fecha_liberacion[5]}`:'NO APLICA', alignment: 'center' },
-              // { text: `${!props.fecha_liberacion[5]?'X':''}`, alignment: 'center' ,colSpan: 2},
 
             ],
 
@@ -154,7 +147,7 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
       },
       tableHeader: {
         bold: true,
-        fontSize: 10,
+        fontSize: 8,
         color: 'black'
       }
     },

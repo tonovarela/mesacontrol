@@ -48,6 +48,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   public wrapSettings?: TextWrapSettingsModel;
   public catalogoTiposProductos= computed(() => this.metricsService.TipoMateriales());
 
+  public titulo = signal<string>('');
 
   constructor() {
     super();
@@ -105,6 +106,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     });
     
     this.activatedRouter.data.subscribe((data) => {
+      this.titulo.set(data['titulo'] || '');
       const pendientes = data['pendientes'] || false;      
       this._verPendientes.set(pendientes);
       this.cargarInformacion();            
