@@ -60,7 +60,7 @@
            @for(ruta of rutasPreprensa; track ruta.nombre) {
              <li class="mt-1 space-y-1">
                <a [routerLink]="ruta.path" class="pathItem flex items-center p-1 cursor-pointer" routerLinkActive="selected" (click)="closeSidebar()">
-                 <img [src]="ruta.icono" class="w-8 h-8 svg-icon" />
+                 <img [src]="ruta.icono"  [class]="ruta.claseSize"   />
                  <span class="ms-3 text-[12px]">{{ruta.nombre}}</span>
                </a>
              </li>

@@ -8,6 +8,7 @@ export const routes: Routes = [
     children: [
       { path: "pendientes", data: { pendientes: true }, loadComponent: () => import('./pages/preprensa/preprensa.component') },
       { path: "liberadas", data: { pendientes: false }, loadComponent: () => import('./pages/preprensa/preprensa.component') },
+      { path: "omisiones", loadComponent: () => import('./pages/omisiones/omisiones.component') },
       { path: '**', redirectTo: 'pendientes' }
     ]
   },

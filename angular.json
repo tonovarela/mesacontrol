@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",          
           "options": {
-            "allowedCommonJsDependencies": ["sweetalert2"],
+            "allowedCommonJsDependencies": ["sweetalert2","pdfmake/build/pdfmake","pdfmake/build/vfs_fonts"],
             "outputPath": "dist/mesacontrol",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -52,7 +52,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "4MB",
+                  "maximumWarning": "8MB",
                   "maximumError": "10MB"
                 },
                 {

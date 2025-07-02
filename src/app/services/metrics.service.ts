@@ -27,6 +27,10 @@ export class MetricsService {
     
   }
 
+  omisiones(){
+    return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/orden?omisiones=true`);
+  }
+
    cargarCatalogoTipoMateriales() {
      this.http.get<ResponseMateriales>(`${this.API_URL}/api/orden/materiales`)
      .subscribe(response=>{

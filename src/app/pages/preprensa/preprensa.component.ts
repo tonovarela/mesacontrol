@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { MetricsService, UiService, CheckListService } from '@app/services';
+import { MetricsService, UiService, CheckListService, PdfService, UsuarioService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { GridComponent, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
@@ -14,6 +14,7 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, Type, ViewChild } from '@angular/core';
 import { columnas } from '../data/columnas';
 import { TypeSearchMetrics } from '@app/interfaces/type';
+import { formatDate } from '../../utils/formatDate';
 
 
 @Component({
@@ -30,12 +31,13 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   protected minusHeight = 0.30;
   private metricsService = inject(MetricsService);
   private checkListService = inject(CheckListService);
+  private pdfService = inject(PdfService);
   private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
   private _verPendientes= signal<boolean>(true);
   private router = inject(Router);
   private activatedRouter = inject(ActivatedRoute);
-
+ private usuarioService = inject(UsuarioService);
 
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
   public ordenesMetrics = computed(() => this._ordenesMetrics());
@@ -55,11 +57,22 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   columnasAuditoria = columnas;
 
 
-  t(){
-    const drawer = document.getElementById('logo-sidebar');
-    drawer!.classList.toggle('-translate-x-full');
-  }
   
+  async descargarPDF(data: any) {
+    
+    let liberacionesCheckList =this.columnasAuditoria.map((col) => {
+      const date = this.fechaLiberacion(data, col);
+      return !date? null : formatDate(date);      
+    });      
+    await this.pdfService.obtenerPDF( {
+      numero_orden: data?.NoOrden || '',
+      nombre_trabajo: data?.NombreTrabajo || '',
+      cliente: data?.NombreCliente || '',
+      fecha_liberacion:liberacionesCheckList,
+      usuario: this.usuarioService.StatusSesion()?.usuario?.nombre || ''      
+    });
+    
+  }
 
 
   fechaLiberacion(data: any,col:any)  {

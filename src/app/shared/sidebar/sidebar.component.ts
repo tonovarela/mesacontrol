@@ -7,6 +7,7 @@ interface Ruta {
   nombre: string;
   icono: string;
   path: string;
+  claseSize: string;
 }
 
 
@@ -23,13 +24,21 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
   public rutasPreprensa: Ruta[] = [
     {
       nombre: 'Pendientes',
+      claseSize: 'w-8 h-8 svg-icon',
       icono: 'assets/img/orders.svg',
       path: '/preprensa/pendientes'
     },
     {
       nombre: 'Liberadas',
+      claseSize: 'w-8 h-8 svg-icon',
       icono: 'assets/img/liberadas.svg',
       path: '/preprensa/liberadas'
+    },
+    {
+      nombre: 'Omisiones',
+      claseSize: 'w-8 h-8 svg-icon',
+      icono: 'assets/img/liberadas.svg',      
+      path: '/preprensa/omisiones'
     },
   ];
 
@@ -37,16 +46,13 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
     {
       nombre: 'Liberacion',
       icono: 'assets/img/orders.svg',
-      path: '/produccion/liberacion'
+      path: '/produccion/liberacion',
+      claseSize: 'w-8 h-8 svg-icon',
     },
   ];
   
   ngAfterViewInit(): void {
-    // document.querySelectorAll('.pathItem').forEach((element) => {
-    //   element.addEventListener('click', () => {        
-    //     //this.uiService.closeSidebar();
-    //   });
-    // });
+ 
   }
   ngOnInit(): void {
     

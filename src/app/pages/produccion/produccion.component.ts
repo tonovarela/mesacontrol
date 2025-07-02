@@ -29,7 +29,7 @@ interface CurrentOrder {
 
 export default class ProduccionComponent implements OnInit {
   ngOnInit(): void {
-    this.pdfService.obtenerPDF().then(() => {console.log('PDF generated successfully'); });
+
   }
   public type = TypeSearchMetrics.PRODUCCION;
   private produccionService = inject(ProduccionService);
@@ -65,6 +65,9 @@ export default class ProduccionComponent implements OnInit {
   }
 
 
+ 
+
+
   onSelectMuestra(muestra: any) {
     this.selectedMuestra.set(muestra);
   }
@@ -88,25 +91,25 @@ export default class ProduccionComponent implements OnInit {
     };
 
 
-    try{
+    try {
       await firstValueFrom(this.produccionService.registrarMuestra(request));
-      
+
       const orden = this.currentDetail()[0].orden_metrics;
       await this.loadDataOrder(orden);
-    }catch(error) {     
+    } catch (error) {
       this.uiService.mostrarAlertaError("Error al registrar muestra", "No se pudo registrar la muestra. Inténtalo de nuevo más tarde.");
-    
+
     }
-    
-  
+
+
   }
 
 
   async cerrarMuestra(id_produccion: string) {
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
-    const request = { id_produccion, id_usuario:`${id_usuario}` };
+    const request = { id_produccion, id_usuario: `${id_usuario}` };
     const response = await this.uiService.mostrarAlertaConfirmacion("Finalizar  Muestra", "¿Estás seguro de que deseas finalizar el registro de esta muestra?", "Si, finalizarla", "Cancelar")
-    if (!(response.isConfirmed)) {return;}
+    if (!(response.isConfirmed)) { return; }
     await firstValueFrom(this.produccionService.finalizarMuestra(request));
     const orden = this.currentDetail()[0].orden_metrics;
     await this.loadDataOrder(orden);
@@ -117,10 +120,10 @@ export default class ProduccionComponent implements OnInit {
   async onChangeVoBo(id_produccion: string, event: any) {
     const checked = event.target.checked;
     try {
-      await firstValueFrom(this.produccionService.actualizarVoBo(id_produccion, checked));      
+      await firstValueFrom(this.produccionService.actualizarVoBo(id_produccion, checked));
       const orden = this.currentDetail()[0].orden_metrics;
       await this.loadDataOrder(orden);
-    } catch (error) {      
+    } catch (error) {
       this.uiService.mostrarAlertaError("Error al actualizar VoBo", "No se pudo actualizar el estado de VoBo. Inténtalo de nuevo más tarde.");
     }
   }
