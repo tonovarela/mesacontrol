@@ -1,18 +1,8 @@
 <div id="initial" class="dark:bg-gray-900">
-    <div class="py-1 px-2 w-full">
-        <!-- <h1 class="dark:text-gray-200">Buscar Metrics</h1> -->
+    <div class="py-1 px-2 w-full">        
         <search-metrics [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
-    </div>
-    <!-- @if(currentOrder() !=null) {
-    @if(!cargandoDetalle() && currentDetail().length == 0  ) 
-    {
-    <div
-        class="w-full h-fit overflow-auto border-2 border-spacing-2 border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 p-2">
-        <p class="text-center text-gray-500 dark:text-gray-400">No se encontraron resultados</p>
-    </div>
-    }    
-    } -->
-    <div class="px-1">
+    </div>  
+    <div class="px-1 py-1">
         <div class="px-1">
             <div class="flex flex-row justify-between mb-2">
                 <div class="w-2/5">
@@ -22,14 +12,14 @@
                     [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
                     [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true
                     allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
-                    <e-columns>
+                    <e-columns>                        
                         <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
                         </e-column>
                         <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
                         </e-column>
                         <e-column field='Vendedor' [allowFiltering]="true" width=150>
                         </e-column>
-                        <e-column field='CantidadEntregar' [allowFiltering]="true" headerText='Cant' width=100>
+                        <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true" headerText='Cant' width=100>
                             <ng-template #template let-data>
                                 <div class="flex flex-col">
                                     <span>{{data.CantidadEntregar | number}}</span>
@@ -42,7 +32,13 @@
                 <div class="w-3/5 " >
                     <detalle-produccion 
                     [orden]="currentOrder()"
-                    [detalles]="currentDetail()" [selectedId]="selectedMuestra()?.id_produccion || null" (selectMuestra)="onSelectMuestra($event)" (cerrarMuestra)="cerrarMuestra($event)" (voBoChange)="onChangeVoBo($event.id, $event.event)" />
+                    [detalles]="currentDetail()" 
+                    [selectedId]="selectedMuestra()?.id_produccion || null"
+                    (selectMuestra)="onSelectMuestra($event)" 
+                    (cerrarMuestra)="cerrarMuestra($event)" 
+                    (voBoChange)="onChangeVoBo($event.id, $event.event)"
+                    (trazoChange)="onChangeTrazo($event.id, $event.event)">
+                    </detalle-produccion>
                 </div>            
             </div>
           

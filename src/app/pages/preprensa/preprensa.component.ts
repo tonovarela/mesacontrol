@@ -67,6 +67,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     });      
     await this.pdfService.obtenerPDF( {
       numero_orden: data?.NoOrden || '',
+      vendedor: data?.Vendedor || '',
       nombre_trabajo: data?.NombreTrabajo || '',
       cliente: data?.NombreCliente || '',
       fecha_liberacion:liberacionesCheckList,

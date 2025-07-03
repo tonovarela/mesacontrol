@@ -8,17 +8,15 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 import { Detalle, EstadoMuestra, OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { UiService, ProduccionService, UsuarioService } from '@app/services';
 
+import { UiService, ProduccionService, UsuarioService } from '@app/services';
 import { RegistroMuestraComponent } from '../../componentes/registro-muestra/registro-muestra.component';
 import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { DetailRowService, RowSelectEventArgs, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { DetailRowService,  TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { CurrentOrder } from '@app/interfaces/models/CurrrentOrder';
 import { DetalleProduccionComponent } from '../../componentes/detalle_produccion/detalle_produccion.component';
-
-
 
 
 @Component({
@@ -54,31 +52,38 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   public selectedMuestra = signal<Detalle | null>(null);
   public currentDetail = computed(() => this._currentOrder()?.detalle || []);
   public currentOrder = computed(() => this._currentOrder()?.order || null);
+
+
+
+
+
+
   async onSelectOrder(order: any) {
     this._currentOrder.set({
       order,
       detalle: []
     });
-    const { NoOrden: orden } = order;
+    const { NoOrden: orden } = order;    
     await this.loadDataOrder(orden);
+    await this.cargarOrdenes();
   }
 
   constructor() {
     super();
   }
 
+
   ngOnInit(): void {
     this.cargarOrdenes();
   }
 
-
   onRowSelected(args: any): void {
     const orden = args.data;
-    this.onSelectOrder(orden);    
-
+    this.onSelectOrder(orden);
   }
 
   async cargarOrdenes() {
+
     try {
       const response = await firstValueFrom(this.produccionService.listar());
       this._ordenesMetrics.set(response.ordenes);
@@ -93,37 +98,35 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     setTimeout(() => {
       this.iniciarResizeGrid(this.minusHeight);
     });
-
-
   }
 
-  async loadDataOrder(orden: string) {
-    this.cargandoDetalle.set(true);
 
+  async loadDataOrder(orden: string) {
+
+    this.cargandoDetalle.set(true);
     const response = await firstValueFrom(this.produccionService.detalle(orden));
     const newData = response.detalle.map((item: Detalle) => ({
       ...item,
+      trazo: item.trazo === '1' ? true : false, // Convertir el valor a booleano
       voBo: item.voBo === '1' ? true : false, // Convertir el valor a booleano
     }));
     this._currentOrder.update(orderModel => { return { ...orderModel, detalle: newData } });
     this.cargandoDetalle.set(false);
     this.estadosMuestra.set(response.estadoMuestras);
+
   }
-
-
 
 
   onSelectMuestra(muestra: any) {
     this.selectedMuestra.set(muestra);
   }
 
-
   onCloseDialog() {
     this.selectedMuestra.set(null);
   }
 
-
   async onSaveMuestra(registro: RegistroMuestra) {
+
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id;
     const { detalle, muestraRegistrada, operador, supervisor, } = registro
     const request = {
@@ -133,7 +136,6 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       id_usuario,
       muestra: muestraRegistrada
     };
-
     try {
       await firstValueFrom(this.produccionService.registrarMuestra(request));
       const orden = this.currentDetail()[0].orden_metrics;
@@ -158,6 +160,16 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
   }
 
+  async onChangeTrazo(id_produccion: string, event: any) {
+    const checked = event.target.checked;
+    try {
+      await firstValueFrom(this.produccionService.actualizarTrazo(id_produccion, checked));
+      const orden = this.currentDetail()[0].orden_metrics;
+      await this.loadDataOrder(orden);
+    } catch (error) {
+      this.uiService.mostrarAlertaError("Error al actualizar trazo", "No se pudo actualizar el estado de trazo. Inténtalo de nuevo más tarde.");
+    }
+  }
 
   async onChangeVoBo(id_produccion: string, event: any) {
 
@@ -167,9 +179,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       const orden = this.currentDetail()[0].orden_metrics;
       await this.loadDataOrder(orden);
     } catch (error) {
-
       this.uiService.mostrarAlertaError("Error al actualizar VoBo", "No se pudo actualizar el estado de VoBo. Inténtalo de nuevo más tarde.");
-
     }
 
   }

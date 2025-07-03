@@ -1,80 +1,69 @@
-<div class="w-full h-fit border-2 border-spacing-2 p-2">
+<div class="w-full h-fit border-2 border-spacing-2 ">            
+    <div>
+        <ejs-grid #grid [dataSource]='detalles' [textWrapSettings]='wrapSettings'   [filterSettings]="filterSettings " [allowTextWrap]='true'
+        [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='10' (dataBound)='dataBound()'
+        [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true
+        allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+        <e-columns>
+            <e-column field='orden_metrics' [allowFiltering]="true" headerText='Orden' width=100></e-column>
+            <e-column field='proceso' [allowFiltering]="true"  width=100></e-column>
+            <e-column field='componente' [allowFiltering]="true"  width=100></e-column>
+            <e-column field='pliego' [allowFiltering]="true"  width=100></e-column>
+            <e-column field='entrada' [allowFiltering]="true"  width=100></e-column>
+            <e-column field='tiros' [allowFiltering]="true" textAlign="Right"  width=100>
+                <ng-template #template let-data>
+                    <div class="flex flex-col">
+                        <span>{{data.tiros | number}}</span>
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column field='muestra' [allowFiltering]="true" textAlign="Right" headerText='Muestra requerida'  width=100>
+                <ng-template #template let-data>
+                    <div class="flex flex-col">
+                        <span>{{data.muestra | number}}</span>
+                    </div>
+                </ng-template>
+            </e-column>
+            <e-column field='acumulado' [allowFiltering]="true" textAlign="Right"  width=100>
+                <ng-template #template let-data>
+                    <div class="flex flex-col">
+                        <span>{{data.acumulado | number}}</span>
+                    </div>
+                </ng-template>
 
-    <!-- Tarjeta de Detalle de la Orden -->
-    <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-sm">
-        
-        <div class="grid grid-cols-2 gap-4 text-sm">
-            <div>
-                <span class="block text-gray-500 dark:text-gray-400">Número de Orden</span>
-                <span class="block text-gray-800 dark:text-gray-200 font-medium">{{ orden?.NoOrden }}</span>
-            </div>
-            <div>
-                <span class="block text-gray-500 dark:text-gray-400">Cliente</span>
-                <span class="block text-gray-800 dark:text-gray-200 font-medium">{{ orden?.NombreCliente }}</span>
-            </div>
-            <div>
-                <span class="block text-gray-500 dark:text-gray-400">Trabajo</span>
-                <span class="block text-gray-800 dark:text-gray-200 font-medium">{{ orden?.NombreTrabajo }}</span>
-            </div>
-            <div>
-                <span class="block text-gray-500 dark:text-gray-400">Cantidad</span>
-                <span class="block text-gray-800 dark:text-gray-200 font-medium">{{ orden?.CantidadEntregar | number }}</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Contenedor de la tabla con scroll vertical y encabezados fijos -->
-    <div class="overflow-y-auto max-h-[400px] border border-gray-300 dark:border-gray-700 rounded-lg">
-        <table class="w-full bg-white dark:bg-gray-800">
-            <thead class="sticky top-0 bg-gray-100 dark:bg-gray-700 z-10">
-                <tr class="text-start text-sm text-gray-700 dark:text-gray-300">
-                    <th class="py-2 px-4 border-b dark:border-gray-600">Proceso</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600">Componente</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600">Pliego</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600">Entrada</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600">Tiros</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600">Muestra</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600">Acumulado</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600">VoBo</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600">Estado</th>
-                    <th class="py-2 px-4 border-b dark:border-gray-600"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @for(detalle of detalles; track detalle.id_produccion ) {
-                <tr class="text-center hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer text-sm"
-                    [ngClass]="{'bg-blue-100 dark:bg-blue-800/30': selectedId === detalle.id_produccion}">
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ detalle.proceso }}</td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ detalle.componente }}</td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ detalle.pliego }}</td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ detalle.entrada }}</td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ detalle.tiros }}</td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ detalle.muestra }}</td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">{{ detalle.acumulado }}</td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">
-                        <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"
-                            [(ngModel)]="detalle.voBo" (change)="onVoBoChange(detalle.id_produccion, $event)"
-                            class="cursor-pointer">
-                    </td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">
-                        @if(detalle.id_estado=="1"){
-                        <button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
-                            (click)="selectMuestra.emit(detalle)">Registrar Muestra</button>
-                        }@else{
-                        <span class="text-gray-500 dark:text-gray-400">Cerrado</span>
-                        }
-                    </td>
-                    <td class="py-2 px-4 border-b dark:border-gray-600 text-gray-800 dark:text-gray-200">
-                        @if(detalle.id_estado=="1"){
+            </e-column>
+            <e-column [allowFiltering]="false"  textAlign="Center" width=100  headerText='VoBo' >
+                <ng-template #template let-detalle>
+                    <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"  [(ngModel)]="detalle.voBo" (change)="onVoBoChange(detalle.id_produccion, $event)" class="cursor-pointer" />
+                </ng-template>                
+            </e-column>
+            <e-column [allowFiltering]="false"  width=100  headerText='Trazo' textAlign="Center" >
+                <ng-template #template let-detalle>
+                    <input type="checkbox" [disabled]="detalle.id_estado != '1'"  [(ngModel)]="detalle.trazo" (change)="onTrazoChange(detalle.id_produccion, $event)" class="cursor-pointer" />
+                </ng-template>                
+            </e-column>
+            <e-column [allowFiltering]="false"  width=100 >
+                <ng-template #template let-detalle>                    
+                    @if(detalle.id_estado=="1"){
+                        <button class="bg-blue-500 m-1 text-white px-2 py-1 rounded hover:bg-blue-600"
+                            (click)="selectMuestra.emit(detalle)">Muestra</button>
+                    }@else{
+                        <div class="text-gray-500 px-2 py-1 dark:text-gray-400">Cerrado</div>
+                    }
+                </ng-template>
+            </e-column>
+            <e-column [allowFiltering]="false"  width=100 >
+                <ng-template #template let-detalle>
+                    @if(detalle.id_estado=="1"){
                         <button class="bg-pink-500 text-white px-2 py-1 rounded hover:bg-pink-600"
                             (click)="cerrarMuestra.emit(detalle.id_produccion)">Finalizar</button>
                         }@else{
-                        <span class="text-green-500 dark:text-green-400">Finalizado</span>
+                        <div class="text-green-500 px-2 py-1 dark:text-green-400">Finalizado</div>
                         }
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
+                </ng-template>
+            </e-column>            
+        </e-columns>        
+    </ejs-grid>
     </div>
+
 </div>

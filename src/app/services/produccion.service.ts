@@ -22,6 +22,10 @@ export class ProduccionService {
         return this.http.put(`${this.API_URL}/api/produccion/vobo`, { request:{voBo,id_produccion} });
     }
 
+    actualizarTrazo(id_produccion: string, trazo: boolean) {
+        return this.http.put(`${this.API_URL}/api/produccion/trazo`, { request:{trazo,id_produccion} });
+    }
+
     finalizarMuestra(request:{id_produccion: string, id_usuario: string}) {
         return this.http.put(`${this.API_URL}/api/produccion/finalizar`, { request });
     }

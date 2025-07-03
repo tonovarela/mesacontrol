@@ -9,6 +9,7 @@ export interface MarbeteProps {
    nombre_trabajo: string;
    cliente:string;
    usuario:string;
+   vendedor:string;
    fecha_liberacion:(string | null)[]
 
 }
@@ -41,7 +42,8 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
           widths: [100, '*'],
           body: [
             [{ text: `Nombre:  `, fillColor: '#cccccc' }, `${props.nombre_trabajo}`],
-            [{ text: `Cliente:`, fillColor: '#cccccc' }, ` ${props.cliente}`]
+            [{ text: `Cliente:`, fillColor: '#cccccc' }, ` ${props.cliente}`],
+            [{ text: `Vendedor:`, fillColor: '#cccccc' }, ` ${props.vendedor.toUpperCase()}`]
           ]
         }
       },

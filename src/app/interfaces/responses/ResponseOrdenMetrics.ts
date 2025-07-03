@@ -53,6 +53,7 @@ export interface Detalle {
     pliego:        string;
     entrada:       string;
     muestra:       number;
+    trazo:         boolean |  string; // Cambiado a booleano
     acumulado:      number;
     tiros:         number;
     voBo:          boolean | string; // Puede ser booleano o string dependiendo del origen de los datos
