@@ -1,6 +1,4 @@
 <div class="relative">
-
-
 @if(cargando() ){
     <div class="flex flex-col space-y-6 justify-center items-center py-8 ">
         <svg class="animate-spin h-24 w-24 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -73,8 +71,7 @@
                             <div class="flex flex-col items-center justify-center">
                                 <p class="font-bold text-[8px]" [ngClass]="col.color">{{col.titulo}}</p>
                                 <div class="text-[8px]">{{col.subtitulo}}</div>
-                            </div>
-    
+                            </div>    
                         </ng-template>
                         <ng-template #template let-data>
                             @let estaHabilitado=esAuditHabilitado(data, col);
@@ -90,8 +87,7 @@
                                     <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
                                     <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">
                                         @if(liberacion){
-                                        {{liberacion | date:'dd-MM-yyyy hh:mm a' }}
-    
+                                        {{liberacion | date:'dd-MM-yyyy hh:mm a' }}    
                                         }@else{
                                         <span>--------</span>
                                         }
@@ -103,57 +99,11 @@
                                 ---------
                             </div>
                             }
-    
                         </ng-template>
                     </e-column>
                     }
                 </e-columns>
-                <!-- <ng-template #detailTemplate let-data>
-                    <div class="overflow-x-auto  ">
-                      <table class="min-w-min divide-y mx-auto  my-2 divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900 rounded-lg shadow">
-                        <thead>
-                            <tr>
-                                @for(col of columnasAuditoria; track col.indice) {
-                                  <th class="px-12 py-2 text-xs font-bold text-gray-700 dark:text-gray-200 text-center">
-                                    <div class="flex flex-col  items-center">
-                                      <span [ngClass]="col.color">{{ col.titulo }}</span>
-                                      <span class="text-[10px] text-gray-500 dark:text-gray-300">{{ col.subtitulo }}</span>
-                                    </div>
-                                  </th>
-                                }
-                              
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            @for(col of columnasAuditoria; track col.indice) {
-                              @let estaHabilitado = esAuditHabilitado(data, col);
-                              @let colorSVG = colorChecklist(data, col);
-                              @let liberacion = fechaLiberacion(data, col);
-                              @let sepuedeVisualizar = estaHabilitado || liberacion;
-                              @let id_checkActual = getCheckListKey(data, col);
-                              <td class="px-2 py-2 text-xs text-center align-middle">
-                                @if (data.id_checklist_actual) {
-                                  <div class="flex flex-row justify-center items-center gap-4" (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">
-                                    <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />                                    
-                                    <span class="text-[10px] text-gray-700 dark:text-white">
-                                      @if (liberacion) {
-                                        {{ liberacion | date:'dd-MM-yyyy hh:mm a' }}
-                                      } @else {
-                                        --------
-                                      }
-                                    </span>
-                                  </div>
-                                } @else {
-                                  <span class="text-pink-900">---------</span>
-                                }
-                              </td>
-                            }
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                </ng-template> -->
+               
                 
             </ejs-grid>
         </div>

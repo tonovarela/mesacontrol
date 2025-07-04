@@ -55,14 +55,7 @@ export class CheckListService  {
      try {      
          const observable =this.http.get<ResponseGetCheckList>(`${this.API_URL}/api/checklist/${this.id_checkListCurrent}?orden=${opMetrics}`);
           const {checkList:detail,checkListDetalle } = await firstValueFrom(observable);                      
-          // const logEvent:LogEvent =
-          // {
-          //   type: LogEventType.REJECTED,
-          //   by: "tonovarela",
-          //   date: new Date(),
-          //   extraInformation: "No se pudo completar la verificación"
-          // };
-
+          
           
           const options = checkListDetalle.map((item) => ({
             id: item.id,
