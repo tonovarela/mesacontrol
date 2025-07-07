@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 
 import { ChecklistViewComponent } from '../../components/checklist-view/checklist-view.component';
 import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
-import { CheckListService, PageService } from '@app/services';
+import { CheckListService, MetricsService, PageService, PdfService } from '@app/services';
 import { CommonModule } from '@angular/common';
 import { UsuarioService } from '@app/services/usuario.service';
+import { OrdenMetrics } from '../../../../interfaces/responses/ResponseOrdenMetrics';
 
 
 @Component({
@@ -20,17 +21,16 @@ export default class RollcallComponent implements OnInit {
 
   public pageService = inject(PageService)
   private usuarioService = inject(UsuarioService);
+  private pdfService = inject(PdfService);
   ngOnInit(): void {
     if (this.checkList() == null) {
       this.router.navigate(['/preprensa']);
     }
   }
-
   private checkListService = inject(CheckListService);
-
+  
   checkList = computed(() => this.checkListService.checkList());
   router = inject(Router);
-
 
   opMetrics = computed(() => `${this.checkListService.currentMetricsOP()?.NoOrden || ''}  ${this.checkListService.currentMetricsOP()?.NombreTrabajo || ''}`);
   isSaving = signal<boolean>(false);
@@ -39,12 +39,6 @@ export default class RollcallComponent implements OnInit {
     const detail = this.checkListService.checkList();
     return detail ? `${detail.detail?.categoria} ${detail.detail?.tipoPrueba}` || 'Checklist' : 'Cargando...';
   });
-
-
-  // options= computed(() => {
-  //   const detail = this.checkListService.checkList();
-  //   return detail ? detail.options || [] : [];
-  // });
 
 
 
@@ -71,13 +65,19 @@ export default class RollcallComponent implements OnInit {
     this.checkListService.id_checkListCurrent = id_checklist;
     const idUsuario = this.usuarioService.StatusSesion()?.usuario?.id || '71';
     
-    await firstValueFrom(this.checkListService.saveChecklist({
+   const response= await firstValueFrom(this.checkListService.saveChecklist({
       orden: op_metrics,
       optionsAprobed,
       optionsRejected,
       id_checklist,
       id_usuario: `${idUsuario}`
         }));
+        const { termino,orden } = response as any;
+              
+        if (termino ==true){
+          this.pdfService.descargarPDF(orden, this.usuarioService.StatusSesion()?.usuario?.nombre || '');        
+        }
+        
     this.checkListService.removeActiveCheckList();
     this.isSaving.set(false);
     this.router.navigate([this.pageService.getPreviousUrl()]);

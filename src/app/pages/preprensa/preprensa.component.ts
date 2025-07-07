@@ -59,21 +59,9 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
 
   
-  async descargarPDF(data: any) {
-    
-    let liberacionesCheckList =this.columnasAuditoria.map((col) => {
-      const date = this.fechaLiberacion(data, col);
-      return !date? null : formatDate(date);      
-    });      
-    await this.pdfService.obtenerPDF( {
-      numero_orden: data?.NoOrden || '',
-      vendedor: data?.Vendedor || '',
-      nombre_trabajo: data?.NombreTrabajo || '',
-      cliente: data?.NombreCliente || '',
-      fecha_liberacion:liberacionesCheckList,
-      usuario: this.usuarioService.StatusSesion()?.usuario?.nombre || ''      
-    });
-    
+
+  async descargarPDF(data: any) {   
+    this.pdfService.descargarPDF(data, this.usuarioService.StatusSesion()?.usuario?.nombre || ''); 
   }
 
 
@@ -101,6 +89,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
 
   ngOnInit(): void {
+    
     this.autoFitColumns = false;    
     setTimeout(() => {
       this.iniciarResizeGrid(this.minusHeight);    
@@ -135,8 +124,8 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     this.cargando.set(true);
     try {
       this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
-      const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))
-      this._ordenesMetrics.set(response.ordenes)
+      const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))      
+      this._ordenesMetrics.set([...response.ordenes])
     }
     catch (error) {
       this.uiService.mostrarAlertaError('Error al cargar la información', 'No se pudo cargar la información de las órdenes de métricas. Por favor, inténtelo más tarde.');
@@ -150,6 +139,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
   async ir(ordenMetrics: OrdenMetrics,actual: {id_checkActual: string, liberacion?: Date}) {    
     const { id_checkActual, liberacion } = actual;
+    
 
     const {  id_checklist_actual } = ordenMetrics    
     this.checkListService.currentMetricsOP.set(ordenMetrics);
