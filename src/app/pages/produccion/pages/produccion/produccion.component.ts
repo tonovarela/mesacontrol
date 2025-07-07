@@ -14,9 +14,11 @@ import { RegistroMuestraComponent } from '../../componentes/registro-muestra/reg
 import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { DetailRowService,  TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { DetailRowService, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { CurrentOrder } from '@app/interfaces/models/CurrrentOrder';
 import { DetalleProduccionComponent } from '../../componentes/detalle_produccion/detalle_produccion.component';
+import { Muestra } from '@app/interfaces/responses/ResponseBitacoraMuestra';
+import { environment } from '@environments/environment.development';
 
 
 @Component({
@@ -32,6 +34,10 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
   public ordenesMetrics = computed(() => this._ordenesMetrics());
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
+
+  public bitacoraMuestras = computed(() => this._bitacoraMuestras());
+  private _bitacoraMuestras = signal<Muestra[]>([]);
+  public mostrarModalBitacora = signal(false);
 
 
   public cargando = signal(false);
@@ -63,7 +69,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       order,
       detalle: []
     });
-    const { NoOrden: orden } = order;    
+    const { NoOrden: orden } = order;
     await this.loadDataOrder(orden);
     await this.cargarOrdenes();
   }
@@ -182,6 +188,26 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       this.uiService.mostrarAlertaError("Error al actualizar VoBo", "No se pudo actualizar el estado de VoBo. Inténtalo de nuevo más tarde.");
     }
 
+  }
+
+  async onVerHistorial(detalle: any) {
+    const { id_produccion } = detalle;
+    try {
+      const response = await firstValueFrom(this.produccionService.obtenerBitacoraMuestra(id_produccion));
+      const BASE_AVATAR_URL = environment.baseAvatarUrl;
+      const muestras = response.muestras.map((muestra: Muestra) => {
+        return {
+          ...muestra,
+          avatarOperador: `${BASE_AVATAR_URL}/${muestra.id_operador}`,
+          avatarSupervisor: `${BASE_AVATAR_URL}/${muestra.id_supervisor}`,
+        }
+      });
+      
+      this._bitacoraMuestras.set(muestras);
+      this.mostrarModalBitacora.set(true); // Mostrar el modal
+    } catch (error) {
+      this.uiService.mostrarAlertaError("Error al cargar historial", "No se pudo cargar el historial de la muestra. Inténtalo de nuevo más tarde.");
+    }
   }
 
 }

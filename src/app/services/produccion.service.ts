@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
+import { ResponseBitacoraMuestra } from "@app/interfaces/responses/ResponseBitacoraMuestra";
 import { ResponseDetalleOrdenProduccion, ResponseOrdenMetrics } from "@app/interfaces/responses/ResponseOrdenMetrics";
 import { environment } from "@environments/environment.development";
 
@@ -32,6 +33,10 @@ export class ProduccionService {
 
     registrarMuestra(request: any) {
         return this.http.post(`${this.API_URL}/api/produccion/muestra`, { request });
+    }
+
+    obtenerBitacoraMuestra(id_produccion: string) {
+        return this.http.get<ResponseBitacoraMuestra>(`${this.API_URL}/api/produccion/bitacora/${id_produccion}`);
     }
 
 }

@@ -8,3 +8,87 @@
   font-size: 14px;
   @apply rounded-t-lg;
 }
+
+/* Estilo general para el modal */
+p-dialog {
+  font-family: 'Arial', sans-serif;
+}
+
+/* Tabla estilizada */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table th, .table td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f4f4f4;
+  color: #333;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.table td {
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Estilo para los avatares */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  margin-right: 10px;
+}
+
+/* Flexbox para alinear avatar y texto */
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.ml-2 {
+  margin-left: 8px;
+}
+
+/* Mensaje de no datos */
+p {
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+  margin-top: 20px;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+  }
+}

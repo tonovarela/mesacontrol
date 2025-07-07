@@ -6,6 +6,7 @@ import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 
+
 @Component({
   selector: 'detalle-produccion',
   imports: [ FormsModule, CommonModule, PrimeModule, SynfusionModule],
@@ -22,13 +23,16 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
   @Output() cerrarMuestra = new EventEmitter<string>();
   @Output() voBoChange = new EventEmitter<{ id: string, event: any }>();
   @Output() trazoChange = new EventEmitter<{ id: string, event: any }>();
+  @Output() verHistorial = new EventEmitter<any>();
   protected minusHeight = 0.30;
+  
  public wrapSettings?: TextWrapSettingsModel;
 
   constructor() {
     super();
   }
   ngOnInit(): void {
+    
     this.iniciarResizeGrid(0.70,true);
   }
 
@@ -37,6 +41,10 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
   }
   onTrazoChange(id: string, event: any) {
     this.trazoChange.emit({ id, event });
+  }
+
+  onVerHistorial(detalle: any) {    
+    this.verHistorial.emit(detalle);
   }
 
 }
