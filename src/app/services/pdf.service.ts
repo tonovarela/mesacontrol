@@ -34,6 +34,7 @@ export class PdfService {
       return !date? null : formatDate(date);      
     });      
     await this.obtenerPDF( {
+      vendedor: data?.Vendedor || '',
       numero_orden: data?.NoOrden || '',
       nombre_trabajo: data?.NombreTrabajo || '',
       cliente: data?.NombreCliente || '',

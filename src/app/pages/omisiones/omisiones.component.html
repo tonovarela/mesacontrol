@@ -1,62 +1,6 @@
 <div class="relative">
-    <h1 class="text-2xl py-2 text-slate-500">Omisiones</h1>
-    @if(cargando() ){
-        <div class="flex flex-col space-y-6 justify-center items-center py-8 ">
-            <svg class="animate-spin h-24 w-24 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-            </svg>
-            <div class="ml-3 text-blue-600 font-medium text-2xl">Cargando datos...</div>
-        </div>
-        }
-    @else {
+    <!-- //http://192.168.2.220:8080/MicroStrategyLibrary/app/4144A4A74427236922F4B197856EB90B/A50D60064537FF78A1371FAC4E45BB85 -->
 
-        <div id="initial" class="flex flex-col">
+    <div class="dossier" id="dossierExistencias"  ></div>
+<div>
 
-            <div class="px-1  overflow-auto">
-                <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
-                    [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'
-                    rowHeight='30' (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid"
-                    allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
-                    [pageSettings]='pageSettings'>
-                    <e-columns>
-                                                
-                        <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
-                        </e-column>                                                                
-                        <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
-                        </e-column>                                               
-                        <e-column field='Vendedor' [allowFiltering]="true" width=150>
-                        </e-column>
-                        <e-column field='CantidadEntregar' [allowFiltering]="true"  headerText='Cant'
-                            width=100>
-                            <ng-template #template let-data>
-                                <div class="flex flex-col">
-                                    <span>{{data.CantidadEntregar | number}}</span>
-                                </div>
-                            </ng-template>
-                        </e-column>                        
-                        <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
-                            <ng-template #template let-data>
-                                <div class="flex flex-col">
-                                    <span>{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>
-                                </div>
-                            </ng-template>
-                        </e-column>
-                        <e-column field='FechaEntrega' [allowFiltering]="false" headerText='Entrega' width=110>
-                            <ng-template #template let-data>
-                                <div class="flex flex-col">
-                                    <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
-                                </div>
-                            </ng-template>
-                        </e-column>                                                                                            
-                    </e-columns>
-                    
-                    
-                </ejs-grid>
-            </div>
-        
-        
-        
-        </div>
-    }

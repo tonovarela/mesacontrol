@@ -11,5 +11,37 @@
 <body class="h-screen w-full bg-slate-200 dark:bg-slate-800 overflow-y-hidden">
   <app-root></app-root>
 </body>
+<script src="assets/js/embeddinglib.js"></script>
+<script>
+  var DossierView = function ({ BASE_URL, projectID, dossierId, username, password, idDossier }) {        
+      const login = function () {
+          var options = {
+              method: 'POST',
+              credentials: 'include',
+              mode: 'cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ "loginMode": 1, username, password })
+          };
+          return fetch(BASE_URL + '/api/auth/login', options).then(function (response) {
+              return response.headers.get('x-mstr-authToken');
+          });
+      };
+
+      this.show = function () {
+          const dossier = BASE_URL + '/app/' + projectID + '/' + dossierId;
+          const height = window.innerHeight;
+          microstrategy.dossier.create({
+              placeholder: document.getElementById(idDossier),
+              containerHeight: `${(height - 200)}px`,
+              url: dossier,
+              disableNotification: true,
+              enableResponsive: true,
+              enableCustomAuthentication: true,
+              customAuthenticationType: microstrategy.dossier.CustomAuthenticationType.AUTH_TOKEN,
+              getLoginToken: login
+          });
+      };
+  }
+</script>
 </html>
  

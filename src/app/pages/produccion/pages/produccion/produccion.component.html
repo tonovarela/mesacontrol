@@ -1,47 +1,71 @@
 <div id="initial" class="dark:bg-gray-900">
-    <div class="py-1 px-2 w-full">        
+    <div class="py-1 px-2 w-full">
         <search-metrics [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
-    </div>  
+    </div>
     <div class="px-1 py-1">
         <div class="px-1">
             <div class="flex flex-row justify-between mb-2">
                 <div class="w-2/5">
-                    <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'   
-                    (rowSelected)='onRowSelected($event)'             
-                    [filterSettings]="filterSettings " [allowTextWrap]='true'
-                    [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-                    [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true
-                    allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
-                    <e-columns>                        
-                        <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
-                        </e-column>
-                        <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
-                        </e-column>
-                        <e-column field='Vendedor' [allowFiltering]="true" width=150>
-                        </e-column>
-                        <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true" headerText='Cant' width=100>
-                            <ng-template #template let-data>
-                                <div class="flex flex-col">
-                                    <span>{{data.CantidadEntregar | number}}</span>
-                                </div>
-                            </ng-template>
-                        </e-column>                    
-                    </e-columns>                
-                </ejs-grid>
-                </div>            
-                <div class="w-3/5 " >
-                    <detalle-produccion 
-                    [orden]="currentOrder()"
-                    [detalles]="currentDetail()" 
-                    [selectedId]="selectedMuestra()?.id_produccion || null"
-                    (selectMuestra)="onSelectMuestra($event)" 
-                    (cerrarMuestra)="cerrarMuestra($event)" 
-                    (voBoChange)="onChangeVoBo($event.id, $event.event)"
-                    (trazoChange)="onChangeTrazo($event.id, $event.event)">
+                    <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
+                        (rowSelected)='onRowSelected($event)' [filterSettings]="filterSettings " [allowTextWrap]='true'
+                        [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
+                        [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true
+                        allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+                        <e-columns>
+                            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
+                            </e-column>
+                            <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
+                            </e-column>
+                            <e-column field='Vendedor' [allowFiltering]="true" width=150>
+                            </e-column>
+
+                            <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true"
+                                headerText='Cant' width=100>
+                                <ng-template #template let-data>
+                                    <div class="flex flex-col">
+                                        <span>{{data.CantidadEntregar | number}}</span>
+                                    </div>
+                                </ng-template>
+                            </e-column>
+                            <e-column field='tieneInfo' headerText="Tiene info" textAlign="Right"
+                                [allowFiltering]="false" width=150>
+                                <ng-template #template let-data>
+                                    <div class="flex  items-center justify-end">
+                                        @if(data.tieneInfo == '1') {
+                                        <div class="flex flex-row gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-green-500"
+                                                viewBox="0 0 24 24" fill="green">
+                                                <circle cx="12" cy="12" r="10" />
+                                            </svg>
+                                            SI
+
+                                        </div>
+
+                                        }@else {
+                                        <div class="flex flex-row gap-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-orange-500"
+                                                viewBox="0 0 24 24">
+                                                <circle cx="12" cy="12" r="10" />
+                                            </svg>
+                                            NO
+                                        </div>
+                                        }
+                                    </div>
+                                </ng-template>
+                            </e-column>
+                        </e-columns>
+                    </ejs-grid>
+                </div>
+                <div class="w-3/5 ">
+                    <detalle-produccion [orden]="currentOrder()" [detalles]="currentDetail()"
+                        [selectedId]="selectedMuestra()?.id_produccion || null"
+                        (selectMuestra)="onSelectMuestra($event)" (cerrarMuestra)="cerrarMuestra($event)"
+                        (voBoChange)="onChangeVoBo($event.id, $event.event)"
+                        (trazoChange)="onChangeTrazo($event.id, $event.event)">
                     </detalle-produccion>
-                </div>            
+                </div>
             </div>
-          
+
         </div>
     </div>
 
