@@ -59,6 +59,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
 
   
+
   async descargarPDF(data: any) {   
     this.pdfService.descargarPDF(data, this.usuarioService.StatusSesion()?.usuario?.nombre || ''); 
   }

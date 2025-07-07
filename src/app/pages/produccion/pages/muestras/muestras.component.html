@@ -1,8 +1,9 @@
-<div id="initial" class="dark:bg-gray-900">    
-    <div class="py-1 px-2 w-full">
+<div id="initial" class="dark:bg-gray-900">
+    <h1>Toma de muestras</h1>
+    <!-- <div class="py-1 px-2 w-full">
         <h1 class="dark:text-gray-200">Buscar Metrics</h1>
         <search-metrics [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
-    </div>
+    </div> -->
     @if(currentOrder() !=null) {
     @if(currentDetail().length == 0)
     {
@@ -14,7 +15,7 @@
     @else
     {
     <div class="w-full  
-overflow-y-auto border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 p-2">                        
+overflow-y-auto border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 p-2">
         <table class="mx-auto w-fit bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 ">
             <thead>
                 <tr class="bg-gray-100 dark:bg-gray-700 text-start">
@@ -90,14 +91,12 @@ overflow-y-auto border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg
                 }
             </tbody>
         </table>
-
-
-    </div>
+        </div>
     }
     }
 </div>
 <!-- Usa el nuevo componente de diálogo -->
- @if(selectedMuestra()){
+@if(selectedMuestra()){
 <registro-muestra [muestra]="selectedMuestra()" (onClose)="onCloseDialog()"
     (onSave)="onSaveMuestra($event)"></registro-muestra>
- }
+}

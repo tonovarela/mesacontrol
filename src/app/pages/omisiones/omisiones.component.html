@@ -21,16 +21,13 @@
                     allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
                     [pageSettings]='pageSettings'>
                     <e-columns>
+                                                
                         <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
-                        </e-column>                                        
-                        
+                        </e-column>                                                                
                         <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
-                        </e-column>                       
+                        </e-column>                                               
                         <e-column field='Vendedor' [allowFiltering]="true" width=150>
                         </e-column>
-                        <e-column field='Vendedor' [allowFiltering]="true" width=150>
-                        </e-column>
-
                         <e-column field='CantidadEntregar' [allowFiltering]="true"  headerText='Cant'
                             width=100>
                             <ng-template #template let-data>
@@ -38,15 +35,7 @@
                                     <span>{{data.CantidadEntregar | number}}</span>
                                 </div>
                             </ng-template>
-                        </e-column>
-                        <e-column field='fecPlaca' [allowFiltering]="true"  headerText='Fecha Placa'
-                            width=100>          
-                            <ng-template #template let-data>
-                                <div class="flex flex-col">
-                                    <span>{{data.fecPlaca | date:'dd-MM-yyyy hh:mm a'}}</span>
-                                </div>
-                            </ng-template>                  
-                        </e-column>
+                        </e-column>                        
                         <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
                             <ng-template #template let-data>
                                 <div class="flex flex-col">
@@ -60,17 +49,14 @@
                                     <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
                                 </div>
                             </ng-template>
-                        </e-column>
-
-
-                        <e-column field='enMC' headerText="en MC" [allowFiltering]="true" width=150>
-                        </e-column>
-                                                
-                        
+                        </e-column>                                                                                            
                     </e-columns>
                     
                     
                 </ejs-grid>
             </div>
+        
+        
+        
         </div>
     }

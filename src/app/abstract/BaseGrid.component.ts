@@ -25,17 +25,19 @@ export abstract class BaseGridComponent implements OnDestroy {
         this._resizeObservable$ = fromEvent(window, 'resize')
         return this._resizeObservable$;
     }
-    protected iniciarResizeGrid(porcentaje: number) {
+
+    
+    protected iniciarResizeGrid(porcentaje: number,force: boolean = true) {
         
-        if (window.innerHeight >= 1000) {
+        if (window.innerHeight >= 1000 && force) {
             porcentaje = 0.25;
-        }            
+        }           
+
         this.heightGrid = window.innerHeight - (window.innerHeight * porcentaje);
         const subs1 = this.ResizeHeight().subscribe(x => {
-            if (window.innerHeight >= 1000) {
+            if (window.innerHeight >= 1000 && force) {
                 porcentaje = 0.25;
-            }
-            
+            }            
             this.heightGrid = window.innerHeight - (window.innerHeight * porcentaje);
             this.dataBound();
         });
