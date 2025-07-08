@@ -168,8 +168,9 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
   async onChangeTrazo(id_produccion: string, event: any) {
     const checked = event.target.checked;
+    const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
     try {
-      await firstValueFrom(this.produccionService.actualizarTrazo(id_produccion, checked));
+      await firstValueFrom(this.produccionService.actualizarTrazo(id_produccion, checked,`${id_usuario}`));
       const orden = this.currentDetail()[0].orden_metrics;
       await this.loadDataOrder(orden);
     } catch (error) {
@@ -180,8 +181,9 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   async onChangeVoBo(id_produccion: string, event: any) {
 
     const checked = event.target.checked;
+    const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
     try {
-      await firstValueFrom(this.produccionService.actualizarVoBo(id_produccion, checked));
+      await firstValueFrom(this.produccionService.actualizarVoBo(id_produccion, checked,`${id_usuario}`));
       const orden = this.currentDetail()[0].orden_metrics;
       await this.loadDataOrder(orden);
     } catch (error) {

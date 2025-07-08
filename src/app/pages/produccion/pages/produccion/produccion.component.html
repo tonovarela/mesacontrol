@@ -89,6 +89,11 @@
 
 <p-dialog header="Historial de Muestras" [(visible)]="mostrarModalBitacora" [modal]="true" [style]="{width: '60vw'}">
   <ng-container *ngIf="bitacoraMuestras() && bitacoraMuestras().length > 0; else noData">
+
+
+
+
+    
     <table class="table w-full border-collapse rounded-lg overflow-hidden shadow-md">
       <thead>
         <tr class="bg-gray-100 dark:bg-gray-700">

@@ -14,8 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'produccion', component: MainLayoutComponent,
-    children: [
-      { path: "muestras",  loadComponent: () => import('./pages/produccion/pages/muestras/muestras.component') },
+    children: [      
       { path: "liberacion", loadComponent: () => import('./pages/produccion/pages/produccion/produccion.component') },      
       { path: '**', redirectTo: 'liberacion' }
     ]

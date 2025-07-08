@@ -11,7 +11,7 @@ export class ProduccionService {
     private readonly API_URL = environment.apiUrl;
     http = inject(HttpClient);
 
-    listar(){
+    listar() {
         return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/produccion`);
     }
 
@@ -19,15 +19,27 @@ export class ProduccionService {
         return this.http.get<ResponseDetalleOrdenProduccion>(`${this.API_URL}/api/produccion/detalle/${orden}`);
     }
 
-    actualizarVoBo(id_produccion: string, voBo: boolean) {
-        return this.http.put(`${this.API_URL}/api/produccion/vobo`, { request:{voBo,id_produccion} });
+    actualizarVoBo(id_produccion: string,voBo: boolean,id_usuario: string) {
+        return this.http.put(`${this.API_URL}/api/produccion/vobo`, {
+            request: {
+                voBo,
+                id_produccion,
+                id_usuario
+            }
+        });
     }
 
-    actualizarTrazo(id_produccion: string, trazo: boolean) {
-        return this.http.put(`${this.API_URL}/api/produccion/trazo`, { request:{trazo,id_produccion} });
+    actualizarTrazo(id_produccion: string, trazo: boolean, id_usuario: string) {
+        return this.http.put(`${this.API_URL}/api/produccion/trazo`, {
+            request: {
+                trazo,
+                id_produccion,
+                id_usuario
+            }
+        });
     }
 
-    finalizarMuestra(request:{id_produccion: string, id_usuario: string}) {
+    finalizarMuestra(request: { id_produccion: string, id_usuario: string }) {
         return this.http.put(`${this.API_URL}/api/produccion/finalizar`, { request });
     }
 
