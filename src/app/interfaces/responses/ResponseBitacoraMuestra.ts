@@ -1,12 +1,13 @@
 export interface ResponseBitacoraMuestra {
     muestras: Muestra[];
     trazo?:EventoActividad;
-    vobo?:EventoActividad;
+    voBo?:EventoActividad;
 }
 
 export interface EventoActividad {
     id_usuario: string;
-    descripcion: string;    
+    descripcion: string; 
+    fecha_registro:Date;   
 }
 
 

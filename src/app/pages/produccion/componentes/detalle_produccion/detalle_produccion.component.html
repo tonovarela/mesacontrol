@@ -69,7 +69,6 @@
                 </e-column>
                 <e-column [allowFiltering]="false" width=100 headerText='Detalles'>
                     <ng-template #template let-detalle>
-
                         <div class="flex justify-center items-center cursor-pointer">
                             <svg (click)="onVerHistorial(detalle)" class="w-6 h-6 fill-current dark:fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -81,10 +80,7 @@
                                 </g>
                             </svg>
                         </div>
-
                     </ng-template>
-
-
                 </e-column>
             </e-columns>
         </ejs-grid>

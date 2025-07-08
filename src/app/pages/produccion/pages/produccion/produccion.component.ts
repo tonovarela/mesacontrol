@@ -5,7 +5,7 @@ import { PrimeModule } from '@app/lib/prime.module';
 
 
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { Detalle, EstadoMuestra, OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { Detalle, EstadoMuestra, OrdenMetrics} from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
@@ -19,6 +19,8 @@ import { CurrentOrder } from '@app/interfaces/models/CurrrentOrder';
 import { DetalleProduccionComponent } from '../../componentes/detalle_produccion/detalle_produccion.component';
 import { Muestra } from '@app/interfaces/responses/ResponseBitacoraMuestra';
 import { environment } from '@environments/environment.development';
+import { ResponseBitacoraMuestra  as BitacoraMuestra } from '../../../../interfaces/responses/ResponseBitacoraMuestra';
+
 
 
 @Component({
@@ -36,7 +38,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
 
   public bitacoraMuestras = computed(() => this._bitacoraMuestras());
-  private _bitacoraMuestras = signal<Muestra[]>([]);
+  private _bitacoraMuestras = signal<BitacoraMuestra | null >(null);
   public mostrarModalBitacora = signal(false);
 
 
@@ -111,6 +113,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
     this.cargandoDetalle.set(true);
     const response = await firstValueFrom(this.produccionService.detalle(orden));
+    
     const newData = response.detalle.map((item: Detalle) => ({
       ...item,
       trazo: item.trazo === '1' ? true : false, // Convertir el valor a booleano
@@ -205,7 +208,8 @@ export default class ProduccionComponent extends BaseGridComponent implements On
         }
       });
       
-      this._bitacoraMuestras.set(muestras);
+      
+      this._bitacoraMuestras.set({...response,muestras });
       this.mostrarModalBitacora.set(true); // Mostrar el modal
     } catch (error) {
       this.uiService.mostrarAlertaError("Error al cargar historial", "No se pudo cargar el historial de la muestra. Inténtalo de nuevo más tarde.");

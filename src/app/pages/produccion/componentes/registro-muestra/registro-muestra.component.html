@@ -111,7 +111,7 @@
                             </button>
                         </div>
                     }@else {
-                        <search-employee placeholder="Buscar operador" (onSelectEmployee)="onSelectOperador($event)" class="block w-full"></search-employee>
+                        <search-employee [isSupervisor]="false" placeholder="Buscar operador" (onSelectEmployee)="onSelectOperador($event)" class="block w-full"></search-employee>
                     }
                 </div>
                 
@@ -136,7 +136,7 @@
                             </button>
                         </div>
                     }@else {
-                        <search-employee placeholder="Buscar supervisor" (onSelectEmployee)="onSelectSupervisor($event)" class="block w-full"></search-employee>
+                        <search-employee  [isSupervisor]="true" placeholder="Buscar supervisor" (onSelectEmployee)="onSelectSupervisor($event)" class="block w-full"></search-employee>
                     }
                 </div>
             </div>

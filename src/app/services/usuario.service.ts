@@ -58,8 +58,8 @@ export class UsuarioService {
       }
 
 
-      buscarOperador(patron:string) {
-          return this.http.post<ResponseOperador>(`${this.URL}/operador/buscar`,{patron})
+      buscarOperador(patron:string,supervisor=false) {
+          return this.http.post<ResponseOperador>(`${this.URL}/operador/buscar`,{patron,supervisor})
       }
     
 }

@@ -20,6 +20,8 @@ export class SearchEmployeeComponent {
   public operatorsBusqueda = signal<any[]>([]);
   public cargandoBusqueda = signal(false);
 
+
+  public isSupervisor= input.required<boolean>();
   public placeholder = input.required<string>();
   public selectedOP: Operador | null = null;
   public valorQuery = "";
@@ -31,7 +33,7 @@ export class SearchEmployeeComponent {
 
   constructor() {
     this.valorQuerySubject.pipe(
-      switchMap(query => { return this.usuarioService.buscarOperador(query) })
+      switchMap(query => { return this.usuarioService.buscarOperador(query,this.isSupervisor()) })
     ).subscribe((response) => {
       this.cargandoBusqueda.set(false);
       this.operatorsBusqueda.set(response.operadores);
