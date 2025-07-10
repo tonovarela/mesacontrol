@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
 
@@ -32,7 +32,7 @@ import { ResponseBitacoraMuestra  as BitacoraMuestra } from '../../../../interfa
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export default class ProduccionComponent extends BaseGridComponent implements OnInit {
+export default class ProduccionComponent extends BaseGridComponent implements OnInit,AfterViewInit {
 
   public ordenesMetrics = computed(() => this._ordenesMetrics());
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
@@ -79,9 +79,11 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   constructor() {
     super();
   }
+  ngAfterViewInit(): void {    
+  }
 
 
-  ngOnInit(): void {
+  ngOnInit(): void {        
     this.cargarOrdenes();
   }
 
@@ -104,7 +106,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     this.autoFitColumns = false;
 
     setTimeout(() => {
-      this.iniciarResizeGrid(this.minusHeight);
+      this.iniciarResizeGrid(this.minusHeight *1.4 );
     });
   }
 

@@ -1,157 +1,215 @@
-<div id="initial" class="dark:bg-gray-900">
+<div id="initial" class="dark:bg-gray-900 h-screen">
     <div class="py-1 px-2 w-full">
         <search-metrics [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
     </div>
-    <div class="px-1 py-1">
-        <div class="px-1">
-            <div class="flex flex-row justify-between mb-2 gap-2">
-                <div class="w-2/5">
-                    <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
-                        (rowSelected)='onRowSelected($event)' [filterSettings]="filterSettings " [allowTextWrap]='true'
-                        [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-                        [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true
-                        allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
-                        <e-columns>
-                            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=50>
-                            </e-column>
-                            <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width=100>
-                            </e-column>
-                            <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=100>
-                            </e-column>
-                            <e-column field='Vendedor' [allowFiltering]="true" width=80>
-                            </e-column>
 
-                            <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true"
-                                headerText='Cant' width=50>
-                                <ng-template #template let-data>
-                                    <div class="flex flex-col">
-                                        <span>{{data.CantidadEntregar | number}}</span>
-                                    </div>
-                                </ng-template>
-                            </e-column>
-                            <e-column field='tieneInfo' headerText="Tiene info" textAlign="Right"
-                                [allowFiltering]="false" width=50>
-                                <ng-template #template let-data>
-                                    <div class="flex  items-center justify-center w-full">
-                                        @if(data.tieneInfo == '1') {
-                                        <div class="flex flex-row w-full justify-start gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-yellow-300"
-                                                viewBox="0 0 24 24">
-                                                <circle cx="12" cy="12" r="10" />
-                                            </svg>
-                                            SI
-                                        </div>
+    <div class="grid grid-cols-2 grid-rows-2 gap-2">
+      <div >                
+        <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
+            (rowSelected)='onRowSelected($event)' [filterSettings]="filterSettings " [allowTextWrap]='true'
+            [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
+            [allowExcelExport]='true' height="450" allowReordering='true' [allowFiltering]=true
+            allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+            <e-columns>
+                <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=50>
+                </e-column>
+                <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width=100>
+                </e-column>
+                <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=100>
+                </e-column>
+                <e-column field='Vendedor' [allowFiltering]="true" width=80>
+                </e-column>
 
-                                        }@else {
-                                        <div class="flex flex-row w-full justify-start gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-red-600 "
-                                                viewBox="0 0 24 24">
-                                                <circle cx="12" cy="12" r="10" />
-                                            </svg>
-                                            NO
-                                        </div>
-                                        }
-                                    </div>
-                                </ng-template>
-                            </e-column>
-                        </e-columns>
-                    </ejs-grid>
-                </div>
-                <div class="w-3/5 ">
-                    <detalle-produccion [orden]="currentOrder()" 
-                        [detalles]="currentDetail()"
-                        [selectedId]="selectedMuestra()?.id_produccion || null"
-                        (selectMuestra)="onSelectMuestra($event)"
-                        (verHistorial)="onVerHistorial($event)"
-                        (cerrarMuestra)="cerrarMuestra($event)"
-                        (voBoChange)="onChangeVoBo($event.id, $event.event)"
-                        (trazoChange)="onChangeTrazo($event.id, $event.event)">
-                    </detalle-produccion>
-                </div>
-            </div>
+                <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true"
+                    headerText='Cant' width=50>
+                    <ng-template #template let-data>
+                        <div class="flex flex-col">
+                            <span>{{data.CantidadEntregar | number}}</span>
+                        </div>
+                    </ng-template>
+                </e-column>
+                <e-column field='tieneInfo' headerText="Tiene info" textAlign="Right"
+                    [allowFiltering]="false" width=50>
+                    <ng-template #template let-data>
+                        <div class="flex  items-center justify-center w-full">
+                            @if(data.tieneInfo == '1') {
+                            <div class="flex flex-row w-full justify-start gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-yellow-300"
+                                    viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                </svg>
+                                SI
+                            </div>
 
-        </div>
+                            }@else {
+                            <div class="flex flex-row w-full justify-start gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-red-600 "
+                                    viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                </svg>
+                                NO
+                            </div>
+                            }
+                        </div>
+                    </ng-template>
+                </e-column>
+            </e-columns>
+        </ejs-grid>                                  </div>
+      <div class="col-start-1 row-start-2">
+        <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
+                      (rowSelected)='onRowSelected($event)' [filterSettings]="filterSettings " [allowTextWrap]='true'
+                      [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
+                      [allowExcelExport]='true' height="450" allowReordering='true' [allowFiltering]=true
+                      allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+                      <e-columns>
+                          <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=50>
+                          </e-column>
+                          <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width=100>
+                          </e-column>
+                          <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=100>
+                          </e-column>
+                          <e-column field='Vendedor' [allowFiltering]="true" width=80>
+                          </e-column>
+
+                          <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true"
+                              headerText='Cant' width=50>
+                              <ng-template #template let-data>
+                                  <div class="flex flex-col">
+                                      <span>{{data.CantidadEntregar | number}}</span>
+                                  </div>
+                              </ng-template>
+                          </e-column>
+                          <e-column field='tieneInfo' headerText="Tiene info" textAlign="Right"
+                              [allowFiltering]="false" width=50>
+                              <ng-template #template let-data>
+                                  <div class="flex  items-center justify-center w-full">
+                                      @if(data.tieneInfo == '1') {
+                                      <div class="flex flex-row w-full justify-start gap-2">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-yellow-300"
+                                              viewBox="0 0 24 24">
+                                              <circle cx="12" cy="12" r="10" />
+                                          </svg>
+                                          SI
+                                      </div>
+
+                                      }@else {
+                                      <div class="flex flex-row w-full justify-start gap-2">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-red-600 "
+                                              viewBox="0 0 24 24">
+                                              <circle cx="12" cy="12" r="10" />
+                                          </svg>
+                                          NO
+                                      </div>
+                                      }
+                                  </div>
+                              </ng-template>
+                          </e-column>
+                      </e-columns>
+                  </ejs-grid>                                  
+
+      </div>
+      <div class="row-span-2 col-start-2 row-start-1">
+        <detalle-produccion [orden]="currentOrder()" 
+                    [detalles]="currentDetail()"
+                    [selectedId]="selectedMuestra()?.id_produccion || null"
+                    (selectMuestra)="onSelectMuestra($event)"
+                    (verHistorial)="onVerHistorial($event)"
+                    (cerrarMuestra)="cerrarMuestra($event)"
+                    (voBoChange)="onChangeVoBo($event.id, $event.event)"
+                    (trazoChange)="onChangeTrazo($event.id, $event.event)">
+                </detalle-produccion>                  
+      </div>
     </div>
 
+
+
+    
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- Usa el nuevo componente de diálogo -->
 @if(selectedMuestra()){
-<registro-muestra 
-[muestra]="selectedMuestra()"
-(onClose)="onCloseDialog()"
-(onVerHistorial)="onVerHistorial($event)"
-(onSave)="onSaveMuestra($event)">
-</registro-muestra>
-}
-
-
-
-
-<p-dialog header="Historial de Muestras" [(visible)]="mostrarModalBitacora" [modal]="true" [style]="{width: '60vw'}">
-
-  <div class="flex flex-row  justify-between gap-4">
-  @if(bitacoraMuestras()?.trazo !=null){
-    <div class="flex items-center w-1/3 p-4 bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 rounded-lg shadow-md">
-      <div class="flex flex-col">
-        <span class="text-sm font-bold text-blue-800 dark:text-blue-300">Trazo</span>
-        <span class="text-xs text-gray-600 dark:text-gray-400">{{ bitacoraMuestras()?.trazo!.descripcion }}</span>
-      </div>
-      <div class="ml-auto text-xs text-gray-500 dark:text-gray-400">
-        {{ bitacoraMuestras()?.trazo!.fecha_registro | date: 'dd-MM-yyyy hh:mm a' }}
-      </div>
-    </div>
+  <registro-muestra 
+  [muestra]="selectedMuestra()"
+  (onClose)="onCloseDialog()"
+  (onVerHistorial)="onVerHistorial($event)"
+  (onSave)="onSaveMuestra($event)">
+  </registro-muestra>
   }
-  @if(bitacoraMuestras()?.voBo != null) {
-    <div class="flex items-center w-1/3 p-4 bg-gradient-to-r from-green-100 to-green-50 dark:from-green-900 dark:to-green-800 rounded-lg shadow-md">
-      <div class="flex flex-col">
-        <span class="text-sm font-bold text-green-800 dark:text-green-300">VoBo</span>
-        <span class="text-xs text-gray-600 dark:text-gray-400">{{ bitacoraMuestras()?.voBo!.descripcion }}</span>
+  <p-dialog header="Historial de Muestras" [(visible)]="mostrarModalBitacora" [modal]="true" [style]="{width: '60vw'}">
+    <div class="flex flex-row  justify-between gap-4">
+    @if(bitacoraMuestras()?.trazo !=null){
+      <div class="flex items-center w-1/3 p-4 bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 rounded-lg shadow-md">
+        <div class="flex flex-col">
+          <!-- <span class="text-sm font-bold text-blue-800 dark:text-blue-300">Trazo</span> -->
+          <span class="text-xs font-bold text-gray-600 dark:text-gray-400">{{ bitacoraMuestras()?.trazo!.descripcion }}</span>
+        </div>
+        <div class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+          {{ bitacoraMuestras()?.trazo!.fecha_registro | date: 'dd-MM-yyyy hh:mm a' }}
+        </div>
       </div>
-      <div class="ml-auto text-xs text-gray-500 dark:text-gray-400">
-        {{ bitacoraMuestras()?.voBo!.fecha_registro | date: 'dd-MM-yyyy hh:mm a' }}
+    }
+    @if(bitacoraMuestras()?.voBo != null) {
+      <div class="flex items-center w-1/3 p-4 bg-gradient-to-r from-green-100 to-green-50 dark:from-green-900 dark:to-green-800 rounded-lg shadow-md">
+        <div class="flex flex-col">
+          <!-- <span class="text-sm font-bold text-green-800 dark:text-green-300">VoBo</span> -->
+          <span class="text-xs font-bold  text-gray-600 dark:text-gray-400">{{ bitacoraMuestras()?.voBo!.descripcion }}</span>
+        </div>
+        <div class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+          {{ bitacoraMuestras()?.voBo!.fecha_registro | date: 'dd-MM-yyyy hh:mm a' }}
+        </div>
       </div>
-    </div>
-  }
-</div>
+    }
+  </div>    
+    <ng-container *ngIf="bitacoraMuestras() && bitacoraMuestras()!.muestras.length > 0; else noData">    
+      <table class="table w-full border-collapse rounded-lg overflow-hidden shadow-md">
+        <thead>
+          <tr class="bg-gray-100 dark:bg-gray-700">
+            <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Fecha</th>
+            <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Supervisor</th>
+            <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Operador</th>
+            <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Muestra</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let muestra of bitacoraMuestras()!.muestras" class="even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900">
+            <td class="px-4 py-2 text-gray-800 dark:text-gray-200">{{ muestra.fecha_registro | date: 'dd-MM-YYYY hh:mm' }}</td>
+            <td class="px-4 py-2">
+              <div class="flex items-center">
+                <img 
+                  [src]="muestra.avatarSupervisor " 
+                  alt="Supervisor Avatar" 
+                  class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-600">
+                <span class="ml-2 text-gray-800 dark:text-gray-200">{{ muestra.nombreSupervisor }}</span>
+              </div>
+            </td>
+            <td class="px-4 py-2">
+              <div class="flex items-center">
+                <img 
+                  [src]="muestra.avatarOperador " 
+                  alt="Operador Avatar" 
+                  class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-600">
+                <span class="ml-2 text-gray-800 dark:text-gray-200">{{ muestra.nombreOperador }}</span>
+              </div>
+            </td>
+            <td class="px-4 py-2 text-gray-800 dark:text-gray-200">{{ muestra.muestraRegistrada }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <ng-template #noData>
+      <p class="text-center text-gray-500 dark:text-gray-400">No hay datos disponibles en la bitácora.</p>
+    </ng-template>
+  </p-dialog>
   
-  
-  <ng-container *ngIf="bitacoraMuestras() && bitacoraMuestras()!.muestras.length > 0; else noData">    
-    <table class="table w-full border-collapse rounded-lg overflow-hidden shadow-md">
-      <thead>
-        <tr class="bg-gray-100 dark:bg-gray-700">
-          <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Fecha</th>
-          <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Supervisor</th>
-          <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Operador</th>
-          <th class="px-4 py-2 text-left text-gray-700 dark:text-gray-300">Muestra</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let muestra of bitacoraMuestras()!.muestras" class="even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900">
-          <td class="px-4 py-2 text-gray-800 dark:text-gray-200">{{ muestra.fecha_registro | date: 'dd-MM-YYYY hh:mm' }}</td>
-          <td class="px-4 py-2">
-            <div class="flex items-center">
-              <img 
-                [src]="muestra.avatarSupervisor " 
-                alt="Supervisor Avatar" 
-                class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-600">
-              <span class="ml-2 text-gray-800 dark:text-gray-200">{{ muestra.nombreSupervisor }}</span>
-            </div>
-          </td>
-          <td class="px-4 py-2">
-            <div class="flex items-center">
-              <img 
-                [src]="muestra.avatarOperador " 
-                alt="Operador Avatar" 
-                class="w-10 h-10 rounded-full border border-gray-300 dark:border-gray-600">
-              <span class="ml-2 text-gray-800 dark:text-gray-200">{{ muestra.nombreOperador }}</span>
-            </div>
-          </td>
-          <td class="px-4 py-2 text-gray-800 dark:text-gray-200">{{ muestra.muestraRegistrada }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </ng-container>
-  <ng-template #noData>
-    <p class="text-center text-gray-500 dark:text-gray-400">No hay datos disponibles en la bitácora.</p>
-  </ng-template>
-</p-dialog>

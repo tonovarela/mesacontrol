@@ -33,7 +33,7 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
   }
   ngOnInit(): void {
     
-    this.iniciarResizeGrid(0.70,true);
+    this.iniciarResizeGrid(0.2,false);
   }
 
   onVoBoChange(id: string, event: any) {
