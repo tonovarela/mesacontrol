@@ -29,8 +29,6 @@ import { ResponseBitacoraMuestra  as BitacoraMuestra } from '../../../../interfa
 })
 
 export default class ProduccionComponent extends BaseGridComponent implements OnInit {
-
-  
   public estadosMuestra = signal<EstadoMuestra[]>([]);
   public selectedMuestra = signal<Detalle | null>(null);
   public currentDetail = computed(() => this._currentOrder()?.detalle || []);
@@ -41,10 +39,10 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   public cargando = signal(false);
   public cargandoDetalle = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
-  public type = TypeSearchMetrics.PRODUCCION;
+  
   public verPendientes = computed(() => this._verPendientes());
-
-  protected minusHeight = 0.30;
+  
+  
   
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
   private _bitacoraMuestras = signal<BitacoraMuestra | null >(null);
@@ -54,7 +52,9 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   private activatedRouter = inject(ActivatedRoute);
   private _currentOrder = signal<CurrentOrder | null>(null);
   private _verPendientes = signal<boolean>(true);
+  protected minusHeight = 0.30;
 
+  public type = TypeSearchMetrics.PRODUCCION;
 
   async onSelectOrder(order: any) {
     this._currentOrder.set({order,detalle: []});
@@ -68,6 +68,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   }
   
   ngOnInit(): void {            
+    this.iniciarResizeGrid(0.1,true);
     this.activatedRouter.data.subscribe((data) => {            
       const pendientes = data['pendientes'] || false;      
       this._verPendientes.set(pendientes);    
@@ -99,10 +100,8 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
 
   async loadDataOrder(orden: string) {
-
     this.cargandoDetalle.set(true);
-    const response = await firstValueFrom(this.produccionService.detalle(orden));
-    
+    const response = await firstValueFrom(this.produccionService.detalle(orden));    
     const newData = response.detalle.map((item: Detalle) => ({
       ...item,
       trazo: item.trazo === '1' ? true : false, // Convertir el valor a booleano

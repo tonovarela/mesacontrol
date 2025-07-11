@@ -179,6 +179,7 @@
   </ejs-grid> 
   <detalle-produccion [orden]="currentOrder()" 
   [detalles]="currentDetail()"
+  [registrarMuestra]="false"
   [selectedId]="selectedMuestra()?.id_produccion || null"
   (selectMuestra)="onSelectMuestra($event)"
   (verHistorial)="onVerHistorial($event)"

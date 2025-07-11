@@ -40,6 +40,7 @@
                             class="cursor-pointer" />
                     </ng-template>
                 </e-column>
+                
                 <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">
                     <ng-template #template let-detalle>
                         <input type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
@@ -66,6 +67,8 @@
                         }
                     </ng-template>
                 </e-column>
+
+
                 <e-column [allowFiltering]="false" width=100 headerText='Detalles'>
                     <ng-template #template let-detalle>
                         <div class="flex justify-center items-center cursor-pointer">

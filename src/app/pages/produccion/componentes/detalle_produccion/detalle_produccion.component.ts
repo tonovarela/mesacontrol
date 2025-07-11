@@ -19,6 +19,8 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
   @Input() orden!: any;
   @Input() selectedId: string | null = null;
 
+  @Input() registrarMuestra =true;
+
   @Output() selectMuestra = new EventEmitter<any>();
   @Output() cerrarMuestra = new EventEmitter<string>();
   @Output() voBoChange = new EventEmitter<{ id: string, event: any }>();
@@ -33,7 +35,7 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
   }
   ngOnInit(): void {
     
-    this.iniciarResizeGrid(0.2,false);
+    this.iniciarResizeGrid(0.6);
   }
 
   onVoBoChange(id: string, event: any) {
