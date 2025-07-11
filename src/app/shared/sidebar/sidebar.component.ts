@@ -44,9 +44,15 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
 
   public rutasProduccion: Ruta[] = [
     {
-      nombre: 'Liberacion',
+      nombre: 'Pendientes',
       icono: 'assets/img/orders.svg',
-      path: '/produccion/liberacion',
+      path: '/produccion/pendientes',
+      claseSize: 'w-8 h-8 svg-icon',
+    },
+    {
+      nombre: 'Liberadas',
+      icono: 'assets/img/liberadas.svg',
+      path: '/produccion/liberadas',
       claseSize: 'w-8 h-8 svg-icon',
     },
   ];

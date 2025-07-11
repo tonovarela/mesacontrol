@@ -1,8 +1,12 @@
 <div id="initial" class="dark:bg-gray-900 h-screen">
+  @if(verPendientes()){
     <div class="py-1 px-2 w-full">
         <search-metrics [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
     </div>
+  }
 
+
+  @if(verPendientes()){
     <div class="grid grid-cols-2 grid-rows-2 gap-2">
       <div >                
         <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
@@ -54,7 +58,8 @@
                     </ng-template>
                 </e-column>
             </e-columns>
-        </ejs-grid>                                  </div>
+        </ejs-grid> 
+                                       </div>
       <div class="col-start-1 row-start-2">
         <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
                       (rowSelected)='onRowSelected($event)' [filterSettings]="filterSettings " [allowTextWrap]='true'
@@ -120,6 +125,72 @@
                 </detalle-produccion>                  
       </div>
     </div>
+  }@else{
+    <div class="flex flex-row ">
+      <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
+      (rowSelected)='onRowSelected($event)' [filterSettings]="filterSettings " [allowTextWrap]='true'
+      [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
+      [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true
+      allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+      <e-columns>
+          <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=50>
+          </e-column>
+          <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width=100>
+          </e-column>
+          <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=100>
+          </e-column>
+          <e-column field='Vendedor' [allowFiltering]="true" width=80>
+          </e-column>
+
+          <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true"
+              headerText='Cant' width=50>
+              <ng-template #template let-data>
+                  <div class="flex flex-col">
+                      <span>{{data.CantidadEntregar | number}}</span>
+                  </div>
+              </ng-template>
+          </e-column>
+          <e-column field='tieneInfo' headerText="Tiene info" textAlign="Right"
+              [allowFiltering]="false" width=50>
+              <ng-template #template let-data>
+                  <div class="flex  items-center justify-center w-full">
+                      @if(data.tieneInfo == '1') {
+                      <div class="flex flex-row w-full justify-start gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-yellow-300"
+                              viewBox="0 0 24 24">
+                              <circle cx="12" cy="12" r="10" />
+                          </svg>
+                          SI
+                      </div>
+
+                      }@else {
+                      <div class="flex flex-row w-full justify-start gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-red-600 "
+                              viewBox="0 0 24 24">
+                              <circle cx="12" cy="12" r="10" />
+                          </svg>
+                          NO
+                      </div>
+                      }
+                  </div>
+              </ng-template>
+          </e-column>
+      </e-columns>
+  </ejs-grid> 
+  <detalle-produccion [orden]="currentOrder()" 
+  [detalles]="currentDetail()"
+  [selectedId]="selectedMuestra()?.id_produccion || null"
+  (selectMuestra)="onSelectMuestra($event)"
+  (verHistorial)="onVerHistorial($event)"
+  (cerrarMuestra)="cerrarMuestra($event)"
+  (voBoChange)="onChangeVoBo($event.id, $event.event)"
+  (trazoChange)="onChangeTrazo($event.id, $event.event)">
+</detalle-produccion>   
+    </div>
+  }
+
+
+  
 
 
 

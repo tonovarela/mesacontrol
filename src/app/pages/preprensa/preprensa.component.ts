@@ -6,7 +6,7 @@ import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { MetricsService, UiService, CheckListService, PdfService, UsuarioService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import {  TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { DetailRowService } from '@syncfusion/ej2-angular-grids'
 import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -25,19 +25,19 @@ import { formatDate } from '../../utils/formatDate';
   styleUrl: './preprensa.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class PreprensaComponent extends BaseGridComponent implements OnInit  {
-  
-  public type= TypeSearchMetrics.PREPRENSA;
+export default class PreprensaComponent extends BaseGridComponent implements OnInit {
+
+  public type = TypeSearchMetrics.PREPRENSA;
   protected minusHeight = 0.30;
   private metricsService = inject(MetricsService);
   private checkListService = inject(CheckListService);
   private pdfService = inject(PdfService);
   private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
-  private _verPendientes= signal<boolean>(true);
+  private _verPendientes = signal<boolean>(true);
   private router = inject(Router);
   private activatedRouter = inject(ActivatedRoute);
- private usuarioService = inject(UsuarioService);
+  private usuarioService = inject(UsuarioService);
 
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
   public ordenesMetrics = computed(() => this._ordenesMetrics());
@@ -46,7 +46,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   public cargando = signal(false);
   public guardandoOrdenMetrics = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
-  public catalogoTiposProductos= computed(() => this.metricsService.TipoMateriales());
+  public catalogoTiposProductos = computed(() => this.metricsService.TipoMateriales());
 
   public titulo = signal<string>('');
 
@@ -58,19 +58,19 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   columnasAuditoria = columnas;
 
 
-  
 
-  async descargarPDF(data: any) {   
-    this.pdfService.descargarPDF(data, this.usuarioService.StatusSesion()?.usuario?.nombre || ''); 
+
+  async descargarPDF(data: any) {
+    this.pdfService.descargarPDF(data, this.usuarioService.StatusSesion()?.usuario?.nombre || '');
   }
 
 
-  fechaLiberacion(data: any,col:any)  {
+  fechaLiberacion(data: any, col: any) {
     return col.obtenerFechaLiberacion(data);
   }
 
 
-  
+
 
 
   colorChecklist(data: any, col: any): string {
@@ -89,17 +89,13 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
 
   ngOnInit(): void {
-    
-    this.autoFitColumns = false;    
-    setTimeout(() => {
-      this.iniciarResizeGrid(this.minusHeight);    
-    });
-    
+    this.autoFitColumns = false;
+    setTimeout(() => { this.iniciarResizeGrid(this.minusHeight) });
     this.activatedRouter.data.subscribe((data) => {
       this.titulo.set(data['titulo'] || '');
-      const pendientes = data['pendientes'] || false;      
+      const pendientes = data['pendientes'] || false;
       this._verPendientes.set(pendientes);
-      this.cargarInformacion();            
+      this.cargarInformacion();
     });
   }
 
@@ -124,7 +120,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     this.cargando.set(true);
     try {
       this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
-      const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))      
+      const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))
       this._ordenesMetrics.set([...response.ordenes])
     }
     catch (error) {
@@ -132,27 +128,27 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     }
     finally {
       this.cargando.set(false);
-      
-      
+
+
     }
   }
 
-  async ir(ordenMetrics: OrdenMetrics,actual: {id_checkActual: string, liberacion?: Date}) {    
+  async ir(ordenMetrics: OrdenMetrics, actual: { id_checkActual: string, liberacion?: Date }) {
     const { id_checkActual, liberacion } = actual;
-    
 
-    const {  id_checklist_actual } = ordenMetrics    
+
+    const { id_checklist_actual } = ordenMetrics
     this.checkListService.currentMetricsOP.set(ordenMetrics);
-    if (liberacion){
-      this.checkListService.id_checkListCurrent = id_checkActual;    
-    }else{
+    if (liberacion) {
+      this.checkListService.id_checkListCurrent = id_checkActual;
+    } else {
       this.checkListService.id_checkListCurrent = id_checklist_actual;
-    }        
+    }
     await this.checkListService.loadChecklist();
     //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
     //TODO: Guardar en el estado la ordenMetrics             
     this.router.navigate([`/rollcall`]);
-    
+
   }
 
   cerrarOrdenMetricsPorDefinir() {

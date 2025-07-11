@@ -1,27 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import {  ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
-
-
-import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { Detalle, EstadoMuestra, OrdenMetrics} from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { environment } from '@environments/environment.development';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-
+import { ActivatedRoute } from '@angular/router';
+import { SynfusionModule } from '@app/lib/synfusion.module';
+import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { UiService, ProduccionService, UsuarioService } from '@app/services';
+import { Detalle, EstadoMuestra, OrdenMetrics} from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { RegistroMuestraComponent } from '../../componentes/registro-muestra/registro-muestra.component';
 import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
-import { SynfusionModule } from '@app/lib/synfusion.module';
 import { DetailRowService, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { CurrentOrder } from '@app/interfaces/models/CurrrentOrder';
 import { DetalleProduccionComponent } from '../../componentes/detalle_produccion/detalle_produccion.component';
 import { Muestra } from '@app/interfaces/responses/ResponseBitacoraMuestra';
-import { environment } from '@environments/environment.development';
 import { ResponseBitacoraMuestra  as BitacoraMuestra } from '../../../../interfaces/responses/ResponseBitacoraMuestra';
-
-
 
 @Component({
   selector: 'app-produccion',
@@ -32,45 +28,36 @@ import { ResponseBitacoraMuestra  as BitacoraMuestra } from '../../../../interfa
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export default class ProduccionComponent extends BaseGridComponent implements OnInit,AfterViewInit {
+export default class ProduccionComponent extends BaseGridComponent implements OnInit {
 
-  public ordenesMetrics = computed(() => this._ordenesMetrics());
-  private _ordenesMetrics = signal<OrdenMetrics[]>([]);
-
-  public bitacoraMuestras = computed(() => this._bitacoraMuestras());
-  private _bitacoraMuestras = signal<BitacoraMuestra | null >(null);
-  public mostrarModalBitacora = signal(false);
-
-
-  public cargando = signal(false);
-  public cargandoDetalle = signal(false);
-
-  protected minusHeight = 0.30;
-
-  public wrapSettings?: TextWrapSettingsModel;
-
-
-  public type = TypeSearchMetrics.PRODUCCION;
-  private produccionService = inject(ProduccionService);
-  private usuarioService = inject(UsuarioService);
-  private uiService = inject(UiService);
-
-  private _currentOrder = signal<CurrentOrder | null>(null);
+  
   public estadosMuestra = signal<EstadoMuestra[]>([]);
   public selectedMuestra = signal<Detalle | null>(null);
   public currentDetail = computed(() => this._currentOrder()?.detalle || []);
   public currentOrder = computed(() => this._currentOrder()?.order || null);
+  public ordenesMetrics = computed(() => this._ordenesMetrics());
+  public bitacoraMuestras = computed(() => this._bitacoraMuestras());  
+  public mostrarModalBitacora = signal(false);
+  public cargando = signal(false);
+  public cargandoDetalle = signal(false);
+  public wrapSettings?: TextWrapSettingsModel;
+  public type = TypeSearchMetrics.PRODUCCION;
+  public verPendientes = computed(() => this._verPendientes());
 
-
-
-
+  protected minusHeight = 0.30;
+  
+  private _ordenesMetrics = signal<OrdenMetrics[]>([]);
+  private _bitacoraMuestras = signal<BitacoraMuestra | null >(null);
+  private produccionService = inject(ProduccionService);
+  private usuarioService = inject(UsuarioService);
+  private uiService = inject(UiService);
+  private activatedRouter = inject(ActivatedRoute);
+  private _currentOrder = signal<CurrentOrder | null>(null);
+  private _verPendientes = signal<boolean>(true);
 
 
   async onSelectOrder(order: any) {
-    this._currentOrder.set({
-      order,
-      detalle: []
-    });
+    this._currentOrder.set({order,detalle: []});
     const { NoOrden: orden } = order;
     await this.loadDataOrder(orden);
     await this.cargarOrdenes();
@@ -79,12 +66,13 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   constructor() {
     super();
   }
-  ngAfterViewInit(): void {    
-  }
-
-
-  ngOnInit(): void {        
-    this.cargarOrdenes();
+  
+  ngOnInit(): void {            
+    this.activatedRouter.data.subscribe((data) => {            
+      const pendientes = data['pendientes'] || false;      
+      this._verPendientes.set(pendientes);    
+      this.cargarOrdenes();
+    });
   }
 
   onRowSelected(args: any): void {
@@ -93,7 +81,6 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   }
 
   async cargarOrdenes() {
-
     try {
       const response = await firstValueFrom(this.produccionService.listar());
       this._ordenesMetrics.set(response.ordenes);
