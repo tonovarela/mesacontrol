@@ -11,13 +11,20 @@ export const routes: Routes = [
       { path: "omisiones", loadComponent: () => import('./pages/omisiones/omisiones.component') },
       { path: '**', redirectTo: 'pendientes' }
     ]
-  },
+  },  
   {
     path: 'produccion', component: MainLayoutComponent,
     children: [
       { path: "pendientes", data: { pendientes: true }, loadComponent: () => import('./pages/produccion/pages/produccion/produccion.component') },
       { path: "liberadas", data: { pendiente: false }, loadComponent: () => import('./pages/produccion/pages/produccion/produccion.component') },
       { path: '**', redirectTo: 'pendientes' }
+    ]
+  },
+  {
+    path: 'control_elementos', component: MainLayoutComponent,
+    children: [
+      { path: "solicitudes", loadComponent: () => import('./pages/control_elementos/pages/solicitudes/solicitudes.component') },
+      {  path: "nueva", loadComponent: () => import('./pages/control_elementos/pages/nueva/nueva.component') },
     ]
   },
   {

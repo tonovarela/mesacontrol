@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {  ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
 import { environment } from '@environments/environment.development';
@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { UiService, ProduccionService, UsuarioService } from '@app/services';
-import { Detalle, EstadoMuestra, OrdenMetrics} from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { Detalle, EstadoMuestra, OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { RegistroMuestraComponent } from '../../componentes/registro-muestra/registro-muestra.component';
 import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
@@ -17,11 +17,18 @@ import { DetailRowService, TextWrapSettingsModel } from '@syncfusion/ej2-angular
 import { CurrentOrder } from '@app/interfaces/models/CurrrentOrder';
 import { DetalleProduccionComponent } from '../../componentes/detalle_produccion/detalle_produccion.component';
 import { Muestra } from '@app/interfaces/responses/ResponseBitacoraMuestra';
-import { ResponseBitacoraMuestra  as BitacoraMuestra } from '../../../../interfaces/responses/ResponseBitacoraMuestra';
+import { ResponseBitacoraMuestra as BitacoraMuestra } from '../../../../interfaces/responses/ResponseBitacoraMuestra';
 
 @Component({
   selector: 'app-produccion',
-  imports: [RegistroMuestraComponent, SearchMetricsComponent, FormsModule, CommonModule, PrimeModule, SynfusionModule, DetalleProduccionComponent],
+  imports: [
+    RegistroMuestraComponent,
+    SearchMetricsComponent,
+    FormsModule,
+    CommonModule,
+    PrimeModule,
+    SynfusionModule,
+    DetalleProduccionComponent],
   templateUrl: './produccion.component.html',
   providers: [DetailRowService],
   styleUrl: './produccion.component.css',
@@ -34,18 +41,14 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   public currentDetail = computed(() => this._currentOrder()?.detalle || []);
   public currentOrder = computed(() => this._currentOrder()?.order || null);
   public ordenesMetrics = computed(() => this._ordenesMetrics());
-  public bitacoraMuestras = computed(() => this._bitacoraMuestras());  
+  public bitacoraMuestras = computed(() => this._bitacoraMuestras());
   public mostrarModalBitacora = signal(false);
   public cargando = signal(false);
   public cargandoDetalle = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
-  
   public verPendientes = computed(() => this._verPendientes());
-  
-  
-  
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
-  private _bitacoraMuestras = signal<BitacoraMuestra | null >(null);
+  private _bitacoraMuestras = signal<BitacoraMuestra | null>(null);
   private produccionService = inject(ProduccionService);
   private usuarioService = inject(UsuarioService);
   private uiService = inject(UiService);
@@ -53,11 +56,11 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   private _currentOrder = signal<CurrentOrder | null>(null);
   private _verPendientes = signal<boolean>(true);
   protected minusHeight = 0.30;
-
+  activeTab: string = 'tab1'; // Tab activo por defecto
   public type = TypeSearchMetrics.PRODUCCION;
 
   async onSelectOrder(order: any) {
-    this._currentOrder.set({order,detalle: []});
+    this._currentOrder.set({ order, detalle: [] });
     const { NoOrden: orden } = order;
     await this.loadDataOrder(orden);
     await this.cargarOrdenes();
@@ -66,12 +69,12 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   constructor() {
     super();
   }
-  
-  ngOnInit(): void {            
-    this.iniciarResizeGrid(0.1,true);
-    this.activatedRouter.data.subscribe((data) => {            
-      const pendientes = data['pendientes'] || false;      
-      this._verPendientes.set(pendientes);    
+
+  ngOnInit(): void {
+    this.iniciarResizeGrid(0.1, true);
+    this.activatedRouter.data.subscribe((data) => {
+      const pendientes = data['pendientes'] || false;
+      this._verPendientes.set(pendientes);
       this.cargarOrdenes();
     });
   }
@@ -82,8 +85,9 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   }
 
   async cargarOrdenes() {
+
     try {
-      const response = await firstValueFrom(this.produccionService.listar());
+      const response = await firstValueFrom(this.produccionService.listar(this._verPendientes()));
       this._ordenesMetrics.set(response.ordenes);
     } catch (error) {
       this.uiService.mostrarAlertaError('Error al cargar las órdenes de producción', 'No se pudo cargar la información de las órdenes de producción. Por favor, inténtelo más tarde.');
@@ -92,16 +96,13 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       this.cargando.set(false);
     }
     this.autoFitColumns = false;
-
-    setTimeout(() => {
-      this.iniciarResizeGrid(this.minusHeight *1.4 );
-    });
+    setTimeout(() => this.iniciarResizeGrid(this.minusHeight));
   }
 
 
   async loadDataOrder(orden: string) {
     this.cargandoDetalle.set(true);
-    const response = await firstValueFrom(this.produccionService.detalle(orden));    
+    const response = await firstValueFrom(this.produccionService.detalle(orden));
     const newData = response.detalle.map((item: Detalle) => ({
       ...item,
       trazo: item.trazo === '1' ? true : false, // Convertir el valor a booleano
@@ -138,7 +139,8 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       const orden = this.currentDetail()[0].orden_metrics;
       await this.loadDataOrder(orden);
     } catch (error) {
-      this.uiService.mostrarAlertaError("Error al registrar muestra", "No se pudo registrar la muestra. Inténtalo de nuevo más tarde.");
+      this.uiService.mostrarAlertaError("Error al registrar muestra",
+        "No se pudo registrar la muestra. Inténtalo de nuevo más tarde.");
     }
 
   }
@@ -148,7 +150,10 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
     const request = { id_produccion, id_usuario: `${id_usuario}` };
-    const response = await this.uiService.mostrarAlertaConfirmacion("Finalizar  Muestra", "¿Estás seguro de que deseas finalizar el registro de esta muestra?", "Si, finalizarla", "Cancelar")
+    const response = await this.uiService.mostrarAlertaConfirmacion("Finalizar  Muestra",
+      "¿Estás seguro de que deseas finalizar el registro de esta muestra?",
+      "Si, finalizarla",
+      "Cancelar")
     if (!(response.isConfirmed)) { return; }
     await firstValueFrom(this.produccionService.finalizarMuestra(request));
     const orden = this.currentDetail()[0].orden_metrics;
@@ -161,11 +166,12 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     const checked = event.target.checked;
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
     try {
-      await firstValueFrom(this.produccionService.actualizarTrazo(id_produccion, checked,`${id_usuario}`));
+      await firstValueFrom(this.produccionService.actualizarTrazo(id_produccion, checked, `${id_usuario}`));
       const orden = this.currentDetail()[0].orden_metrics;
       await this.loadDataOrder(orden);
     } catch (error) {
-      this.uiService.mostrarAlertaError("Error al actualizar trazo", "No se pudo actualizar el estado de trazo. Inténtalo de nuevo más tarde.");
+      this.uiService.mostrarAlertaError("Error al actualizar trazo", 
+        "No se pudo actualizar el estado de trazo. Inténtalo de nuevo más tarde.");
     }
   }
 
@@ -174,16 +180,18 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     const checked = event.target.checked;
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
     try {
-      await firstValueFrom(this.produccionService.actualizarVoBo(id_produccion, checked,`${id_usuario}`));
+      await firstValueFrom(this.produccionService.actualizarVoBo(id_produccion, checked, `${id_usuario}`));
       const orden = this.currentDetail()[0].orden_metrics;
       await this.loadDataOrder(orden);
     } catch (error) {
-      this.uiService.mostrarAlertaError("Error al actualizar VoBo", "No se pudo actualizar el estado de VoBo. Inténtalo de nuevo más tarde.");
+      this.uiService.mostrarAlertaError("Error al actualizar VoBo", 
+        "No se pudo actualizar el estado de VoBo. Inténtalo de nuevo más tarde.");
     }
 
   }
 
   async onVerHistorial(detalle: any) {
+
     const { id_produccion } = detalle;
     try {
       const response = await firstValueFrom(this.produccionService.obtenerBitacoraMuestra(id_produccion));
@@ -195,13 +203,11 @@ export default class ProduccionComponent extends BaseGridComponent implements On
           avatarSupervisor: `${BASE_AVATAR_URL}/${muestra.id_supervisor}`,
         }
       });
-      
-      
-      this._bitacoraMuestras.set({...response,muestras });
+
+      this._bitacoraMuestras.set({ ...response, muestras });
       this.mostrarModalBitacora.set(true); // Mostrar el modal
     } catch (error) {
       this.uiService.mostrarAlertaError("Error al cargar historial", "No se pudo cargar el historial de la muestra. Inténtalo de nuevo más tarde.");
     }
   }
-
 }

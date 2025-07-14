@@ -11,8 +11,8 @@ export class ProduccionService {
     private readonly API_URL = environment.apiUrl;
     http = inject(HttpClient);
 
-    listar() {
-        return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/produccion`);
+    listar(pendientes: boolean = true) {
+        return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/produccion?pendientes=${pendientes}`);
     }
 
     detalle(orden: string) {

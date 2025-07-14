@@ -55,6 +55,12 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
       path: '/produccion/liberadas',
       claseSize: 'w-8 h-8 svg-icon',
     },
+    {
+      nombre: 'Control elementos',
+      icono: 'assets/img/control.svg',
+      path: '/control_elementos/solicitudes',
+      claseSize: 'w-8 h-8 svg-icon',
+    },
   ];
   
   ngAfterViewInit(): void {

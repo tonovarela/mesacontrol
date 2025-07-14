@@ -1,0 +1,20 @@
+<div id="initial" class="dark:bg-gray-900 h-screen p-1">
+    <div class="flex justify-between items-center p-1">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Solicitudes</h1>
+        <button
+        (click)="navigateToNueva()"
+            class="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            + Nueva Solicitud
+        </button>
+    </div>
+    <div>
+        <ejs-grid #grid [dataSource]='solicitudes()' [height]="heightGrid" [allowPaging]='true'
+            [pageSettings]='pageSettings'>
+            <e-columns>
+                <e-column field='id' headerText='ID' width='100'></e-column>
+                <e-column field='fecha' headerText='Fecha' width='150'></e-column>
+                <e-column field='estado' headerText='Estado' width='150'></e-column>
+                <e-column field='accion' headerText='Acción' width='150'></e-column>
+            </e-columns>
+        </ejs-grid>
+    </div>

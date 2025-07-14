@@ -8,15 +8,14 @@
                 <e-column field='orden_metrics' [allowFiltering]="true" headerText='Orden' width=100></e-column>
                 <e-column field='proceso' [allowFiltering]="true" width=50></e-column>
                 <e-column field='componente' [allowFiltering]="true" width=50></e-column>
-                <e-column field='pliego' [allowFiltering]="true" width=50></e-column>
-                <e-column field='entrada' [allowFiltering]="true" width=50></e-column>
-                <e-column field='tiros' [allowFiltering]="true" textAlign="Right" width=50>
+                <e-column field='pliego' [allowFiltering]="true" headerText='pli.' width=10></e-column>
+                <e-column field='entrada' [allowFiltering]="true" headerText='ent.' width=25></e-column>
+                <e-column field='tiros' [allowFiltering]="true" textAlign="Right" headerText='ti' width=50>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.tiros | number}}</span>
                         </div>
-                    </ng-template>
-                </e-column>
+                    </ng-template></e-column>
                 <e-column field='muestra' [allowFiltering]="true" textAlign="Right" width=50 headerText='Muestra requerida' 
                     width=100>
                     <ng-template #template let-data>
