@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, output, input, OnInit, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal, output, input, OnInit, computed, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { OrdenMetrics, ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { TypeSearchMetrics } from '@app/interfaces/type';
 
 import { PrimeModule } from '@app/lib/prime.module';
 import { MetricsService } from '@app/services';
-import {  Subject, switchMap } from 'rxjs';
+import {  Observable, Subject, switchMap } from 'rxjs';
 
 
 @Component({  
@@ -15,7 +16,7 @@ import {  Subject, switchMap } from 'rxjs';
   styleUrl: './search-metrics.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SearchMetricsComponent implements OnInit { 
+export class SearchMetricsComponent implements OnInit,OnDestroy { 
 
   
   public OPsBusqueda = signal<any[]>([]);
@@ -28,7 +29,7 @@ export class SearchMetricsComponent implements OnInit {
 
 
 
-  public typeSearch = input.required();
+  public typeSearch = input<TypeSearchMetrics>(TypeSearchMetrics.PREPRENSA);
 
 
   private valorQuerySubject: Subject<string> = new Subject<string>();  
@@ -41,15 +42,34 @@ export class SearchMetricsComponent implements OnInit {
 
   constructor() {
     
+    
+  }
+  ngOnDestroy(): void {
+    this.valorQuerySubject.unsubscribe();
+    
+  }
+  ngOnInit(): void {
+    
+    const tipoSearch = this.typeSearch();
+    let busquedaObservable :Observable<ResponseOrdenMetrics>     
+
+      
     this.valorQuerySubject.pipe(
-      switchMap(query => { return this.metrisService.buscarPorPatron(query,this.paraProduccion()) })
+      switchMap(query => {
+        if ([TypeSearchMetrics.PREPRENSA,TypeSearchMetrics.PRODUCCION].includes(tipoSearch) ){  
+          busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery, this.paraProduccion());
+        }else {    
+          busquedaObservable = this.metrisService.buscarRegistroPreprensa(this.valorQuery);
+        }
+        return busquedaObservable;
+
+      })
     ).subscribe((response) => {
       this.cargandoBusqueda.set(false);
       this.OPsBusqueda.set(response.ordenes);
     })
-  }
-  ngOnInit(): void {
- //   console.log("TypeSearch", this.typeSearch());
+
+   
   }
 
   async onSelect({ value }: { value: OrdenMetrics }) {

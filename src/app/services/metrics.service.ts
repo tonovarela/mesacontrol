@@ -43,6 +43,10 @@ export class MetricsService {
     return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/orden/buscar?produccion=${paraProducion}`,{patron});
   }
 
+  buscarRegistroPreprensa(patron: string) {  
+    return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/preprensa/buscar`,{patron});
+  }
+
 
   agregarOrden(orden: OrdenMetrics) {
 

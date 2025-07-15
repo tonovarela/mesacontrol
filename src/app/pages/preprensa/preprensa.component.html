@@ -22,7 +22,10 @@
                 [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'
                 rowHeight='30' (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid"
                 allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
-                [pageSettings]='pageSettings'>
+                [pageSettings]='pageSettings'
+                
+                
+                >
                 <e-columns>
                     <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
                     </e-column>                
