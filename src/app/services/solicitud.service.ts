@@ -21,4 +21,10 @@ import { environment } from "@environments/environment.development";
       return this.http.post(`${this.API_URL}/api/solicitud`, { solicitud:{id_checklist, id_solicitante}});
     }
 
+    public cambiarEstado(id_solicitud: string, id_estado: number, id_usuario: string, id_checklist?: string) {
+      return this.http.put(`${this.API_URL}/api/solicitud`, { id_checklist,solicitud:{ id_solicitud,
+                                                                          id_estado, 
+                                                                          id_usuario}});
+    }
+
   }

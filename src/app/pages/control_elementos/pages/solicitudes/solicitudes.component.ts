@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Estado, Solicitud } from '@app/interfaces/responses/SolicitudResponse';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { SolicitudService } from '@app/services';
+import { SolicitudService, UiService, UsuarioService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -20,6 +20,9 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   router = inject(Router);
 
   solicitudService = inject(SolicitudService);
+  usuarioService = inject(UsuarioService);
+  uiService = inject(UiService);
+
   solicitudes = signal<Solicitud[]>([])
   estados = signal<Estado[]>([]);
   
@@ -40,6 +43,27 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     this.estados.set(response.estados);
     this.solicitudes.set(response.solicitudes);
   }
+
+
+  async cambioEstado(solicitud: Solicitud,$event: any) {
+    const {id_solicitud,id_checklist} = solicitud;  
+    const id_usuario = this.usuarioService.StatusSesion().usuario?.id!;
+    const id_estado = $event.target.value;
+    try {
+      await  firstValueFrom(this.solicitudService.cambiarEstado(id_solicitud, id_estado, `${id_usuario}`,id_checklist))
+      this.uiService.mostrarAlertaSuccess("Mesa de Control",'Estado actualizado correctamente');
+     
+    }catch (responseError:any) {      
+      this.uiService.mostrarAlertaError("Mesa de Control", responseError.error.message || 'Error al actualizar el estado de la solicitud');
+    }finally {
+      this.cargarSolicitudes();      
+    }
+
+      
+
+
+  }
+  
 
 
 
