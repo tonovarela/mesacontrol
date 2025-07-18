@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal,computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
@@ -27,10 +27,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   estados = signal<Estado[]>([]);
   
   ngOnInit(): void {
-    this.cargarSolicitudes();
-    
+    this.cargarSolicitudes();    
     this.iniciarResizeGrid(0.39, true);
     this.autoFitColumns = true;
+    console.log(this.usuarioService.StatusSesion().usuario?.id_rol);
   }
 
   navigateToNueva() {
@@ -59,10 +59,15 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
       this.cargarSolicitudes();      
     }
 
+
+
       
 
 
   }
+
+
+  esSolicitante = computed(()=>this.usuarioService.StatusSesion().usuario?.id_rol==="1")
   
 
 
