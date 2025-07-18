@@ -7,6 +7,6 @@ export const environment = {
     passwordDossier:"pro_mstr22$",
     userDev:
     //{ username:'mrodriguez',password:'17320'}
-    { username:'mestelles',password:'54321'}
+    { username:'agonzalezg',password:'47097'}
     
 };

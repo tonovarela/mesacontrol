@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component,  inject, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { UiService } from '@app/services';
+import { UiService, UsuarioService } from '@app/services';
 
 interface Ruta {
   nombre: string;
@@ -21,6 +21,7 @@ interface Ruta {
 export class SidebarComponent   implements OnInit,AfterViewInit {
   router = inject(Router);
   uiService= inject(UiService);
+  usuarioService = inject(UsuarioService);
   public rutasPreprensa: Ruta[] = [
     {
       nombre: 'Pendientes',
@@ -64,7 +65,8 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
   ];
   
   ngAfterViewInit(): void {
- 
+    //TODO: Asociar el rol al menu y al Guard
+    console.log(this.usuarioService.StatusSesion().usuario?.id_rol);
   }
   ngOnInit(): void {
     

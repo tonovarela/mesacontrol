@@ -2,6 +2,7 @@ export type Usuario ={
     id: number;
     nombre: string;
     login:string;
+    id_rol:number;
     personal?:string;
     puesto?:string;
     
