@@ -5,22 +5,15 @@ import swal, { SweetAlertResult } from 'sweetalert2';
 @Injectable({
   providedIn: 'root'
 })
-export class UiService {
-
-  
+export class UiService {  
   constructor() { }
 
-  
   toggleSidebar() {    
   }
 
-  
   mostrarAlertaError(titulo:string, mensaje:string) {
     swal.fire(titulo, mensaje, 'error');
   }
-
-
-
   mostrarAlertaErrorAutoClose(titulo:string, mensaje:string, timer = 1000) {
     swal.fire({
       title: titulo,
@@ -30,7 +23,6 @@ export class UiService {
       timer: timer
     });
   }
-
 
   mostrarLoading() {
     swal.fire({
@@ -43,6 +35,7 @@ export class UiService {
       }
     });
   }
+
   ocultarLoading(mensaje: string) {
     swal.fire({
       title: 'Listo',
@@ -65,7 +58,6 @@ export class UiService {
       cancelButtonColor: '#d33',
       reverseButtons: true
     });
-
   }
 
   mostrarAlertaSuccess(titulo:string, mensaje:string, timer = 3500) {
@@ -75,8 +67,20 @@ export class UiService {
       text: mensaje,
       showConfirmButton: false,
       timer
-    });
+    });    
+
+
+
+ 
+
+    
 
   }
+
+
+  
+
+  
+
 
 }
