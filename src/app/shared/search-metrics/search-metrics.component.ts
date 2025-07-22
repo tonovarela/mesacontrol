@@ -59,7 +59,7 @@ export class SearchMetricsComponent implements OnInit,OnDestroy {
         if ([TypeSearchMetrics.PREPRENSA,TypeSearchMetrics.PRODUCCION].includes(tipoSearch) ){  
           busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery, this.paraProduccion());
         }else {    
-          busquedaObservable = this.metrisService.buscarRegistroPreprensa(this.valorQuery);
+          busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery,true);
         }
         return busquedaObservable;
 

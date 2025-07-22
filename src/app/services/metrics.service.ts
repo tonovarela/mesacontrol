@@ -47,6 +47,8 @@ export class MetricsService {
     return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/preprensa/buscar`,{patron});
   }
 
+ 
+
 
   agregarOrden(orden: OrdenMetrics) {
 

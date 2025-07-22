@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { ResponseBitacoraMuestra } from "@app/interfaces/responses/ResponseBitacoraMuestra";
+import { ResponseComponentes } from "@app/interfaces/responses/ResponseComponentes";
 import { ResponseDetalleOrdenProduccion, ResponseOrdenMetrics } from "@app/interfaces/responses/ResponseOrdenMetrics";
 import { environment } from "@environments/environment.development";
 
@@ -13,6 +14,11 @@ export class ProduccionService {
 
     listar(pendientes: boolean = true) {
         return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/produccion?pendientes=${pendientes}`);
+    }
+
+
+    obtenerComponentes(orden: string) {
+        return this.http.get<ResponseComponentes>(`${this.API_URL}/api/produccion/componentes/${orden}`);
     }
 
     detalle(orden: string) {
