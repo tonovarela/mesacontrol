@@ -57,13 +57,17 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
       path: '/produccion/liberadas',
       claseSize: 'w-8 h-8 svg-icon',
     },
+    
+  ]);
+
+  public rutasControlElementos =   signal<Ruta[]>([
     {
-      nombre: 'Control elementos',
+      nombre: 'Solicitudes',
       icono: 'assets/img/control.svg',
       path: '/control_elementos/solicitudes',
       claseSize: 'w-8 h-8 svg-icon',
-    },
-  ]);
+    }
+  ])
 
 
   
