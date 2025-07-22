@@ -7,55 +7,20 @@ import swal, { SweetAlertResult } from 'sweetalert2';
 })
 export class UiService {
 
-  //private drawer: DrawerInterface | undefined;
-  //private isOpenSidebar =signal<boolean>(true);
+  
   constructor() { }
 
-  //cargarSidebar() {        
-    // const options = {
-    //   placement: 'left',
-    //   backdrop: false,
-    //   bodyScrolling: false,
-    //   edge: false,
-    //   edgeOffset: ''
-    // };
-    // const instanceOptions: InstanceOptions = {
-    //   id: 'logo-sidebar',
-    //   override: false
-    // };
-    // const $targetEl = document.getElementById('logo-sidebar');
-    // this.drawer = new Drawer($targetEl, options, instanceOptions);
-    // this.drawer.init();
-//  }
+  
   toggleSidebar() {    
-    //this.drawer!.toggle();
-    // if (!this.drawer!.isVisible()) {
-    //   this.isOpenSidebar.set(true);
-    //   document.getElementById('logo-sidebar')!.classList.remove('hidden');      
-    // }else{
-    //   this.isOpenSidebar.set(false);
-    //   document.getElementById('logo-sidebar')!.classList.add('hidden');
-    // }    
   }
 
-  // isOpenSideBar = computed(() => {
-  //   return this.isOpenSidebar();
-  // });
-
-
-
-  // closeSidebar() {
-    
-  //   if (this.drawer!.isVisible()) {
-  //     this.drawer!.hide();
-  //   }
-  // }
-
-
-
+  
   mostrarAlertaError(titulo:string, mensaje:string) {
     swal.fire(titulo, mensaje, 'error');
   }
+
+
+
   mostrarAlertaErrorAutoClose(titulo:string, mensaje:string, timer = 1000) {
     swal.fire({
       title: titulo,
@@ -65,8 +30,6 @@ export class UiService {
       timer: timer
     });
   }
-
-
 
 
   mostrarLoading() {
@@ -89,8 +52,6 @@ export class UiService {
     });
     swal.hideLoading();
   }
-
-
 
   mostrarAlertaConfirmacion(titulo:string, mensaje:string, labelAceptar = 'Aceptar', labelCancelar = 'Cancelar'): Promise<SweetAlertResult> {
     return swal.fire({
