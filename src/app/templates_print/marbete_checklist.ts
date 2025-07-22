@@ -26,7 +26,12 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
     pageSize: 'A5',
     pageOrientation: 'landscape',
     content: [
-      { image: `data:image/png;base64,${logoLito}`,  width: 150, margin: 5, fontSize: 7,  alignment: 'left' },
+      {
+        columns:[
+          { image: `data:image/png;base64,${logoLito}`,  width: 150, margin: 5, fontSize: 7,  alignment: 'left' },
+          { width: '*',text: 'Liberado por Mesa de control',fontSize:15 ,alignment:'center',  margin:[0,20,0,0]  },
+      ]},
+      
       {
         style: 'container',
         table: {
@@ -63,7 +68,6 @@ export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
               { text: 'CHECKLIST', alignment: 'center',style: 'tableHeader' },
               { text: 'FECHA DE APROBACIÓN', style: 'tableHeader', alignment: 'center' },
         
-
             ],
             [
               { text: 'Liberación al cliente', alignment: 'left',margin: [0, 10, 0, 0],rowSpan:2 },
