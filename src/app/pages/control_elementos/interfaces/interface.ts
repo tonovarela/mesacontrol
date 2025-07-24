@@ -2,6 +2,7 @@ import { OrdenMetrics } from "@app/interfaces/responses/ResponseOrdenMetrics";
 
 export interface ComponenteView {
   componente:string,
+  idSeleccionados: number[],
   elementos:Elemento[]
 }
 

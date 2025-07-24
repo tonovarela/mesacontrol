@@ -6,12 +6,11 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { PrimeModule } from '@app/lib/prime.module';
 import { Router } from '@angular/router';
 import { Componente } from '@app/interfaces/responses/ResponseComponentes';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-
 import { TypeSearchMetrics } from '@app/interfaces/type';
-import { columnas } from '@app/pages/data/columnas';
 import {
   ProduccionService,
   SolicitudService,
@@ -19,57 +18,104 @@ import {
   UsuarioService,
 } from '@app/services';
 
-
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { firstValueFrom } from 'rxjs';
 import { ComponenteView, Solicitud } from '../../interfaces/interface';
-import { PrimeModule } from '@app/lib/prime.module';
+import { MultiSelectChangeEvent } from 'primeng/multiselect';
+import { SolicitudComponentService } from '@app/services/solicitudcomponente.service';
 
 @Component({
   selector: 'app-nueva',
-  imports: [SearchMetricsComponent, CommonModule,PrimeModule],
+  imports: [SearchMetricsComponent, CommonModule, PrimeModule],
   templateUrl: './nueva.component.html',
   styleUrl: './nueva.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class NuevaComponent {
   type = TypeSearchMetrics.CONTROL_ELEMENTOS;
-
-  columnasAuditoria = columnas;
   selectedOrder = computed(() => this.solicitudActual().orderSelected);
-
   solicitudActual = signal<Solicitud>({
     orderSelected: null,
-  
-    componentes: []   
+    componentes: [],
   });
 
   usuarioService = inject(UsuarioService);
   produccionService = inject(ProduccionService);
+  solicitudComponenteService = inject(SolicitudComponentService);
+  
   solicitudService = inject(SolicitudService);
 
   router = inject(Router);
   uiService = inject(UiService);
 
+  tieneInformacionSeleccionado = computed(() => {
+    return this.solicitudActual().componentes.some(
+      (x) => x.idSeleccionados.length > 0
+    );
+  });
+
   async onSelectOrder(orden: OrdenMetrics | null) {
-    
-    const resp = await firstValueFrom(this.produccionService.obtenerElementos(orden!.NoOrden));
+    const resp = await firstValueFrom(
+      this.produccionService.obtenerElementos(orden!.NoOrden)
+    );
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
-    const componentes :ComponenteView[] = Object.entries(agrupado).map(
+    const componentes: ComponenteView[] = Object.entries(agrupado).map(
       ([componente, elementos]) => ({
         componente,
-        elementos: elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({id_elemento,descripcion,isDisabled:id_solicitud!==null})) || []})
-    );        
-
-    this.solicitudActual.set({ orderSelected: orden,componentes });
-
+        idSeleccionados: [],
+        elementos:
+          elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({
+            id_elemento,
+            descripcion,
+            isDisabled: id_solicitud !== null,
+          })) || [],
+      })
+    );
+    this.solicitudActual.set({ orderSelected: orden, componentes });
   }
 
   clearSelectedOrder(): void {
     this.solicitudActual.set({
       orderSelected: null,
-      componentes: []
+      componentes: [],
     });
+  }
+
+  seleccionarElemento(event: MultiSelectChangeEvent, componente: string) {
+    const elementos = event.value as any[];
+    const ids = elementos.map((e) => +e.id_elemento);
+    const componenteActual = this.solicitudActual().componentes.find(
+      (x) => x.componente === componente
+    );
+    if (!componenteActual) {
+      return;
+    }
+    componenteActual.idSeleccionados = ids;
+    const componentesActualizados = this.solicitudActual().componentes.map(
+      (x) => (x.componente === componente ? componenteActual : x)
+    );
+
+    this.solicitudActual.set({
+      ...this.solicitudActual(),
+      componentes: componentesActualizados,
+    });
+  }
+
+
+  async registrarPrestamo(){
+    const seleccionados =this.solicitudActual().componentes.filter(x => x.idSeleccionados.length > 0).map(x=> {
+      return {
+        componente: x.componente,
+        elementos: x.idSeleccionados
+      }
+    });
+    const orden = this.solicitudActual().orderSelected?.NoOrden;
+
+     const response =await firstValueFrom(this.solicitudComponenteService.registrar({orden,seleccionados}));
+    this.uiService.mostrarAlertaSuccess("Registro exitoso","Se ha registrado el préstamo de los componentes seleccionados.");
+     this.clearSelectedOrder();
+     //console.log(response);
+    //console.log({seleccionados,orden:this.solicitudActual().orderSelected?.NoOrden});
   }
 
   async onSolicitar(item: any) {

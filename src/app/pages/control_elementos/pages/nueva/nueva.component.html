@@ -2,7 +2,7 @@
     @if (solicitudActual().orderSelected===null) {
     <search-metrics [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)" class="mb-4" /> }
 
-    <div *ngIf="solicitudActual().orderSelected" class="max-w-2xl mx-auto mt-4 bg-white dark:bg-slate-800 rounded-xl shadow-lg">
+    <div *ngIf="solicitudActual().orderSelected" class="max-w-4xl mx-auto mt-4 bg-white dark:bg-slate-800 rounded-xl shadow-lg">
         <div class="py-6 px-6">
             <div class="flex items-center justify-between">
                 <h1 class="text-lg font-bold text-slate-900 dark:text-white">Detalles de la Orden</h1>
@@ -26,7 +26,7 @@
                 <div class="sm:col-span-1">
                     <div class="flex justify-between">
                         <dt class="font-medium text-slate-500 dark:text-slate-400">No. Orden {{ selectedOrder()!.NoOrden }}</dt>
-                        <button class="border border-slate-300 dark:border-slate-700 rounded-md px-2 py-1 text-sm text-slate-900 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">Registrar prestamo</button>
+                        <button [disabled]="!tieneInformacionSeleccionado()" (click)="registrarPrestamo()" class="border border-slate-300 dark:border-slate-700 rounded-md px-2 py-1 text-sm text-slate-900 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-700 dark:disabled:text-slate-500">Registrar prestamo</button>
                     </div>
 
                     <dd class="mt-1 text-slate-900 dark:text-slate-300">{{ selectedOrder()!.NombreTrabajo }}</dd>
@@ -37,10 +37,13 @@
             <div class="flex flex-col gap-4 text-sm mt-6 ">
                 <div *ngIf="solicitudActual()?.componentes?.length">
                     <ul class="space-y-1">
-                        <li *ngFor="let componente of solicitudActual()?.componentes" class="border-b border-slate-200 dark:border-slate-700 pb-2">
-                            <span class="block text-slate-900 dark:text-slate-300">{{ componente.componente }}</span>
-                            <p-multiselect class="w-full mt-2" [filter]="false" optionDisabled="isDisabled" [showToggleAll]="false" [options]="componente.elementos" optionLabel="descripcion" placeholder="Selecciona un elemento" fluid required></p-multiselect>
+                        @for( item of solicitudActual()!.componentes; track item.componente) {
+                        <li class="border-b border-slate-200 dark:border-slate-700 pb-2">
+                            <span class="block text-slate-900 dark:text-slate-300">{{ item.componente }}</span>
+                            <p-multiselect class="w-full mt-2" display="chip" (onChange)="seleccionarElemento($event,item.componente)" [filter]="false" [maxSelectedLabels]="7" scrollHeight="500px" optionDisabled="isDisabled" [showToggleAll]="false" [options]="item.elementos" optionLabel="descripcion"
+                                placeholder="Selecciona un elemento" fluid/>
                         </li>
+                        }
                     </ul>
                 </div>
             </div>
