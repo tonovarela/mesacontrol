@@ -8,9 +8,9 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
-
+import { MultiSelectModule } from 'primeng/multiselect';
 @NgModule({ 
-    exports: [FloatLabelModule,TextareaModule,ButtonModule,ToggleSwitchModule, CardModule,ToggleButtonModule,SelectButtonModule,AutoCompleteModule,DialogModule]
+    exports: [MultiSelectModule,FloatLabelModule,TextareaModule,ButtonModule,ToggleSwitchModule, CardModule,ToggleButtonModule,SelectButtonModule,AutoCompleteModule,DialogModule]
     
    })
 export class PrimeModule { }

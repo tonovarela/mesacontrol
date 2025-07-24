@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { Componente } from '@app/interfaces/responses/ResponseComponentes';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 
 import { TypeSearchMetrics } from '@app/interfaces/type';
@@ -19,35 +20,14 @@ import {
 } from '@app/services';
 
 
-
-
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { firstValueFrom } from 'rxjs';
-
-
-interface Componente {
-  componente:string,
-  elementos:Elemento[]
-}
-
-interface Elemento {
-  id_elemento: string;
-  descripcion: string;
-  id_solicitud: number | null;
-}
-
-interface Solicitud {
-  orderSelected: OrdenMetrics | null;
-  checkListOrden: any[];
-  componentes:Componente[];
-
-  
-
-}
+import { ComponenteView, Solicitud } from '../../interfaces/interface';
+import { PrimeModule } from '@app/lib/prime.module';
 
 @Component({
   selector: 'app-nueva',
-  imports: [SearchMetricsComponent, CommonModule],
+  imports: [SearchMetricsComponent, CommonModule,PrimeModule],
   templateUrl: './nueva.component.html',
   styleUrl: './nueva.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -60,7 +40,7 @@ export default class NuevaComponent {
 
   solicitudActual = signal<Solicitud>({
     orderSelected: null,
-    checkListOrden: [] ,
+  
     componentes: []   
   });
 
@@ -75,33 +55,19 @@ export default class NuevaComponent {
     
     const resp = await firstValueFrom(this.produccionService.obtenerElementos(orden!.NoOrden));
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
-    const componentes :Componente[]= Object.entries(agrupado).map(
+    const componentes :ComponenteView[] = Object.entries(agrupado).map(
       ([componente, elementos]) => ({
         componente,
-        elementos: elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({id_elemento,descripcion,id_solicitud})) || []})
+        elementos: elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({id_elemento,descripcion,isDisabled:id_solicitud!==null})) || []})
     );        
-    // let checkListOrden = [];
-    // for (const col of this.columnasAuditoria) {
-    //   const id_estado = col.obtenerEstado(orden);
-    //   const checkList = {
-    //     id_checklist: col.getCheckListKey(orden),
-    //     estaHabilitado: id_estado == '2',
-    //     id_estado: col.obtenerEstado(orden),
-    //     fechaLiberacion: col.obtenerFechaLiberacion(orden),
-    //     titulo: col.titulo,
-    //     subtitulo: col.subtitulo,
-    //     estaSeleccionado: false,
-    //   };
-    //   checkListOrden.push(checkList);
-    // }
-    this.solicitudActual.set({ orderSelected: orden, checkListOrden:[],componentes });
-    //console.log(this.solicitudActual());
+
+    this.solicitudActual.set({ orderSelected: orden,componentes });
+
   }
 
   clearSelectedOrder(): void {
     this.solicitudActual.set({
       orderSelected: null,
-      checkListOrden: [],
       componentes: []
     });
   }

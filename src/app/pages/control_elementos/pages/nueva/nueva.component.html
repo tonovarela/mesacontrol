@@ -1,119 +1,49 @@
-<div id="initial" class="dark:bg-gray-900 h-screen   p-1">
-    <search-metrics [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)" />
+<div id="initial" class="dark:bg-gray-900 h-screen p-4">
+    @if (solicitudActual().orderSelected===null) {
+    <search-metrics [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)" class="mb-4" /> }
 
-
-
-    <div *ngIf="solicitudActual()?.componentes?.length">
-        <ul>
-            <li *ngFor="let componente of solicitudActual()?.componentes">
-                <strong>Componente:</strong> {{ componente.componente }} <br>
-                <div class="flex flex-col gap-x-2 gap-y-2 text-sm mt-4  ">
-                    @for (item of componente.elementos; track item) { @if(!item.id_solicitud) {
-                    <div class="text-white p-2 rounded-lg shadow-lg w-full bg-gradient-to-br from-blue-600 to-blue-800 cursor-pointer hover:from-blue-700 hover:to-blue-900 transition-all">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                                <div>
-                                    <h3 class="font-bold text-md">{{ item.descripcion }}</h3>
-                                </div>
-                            </div>
-
-                            <button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-                  Solicitar
-                </button>
-                        </div>
-                    </div>
-                    }@else {
-                    <div class="text-white p-2 rounded-lg shadow-lg w-full bg-gradient-to-br from-slate-600 to-slate-800 cursor-not-allowed">
-                        <div class="flex items-center">
-
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                            <div>
-                                <h3 class="font-bold text-md">{{item.descripcion}}</h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    } }
-                </div>
-            </li>
-        </ul>
-    </div>
-
-    <!-- <div *ngIf="solicitudActual().orderSelected" class="max-w-2xl mx-auto mt-2 bg-white dark:bg-slate-800 rounded-xl shadow-lg  ">
-        <div class="py-6 px-4">
+    <div *ngIf="solicitudActual().orderSelected" class="max-w-2xl mx-auto mt-4 bg-white dark:bg-slate-800 rounded-xl shadow-lg">
+        <div class="py-6 px-6">
             <div class="flex items-center justify-between">
-                <h1 class="text-lg font-bold text-slate-900 dark:text-white">
-                    Detalles de la Orden
-                </h1>
+                <h1 class="text-lg font-bold text-slate-900 dark:text-white">Detalles de la Orden</h1>
                 <button (click)="clearSelectedOrder()" type="button" class="ml-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300">
-          <span class="sr-only">Cerrar</span>          
-          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-            aria-hidden="true">
+          <span class="sr-only">Cerrar</span>
+          <svg
+            class="h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
             </div>
-            <hr class="my-2 border-slate-200 dark:border-slate-700">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-4 text-sm ">
-                <div class="sm:col-span-1">
-                    <dt class="font-medium text-slate-500 dark:text-slate-400">No. Orden {{ selectedOrder()!.NoOrden }}</dt>
+            <hr class="my-4 border-slate-200 dark:border-slate-700" />
 
-                </div>
-                <div class="sm:col-span-2">
+            <div class="grid grid-cols-1 gap-x-4 gap-y-4 text-sm">
+                <div class="sm:col-span-1">
+                    <div class="flex justify-between">
+                        <dt class="font-medium text-slate-500 dark:text-slate-400">No. Orden {{ selectedOrder()!.NoOrden }}</dt>
+                        <button class="border border-slate-300 dark:border-slate-700 rounded-md px-2 py-1 text-sm text-slate-900 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">Registrar prestamo</button>
+                    </div>
+
                     <dd class="mt-1 text-slate-900 dark:text-slate-300">{{ selectedOrder()!.NombreTrabajo }}</dd>
                 </div>
+
             </div>
 
-            <div class="flex flex-col gap-x-2 gap-y-2 text-sm mt-4  ">
-                @for (item of solicitudActual().checkListOrden; track item) { @if(item.estaHabilitado) {
-                <div class="text-white p-2 rounded-lg shadow-lg w-full bg-gradient-to-br from-blue-600 to-blue-800 cursor-pointer hover:from-blue-700 hover:to-blue-900 transition-all">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-                            <div>
-                                <h3 class="font-bold text-md">{{ item.titulo }}</h3>
-                                <span class="opacity-80 text-sm">{{ item.subtitulo }}</span>
-                            </div>
-                        </div>
-
-                        <button (click)="onSolicitar(item)" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
-              Solicitar
-            </button>
-                    </div>
+            <div class="flex flex-col gap-4 text-sm mt-6 ">
+                <div *ngIf="solicitudActual()?.componentes?.length">
+                    <ul class="space-y-1">
+                        <li *ngFor="let componente of solicitudActual()?.componentes" class="border-b border-slate-200 dark:border-slate-700 pb-2">
+                            <span class="block text-slate-900 dark:text-slate-300">{{ componente.componente }}</span>
+                            <p-multiselect class="w-full mt-2" [filter]="false" optionDisabled="isDisabled" [showToggleAll]="false" [options]="componente.elementos" optionLabel="descripcion" placeholder="Selecciona un elemento" fluid required></p-multiselect>
+                        </li>
+                    </ul>
                 </div>
-                }@else {
-                <div class="text-white p-2 rounded-lg shadow-lg w-full bg-gradient-to-br from-slate-600 to-slate-800 cursor-not-allowed">
-                    <div class="flex items-center">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-            </svg>
-                        <div>
-                            <h3 class="font-bold text-md">{{item.titulo}}</h3>
-                            <p class="opacity-60 text-sm">{{item.subtitulo}}</p>
-                        </div>
-                    </div>
-                </div>
-
-                } }
             </div>
-
-
-
-
         </div>
-    </div> -->
-
-
+    </div>
 </div>
