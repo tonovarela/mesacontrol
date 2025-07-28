@@ -128,39 +128,40 @@ export default class NuevaComponent implements OnInit {
       'Registro exitoso',
       'Se ha registrado el préstamo de los componentes seleccionados.'
     );
-    this.clearSelectedOrder();    
+    this.clearSelectedOrder();   
+     this.router.navigate(['/control_elementos/solicitudes']); 
   }
 
-  async onSolicitar(item: any) {
-    const { id_checklist } = item;
-    const id_solicitante =
-      this.usuarioService.StatusSesion().usuario?.id || '99';
-    const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion(
-      'Mesa de Control',
-      'Confirma solicitar este material?',
-      'Solicitar',
-      'Cancelar'
-    );
-    if (!isConfirmed) {
-      return;
-    }
-    try {
-      await firstValueFrom(
-        this.solicitudService.registrar(id_checklist, `${id_solicitante}`)
-      );
-      this.uiService.mostrarAlertaSuccess(
-        'Solicitud registrada',
-        'La solicitud se ha registrado correctamente.'
-      );
-      this.router.navigate(['/control_elementos/solicitudes']);
-    } catch (error) {
-      this.uiService.mostrarAlertaError(
-        'Error al solicitar',
-        'No se pudo registrar la solicitud. Intente nuevamente.'
-      );
-    }
+  // async onSolicitar(item: any) {
+  //   const { id_checklist } = item;
+  //   const id_solicitante =
+  //     this.usuarioService.StatusSesion().usuario?.id || '99';
+  //   const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion(
+  //     'Mesa de Control',
+  //     'Confirma solicitar este material?',
+  //     'Solicitar',
+  //     'Cancelar'
+  //   );
+  //   if (!isConfirmed) {
+  //     return;
+  //   }
+  //   try {
+  //     await firstValueFrom(
+  //       this.solicitudService.registrar(id_checklist, `${id_solicitante}`)
+  //     );
+  //     this.uiService.mostrarAlertaSuccess(
+  //       'Solicitud registrada',
+  //       'La solicitud se ha registrado correctamente.'
+  //     );
+  //     this.router.navigate(['/control_elementos/solicitudes']);
+  //   } catch (error) {
+  //     this.uiService.mostrarAlertaError(
+  //       'Error al solicitar',
+  //       'No se pudo registrar la solicitud. Intente nuevamente.'
+  //     );
+  //   }
   
-  }
+  // }
 
   async onChangeSelectComponent(event: any) {
     const selectedComponete  = event.value as ComponenteV;    
