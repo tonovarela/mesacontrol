@@ -23,7 +23,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   usuarioService = inject(UsuarioService);
   uiService = inject(UiService);
 
-  solicitudes = signal<Solicitud[]>([])
+  solicitudes = signal<any[]>([])
   estados = signal<Estado[]>([]);
   
   ngOnInit(): void {
@@ -38,9 +38,8 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   }
 
   async cargarSolicitudes() {
-    const response = await firstValueFrom(this.solicitudService.listar());
-    
-    this.estados.set(response.estados);
+    const response = await firstValueFrom(this.solicitudService.listar());    
+    //this.estados.set(response.estados);
     this.solicitudes.set(response.solicitudes);
   }
 

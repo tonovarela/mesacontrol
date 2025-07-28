@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { SolicitudResponse } from "@app/interfaces/responses/SolicitudResponse";
 import { environment } from "@environments/environment.development";
+import { ResponseSolicitudPrestamo } from '../interfaces/responses/ResponseSolicitudPrestamo';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,7 @@ import { environment } from "@environments/environment.development";
     private readonly API_URL = environment.apiUrl;
 
     public listar(){
-        return this.http.get<SolicitudResponse>(`${this.API_URL}/api/solicitud`);
+        return this.http.get<ResponseSolicitudPrestamo>(`${this.API_URL}/api/solicitud_`);
     }
 
 

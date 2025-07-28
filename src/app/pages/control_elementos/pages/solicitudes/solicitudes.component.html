@@ -8,36 +8,12 @@
     <div>
         <ejs-grid #grid [dataSource]='solicitudes()' [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true
             allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
-            <e-columns>
-                <e-column field='id_solicitud' headerText='Id' width='150'></e-column>
-                <e-column field='op_metrics' headerText='OP' width='100'></e-column>
+            <e-columns>                
+                <e-column field='NoOrden' headerText='OP' width='100'></e-column>
                 <e-column field='nombreTrabajo' headerText='Trabajo' width='100'></e-column>
-                <e-column field='proceso' headerText='Proceso' width='100'></e-column>
-                <e-column field='clasificacion' headerText='Clasificación' width='100'></e-column>
-                <e-column field='nombre' headerText='solicitante' width='100'></e-column>
-                <e-column field='descripcion' headerText='estado' width='150'>
-                    <ng-template #template let-data>
-
-
-                        @switch (data.id_estado ) { @case ("1") {
-                        <select (change)="cambioEstado(data,$event)" [disabled]="esSolicitante()" [ngModel]="data.id_estado" class="bg-gray-100 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
-              disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed ">
-              @for(estado of estados();track estado.id_estado) {
-              <option [value]="estado.id_estado">{{ estado.descripcion }}</option>
-              }
-            </select> } @case ("4") {
-                        <select (change)="cambioEstado(data,$event)" [disabled]="esSolicitante()" [ngModel]="data.id_estado" class="bg-gray-100 border border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
-              disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed 
-              ">
-              <option value="4">EN PRESTAMO</option>
-              <option value="2">DEVOLVERLO</option>
-
-            </select> } @default {
-                        <div>{{data.descripcion}}</div>
-                        } }
-                    </ng-template>
-                </e-column>
-                <e-column field='fecha_registro' headerText='Fecha' width='150'></e-column>
+                <e-column field='Vendedor' headerText='Vendedor' width='100'></e-column>
+                <e-column field='NombreCliente' headerText='NombreCliente' width='100'></e-column>                
+                <e-column field='FechaEntrega' headerText='FechaEntrega' width='150'></e-column>
             </e-columns>
         </ejs-grid>
 
