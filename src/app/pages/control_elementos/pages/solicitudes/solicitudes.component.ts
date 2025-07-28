@@ -57,18 +57,15 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     }finally {
       this.cargarSolicitudes();      
     }
-
-
-
-      
-
-
   }
-
 
   esSolicitante = computed(()=>this.usuarioService.StatusSesion().usuario?.id_rol==="1")
   
+ irDetalle(solicitud:any){
+  const orden =   solicitud["NoOrden"]  ?? '';
+  this.router.navigate([`/control_elementos/devolucion/${orden}`]);
 
+ }
 
 
 }

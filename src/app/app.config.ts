@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withHashLocation } from '@angular/router';
+import { provideRouter, withHashLocation,withComponentInputBinding  } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
@@ -29,7 +29,7 @@ const MyPreset = definePreset(Nora, {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes,withHashLocation()),
+    provideRouter(routes,withComponentInputBinding(),withHashLocation()),
     provideAnimationsAsync(),
     provideHttpClient(),
     providePrimeNG({

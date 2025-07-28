@@ -25,6 +25,9 @@ export const routes: Routes = [
     children: [
       { path: "solicitudes", loadComponent: () => import('./pages/control_elementos/pages/solicitudes/solicitudes.component') },
       {  path: "nueva", loadComponent: () => import('./pages/control_elementos/pages/nueva/nueva.component') },
+      {  path: "devolucion/:orden", loadComponent: () => import('./pages/control_elementos/pages/devolucion/devolucion.component') },
+       { path: '**', redirectTo: 'solicitudes' }
+
     ]
   },
   {
