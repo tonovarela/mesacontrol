@@ -21,12 +21,13 @@ import {
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { firstValueFrom } from 'rxjs';
 import { ComponenteView, Solicitud } from '../../interfaces/interface';
-import { MultiSelectChangeEvent } from 'primeng/multiselect';
+import { MultiSelect, MultiSelectChangeEvent } from 'primeng/multiselect';
 import { SolicitudComponentService } from '@app/services/solicitudcomponente.service';
+import { MultiselectComponent } from '../../componentes/multiselect/multiselect.component';
 
 @Component({
   selector: 'app-nueva',
-  imports: [SearchMetricsComponent, CommonModule, PrimeModule],
+  imports: [SearchMetricsComponent, CommonModule, PrimeModule,MultiselectComponent],
   templateUrl: './nueva.component.html',
   styleUrl: './nueva.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -1,0 +1,20 @@
+<div class="dropdown">
+    <button (click)="toggleDropdown()">
+      Seleccionar opciones ▼
+    </button>
+
+    <div class="dropdown-menu" *ngIf="dropdownOpen">
+        <div *ngFor="let item of items" class="dropdown-item">
+            <!-- <strong>{{ item.name }}</strong><br> -->
+            <label>
+          <input type="checkbox" [(ngModel)]="item.optionA"> Elemento
+        </label>
+            <label>
+          <input type="checkbox" [(ngModel)]="item.optionB"> No aplica
+        </label>
+        </div>
+    </div>
+</div>
+
+<p>Seleccionados:</p>
+<pre>{{ getSelected() | json }}</pre>
