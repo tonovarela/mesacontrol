@@ -16,4 +16,8 @@ import { environment } from "@environments/environment.development";
         return this.http.post(`${this.API_URL}/api/solicitudcomponente`, {solicitud:request});
     }
 
+    public devolucion(request:any){
+        return this.http.post<SolicitudResponse>(`${this.API_URL}/api/solicitudcomponente/devolucion`, {solicitud:request});
+    }
+
   }

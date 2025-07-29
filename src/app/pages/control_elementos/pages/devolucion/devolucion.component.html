@@ -1,1 +1,121 @@
-<p>Modulo de devoluciones pendiente</p>,
+<div id="initial" class="dark:bg-gray-900 h-screen p-4">
+  @if(solicitudActual().orderSelected){
+  <div class="grid grid-cols-5 space-x-2">
+    <div
+      class="w-full mx-auto mt-4 bg-white dark:bg-slate-800 rounded-xl shadow-lg col-span-2"
+    >
+      <div class="py-6 px-6">
+        <div class="flex items-center justify-between">
+          <h1 class="text-lg font-bold text-slate-900 dark:text-white">
+            Componentes
+          </h1>
+          <button
+            (click)="clearSelectedOrder()"
+            type="button"
+            class="ml-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
+          >
+            <span class="sr-only">Cerrar</span>
+            <svg
+              class="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <hr class="my-4 border-slate-200 dark:border-slate-700" />
+        <div class="grid grid-cols-1 gap-x-4 gap-y-4 text-sm">
+          <div class="sm:col-span-1">
+            <div class="flex justify-between">
+              <dt class="font-medium text-slate-500 dark:text-slate-400">
+                No. Orden {{ selectedOrder()!.NoOrden }}
+              </dt>
+              <button
+                [disabled]="!puedeRegistrarDevolucion()"
+                (click)="registrarPrestamo()"
+                class="border border-slate-300 dark:border-slate-700 rounded-md px-2 py-1 text-sm text-slate-900 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
+              >
+                Registrar devolución
+              </button>
+            </div>
+            <dd class="mt-1 text-slate-900 dark:text-slate-300">
+              {{ selectedOrder()!.NombreTrabajo }}
+            </dd>
+          </div>
+        </div>
+        
+        <div class="flex flex-col text-sm mt-6">
+          <p-listbox
+            [options]="componentes"            
+            filterPlaceHolder="Buscar componente"
+            optionLabel="descripcion"
+            [filter]="true"
+            scrollHeight="30rem"
+            class="w-full"
+            (onChange)="onChangeSelectComponent($event)"
+          />
+        </div>
+      </div>
+    </div>
+    
+    <div
+      class="w-full mx-auto mt-4 bg-white dark:bg-slate-800 rounded-xl shadow-lg col-span-3"
+    >
+      <div class="py-6 px-6">
+        <div class="flex items-center justify-between">
+          <h1 class="text-lg font-bold text-slate-900 dark:text-white">
+            Elementos
+          </h1>
+        </div>
+        <hr class="my-4 border-slate-200 dark:border-slate-700" />
+
+        <div class="flex flex-col gap-4 text-sm mt-6 ">
+          @if(componenteSeleccionado().length){
+          <div>
+            <ul class="space-y-1">
+              @for( item of componenteSeleccionado(); track item.componente) {
+              <li class="border-b border-slate-200 dark:border-slate-700 pb-2">
+                <span class="block text-slate-900 dark:text-slate-300">{{
+                  item.componente
+                }}</span>
+                <p-multiselect
+                  class="w-full mt-2"
+                  display="chip"                        
+                  (onChange)="seleccionarElemento($event, item.componente)"
+                  [filter]="true"
+                  [ngModel]="item.idSeleccionados"
+                  [maxSelectedLabels]="7"
+                  scrollHeight="500px"
+                  [emptyFilterMessage]="'No hay elementos disponibles'"
+                  [showToggleAll]="true"
+                  [options]="item.elementos"
+                  optionLabel="descripcion"
+                  placeholder="Selecciona un elemento"
+                  fluid
+                />
+              </li>
+              }
+            </ul>
+
+            
+          </div>
+          }               
+        </div>
+       
+      </div>
+    </div>
+
+    
+  </div>
+
+  }
+</div>

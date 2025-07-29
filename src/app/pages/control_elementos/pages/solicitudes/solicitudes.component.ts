@@ -29,8 +29,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   ngOnInit(): void {
     this.cargarSolicitudes();    
     this.iniciarResizeGrid(0.39, true);
-    this.autoFitColumns = true;
-    console.log(this.usuarioService.StatusSesion().usuario?.id_rol);
+    this.autoFitColumns = true;    
   }
 
   navigateToNueva() {
