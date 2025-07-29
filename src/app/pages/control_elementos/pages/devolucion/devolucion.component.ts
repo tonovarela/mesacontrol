@@ -14,7 +14,7 @@ import {
   Solicitud,
   SolicitudDevolucion,
 } from '../../interfaces/interface';
-import { ProduccionService, UsuarioService } from '@app/services';
+import { ProduccionService, UiService, UsuarioService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { PrimeModule } from '@app/lib/prime.module';
@@ -36,8 +36,10 @@ interface ComponenteV {
 export default class DevolucionComponent {
   componentes: ComponenteV[] = [];
   router = inject(Router);
-
+  uiService = inject(UiService);
   orden = input<string>();
+
+
   private _currentComponente = signal<string | null>(null);
 
   componenteSeleccionado = computed(() => {
@@ -149,9 +151,11 @@ export default class DevolucionComponent {
     });    
     const id_solicitudes = seleccionados.flat().map((item:any) => item.id_solicitud);
     const id_usuario = this.usuarioService.StatusSesion().usuario?.id!;
-        
+    
     const resp =await firstValueFrom(this.solicitudComponenteService.devolucion({id_solicitudes,id_usuario}));
     const orden = this.solicitudActual().orderSelected?.NoOrden;
+
+    this.uiService.mostrarAlertaSuccess("Devolucion exitosa","Se ha registrado la devolucion")
     this.cargarInformacion(orden!);
     this._currentComponente.set(null);
 
