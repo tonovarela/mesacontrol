@@ -36,6 +36,19 @@ export class UsuarioService {
       }
 
 
+      public async loginSolicitante(username: string, password: string){
+        try {
+          const resp = await firstValueFrom(this.http.post<LoginResponse>(`${this.URL}/auth/solicitante`, { login:{username, password} }));          
+          return {id:resp.usuario.id,error:false}
+          
+        } catch (error) {
+          return {id:null, error:true};
+        }
+
+
+      }
+
+
       public async verificarSesionLitoapps() {
         let user = localStorage.getItem("User") ;
         let password = localStorage.getItem("Pass");  
