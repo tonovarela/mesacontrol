@@ -151,13 +151,18 @@ export default class DevolucionComponent {
     });    
     const id_solicitudes = seleccionados.flat().map((item:any) => item.id_solicitud);
     const id_usuario = this.usuarioService.StatusSesion().usuario?.id!;
-    
+    try{
     const resp =await firstValueFrom(this.solicitudComponenteService.devolucion({id_solicitudes,id_usuario}));
     const orden = this.solicitudActual().orderSelected?.NoOrden;
 
     this.uiService.mostrarAlertaSuccess("Devolucion exitosa","Se ha registrado la devolucion")
     this.cargarInformacion(orden!);
-    this._currentComponente.set(null);
+    this._currentComponente.set(null)
+
+    }catch(error:any){
+      this.uiService.mostrarAlertaError("Error al registrar devolucion", error.message || "Ocurrió un error al registrar la devolución.");
+    }
+    
 
     
     
