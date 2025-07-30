@@ -43,6 +43,8 @@ export default class DevolucionComponent {
   private _currentComponente = signal<string | null>(null);
 
   componenteSeleccionado = computed(() => {
+
+
     if (this._currentComponente()) {
       const valores = this.solicitudActual().componentes.filter(
         (x) => x.componente === this._currentComponente()
@@ -94,7 +96,11 @@ export default class DevolucionComponent {
         elementos: _elementos.filter((el) => !el.isDisabled),
       };
     });    
-    this.componentes=componentes.filter(c=>c.idSeleccionados.length > 0).map((i) => {return{descripcion:i.componente}})            
+    this.componentes=componentes.filter(c=>c.idSeleccionados.length > 0).map((i) => ({descripcion:i.componente}))            
+    if (this.componentes.length === 0){
+      this.router.navigate(['/control_elementos/solicitudes']);
+      return;
+    }
     const orden = resp.orden;
     this.solicitudActual.set({ orderSelected: orden, componentes});    
   }
