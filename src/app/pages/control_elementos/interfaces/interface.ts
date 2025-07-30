@@ -33,7 +33,20 @@ export interface Solicitud {
 export interface SolicitudDevolucion
  {
   orderSelected: OrdenMetrics | null;
-
   componentes:ComponenteViewDevolucion[];
+}
 
+
+export interface ResponsePrestamos {
+  prestamos: Prestamo[];
+}
+
+export interface Prestamo {
+  id_solicitud: string;
+  componente:     string;
+  solicitante:    string;
+  Personal:       string;
+  elemento:       string;
+  liga_avatar?:string;
+  fecha_registro: Date;
 }

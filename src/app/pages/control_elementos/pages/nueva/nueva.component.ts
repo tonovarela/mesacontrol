@@ -21,7 +21,7 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 import { firstValueFrom } from 'rxjs';
 import { ComponenteView, Solicitud } from '../../interfaces/interface';
 import { MultiSelect, MultiSelectChangeEvent } from 'primeng/multiselect';
-import { SolicitudComponentService } from '@app/services/solicitudcomponente.service';
+import { SolicitudComponentService } from '@app/pages/control_elementos/services/solicitudcomponente.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 
@@ -176,7 +176,7 @@ export default class NuevaComponent implements OnInit {
     let passwordInput: HTMLInputElement;
 
     const { isDismissed, value } = await Swal.fire<LoginFormResult>({
-      title: 'Usuario de Litoapps',
+      title: 'Usuario de Litoapps que solicita los elementos',
       html: `
       <input type="text"  autocomplete="off"  id="usuario" name="usuario" class="swal2-input rounded-md" placeholder="usuario">
       <input type="password"  autocomplete="new-password" name="pass"  id="contrasenia" class="swal2-input rounded-md" placeholder="password">

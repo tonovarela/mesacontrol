@@ -7,6 +7,9 @@ import { Estado, Solicitud } from '@app/interfaces/responses/SolicitudResponse';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { SolicitudService, UiService, UsuarioService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
+import { SolicitudComponentService } from '../../services/solicitudcomponente.service';
+import { Prestamo } from '../../interfaces/interface';
+import { environment } from '@environments/environment.development';
 
 @Component({
   selector: 'app-solicitudes',
@@ -18,13 +21,23 @@ import { firstValueFrom } from 'rxjs';
 export default class SolicitudesComponent extends BaseGridComponent implements OnInit {
 
   router = inject(Router);
+  readonly AVATAR_URL = environment.baseAvatarUrl;
 
   solicitudService = inject(SolicitudService);
   usuarioService = inject(UsuarioService);
   uiService = inject(UiService);
+  solicitudComponenteService= inject(SolicitudComponentService);
 
   solicitudes = signal<any[]>([])
   estados = signal<Estado[]>([]);
+  private _prestamos = signal<Prestamo[]>([]);
+
+  prestamos = computed(() => this._prestamos().map(prestamo => ({
+    ...prestamo,
+    liga_avatar: `${this.AVATAR_URL}/${prestamo.Personal}`
+  })));
+
+
   
   ngOnInit(): void {
     this.cargarSolicitudes();    
@@ -63,7 +76,13 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
  irDetalle(solicitud:any){
   const orden =   solicitud["NoOrden"]  ?? '';
   this.router.navigate([`/control_elementos/devolucion/${orden}`]);
+ }
 
+
+ async verDetallePrestamo(orden:string){
+     const resp =await firstValueFrom(this.solicitudComponenteService.obtenerPrestamos(orden));
+     this._prestamos.set(resp.prestamos);
+     
  }
 
 

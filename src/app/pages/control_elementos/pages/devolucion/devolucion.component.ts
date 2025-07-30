@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
 import { PrimeModule } from '@app/lib/prime.module';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SolicitudComponentService } from '@app/services/solicitudcomponente.service';
+import { SolicitudComponentService } from '@app/pages/control_elementos/services/solicitudcomponente.service';
 
 interface ComponenteV {
   descripcion: string;
