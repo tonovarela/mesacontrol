@@ -34,34 +34,29 @@ interface ComponenteV {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class DevolucionComponent {
-  componentes: ComponenteV[] = [];
-  router = inject(Router);
-  uiService = inject(UiService);
   orden = input<string>();
 
+  
 
+  private router = inject(Router);
+  private uiService = inject(UiService);
   private _currentComponente = signal<string | null>(null);
+  private produccionService = inject(ProduccionService);
+  private solicitudComponenteService = inject(SolicitudComponentService);
+  private usuarioService = inject(UsuarioService);
 
-  componenteSeleccionado = computed(() => {
-
-
+  public componenteSeleccionado = computed(() => {
     if (this._currentComponente()) {
-      const valores = this.solicitudActual().componentes.filter(
+      return this.solicitudActual().componentes.filter(
         (x) => x.componente === this._currentComponente()
       );
-      return valores;
     }
     return [];
   });
 
-  solicitudActual = signal<SolicitudDevolucion>({
-    orderSelected: null,
-    componentes: [],
-  });
-  produccionService = inject(ProduccionService);
-  solicitudComponenteService = inject(SolicitudComponentService);
-  selectedOrder = computed(() => this.solicitudActual().orderSelected);
-  usuarioService = inject(UsuarioService);
+  public solicitudActual = signal<SolicitudDevolucion>({orderSelected: null,componentes: []});
+  public selectedOrder = computed(() => this.solicitudActual().orderSelected);
+  public componentes: ComponenteV[] = [];
 
   constructor() {
     effect(() => {
@@ -73,11 +68,8 @@ export default class DevolucionComponent {
   }
 
   async cargarInformacion(orden_metrics: string) {
+    const resp = await firstValueFrom(this.produccionService.obtenerElementos(orden_metrics));
 
-    const resp = await firstValueFrom(
-      this.produccionService.obtenerElementos(orden_metrics)
-    );
-    
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
     this.componentes = [];
     const componentes: ComponenteViewDevolucion[] = Object.entries(
@@ -92,22 +84,24 @@ export default class DevolucionComponent {
         })) || [];
       return {
         componente,
-        idSeleccionados: _elementos.filter((el) => !el.isDisabled),
+        idSeleccionados: [],
         elementos: _elementos.filter((el) => !el.isDisabled),
       };
     });    
-    this.componentes=componentes.filter(c=>c.idSeleccionados.length > 0).map((i) => ({descripcion:i.componente}))            
-    if (this.componentes.length === 0){
+    this.componentes = componentes.filter(i=>i.elementos.length>0).map((i) => ({ descripcion: i.componente }));
+    if (this.componentes.length === 0) {
       this.router.navigate(['/control_elementos/solicitudes']);
       return;
     }
     const orden = resp.orden;
-    this.solicitudActual.set({ orderSelected: orden, componentes});    
+    this.solicitudActual.set({ orderSelected: orden, componentes });
   }
 
   seleccionarElemento(event: any, componente: string) {
     const elementosSeleccionados = event.value;
-    const componenteActual = this.solicitudActual().componentes.find((x) => x.componente === componente);
+    const componenteActual = this.solicitudActual().componentes.find(
+      (x) => x.componente === componente
+    );
     if (!componenteActual) {
       return;
     }
@@ -127,55 +121,57 @@ export default class DevolucionComponent {
       return;
     }
     this._currentComponente.set(event.value.descripcion);
-    
   }
 
-
   puedeRegistrarDevolucion = computed(() => {
-    const r = this.solicitudActual().componentes.map((c) => {
+    const r = this.seleccionados(); 
+    return r.length > 0;
+  });
+
+  seleccionados = computed(() => {
+    return this.solicitudActual().componentes.map((c) => {
       const arreglo1 = c.elementos || [];
       const arreglo2 = c.idSeleccionados || [];
-      const diferencia = arreglo1.filter(
-        (a) => !arreglo2.some((b) => b.id_elemento === a.id_elemento)
+      const diferencia = arreglo2.filter(
+        (a) => arreglo1.some((b) => b.id_elemento === a.id_elemento)
       );
       return diferencia;
-    });
-    return r.some((x) => x.length > 0); 
+    }).flat();    
 
   });
 
-  async registrarPrestamo() {
-
-
-    const seleccionados =this.solicitudActual().componentes.map((c) => {
-      const arreglo1 = c.elementos || [];
-      const arreglo2 = c.idSeleccionados || [];
-      const diferencia = arreglo1.filter(
-        (a) => !arreglo2.some((b) => b.id_elemento === a.id_elemento)
-      );
-      return diferencia;      
-    });    
-    const id_solicitudes = seleccionados.flat().map((item:any) => item.id_solicitud);
+  async registrarPrestamo() {  
+    const seleccionados = this.seleccionados();    
+    const id_solicitudes = seleccionados      
+      .map((item: any) => item.id_solicitud);
     const id_usuario = this.usuarioService.StatusSesion().usuario?.id!;
-    try{
-    const resp =await firstValueFrom(this.solicitudComponenteService.devolucion({id_solicitudes,id_usuario}));
-    const orden = this.solicitudActual().orderSelected?.NoOrden;
+    try {
+      const resp = await firstValueFrom(
+        this.solicitudComponenteService.devolucion({
+          id_solicitudes,
+          id_usuario,
+        })
+      );
 
-    this.uiService.mostrarAlertaSuccess("Devolucion exitosa","Se ha registrado la devolucion")
-    this.cargarInformacion(orden!);
-    this._currentComponente.set(null)
+      
 
-    }catch(error:any){
-      this.uiService.mostrarAlertaError("Error al registrar devolucion", error.message || "Ocurrió un error al registrar la devolución.");
+            
+      const orden = this.solicitudActual().orderSelected?.NoOrden;
+
+      this.uiService.mostrarAlertaSuccess(
+        'Devolucion exitosa',
+        'Se ha registrado la devolucion'
+      );
+      this.cargarInformacion(orden!);
+      this._currentComponente.set(null);
+    } catch (error: any) {
+      this.uiService.mostrarAlertaError(
+        'Error al registrar devolucion',
+        error.message || 'Ocurrió un error al registrar la devolución.'
+      );
     }
-    
-
-    
-    
-
   }
 
-  
   clearSelectedOrder(): void {
     this.router.navigate(['/control_elementos/solicitud']);
   }

@@ -24,6 +24,7 @@ import { MultiSelect, MultiSelectChangeEvent } from 'primeng/multiselect';
 import { SolicitudComponentService } from '@app/pages/control_elementos/services/solicitudcomponente.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { SelectButtonChangeEvent } from 'primeng/selectbutton';
 
 type LoginFormResult = {
   username: string;
@@ -94,7 +95,7 @@ export default class NuevaComponent implements OnInit {
     });
   }
 
-  seleccionarElemento(event: MultiSelectChangeEvent, componente: string) {
+  seleccionarElemento(event: SelectButtonChangeEvent, componente: string) {
     const elementos = event.value as any[];
     const ids = elementos.map((e) => +e.id_elemento);
     const componenteActual = this.solicitudActual().componentes.find(
@@ -165,6 +166,8 @@ export default class NuevaComponent implements OnInit {
       componentes: componentes,
     }));
   }
+
+
 
 
 

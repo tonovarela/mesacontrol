@@ -1,3 +1,40 @@
 :host {
   display: block;
 }
+::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item{
+  padding: 0.1rem 2rem;
+}
+
+
+::ng-deep .p-togglebutton   {      
+
+  border: 1px solid !important;
+  border-radius :8px !important;;  
+  padding: 10px;  
+  
+  margin: 3px!important;  
+}
+
+::ng-deep .p-selectbutton{
+  display:block !important;
+}
+
+::ng-deep .p-selectbutton:disabled{
+  cursor: not-allowed !important;
+  opacity: 0.5 !important;
+  color:red;
+}
+
+
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,0.125);
+  border-radius: .25rem;
+}
