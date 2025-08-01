@@ -36,8 +36,7 @@ interface ComponenteV {
 export default class DevolucionComponent {
   orden = input<string>();
 
-  
-
+  public todos = true;
   private router = inject(Router);
   private uiService = inject(UiService);
   private _currentComponente = signal<string | null>(null);
@@ -47,14 +46,19 @@ export default class DevolucionComponent {
 
   public componenteSeleccionado = computed(() => {
     if (this._currentComponente()) {
-      return this.solicitudActual().componentes.filter(
+      const c = this.solicitudActual().componentes.filter(
         (x) => x.componente === this._currentComponente()
       );
+
+      return c;
     }
     return [];
   });
 
-  public solicitudActual = signal<SolicitudDevolucion>({orderSelected: null,componentes: []});
+  public solicitudActual = signal<SolicitudDevolucion>({
+    orderSelected: null,
+    componentes: [],
+  });
   public selectedOrder = computed(() => this.solicitudActual().orderSelected);
   public componentes: ComponenteV[] = [];
 
@@ -68,7 +72,9 @@ export default class DevolucionComponent {
   }
 
   async cargarInformacion(orden_metrics: string) {
-    const resp = await firstValueFrom(this.produccionService.obtenerElementos(orden_metrics));
+    const resp = await firstValueFrom(
+      this.produccionService.obtenerElementos(orden_metrics)
+    );
 
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
     this.componentes = [];
@@ -87,8 +93,10 @@ export default class DevolucionComponent {
         idSeleccionados: [],
         elementos: _elementos.filter((el) => !el.isDisabled),
       };
-    });    
-    this.componentes = componentes.filter(i=>i.elementos.length>0).map((i) => ({ descripcion: i.componente }));
+    });
+    this.componentes = componentes
+      .filter((i) => i.elementos.length > 0)
+      .map((i) => ({ descripcion: i.componente }));
     if (this.componentes.length === 0) {
       this.router.navigate(['/control_elementos/solicitudes']);
       return;
@@ -113,6 +121,7 @@ export default class DevolucionComponent {
       ...this.solicitudActual(),
       componentes: componentesActualizados,
     });
+     this.actualizarToogleSeleccion();
   }
 
   onChangeSelectComponent(event: any) {
@@ -120,30 +129,45 @@ export default class DevolucionComponent {
       this._currentComponente.set(null);
       return;
     }
-    this._currentComponente.set(event.value.descripcion);
+  this._currentComponente.set(event.value.descripcion);
+  this.actualizarToogleSeleccion();
+
+  }
+
+
+ private actualizarToogleSeleccion(){
+
+    const [el] = this.componenteSeleccionado().map((c) => {
+      return { seleccionados: c.idSeleccionados, elementos: c.elementos };
+    });
+
+    if (!el) {
+      return;
+    }
+    this.todos =el.elementos>el.seleccionados;
   }
 
   puedeRegistrarDevolucion = computed(() => {
-    const r = this.seleccionados(); 
+    const r = this.seleccionados();
     return r.length > 0;
   });
 
   seleccionados = computed(() => {
-    return this.solicitudActual().componentes.map((c) => {
-      const arreglo1 = c.elementos || [];
-      const arreglo2 = c.idSeleccionados || [];
-      const diferencia = arreglo2.filter(
-        (a) => arreglo1.some((b) => b.id_elemento === a.id_elemento)
-      );
-      return diferencia;
-    }).flat();    
-
+    return this.solicitudActual()
+      .componentes.map((c) => {
+        const arreglo1 = c.elementos || [];
+        const arreglo2 = c.idSeleccionados || [];
+        const diferencia = arreglo2.filter((a) =>
+          arreglo1.some((b) => b.id_elemento === a.id_elemento)
+        );
+        return diferencia;
+      })
+      .flat();
   });
 
-  async registrarPrestamo() {  
-    const seleccionados = this.seleccionados();    
-    const id_solicitudes = seleccionados      
-      .map((item: any) => item.id_solicitud);
+  async registrarPrestamo() {
+    const seleccionados = this.seleccionados();
+    const id_solicitudes = seleccionados.map((item: any) => item.id_solicitud);
     const id_usuario = this.usuarioService.StatusSesion().usuario?.id!;
     try {
       const resp = await firstValueFrom(
@@ -153,9 +177,6 @@ export default class DevolucionComponent {
         })
       );
 
-      
-
-            
       const orden = this.solicitudActual().orderSelected?.NoOrden;
 
       this.uiService.mostrarAlertaSuccess(
@@ -170,6 +191,35 @@ export default class DevolucionComponent {
         error.message || 'Ocurrió un error al registrar la devolución.'
       );
     }
+  }
+
+  toogleSeleccion() {
+    const componentes = this.solicitudActual().componentes.map((c) => {
+      if (c.componente !== this._currentComponente()) {
+        return c;
+      }
+      const elementosSeleccionados = c.elementos.filter((el) => !el.isDisabled);
+
+      if (elementosSeleccionados.length === 0) {
+        return c;
+      }
+
+      if (this.todos) {
+        return {
+          ...c,
+          idSeleccionados: elementosSeleccionados,
+        };
+      }
+      return {
+        ...c,
+        idSeleccionados: [],
+      };
+    });
+    this.solicitudActual.set({
+      ...this.solicitudActual(),
+      componentes,
+    });
+    this.todos = !this.todos;
   }
 
   clearSelectedOrder(): void {

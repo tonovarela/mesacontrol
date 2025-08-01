@@ -7,7 +7,8 @@
 ::ng-deep .p-togglebutton   {      
   border: 1px solid !important;
   border-radius :8px !important;;  
-  padding: 6px;    
+  padding: 6px;   
+    width: 220px !important; 
   margin: 3px!important;  
 }
 

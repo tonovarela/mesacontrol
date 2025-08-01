@@ -1,5 +1,9 @@
 <div id="initial" class="dark:bg-gray-900 h-screen p-4">
-  <h2 class="text-2xl font-semibold  text-gray-800 dark:text-gray-100 tracking-tight">Devolución de elementos</h2>
+  <h2
+    class="text-2xl font-semibold text-gray-800 dark:text-gray-100 tracking-tight"
+  >
+    Devolución de elementos
+  </h2>
   @if(solicitudActual().orderSelected){
   <div class="grid grid-cols-5 space-x-2">
     <div
@@ -7,10 +11,10 @@
     >
       <div class="py-6 px-6">
         <div class="flex items-center justify-between">
-          <h1 class="text-lg font-bold text-slate-900 dark:text-white">
+          <h1 class="text-lg font-bold text-slate-900 dark:text-white uppercase">
             Componentes
           </h1>
-           <button
+          <button
             (click)="clearSelectedOrder()"
             type="button"
             class="ml-4 text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300"
@@ -32,7 +36,6 @@
               />
             </svg>
           </button>
-       
         </div>
         <hr class="my-4 border-slate-200 dark:border-slate-700" />
         <div class="grid grid-cols-1 gap-x-4 gap-y-4 text-sm">
@@ -41,17 +44,16 @@
               <dt class="font-medium text-slate-500 dark:text-slate-400">
                 No. Orden {{ selectedOrder()!.NoOrden }}
               </dt>
-              
             </div>
             <dd class="mt-1 text-slate-900 dark:text-slate-300">
               {{ selectedOrder()!.NombreTrabajo }}
             </dd>
           </div>
         </div>
-        
+
         <div class="flex flex-col text-sm mt-6">
           <p-listbox
-            [options]="componentes"            
+            [options]="componentes"
             filterPlaceHolder="Buscar componente"
             optionLabel="descripcion"
             [filter]="true"
@@ -62,82 +64,61 @@
         </div>
       </div>
     </div>
-    
+
     <div
       class="w-full mx-auto mt-4 bg-white dark:bg-slate-800 rounded-xl shadow-lg col-span-3"
     >
       <div class="py-6 px-6">
         <div class="flex items-center justify-between">
-          <h1 class="text-lg font-bold text-slate-900 dark:text-white">
+          <h1 class="text-lg uppercase font-bold text-slate-900 dark:text-white">
             Elementos
           </h1>
           <button
-                [disabled]="!puedeRegistrarDevolucion()"
-                (click)="registrarPrestamo()"
-                class="border border-slate-300 rounded-md px-2 py-1 text-sm  bg-purple-500 text-white  disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
-              >
-                Registrar devolución
-              </button>
-         
+            [disabled]="!puedeRegistrarDevolucion()"
+            (click)="registrarPrestamo()"
+            class="border border-slate-300 rounded-md px-2 py-1 text-sm bg-purple-500 text-white disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
+          >
+            Registrar devolución
+          </button>
         </div>
         <hr class="my-4 border-slate-200 dark:border-slate-700" />
-        <div class="flex flex-col gap-4 text-sm mt-6 ">
+        <div class="flex flex-col gap-4 text-sm mt-6">
           @if(componenteSeleccionado().length){
           <div>
             <ul class="space-y-1">
               @for( item of componenteSeleccionado(); track item.componente) {
               <li class="border-b border-slate-200 dark:border-slate-700 pb-2">
-                <h2 class="text-xl text-purple-500 ">{{ item.componente }}</h2>
-                <!-- <span class="inline-flex items-center text-xl rounded-md bg-blue-50 px-2 py-1 mb-2   text-gray-600 ring-1 ring-gray-500/10 ring-inset">{{
-                  item.componente
-                }}</span> -->
-                <!-- <span class="block text-slate-900 dark:text-slate-300">{{
-                  item.componente
-                }}</span> -->
-<div class="border rounded-sm mt-2 p-2">
-<p-selectbutton
-                  (onChange)="seleccionarElemento($event,item.componente)" 
+                <div class="flex justify-between">
+        <h2 class="text-xl text-purple-500">{{ item.componente }}</h2>
+        <button (click)="toogleSeleccion()" class="border border-slate-300 w-36 rounded-md px-2 py-1  text-bold">
+                  <span >
+                    {{ !todos ? 'Desmarcar todos' : 'Marcar todos' }}
+                  </span>
+        </button>
+                </div>
+             
+
+                <div class="border rounded-sm mt-2 p-2">
+                  <p-selectbutton
+                    (onChange)="seleccionarElemento($event, item.componente)"
                     [options]="item.elementos"
                     optionDisabled="isDisabled"
-                    [ngModel]="item.idSeleccionados"  
-                    size="small"                    
+                    [ngModel]="item.idSeleccionados"
+                    size="small"
                     [multiple]="true"
                     optionLabel="descripcion"
                     size="small"
-                  >                    
+                  >
                   </p-selectbutton>
-</div>
-                
-                <!-- <p-multiselect
-                  class="w-full mt-2"
-                  display="chip"                        
-                  (onChange)="seleccionarElemento($event, item.componente)"
-                  [filter]="true"     
-                  [ngModel]="item.idSeleccionados"             
-                  [maxSelectedLabels]="7"
-                  scrollHeight="500px"
-                  [emptyFilterMessage]="'No hay elementos disponibles'"
-                  [showToggleAll]="true"
-                  [options]="item.elementos"
-                  optionLabel="descripcion"
-                  placeholder="Selecciona un elemento"
-                  fluid
-                /> -->
+                </div>
               </li>
               }
             </ul>
-
-            
           </div>
-          }               
+          }
         </div>
-       
       </div>
     </div>
-
-    
-
-    
   </div>
 
   }
