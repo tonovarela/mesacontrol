@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   inject,
+  effect,
   OnInit,
   signal,
 } from '@angular/core';
@@ -43,28 +44,35 @@ interface ComponenteV {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class NuevaComponent implements OnInit {
-  type = TypeSearchMetrics.CONTROL_ELEMENTOS;
+  public type = TypeSearchMetrics.CONTROL_ELEMENTOS;
+  private usuarioService = inject(UsuarioService);
+  private produccionService = inject(ProduccionService);
+  private solicitudComponenteService = inject(SolicitudComponentService);
+  private solicitudService = inject(SolicitudService);
+  private router = inject(Router);
+  private uiService = inject(UiService);
+  private _currentComponente = signal<string | null>(null);
 
-  componentes: ComponenteV[] = [];
-  componenteSeleccionado = signal<ComponenteV | null>(null);
+  public componentes: ComponenteV[] = [];
+  
+  public componenteSeleccionado = computed(() => {
+    if (this._currentComponente()) {
+      const c = this.solicitudActual().componentes.filter(
+        (x) => x.componente === this._currentComponente()
+      );
 
-  selectedOrder = computed(() => this.solicitudActual().orderSelected);
+      return c;
+    }
+    return [];
+  });
 
-  solicitudActual = signal<Solicitud>({
+  public selectedOrder = computed(() => this.solicitudActual().orderSelected);
+  public solicitudActual = signal<Solicitud>({
     orderSelected: null,
     componentes: [],
   });
 
-  usuarioService = inject(UsuarioService);
-  produccionService = inject(ProduccionService);
-  solicitudComponenteService = inject(SolicitudComponentService);
-
-  solicitudService = inject(SolicitudService);
-
-  router = inject(Router);
-  uiService = inject(UiService);
-
-  tieneInformacionSeleccionado = computed(() => {
+  public tieneInformacionSeleccionado = computed(() => {
     return this.solicitudActual().componentes.some(
       (x) => x.idSeleccionados.length > 0
     );
@@ -74,21 +82,38 @@ export default class NuevaComponent implements OnInit {
     this.componentes = [];
   }
 
+
   async onSelectOrder(orden: OrdenMetrics | null) {
     const resp = await firstValueFrom(
       this.produccionService.obtenerElementos(orden!.NoOrden)
     );
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
     this.componentes = [];
-    Object.entries(agrupado).forEach(([componente, elementos]) => {
-      this.componentes.push({ descripcion: componente });
-    });
-    this.solicitudActual.set({ orderSelected: orden, componentes: [] });
+
+    const componentes: any[] = Object.entries(agrupado).map(
+      ([componente, elementos]) => {
+        const _elementos =
+          elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({
+            id_elemento,
+            descripcion,
+            id_solicitud,
+            isDisabled: id_solicitud !== null,
+          })) || [];
+        return {
+          componente,
+          idSeleccionados: [],
+          elementos: _elementos,
+        };
+      }
+    );
+    this.componentes = componentes.map((i) => ({ descripcion: i.componente }));
+    this.solicitudActual.set({ orderSelected: orden, componentes });
   }
+
 
   clearSelectedOrder(): void {
     this.componentes = [];
-    this.componenteSeleccionado.set(null);
+    this._currentComponente.set(null);    
     this.solicitudActual.set({
       orderSelected: null,
       componentes: [],
@@ -96,19 +121,17 @@ export default class NuevaComponent implements OnInit {
   }
 
   seleccionarElemento(event: SelectButtonChangeEvent, componente: string) {
-    const elementos = event.value as any[];
-    const ids = elementos.map((e) => +e.id_elemento);
+    const elementosSeleccionados = event.value;
     const componenteActual = this.solicitudActual().componentes.find(
       (x) => x.componente === componente
     );
     if (!componenteActual) {
       return;
     }
-    componenteActual.idSeleccionados = ids;
+    componenteActual.idSeleccionados = elementosSeleccionados;
     const componentesActualizados = this.solicitudActual().componentes.map(
       (x) => (x.componente === componente ? componenteActual : x)
     );
-
     this.solicitudActual.set({
       ...this.solicitudActual(),
       componentes: componentesActualizados,
@@ -116,16 +139,21 @@ export default class NuevaComponent implements OnInit {
   }
 
   async registrarPrestamo() {
-    const seleccionados = this.solicitudActual()
-      .componentes.filter((x) => x.idSeleccionados.length > 0).map((x) => ({componente: x.componente,elementos: x.idSeleccionados}));
+    const seleccionados = this.solicitudActual().componentes
+                                                .filter((x) => x.idSeleccionados.length > 0).map((x) => ({ componente: x.componente, elementos: x.idSeleccionados.map((el:any) => el.id_elemento) }));
+        
     const orden = this.solicitudActual().orderSelected?.NoOrden;
-    const { value, isDismissed } = await this.LoginLitoapps();    
+    const { value, isDismissed } = await this.LoginLitoapps();
     if (isDismissed) {
       return;
     }
-    const id_usuario = value;        
+    const id_usuario = value;
     const response = await firstValueFrom(
-      this.solicitudComponenteService.registrar({ id_usuario, orden, seleccionados })
+      this.solicitudComponenteService.registrar({
+        id_usuario,
+        orden,
+        seleccionados,
+      })
     );
     this.uiService.mostrarAlertaSuccess(
       'Registro exitoso',
@@ -135,44 +163,15 @@ export default class NuevaComponent implements OnInit {
     this.router.navigate(['/control_elementos/solicitudes']);
   }
 
- 
   async onChangeSelectComponent(event: any) {
     const selectedComponete = event.value as ComponenteV;
-    this.componenteSeleccionado.set(selectedComponete);
-    const orden = this.selectedOrder()?.NoOrden;
-    const resp = await firstValueFrom(
-      this.produccionService.obtenerElementos(orden ?? '')
-    );
-    const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
-    const componentes: ComponenteView[] = Object.entries(agrupado)
-      .map(([componente, elementos]) => {
-        return {
-          componente,
-          idSeleccionados: [],
-          elementos:
-            elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({
-              id_elemento,
-              descripcion,
-              isDisabled: id_solicitud !== null,
-            })) || [],
-        };
-      })
-      .filter(
-        (c: ComponenteView) => c.componente === selectedComponete?.descripcion
-      );
 
-    this.solicitudActual.update((prev) => ({
-      ...prev,
-      componentes: componentes,
-    }));
+    if (!event.value) {
+      this._currentComponente.set(null);
+      return;
+    }
+    this._currentComponente.set(event.value.descripcion);
   }
-
-
-
-
-
-
-
 
   async LoginLitoapps() {
     let usernameInput: HTMLInputElement;
@@ -211,7 +210,7 @@ export default class NuevaComponent implements OnInit {
       return { value: null, isDismissed: true };
     }
     const { username, password } = value!;
-    const resp = await this.usuarioService.loginSolicitante(username, password);    
+    const resp = await this.usuarioService.loginSolicitante(username, password);
     if (resp.error) {
       Swal.fire({
         title: 'Error',
@@ -219,10 +218,8 @@ export default class NuevaComponent implements OnInit {
         icon: 'error',
         confirmButtonText: 'Aceptar',
       });
-      return { value: null, isDismissed: true };      
+      return { value: null, isDismissed: true };
     }
     return { isDismissed: false, value: resp.id };
-  
   }
-
 }

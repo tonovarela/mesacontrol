@@ -98,6 +98,7 @@ export default class DevolucionComponent {
     this.componentes = componentes
       .filter((i) => i.elementos.length > 0)
       .map((i) => ({ descripcion: i.componente }));
+      
     if (this.componentes.length === 0) {
       this.router.navigate(['/control_elementos/solicitudes']);
       return;
@@ -124,6 +125,8 @@ export default class DevolucionComponent {
     });
      this.actualizarToogleSeleccion();
   }
+
+
 
   onChangeSelectComponent(event: any) {
     if (!event.value) {

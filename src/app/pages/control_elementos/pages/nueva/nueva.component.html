@@ -86,25 +86,22 @@
             Registrar prestamo
           </button>
 
-          <!-- <button [disabled]="!tieneInformacionSeleccionado()" (click)="registrarPrestamo()" class="border border-slate-300 dark:border-slate-700 rounded-md px-2 py-1 text-sm text-slate-900 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-700 dark:disabled:text-slate-500">Registrar prestamo</button> -->
+          
         </div>
         <hr class="my-4 border-slate-200 dark:border-slate-700" />
 
-        <div class="flex flex-col gap-4 text-sm mt-6">
-          <!-- <multiselect/> -->
+        <div class="flex flex-col gap-4 text-sm mt-6">          
           <div *ngIf="solicitudActual()?.componentes?.length">
             <ul class="space-y-1">
-              @for( item of solicitudActual()!.componentes; track
+              @for( item of componenteSeleccionado(); track
               item.componente) {
               <li class="border-b border-slate-200 dark:border-slate-700 pb-2">
-                <h2 class="text-xl text-purple-500 ">{{ item.componente }}</h2>
-                <!-- <span class="block text-slate-900 dark:text-slate-300">{{
-                  item.componente
-                }}</span> -->
+                <h2 class="text-xl text-purple-500 ">{{ item.componente }}</h2>                
                 <div class="border rounded-sm mt-2 p-2">
                   <p-selectbutton
                   (onChange)="seleccionarElemento($event,item.componente)" 
                     [options]="item.elementos"
+                    [ngModel]="item.idSeleccionados"
                     optionDisabled="isDisabled"
                     size="small"                    
                     [multiple]="true"
@@ -112,12 +109,7 @@
                     size="small"
                   >                    
                   </p-selectbutton>
-                </div>
-
-                <!-- <p-multiselect class="w-full mt-2" display="chip" (onChange)="seleccionarElemento($event,item.componente)" [filter]="false" [maxSelectedLabels]="7" scrollHeight="500px" optionDisabled="isDisabled" [showToggleAll]="true" 
-                                [filter]="true"     
-                                [options]="item.elementos" optionLabel="descripcion"
-                                    placeholder="Selecciona un elemento" fluid/> -->
+                </div>                
               </li>
               }
             </ul>
@@ -125,9 +117,7 @@
         </div>
       </div>
     </div>
-
     }
   </div>
-
-  }
+  }  
 </div>
