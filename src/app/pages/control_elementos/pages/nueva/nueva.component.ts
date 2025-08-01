@@ -47,7 +47,7 @@ export default class NuevaComponent implements OnInit {
   public type = TypeSearchMetrics.CONTROL_ELEMENTOS;
 
 
-  
+
 
   public todos = true;
   public isLoading= false;
@@ -59,7 +59,20 @@ export default class NuevaComponent implements OnInit {
   private uiService = inject(UiService);
   private _currentComponente = signal<string | null>(null);
 
-  public componentes: ComponenteV[] = [];
+
+
+
+  private  _componentes = signal<ComponenteV[]>([]);
+  
+  
+  public componentes = computed(()=> {
+    const c = this._componentes().map((c:any)=> {
+      return {        ...c,
+        totalSeleccionados: this.solicitudActual().componentes.find(x => x.componente === c.descripcion)?.idSeleccionados.length || 0
+      }
+    });
+    return c;
+  })
   
   public componenteSeleccionado = computed(() => {
     if (this._currentComponente()) {
@@ -85,7 +98,7 @@ export default class NuevaComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.componentes = [];
+    this._componentes.set( []);
   }
 
 
@@ -94,7 +107,7 @@ export default class NuevaComponent implements OnInit {
       this.produccionService.obtenerElementos(orden!.NoOrden)
     );    
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
-    this.componentes = [];
+    this._componentes.set([]);
 
     const componentes: any[] = Object.entries(agrupado).map(
       ([componente, elementos]) => {
@@ -113,7 +126,7 @@ export default class NuevaComponent implements OnInit {
         };
       }
     );
-    this.componentes = componentes.map((i) => ({ descripcion: i.componente }));    
+    this._componentes.set(componentes.map((i) => ({ descripcion: i.componente,totalSeleccionados:0 })));    
     this.solicitudActual.set({ orderSelected: orden, componentes });
   }
 
@@ -133,7 +146,7 @@ export default class NuevaComponent implements OnInit {
 
 
   clearSelectedOrder(): void {
-    this.componentes = [];
+    this._componentes.set([]);
     this._currentComponente.set(null);    
     this.solicitudActual.set({
       orderSelected: null,
