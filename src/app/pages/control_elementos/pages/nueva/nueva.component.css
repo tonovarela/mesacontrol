@@ -10,6 +10,8 @@
   padding: 6px;   
     width: 220px !important; 
   margin: 3px!important;  
+  font-size: 0.65rem;
+  font-weight: 600;
 }
 
 ::ng-deep .p-selectbutton{
