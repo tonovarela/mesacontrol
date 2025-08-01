@@ -4,6 +4,36 @@
   >
     Prestamo de elementos
   </h2>
+
+<div
+    *ngIf="isLoading"
+    class="absolute inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
+  >
+    <div class="flex flex-col items-center">
+      <svg
+        class="animate-spin h-12 w-12 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        ></circle>
+        <path
+          class="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8H4z"
+        ></path>
+      </svg>
+      <p class="mt-4 text-white text-lg font-semibold">Procesando...</p>
+    </div>
+  </div>
+
   @if (solicitudActual().orderSelected===null) {
   <search-metrics
     [typeSearch]="type"
@@ -54,7 +84,6 @@
             </dd>            
           </div>
         </div>
-
         <div class="flex flex-col text-sm mt-6">
           <p-listbox
             [options]="componentes"
@@ -77,26 +106,31 @@
           <h1 class="text-lg font-bold text-slate-900 dark:text-white">
             Elementos
           </h1>
-
           <button
             [disabled]="!tieneInformacionSeleccionado()"
             (click)="registrarPrestamo()"
             class="border border-slate-300 rounded-md px-2 py-1 text-sm bg-purple-500 text-white disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
           >
             Registrar prestamo
-          </button>
-
-          
+          </button>          
         </div>
         <hr class="my-4 border-slate-200 dark:border-slate-700" />
-
         <div class="flex flex-col gap-4 text-sm mt-6">          
           <div *ngIf="solicitudActual()?.componentes?.length">
             <ul class="space-y-1">
               @for( item of componenteSeleccionado(); track
               item.componente) {
               <li class="border-b border-slate-200 dark:border-slate-700 pb-2">
-                <h2 class="text-xl text-purple-500 ">{{ item.componente }}</h2>                
+
+                <div class="flex justify-between">
+                  <h2 class="text-xl text-purple-500 ">{{ item.componente }}</h2>                
+                   <button  (click)="toogleSeleccion()" class="border border-slate-300 w-36 rounded-md px-2 py-1  text-bold">
+                  <span >
+                    {{ !todos ? 'Desmarcar todos' : 'Marcar todos' }}
+                  </span>
+        </button>
+                </div>
+                
                 <div class="border rounded-sm mt-2 p-2">
                   <p-selectbutton
                   (onChange)="seleccionarElemento($event,item.componente)" 
@@ -119,5 +153,8 @@
     </div>
     }
   </div>
+  <pre class="text-xs text-gray-500 dark:text-gray-400 mt-4 h-96 overflow-y-auto">
+  {{ solicitudActual().componentes | json }}
+</pre>
   }  
 </div>

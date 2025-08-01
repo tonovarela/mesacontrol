@@ -128,9 +128,7 @@
                     {{ !todos ? 'Desmarcar todos' : 'Marcar todos' }}
                   </span>
         </button>
-                </div>
-             
-
+                </div>             
                 <div class="border rounded-sm mt-2 p-2">
                   <p-selectbutton
                     (onChange)="seleccionarElemento($event, item.componente)"
@@ -154,5 +152,10 @@
     </div>
   </div>
 
-  }
+}
+
+<pre class="text-xs text-gray-500 dark:text-gray-400 mt-4 h-96 overflow-y-auto">
+  {{ solicitudActual().componentes | json }}
+</pre>
+ 
 </div>

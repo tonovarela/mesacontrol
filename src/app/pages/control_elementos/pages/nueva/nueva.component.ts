@@ -45,6 +45,10 @@ interface ComponenteV {
 })
 export default class NuevaComponent implements OnInit {
   public type = TypeSearchMetrics.CONTROL_ELEMENTOS;
+
+
+  public todos = true;
+  public isLoading= false;
   private usuarioService = inject(UsuarioService);
   private produccionService = inject(ProduccionService);
   private solicitudComponenteService = inject(SolicitudComponentService);
@@ -60,7 +64,7 @@ export default class NuevaComponent implements OnInit {
       const c = this.solicitudActual().componentes.filter(
         (x) => x.componente === this._currentComponente()
       );
-
+      
       return c;
     }
     return [];
@@ -87,6 +91,7 @@ export default class NuevaComponent implements OnInit {
     const resp = await firstValueFrom(
       this.produccionService.obtenerElementos(orden!.NoOrden)
     );
+    console.log({ resp });
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
     this.componentes = [];
 
@@ -95,6 +100,7 @@ export default class NuevaComponent implements OnInit {
         const _elementos =
           elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({
             id_elemento,
+            componente,
             descripcion,
             id_solicitud,
             isDisabled: id_solicitud !== null,
@@ -106,8 +112,22 @@ export default class NuevaComponent implements OnInit {
         };
       }
     );
-    this.componentes = componentes.map((i) => ({ descripcion: i.componente }));
+    this.componentes = componentes.map((i) => ({ descripcion: i.componente }));    
     this.solicitudActual.set({ orderSelected: orden, componentes });
+  }
+
+  private actualizarToogleSeleccion(){
+
+    const [el] = this.componenteSeleccionado().map((c) => {
+      return { seleccionados: c.idSeleccionados, elementos: c.elementos.filter(el => !el.isDisabled) };
+    });
+    if (!el) {
+      return;
+    }    
+    if (el.elementos.length===0 && el.seleccionados.length===0) {
+      return;
+    }
+    this.todos =el.elementos>el.seleccionados;
   }
 
 
@@ -132,11 +152,46 @@ export default class NuevaComponent implements OnInit {
     const componentesActualizados = this.solicitudActual().componentes.map(
       (x) => (x.componente === componente ? componenteActual : x)
     );
+    
     this.solicitudActual.set({
       ...this.solicitudActual(),
       componentes: componentesActualizados,
     });
+     this.actualizarToogleSeleccion();
   }
+
+
+
+toogleSeleccion() {
+     const componentes = this.solicitudActual().componentes.map((c) => {
+       if (c.componente !== this._currentComponente()) {
+         return c;
+       }       
+       const elementosSeleccionados = c.elementos.filter((el) => !el.isDisabled);         
+      if (elementosSeleccionados.length === 0) {
+        return c;
+      }
+      if (this.todos) {
+        return {
+          ...c,
+          idSeleccionados: elementosSeleccionados,
+        };
+      }
+      return {
+        ...c,
+        idSeleccionados: [],
+      };
+     });
+
+         
+     this.solicitudActual.set({
+       ...this.solicitudActual(),
+       componentes,
+     });
+     this.todos = !this.todos;
+  }
+
+
 
   async registrarPrestamo() {
     const seleccionados = this.solicitudActual().componentes
@@ -148,7 +203,10 @@ export default class NuevaComponent implements OnInit {
       return;
     }
     const id_usuario = value;
-    const response = await firstValueFrom(
+
+    try {
+      this.isLoading = true;
+      const response = await firstValueFrom(
       this.solicitudComponenteService.registrar({
         id_usuario,
         orden,
@@ -159,6 +217,15 @@ export default class NuevaComponent implements OnInit {
       'Registro exitoso',
       'Se ha registrado el préstamo de los componentes seleccionados.'
     );
+    }catch(error: any){
+this.uiService.mostrarAlertaError(
+        'Error al registrar el prestamo',
+        error.message || 'Ocurrió un error al registrar el prestamo.'
+      );
+    }finally {
+      this.isLoading = false;
+    }
+    
     this.clearSelectedOrder();
     this.router.navigate(['/control_elementos/solicitudes']);
   }
@@ -171,6 +238,7 @@ export default class NuevaComponent implements OnInit {
       return;
     }
     this._currentComponente.set(event.value.descripcion);
+     //this.actualizarToogleSeleccion();
   }
 
   async LoginLitoapps() {

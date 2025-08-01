@@ -85,6 +85,7 @@ export default class DevolucionComponent {
       const _elementos =
         elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({
           id_elemento,
+          componente,
           descripcion,
           id_solicitud,
           isDisabled: id_solicitud === null,
@@ -98,7 +99,7 @@ export default class DevolucionComponent {
     this.componentes = componentes
       .filter((i) => i.elementos.length > 0)
       .map((i) => ({ descripcion: i.componente }));
-      
+
     if (this.componentes.length === 0) {
       this.router.navigate(['/control_elementos/solicitudes']);
       return;
