@@ -131,7 +131,6 @@ export default class NuevaComponent implements OnInit {
   }
 
   private actualizarToogleSeleccion(){
-
     const [el] = this.componenteSeleccionado().map((c) => {
       return { seleccionados: c.idSeleccionados, elementos: c.elementos.filter(el => !el.isDisabled) };
     });
@@ -141,6 +140,7 @@ export default class NuevaComponent implements OnInit {
     if (el.elementos.length===0 && el.seleccionados.length===0) {
       return;
     }
+    console.log({el:el.elementos,  seleccionados:el.seleccionados});
     this.todos =el.elementos>el.seleccionados;
   }
 
@@ -252,7 +252,7 @@ this.uiService.mostrarAlertaError(
       return;
     }
     this._currentComponente.set(event.value.descripcion);
-     //this.actualizarToogleSeleccion();
+     this.actualizarToogleSeleccion();
   }
 
   async LoginLitoapps() {
