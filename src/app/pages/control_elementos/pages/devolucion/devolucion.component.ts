@@ -37,6 +37,7 @@ export default class DevolucionComponent {
   orden = input<string>();
 
   public todos = true;
+  public isLoading= false;
   private router = inject(Router);
   private uiService = inject(UiService);
   private _currentComponente = signal<string | null>(null);
@@ -170,6 +171,7 @@ export default class DevolucionComponent {
     const id_solicitudes = seleccionados.map((item: any) => item.id_solicitud);
     const id_usuario = this.usuarioService.StatusSesion().usuario?.id!;
     try {
+      this.isLoading = true;
       const resp = await firstValueFrom(
         this.solicitudComponenteService.devolucion({
           id_solicitudes,
@@ -190,6 +192,8 @@ export default class DevolucionComponent {
         'Error al registrar devolucion',
         error.message || 'Ocurrió un error al registrar la devolución.'
       );
+    }finally{
+      this.isLoading =false;
     }
   }
 
