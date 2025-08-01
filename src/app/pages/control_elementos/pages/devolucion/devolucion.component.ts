@@ -24,6 +24,7 @@ import { SolicitudComponentService } from '@app/pages/control_elementos/services
 
 interface ComponenteV {
   descripcion: string;
+  totalSeleccionados?: number;
 }
 
 @Component({
@@ -45,6 +46,18 @@ export default class DevolucionComponent {
   private solicitudComponenteService = inject(SolicitudComponentService);
   private usuarioService = inject(UsuarioService);
 
+
+ public componentes= computed(()=>{
+   const componentes= this._componentes().map((c:any)=> {
+     return {  
+    ...c,
+       totalSeleccionados: this.solicitudActual().componentes.find(x => x.componente === c.descripcion)?.idSeleccionados.length || 0
+     }
+   });
+   return componentes;
+
+ });
+
   public componenteSeleccionado = computed(() => {
     if (this._currentComponente()) {
       const c = this.solicitudActual().componentes.filter(
@@ -56,12 +69,16 @@ export default class DevolucionComponent {
     return [];
   });
 
+
+
+
+
   public solicitudActual = signal<SolicitudDevolucion>({
     orderSelected: null,
     componentes: [],
   });
   public selectedOrder = computed(() => this.solicitudActual().orderSelected);
-  public componentes: ComponenteV[] = [];
+  private _componentes = signal<ComponenteV[]>([]);
 
   constructor() {
     effect(() => {
@@ -78,7 +95,7 @@ export default class DevolucionComponent {
     );
 
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
-    this.componentes = [];
+    this._componentes.set([]);
     const componentes: ComponenteViewDevolucion[] = Object.entries(
       agrupado
     ).map(([componente, elementos]) => {
@@ -96,11 +113,11 @@ export default class DevolucionComponent {
         elementos: _elementos.filter((el) => !el.isDisabled),
       };
     });
-    this.componentes = componentes
+    this._componentes.set(componentes
       .filter((i) => i.elementos.length > 0)
-      .map((i) => ({ descripcion: i.componente }));
+      .map((i) => ({ descripcion: i.componente ,totalSeleccionados:0})));
 
-    if (this.componentes.length === 0) {
+    if (this._componentes().length === 0) {
       this.router.navigate(['/control_elementos/solicitudes']);
       return;
     }

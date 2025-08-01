@@ -4,10 +4,6 @@
   >
     Devolución de elementos
   </h2>
-
-
-
-
    <div
     *ngIf="isLoading"
     class="absolute inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
@@ -86,14 +82,21 @@
 
         <div class="flex flex-col text-sm mt-6">
           <p-listbox
-            [options]="componentes"
+            [options]="componentes()"
             filterPlaceHolder="Buscar componente"
             optionLabel="descripcion"
             [filter]="true"
             scrollHeight="30rem"
             class="w-full"
             (onChange)="onChangeSelectComponent($event)"
-          />
+          >
+          <ng-template #item let-item>
+        <div class="flex justify-between gap-2 w-full">
+            <div>{{ item.descripcion }}</div>
+            <div class="bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">{{ item.totalSeleccionados }}</div>
+        </div>
+    </ng-template>
+        </p-listbox>
         </div>
       </div>
     </div>
@@ -154,8 +157,6 @@
 
 }
 
-<pre class="text-xs text-gray-500 dark:text-gray-400 mt-4 h-96 overflow-y-auto">
-  {{ solicitudActual().componentes | json }}
-</pre>
+
  
 </div>

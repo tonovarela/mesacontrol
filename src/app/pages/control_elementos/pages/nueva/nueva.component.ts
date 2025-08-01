@@ -47,6 +47,8 @@ export default class NuevaComponent implements OnInit {
   public type = TypeSearchMetrics.CONTROL_ELEMENTOS;
 
 
+  
+
   public todos = true;
   public isLoading= false;
   private usuarioService = inject(UsuarioService);
@@ -90,8 +92,7 @@ export default class NuevaComponent implements OnInit {
   async onSelectOrder(orden: OrdenMetrics | null) {
     const resp = await firstValueFrom(
       this.produccionService.obtenerElementos(orden!.NoOrden)
-    );
-    console.log({ resp });
+    );    
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
     this.componentes = [];
 
