@@ -32,7 +32,7 @@ interface ComponenteV {
   imports: [CommonModule, PrimeModule, FormsModule],
   templateUrl: './devolucion.component.html',
   styleUrl: './devolucion.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,  
 })
 export default class DevolucionComponent {
   orden = input<string>();
@@ -187,8 +187,20 @@ export default class DevolucionComponent {
       .flat();
   });
 
-  async registrarPrestamo() {
-    const seleccionados = this.seleccionados();
+  async registrarDevolucion() {
+
+     const seleccionados = this.seleccionados(); 
+     if (seleccionados.length === 0) {
+       this.uiService.mostrarAlertaError(
+         'No hay elementos seleccionados',
+         'Por favor, seleccione al menos un elemento para registrar la devolución.'
+       );
+       return;
+     }
+     const { isConfirmed} = await this.uiService.mostrarAlertaConfirmacion("Confirmar Devolución", `¿Está seguro de que desea registrar la devolución de los ${seleccionados.length } elementos seleccionados?`);
+     if (!isConfirmed ) {
+     return;
+     }        
     const id_solicitudes = seleccionados.map((item: any) => item.id_solicitud);
     const id_usuario = this.usuarioService.StatusSesion().usuario?.id!;
     try {

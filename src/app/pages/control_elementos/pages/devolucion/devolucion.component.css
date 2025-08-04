@@ -1,27 +1,28 @@
-:host {
+/* :host {
   display: block;
-}
-::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item{
+} */
+:host ::ng-deep .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item{
   padding: 0.1rem 2rem;
 }
 
 
-::ng-deep .p-togglebutton   {      
+:host ::ng-deep .p-togglebutton   {      
   border: 1px solid !important;
   border-radius :8px !important;;  
   padding: 6px;   
     width: 220px !important; 
+    height: 40px !important;
   margin: 3px!important;  
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 600;
 }
 
-::ng-deep .p-selectbutton{
+:host ::ng-deep .p-selectbutton{
   display:block !important;
 }
 
 
-::ng-deep .p-disabled{
+:host ::ng-deep .p-disabled{
   cursor: not-allowed !important;
   pointer-events: auto !important;
 }
