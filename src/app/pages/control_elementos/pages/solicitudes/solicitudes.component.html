@@ -43,21 +43,22 @@
         </ejs-grid>
 
         
-        <div *ngIf="prestamos().length > 0" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 px-2 ">
+    @if(prestamos().length > 0){
+     <div  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 px-2 ">
             <div class="bg-white dark:bg-gray-900 rounded-xl shadow-xl max-w-5xl w-full p-6 relative dark:border dark:border-white" style="max-height: 35vh;">
               <button 
                 class="sticky top-0 right-0 float-right z-10 bg-white dark:bg-gray-900 rounded-full p-1 mt-[-1rem]  text-gray-400 hover:text-red-500 text-2xl font-bold transition"
                 (click)="prestamos().length = 0"
                 aria-label="Cerrar">&times;</button>
               <h2 class="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-100 tracking-tight">Detalle</h2>
-              <div class="overflow-y-auto" style="max-height: calc(30vh - 3rem);">
-                <table class="min-w-full border-2 px-2 py-2 ">
-                  <thead>
-                    <tr class="border-2 px-2 ">
-                      <th class="px-4 py-2 text-xs font-bold  text-gray-500 dark:text-gray-400 text-start">Solicitante</th>
-                      <th class="px-4 py-2 text-xs font-bold  text-gray-500 dark:text-gray-400 text-start">Componente</th>
-                      <th class="px-4 py-2 text-xs font-bold  text-gray-500 dark:text-gray-400 text-start">Elemento</th>
-                      <th class="px-4 py-2 text-xs font-bold  text-gray-500 dark:text-gray-400 text-start">Fecha registro</th>
+              <div class="overflow-y-auto " style="max-height: calc(30vh - 3rem);">
+                <table class="min-w-full border-2 ">
+                  <thead class="sticky top-0 bg-white dark:bg-gray-900 z-10 border-b border-gray-200 dark:border-gray-700">
+                    <tr class="border-2 px-2">
+                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Solicitante</th>
+                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Componente</th>
+                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Elemento</th>
+                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Fecha registro</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -80,4 +81,6 @@
             </div>
           </div>
 
+        }
+        
     </div>
