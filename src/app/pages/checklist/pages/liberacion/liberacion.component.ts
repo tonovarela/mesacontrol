@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit ,signal} from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ElementoItem, Ruta, RutaElemento } from '@app/interfaces/responses/ResponseRutaComponentes';
+import { PrimeModule } from '@app/lib/prime.module';
 import { PreprensaService, UiService } from '@app/services';
 import { firstValueFrom } from 'rxjs';
 
 
 @Component({
   selector: 'app-liberacion',
-  imports: [CommonModule],
+  imports: [CommonModule,PrimeModule,ReactiveFormsModule],
   templateUrl: './liberacion.component.html',
   styleUrl: './liberacion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,18 +22,25 @@ export default class LiberacionComponent implements OnInit {
   private router= inject(Router);
   public rutas  =signal<RutaElemento[]>([]);
 
+  formRutas: FormGroup | undefined;
+  constructor(private fb: FormBuilder) {
+      
+  }
+
   ngOnInit() {
     if (!this.orden()) {
       this.router.navigate(['/preprensa/pendientes']);
       return;
     }
+    
     this.cargarInformacion();
   }
 
   async cargarInformacion(){    
     const orden = this.orden() ||  '';
     const resp =await firstValueFrom(this.prePrensaService.obtenerComponentes(orden));
-
+  
+    
     if (resp.rutas.length===0){
       this.router.navigate(['/preprensa/pendientes']);
       return;
@@ -41,6 +50,10 @@ export default class LiberacionComponent implements OnInit {
       return {...r,ruta: JSON.parse(r.ruta) as ElementoItem[]}
    });
     this.rutas.set(rutas);
+
+    this.formRutas = this.fb.group({
+            checked: ['']
+        });
 
     //Marcar el primer elemento
     
