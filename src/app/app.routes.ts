@@ -23,7 +23,8 @@ export const routes: Routes = [
   {
     path: 'control_elementos', component: MainLayoutComponent,
     children: [
-      { path: "solicitudes", loadComponent: () => import('./pages/control_elementos/pages/solicitudes/solicitudes.component') },
+      { path: "solicitudes",data:{modulo:'activas'},loadComponent: () => import('./pages/control_elementos/pages/solicitudes/solicitudes.component') },
+      { path: "historico", data:{modulo:"historico"},loadComponent: () => import('./pages/control_elementos/pages/solicitudes/solicitudes.component') },
       {  path: "nueva", loadComponent: () => import('./pages/control_elementos/pages/nueva/nueva.component') },
       {  path: "devolucion/:orden", loadComponent: () => import('./pages/control_elementos/pages/devolucion/devolucion.component') },
        { path: '**', redirectTo: 'solicitudes' }

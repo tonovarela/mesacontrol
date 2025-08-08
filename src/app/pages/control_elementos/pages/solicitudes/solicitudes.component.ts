@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal,computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Estado, Solicitud } from '@app/interfaces/responses/SolicitudResponse';
 import { SynfusionModule } from '@app/lib/synfusion.module';
@@ -22,8 +22,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   router = inject(Router);
   readonly AVATAR_URL = environment.baseAvatarUrl;
+  private _modulo =signal<"activas" | "historico">('activas');
 
   solicitudService = inject(SolicitudService);
+  activatedRoute = inject(ActivatedRoute);
   usuarioService = inject(UsuarioService);
   uiService = inject(UiService);
   solicitudComponenteService= inject(SolicitudComponentService);
@@ -34,12 +36,19 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   prestamos = computed(() => this._prestamos().map(prestamo => ({
     ...prestamo,
-    liga_avatar: `${this.AVATAR_URL}/${prestamo.Personal}`
+    liga_avatar: `${this.AVATAR_URL}/${prestamo.Personal}`,
+    ligar_avatarDevolucion: prestamo.usuarioDevolucion?`${this.AVATAR_URL}/${prestamo.personalDevolucion}`:''
   })));
 
 
+
+  modulo = computed(() => this._modulo());  
   
   ngOnInit(): void {
+
+      this.activatedRoute.data.subscribe(({modulo}) => {        
+        this._modulo.set(modulo || 'activas');        
+      });
     this.cargarSolicitudes();    
     this.iniciarResizeGrid(0.39, true);
     this.autoFitColumns = true;    
@@ -49,8 +58,8 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     this.router.navigate(['/control_elementos/nueva']);
   }
 
-  async cargarSolicitudes() {
-    const response = await firstValueFrom(this.solicitudService.listar());    
+  async cargarSolicitudes() {    
+    const response = await firstValueFrom(this.solicitudService.listar(this.modulo() === 'activas'));    
     //this.estados.set(response.estados);
     this.solicitudes.set(response.solicitudes);
   }

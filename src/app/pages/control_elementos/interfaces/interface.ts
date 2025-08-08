@@ -54,4 +54,8 @@ export interface Prestamo {
   elemento:       string;
   liga_avatar?:string;
   fecha_registro: Date;
+  personalDevolucion?: string;
+  usuarioDevolucion?: string;
+  fechaDevolucion?: Date;
+
 }

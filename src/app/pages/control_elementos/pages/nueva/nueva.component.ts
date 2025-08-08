@@ -64,6 +64,7 @@ export default class NuevaComponent implements OnInit {
 
   private  _componentes = signal<ComponenteV[]>([]);
   
+
   
   public componentes = computed(()=> {
     const c = this._componentes().map((c:any)=> {
@@ -139,11 +140,15 @@ export default class NuevaComponent implements OnInit {
     }    
     if (el.elementos.length===0 && el.seleccionados.length===0) {
       return;
-    }
-    console.log({el:el.elementos,  seleccionados:el.seleccionados});
+    }    
     this.todos =el.elementos>el.seleccionados;
   }
 
+
+  regresar() {
+    this.router.navigate(['/control_elementos/solicitudes']);
+    this.clearSelectedOrder();
+  }
 
   clearSelectedOrder(): void {
     this._componentes.set([]);

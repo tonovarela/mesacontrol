@@ -1,9 +1,12 @@
 <div id="initial" class="dark:bg-gray-900 h-screen p-1">
-    <div class="flex justify-between items-center p-1">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Control de elementos</h1>
-        <button (click)="navigateToNueva()" class="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      + Nueva prestamo
-    </button>
+    <div class="flex justify-between items-center p-1">       
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ modulo()=="activas"?'Control de elementos':"Histórico control de elementos"}}</h1>
+      
+        @if(modulo() == "activas") {
+          <button (click)="navigateToNueva()" class="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            + Nueva prestamo
+          </button>
+        }        
     </div>
     <div>
        
@@ -27,7 +30,8 @@
                         </a>
                     </ng-template>
                 </e-column>
-                <e-column  headerText='FechaEntrega'  allowFiltering="false" width='150'>
+                @if(modulo() == "activas") {
+                <e-column  headerText=''  allowFiltering="false" width='150'>
                     <ng-template #template let-data>
                         <a (click)="irDetalle(data)" class="flex items-center justify-center gap-1 text-blue-500 hover:underline hover:cursor-pointer">
                             <!-- Icono Devolución (flecha circular) -->
@@ -39,6 +43,7 @@
                         </a>
                     </ng-template>
                 </e-column>
+              }
             </e-columns>
         </ejs-grid>
 
@@ -59,6 +64,9 @@
                       <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Componente</th>
                       <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Elemento</th>
                       <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Fecha registro</th>
+                      
+                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Usuario regresó</th>
+                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Fecha devolución</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -73,6 +81,16 @@
                         <td class="p-1 text-sm text-gray-700 dark:text-gray-300 text-start align-middle">{{ prestamo.componente }}</td>
                         <td class="p-1 text-sm text-gray-700 dark:text-gray-300 text-start align-middle">{{ prestamo.elemento }}</td>
                         <td class="p-1 text-xs text-gray-500 dark:text-gray-400 text-start align-middle whitespace-nowrap">{{ prestamo.fecha_registro | date: 'dd/MM/yyyy hh:mm a' }}</td>
+                        <!-- <td class="p-1 text-xs text-gray-500 dark:text-gray-400 text-start align-middle whitespace-nowrap">{{ prestamo.personalDevolucion}}</td> -->
+                        <td class="p-1 text-xs text-gray-500 dark:text-gray-400 text-start align-middle whitespace-nowrap">
+                            @if(prestamo.usuarioDevolucion) {
+                          <div class="flex flex-row justify-start items-center ml-4 gap-1">
+                            <img [src]="prestamo.ligar_avatarDevolucion" alt="User" class="w-8 h-8 rounded-full object-cover mb-1 border border-blue-200 dark:border-blue-700 shadow-sm">
+                            <span class="text-[13px] font-medium text-gray-800 dark:text-gray-100">{{ prestamo.solicitante }}</span>
+                          </div>
+                        }                          
+                        </td>
+                        <td class="p-1 text-xs text-gray-500 dark:text-gray-400 text-start align-middle whitespace-nowrap">{{ prestamo.fechaDevolucion | date: 'dd/MM/yyyy hh:mm a'   }}</td>
                       </tr>
                     }
                   </tbody>

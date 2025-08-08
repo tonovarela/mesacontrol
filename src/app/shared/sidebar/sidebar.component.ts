@@ -66,7 +66,14 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
       icono: 'assets/img/control.svg',
       path: '/control_elementos/solicitudes',
       claseSize: 'w-8 h-8 svg-icon',
+    },
+    {
+      nombre: 'Histórico',
+      icono: 'assets/img/historico.svg',
+      path: '/control_elementos/historico',
+      claseSize: 'w-7 h-7 svg-icon',
     }
+
   ])
 
 

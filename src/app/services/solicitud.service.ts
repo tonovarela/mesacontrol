@@ -13,8 +13,8 @@ import { ResponseSolicitudPrestamo } from '../interfaces/responses/ResponseSolic
     http =inject(HttpClient);
     private readonly API_URL = environment.apiUrl;
 
-    public listar(){
-        return this.http.get<ResponseSolicitudPrestamo>(`${this.API_URL}/api/solicitud`);
+    public listar(activas: boolean = true) {
+        return this.http.get<ResponseSolicitudPrestamo>(`${this.API_URL}/api/solicitud?activas=${activas}`);
     }
 
 
