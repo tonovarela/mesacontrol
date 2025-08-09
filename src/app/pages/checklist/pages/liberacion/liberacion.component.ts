@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, OnInit ,signal} from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ElementoItem, Ruta, RutaElemento } from '@app/interfaces/responses/ResponseRutaComponentes';
 import { PrimeModule } from '@app/lib/prime.module';
@@ -10,7 +10,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-liberacion',
-  imports: [CommonModule,PrimeModule,ReactiveFormsModule],
+  imports: [CommonModule,PrimeModule,ReactiveFormsModule,FormsModule],
   templateUrl: './liberacion.component.html',
   styleUrl: './liberacion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,7 +36,7 @@ export default class LiberacionComponent implements OnInit {
     this.cargarInformacion();
   }
 
-  async cargarInformacion(){    
+  async cargarInformacion()  {    
     const orden = this.orden() ||  '';
     const resp =await firstValueFrom(this.prePrensaService.obtenerComponentes(orden));
   
@@ -51,16 +51,18 @@ export default class LiberacionComponent implements OnInit {
    });
     this.rutas.set(rutas);
 
-    this.formRutas = this.fb.group({
-            checked: ['']
-        });
+     
+  
 
-    //Marcar el primer elemento
-    
-
-
-        
   }
+
+
+  onAplicaChange(ruta: RutaElemento, item: ElementoItem,opcion:any) {
+
+    // console.log("onAplicaChange called", ruta, item,opcion);
+   item.aplica = opcion.checked==true?  1:0;;
+   this.actualizarRuta(ruta);
+}
 
   async actualizarRuta(rutaActualizada:RutaElemento){
     const rutasActuales = this.rutas();
