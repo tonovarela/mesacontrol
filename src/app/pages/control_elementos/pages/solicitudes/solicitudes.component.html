@@ -23,8 +23,13 @@
     <!-- Contenido principal -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
        
-        <ejs-grid #grid [dataSource]='solicitudes()' [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true
-            allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+        <ejs-grid #grid [dataSource]='solicitudes()' [filterSettings]="filterSettings" 
+                        [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'
+                        (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid"
+                        allowReordering='true' [allowFiltering]='true'
+                        allowPaging="true " allowResizing="true" allowSorting="true" 
+                        [pageSettings]='pageSettings'
+                        >
             <e-columns>                
                 <e-column field='NoOrden' headerText='OP' width='100'></e-column>
                 <e-column field='nombreTrabajo' headerText='Trabajo' width='100'></e-column>
@@ -33,12 +38,12 @@
                 <e-column field='FechaEntrega' headerText='FechaEntrega' width='150'></e-column>
                 <e-column  headerText='Detalle'  allowFiltering="false" width='150'>
                     <ng-template #template let-data>
-                        <a (click)="verDetallePrestamo(data.NoOrden)" class="flex items-center justify-center gap-1 text-blue-500 hover:underline hover:cursor-pointer">
-                            <!-- Icono Detalle (lupa) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
-                                <line x1="16" y1="16" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
+                        <a (click)="verDetallePrestamo(data.NoOrden)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">
+                            <!-- Icono Detalle (histórico/archivo) -->
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M8 10h8M8 14h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
                             Detalle
                         </a>
                     </ng-template>
@@ -63,22 +68,21 @@
         
     @if(prestamos().length > 0){
      <div  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 px-2 ">
-            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-xl max-w-5xl w-full p-6 relative dark:border dark:border-white" style="max-height: 35vh;">
+            <div class="bg-white dark:bg-gray-900 rounded-xl shadow-xl max-w-5xl w-full p-6 relative dark:border dark:border-white" style="max-height: 55vh;">
               <button 
                 class="sticky top-0 right-0 float-right z-10 bg-white dark:bg-gray-900 rounded-full p-1 mt-[-1rem]  text-gray-400 hover:text-red-500 text-2xl font-bold transition"
                 (click)="prestamos().length = 0"
                 aria-label="Cerrar">&times;</button>
               <h2 class="text-xl font-semibold mb-6 text-gray-800 dark:text-gray-100 tracking-tight">Detalle</h2>
-              <div class="overflow-y-auto " style="max-height: calc(30vh - 3rem);">
+              <div class="overflow-y-auto " style="max-height: calc(45vh - 3rem);">
                 <table class="min-w-full border-2 ">
                   <thead class="sticky top-0 bg-white dark:bg-gray-900 z-10 border-b border-gray-200 dark:border-gray-700">
                     <tr class="border-2 px-2">
                       <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Solicitante</th>
                       <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Componente</th>
                       <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Elemento</th>
-                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Fecha registro</th>
-                      
-                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Usuario regresó</th>
+                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Fecha registro</th>                      
+                      <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Usuario que recibio</th>
                       <th class="px-4 py-2 text-xs font-bold text-gray-500 dark:text-gray-400 text-start">Fecha devolución</th>
                     </tr>
                   </thead>
@@ -93,8 +97,7 @@
                         </td>
                         <td class="p-1 text-sm text-gray-700 dark:text-gray-300 text-start align-middle">{{ prestamo.componente }}</td>
                         <td class="p-1 text-sm text-gray-700 dark:text-gray-300 text-start align-middle">{{ prestamo.elemento }}</td>
-                        <td class="p-1 text-xs text-gray-500 dark:text-gray-400 text-start align-middle whitespace-nowrap">{{ prestamo.fecha_registro | date: 'dd/MM/yyyy hh:mm a' }}</td>
-                        <!-- <td class="p-1 text-xs text-gray-500 dark:text-gray-400 text-start align-middle whitespace-nowrap">{{ prestamo.personalDevolucion}}</td> -->
+                        <td class="p-1 text-xs text-gray-500 dark:text-gray-400 text-start align-middle whitespace-nowrap">{{ prestamo.fecha_registro | date: 'dd/MM/yyyy hh:mm a' }}</td>                        
                         <td class="p-1 text-xs text-gray-500 dark:text-gray-400 text-start align-middle whitespace-nowrap">
                             @if(prestamo.usuarioDevolucion) {
                           <div class="flex flex-row justify-start items-center ml-4 gap-1">

@@ -1,3 +1,7 @@
 :host {
   display: block;
 }
+
+.toogle-liberacion{
+  @apply rounded-lg text-xs font-sans my-1  font-light;
+}

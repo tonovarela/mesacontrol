@@ -1,29 +1,50 @@
-<!-- <pre class="h-96 overflow-auto bg-gray-100 dark:bg-slate-900 p-4 rounded-lg shadow">
-    {{
-        rutas()| json
-    }}
-</pre>
- -->
-
-
+<div class="w-full flex flex-row justify-between gap-4   ">  
+  <div class="flex justify-center space-x-7">    
+<button
+  class="flex items-center gap-2 px-4 py-2 bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white text-xs font-medium rounded-lg shadow transition duration-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
+  (click)="regresar()"
+>
+  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+  </svg>
+  Regresar
+</button>
+<h1 class="text-lg font-bold">{{nombreTrabajo()}}</h1>
+  </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-auto overflow-auto">
-  <div *ngFor="let ruta of rutas(); let i = index" class="bg-white h-auto  dark:bg-slate-800 rounded-lg shadow p-2">
-    <h2 class="text-lg font-bold mb-2 text-slate-800 dark:text-slate-100">
-      {{ ruta.componente }}
-    </h2>
-   
-    <div *ngFor="let item of ruta.ruta; let j = index" class="flex items-center  justify-between  border-b last:border-b-0">
-      <span class="text-slate-700 dark:text-slate-200">{{ item.descripcion }}</span>
+  <div class="flex items-center gap-5">
+    @if(!estaEnAprobacion()) {
+    <button class="px-4 py-2 bg-blue-600 text-white rounded-md shadow text-xs hover:bg-blue-700 "  (click)="guardarCambios()">Guardar </button>
+    <button class="mr-10 px-4 py-2 bg-green-600 text-white rounded-md shadow text-xs hover:bg-green-700 "  (click)="solicitarAprobacion()">Solicitar aprobación </button>
+  }@else{
+    <button class="px-4 py-2 bg-green-600 text-white rounded-md shadow text-xs hover:bg-green-700 "  (click)="aprobar()">Aprobar </button>
+    <button class="mr-10 px-4 py-2 bg-red-600 text-white rounded-md shadow text-xs hover:bg-red-700 "  (click)="rechazar()">Rechazar  </button>
+  }
+  </div>
+  
 
-        <p-togglebutton class="min-w-20 rounded-lg " size="small" (onChange)="onAplicaChange(ruta, item,$event)" [ngModel]="item.aplica" onLabel="Aplica " offLabel="No Aplica" />
-     
-    </div>
+  </div>
+<div class="max-w-7xl mx-auto  mt-10">  
+  <div class="flex sm:flex-row flex-col items-center  gap-4 h-auto overflow-auto justify-items-center">
+    @for(ruta of rutas();track ruta.componente) {
+      <div class="bg-white border h-auto w-96 border-slate-400 px-2 dark:bg-slate-800 dark:border-white  rounded-lg shadow p-2 flex flex-col items-center">
+        <h2 class="text-lg font-bold mb-2 text-slate-800 dark:text-slate-100 text-center"> {{ ruta.componente }}</h2>
+        @for(item of ruta.ruta;track item.descripcion){
+          <div class="flex items-center justify-between border-b last:border-b-0 w-full  max-w-xs mx-auto ">
+            <span class="text-slate-700 text-xs dark:text-slate-200">{{item.descripcion}}</span>
+            <p-togglebutton
+              class="min-w-24 toogle-liberacion"
+              size="small"
+              [disabled]="estaEnAprobacion()"
+              (onChange)="onAplicaChange(ruta, item, $event)"
+              [ngModel]="item.aplica"
+              onLabel="Aplica"
+              offLabel="No Aplica"
+            />
+          </div>
+        }
+      </div>
+    }
   </div>
 </div>
-<button
-  class="mt-6 px-6 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700"
-  
->
-  Guardar Cambios
-</button>
+

@@ -18,6 +18,17 @@ export class PreprensaService {
 
   guardarRutaComponentes( rutas:Ruta[]){
     return this.http.post(`${this.API_URL}/api/preprensa/ruta-componentes`,{rutas});
+  }
 
+  solicitarRevision(orden:string){
+    return this.http.post(`${this.API_URL}/api/preprensa/solicitar-revision`,{orden});
+  }
+
+  aprobarRevision(orden:string){
+    return this.http.post(`${this.API_URL}/api/preprensa/aprobar-revision`,{orden});
+  }
+
+  rechazarRevision(orden:string, motivo:string){  
+    return this.http.post(`${this.API_URL}/api/preprensa/rechazar-revision`,{orden,motivo});
   }
 }
