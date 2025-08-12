@@ -18,6 +18,7 @@ import {
 import { Router } from '@angular/router';
 import {
   ElementoItem,
+  OrdenLiberacionSobre,
   Ruta,
   RutaElemento,
 } from '@app/interfaces/responses/ResponseRutaComponentes';
@@ -37,11 +38,41 @@ import { firstValueFrom } from 'rxjs';
 export default class LiberacionComponent implements OnInit {
 
   orden = input<string>();
-  _nombreTrabajo = signal<string>('');
+  
+
+private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
+
+  public trabajo = computed(() => {
+    return this._trabajo();
+  });
+
+
+  public nombreTrabajo = computed(() => {
+    return  `${this._trabajo()?.orden} - ${this._trabajo()?.nombre_trabajo}`;
+  });
+  public estaEnAprobacion = computed(()=>{
+    return this._trabajo()?.id_estado === "5"
+  });
+
+  
+
+  public estaPendiente = computed(()=>{
+    return this._trabajo()?.id_estado === "1" || this._trabajo()?.id_estado === "3";
+  });
+
+  public estaAprobado = computed(() => {
+    return this._trabajo()?.id_estado === "2";
+  });
+
+  public estadoTrabajo = computed(() => {
+    return this._trabajo()?.descripcion_estado || '';
+  });
+
+
   private prePrensaService = inject(PreprensaService);
   private uiService = inject(UiService);
   private router = inject(Router);
-  estaEnAprobacion = signal<boolean>(false);
+  
   public rutas = signal<RutaElemento[]>([]);
   formRutas: FormGroup | undefined;
 
@@ -57,9 +88,7 @@ export default class LiberacionComponent implements OnInit {
   }
 
 
-  nombreTrabajo = computed(() => {
-    return  `${this.orden()} - ${this._nombreTrabajo()}`;
-  });
+  
 
   async cargarInformacion() {
     const orden = this.orden() || '';
@@ -74,9 +103,8 @@ export default class LiberacionComponent implements OnInit {
     let rutas = resp.rutas.map((r: Ruta) => {
       return { ...r, ruta: JSON.parse(r.ruta) as ElementoItem[] };
     });
-    console.log(resp.orden?.id_estado);
-    this._nombreTrabajo.set( resp.orden?.nombre_trabajo || '');
-    this.estaEnAprobacion.set(resp.orden!.id_estado === "5");
+    this._trabajo.set(resp.orden!);    
+    //this.estaEnAprobacion.set(resp.orden!.id_estado === "5");
     this.rutas.set(rutas);
   }
 
