@@ -26,6 +26,7 @@ export default class RollcallComponent implements OnInit {
     if (this.checkList() == null) {
       this.router.navigate(['/preprensa']);
     }
+    
   }
   private checkListService = inject(CheckListService);
   

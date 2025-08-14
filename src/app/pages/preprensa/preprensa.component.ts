@@ -133,6 +133,10 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     }
   }
 
+  irRutas(orden:any){    
+    this.router.navigateByUrl(`/rollcall/liberacion/${orden.NoOrden}`, { state:{ modulo:orden.id_estado ==='2'?'liberadas':'pendientes'}});
+  }
+
   async ir(ordenMetrics: OrdenMetrics, actual: { id_checkActual: string, liberacion?: Date }) {
     const { id_checkActual, liberacion } = actual;
 

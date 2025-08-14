@@ -38,6 +38,7 @@ import { firstValueFrom } from 'rxjs';
 export default class LiberacionComponent implements OnInit {
 
   orden = input<string>();
+  private ultimoModulo = "pendientes"
   
 
 private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
@@ -82,8 +83,11 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
     if (!this.orden()) {
       this.router.navigate(['/preprensa/pendientes']);
       return;
+    }    
+    const { modulo } = this.router.lastSuccessfulNavigation?.extras?.state || {};    
+    if (modulo) {
+      this.ultimoModulo = modulo;
     }
-
     this.cargarInformacion();
   }
 
@@ -215,7 +219,7 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
 
 
   public regresar(){
-    return this.router.navigate(['/preprensa/pendientes']);
+    return this.router.navigate([`/preprensa/${this.ultimoModulo}`]);
   }
 
 
