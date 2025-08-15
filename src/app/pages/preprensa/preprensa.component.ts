@@ -40,7 +40,35 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   private usuarioService = inject(UsuarioService);
 
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
-  public ordenesMetrics = computed(() => this._ordenesMetrics());
+
+  public ordenesMetrics = computed(() => {    
+    return this._ordenesMetrics().map( (orden:any) =>{
+      let sePuedeVisualizarSobre =false;
+      if (orden.estadoRutas !== null) {
+        sePuedeVisualizarSobre= true;
+      }
+      if (orden.id_estado ==='2' && orden.estadoRutas === null) {
+        sePuedeVisualizarSobre=false;
+      }      
+      return { ...orden ,
+        colorCheckListSobreLiberacion:this.colorLiberacion(orden.estadoRutas),
+        sePuedeVisualizarSobre 
+      }
+    });
+  }
+
+);
+
+
+  private colorLiberacion(id_estado: string): string {
+  if (id_estado == "1" ) return 'fill-white py-1 rounded-full bg-purple-600';  
+  if (id_estado == "2") return 'fill-white py-1 rounded-full bg-lime-700';
+  if (id_estado == "3") return 'fill-white py-1 rounded-full bg-pink-600';
+  if (id_estado == "4") return 'fill-white py-1 rounded-full bg-gray-400';
+  if (id_estado == "5" ) return 'fill-white py-1 rounded-full bg-yellow-400';  
+   return 'fill-gray-400';
+    
+  }
   public verPendientes = computed(() => this._verPendientes());
   public ordenMetricsPorDefinir = signal<OrdenMetrics | null>(null);
   public cargando = signal(false);
@@ -59,19 +87,13 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
 
 
-
   async descargarPDF(data: any) {
     this.pdfService.descargarPDF(data, this.usuarioService.StatusSesion()?.usuario?.nombre || '');
   }
 
-
   fechaLiberacion(data: any, col: any) {
     return col.obtenerFechaLiberacion(data);
   }
-
-
-
-
 
   colorChecklist(data: any, col: any): string {
     return col.colorImagen(data);

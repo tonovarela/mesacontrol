@@ -51,7 +51,6 @@ export class MetricsService {
 
 
   agregarOrden(orden: OrdenMetrics) {
-
     const {NoOrden,TipoProd} = orden;
     return this.http.post(`${this.API_URL}/api/orden`,{orden:{NoOrden,TipoProd}});    
   }

@@ -88,10 +88,8 @@
                                     [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
                                     (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">
                                     <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
-                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">
-                                        {{colorSVG}}
-                                        @if(liberacion){
-                                            
+                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">                                        
+                                        @if(liberacion){                                            
                                         {{liberacion | date:'dd-MM-yyyy hh:mm a' }}    
                                         }@else{
                                         <span>--------</span>
@@ -109,29 +107,15 @@
                     </e-column>
                     }
                     <e-column  [allowFiltering]="false" headerText='Liberación de sobre' width='110' >
-                        <ng-template #template let-data>
-
-                           @let sepuedeVisualizar=data.estadoRutas !== null ;  
-                           @let colorSVG ='red';
-                           <!-- (() => {
-                                switch (data.estadoRutas) {
-                                        case '1':
-                                        return 'text-green-500'; // Liberado
-                                        case '0':
-                                        return 'text-red-500';   // No liberado
-                                        case '2':
-                                        return 'text-yellow-500'; // En revisión
-                                        default:
-                                        return 'text-gray-500';  // Estado desconocido
-                                        }
-                                    })();                        -->
+                        <ng-template #template let-data>                 
+                           @let sepuedeVisualizar=data.sePuedeVisualizarSobre;  
+                           @let colorSVG =data.colorCheckListSobreLiberacion;                                                                                                         
                             <div class="flex p-1 w-full">
                                 <div class="w-full h-full flex flex-row  justify-center   rounded-lg shadow bg-white dark:bg-gray-800  py-1" 
                                     (click)="sepuedeVisualizar ? irRutas(data) : null"
-                                    [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"                      >
-                                    <audit-svg [color]="colorSVG" [enabled]="false" />
-                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">{{data.estadoRutas}}</div>
-                                    {{colorSVG}}
+                                    [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'">
+                                    <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
+                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full"></div>
                                         </div>
                                         </div>
 

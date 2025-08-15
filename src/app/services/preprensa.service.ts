@@ -24,8 +24,8 @@ export class PreprensaService {
     return this.http.post(`${this.API_URL}/api/preprensa/solicitar-revision`,{orden});
   }
 
-  aprobarRevision(orden:string){
-    return this.http.post(`${this.API_URL}/api/preprensa/aprobar-revision`,{orden});
+  aprobarRevision(orden:string,reglas:any[]){
+    return this.http.post(`${this.API_URL}/api/preprensa/aprobar-revision`,{orden, reglas});
   }
 
   rechazarRevision(orden:string, motivo:string){  

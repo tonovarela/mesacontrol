@@ -165,6 +165,8 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
       const mensajeError = `Los siguientes componentes no tienen ningún elemento seleccionado: ${elementosConError.join(
         ', '
       )}`;
+  
+  
       this.uiService.mostrarAlertaError('Error', mensajeError);
       return;
     }
@@ -181,7 +183,24 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
       if (!resp.isConfirmed) {
         return;
       }
-       await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!));
+
+      const rutas = this.rutas()
+                        .flatMap((r: RutaElemento) => 
+                        r.ruta
+                        .filter((item: ElementoItem) => item.aplica === 1)
+                          .map((item: ElementoItem) => ({
+                                                        componente: r.componente,
+                                                        id_elemento: item.id_elemento,
+                                                        orden_metrics: this.orden()
+                                                        }))
+                                                      );
+
+       
+       await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!, rutas.flat()));
+       //Guardar las rutas en base de datos
+      
+       return;
+
       this.uiService.mostrarAlertaSuccess("", "Se ha aprobado la solicitud de aprobación");    
       this.regresar();
   }
