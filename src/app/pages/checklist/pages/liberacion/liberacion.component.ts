@@ -199,7 +199,7 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
        await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!, rutas.flat()));
        //Guardar las rutas en base de datos
       
-       return;
+       
 
       this.uiService.mostrarAlertaSuccess("", "Se ha aprobado la solicitud de aprobación");    
       this.regresar();
