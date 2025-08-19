@@ -57,15 +57,46 @@
   </div>
   </div>
   
-<div class="max-w-7xl mx-auto max-h-[600px] overflow-y-auto  mt-5">  
-  <div class="flex sm:flex-row flex-col items-center  justify-items-center gap-4 h-auto overflow-auto  ">
+<div class="max-w-7xl mx-auto max-h-[700px] overflow-y-auto  mt-5">  
+  <div class="flex sm:flex-row flex-col items-center  justify-items-center gap-4 h-auto overflow-auto  w-full ">
     @for(ruta of rutas();track ruta.componente) {
-      <div class="bg-white border h-auto w-80 border-slate-400 px-2 dark:bg-slate-800 dark:border-white  rounded-lg shadow p-2 flex flex-col items-center ">
-        <h2 class="text-lg font-bold mb-2 text-slate-800 dark:text-slate-100 text-center"> {{ ruta.componente }}</h2>
+      <div class="bg-white border h-auto  min-w-[300px] border-slate-400  dark:bg-slate-800 dark:border-white  rounded-lg shadow p-2 flex flex-col items-center ">
+        <div class="flex  flex-row  justify-between w-full ">
+              <h2 class="text-lg font-bold mb-2 text-slate-800 dark:text-slate-100 text-center"> {{ ruta.componente }}</h2>
+        <div>          
+          
+          <p-togglebutton
+              class="min-w-36 toogle-liberacion"
+              size="small"          
+              [disabled]="estaAprobado() || estaEnAprobacion()"                                              
+              (onChange)="onMarcar($event,ruta)"
+              offLabel="Ninguno"
+              onLabel="Todos"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between w-full mb-2 font-bold text-xs px-2">
+          <span class="text-slate-600 dark:text-slate-300 ">Elemento</span>
+          <span class="text-slate-600 dark:text-slate-300 ">Aplica</span>
+        </div>
+
         @for(item of ruta.ruta;track item.descripcion){
-          <div class="flex items-center justify-between border-b last:border-b-0 w-full  max-w-xs mx-auto ">
-            <span class="text-slate-700 text-xs dark:text-slate-200">{{item.descripcion}}</span>
-            <p-togglebutton
+          <div class="flex  items-center justify-between border-b last:border-b-0 w-full   ">
+            <span class="text-slate-700 text-xs dark:text-slate-200">{{item.descripcion}}</span>            
+            <p-checkbox [ngModel]="item.aplica == 1 ? true : false" 
+            (onChange)="onAplicaChange(ruta, item, $event)"            
+            class="toogle-liberacion"
+            [binary]="true" />
+            <!-- <p-selectbutton [ngModel]="item.aplica"  [options]="stateOptions"  optionLabel="label" optionValue="value"
+            allowEmpty="false"
+            unselectable="false"
+            [disabled]="estaAprobado() || estaEnAprobacion()"
+            (onChange)="onAplicaChange(ruta, item, $event)"
+            class="min-w-20 toogle-liberacion"
+              size="small"            
+             size="small" /> -->
+            <!-- <p-togglebutton
               class="min-w-20 toogle-liberacion"
               size="small"
               [disabled]="estaAprobado() || estaEnAprobacion()"
@@ -73,7 +104,7 @@
               [ngModel]="item.aplica"
               onLabel="Aplica"
               offLabel="No Aplica"
-            />
+            /> -->
           </div>
         }
       </div>

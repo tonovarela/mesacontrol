@@ -39,6 +39,7 @@ export default class LiberacionComponent implements OnInit {
 
   orden = input<string>();
   private ultimoModulo = "pendientes"
+  stateOptions: any[] = [{ label: 'Si', value: 1 },{ label: 'No', value: 0 }];
   
 
 private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
@@ -115,7 +116,18 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
 
 
   public onAplicaChange(ruta: RutaElemento, item: ElementoItem, opcion: any) {
-    item.aplica = opcion.checked == true ? 1 : 0;
+    //console.log('onAplicaChange', ruta, item, opcion.value);
+    //console.log(opcion);
+    item.aplica = opcion.checked ? 1 : 0;
+    this.actualizarRuta(ruta);
+  }
+  public onMarcar(event: any, ruta: RutaElemento) {
+    //console.log('onMarcar', event.checked, ruta);
+    console.log('onMarcar', event.checked);
+    
+    ruta.ruta.forEach((item: ElementoItem) => {
+      item.aplica = event.checked ? 0 : 1;
+    });
     this.actualizarRuta(ruta);
   }
 

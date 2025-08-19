@@ -10,12 +10,13 @@ import { TextareaModule } from 'primeng/textarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ListboxModule } from 'primeng/listbox';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 
 
 @NgModule({ 
-    exports: [MultiSelectModule,FloatLabelModule,TextareaModule,ButtonModule,ToggleSwitchModule, CardModule,ToggleButtonModule,SelectButtonModule,AutoCompleteModule,DialogModule,ListboxModule]
+    exports: [MultiSelectModule,FloatLabelModule,TextareaModule,ButtonModule,ToggleSwitchModule, CardModule,ToggleButtonModule,SelectButtonModule,AutoCompleteModule,DialogModule,ListboxModule,CheckboxModule]
     
    })
 export class PrimeModule { }
