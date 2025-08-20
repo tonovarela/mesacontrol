@@ -18,7 +18,7 @@ import {  Observable, Subject, switchMap } from 'rxjs';
 })
 export class SearchMetricsComponent implements OnInit,OnDestroy { 
 
-  
+  public placeholder = input<string>('Buscar OP');
   public OPsBusqueda = signal<any[]>([]);
   public cargandoBusqueda = signal(false);
   public selectedOP: OrdenMetrics | null = null;

@@ -14,7 +14,7 @@
         <div class="py-1 px-2  flex sm:flex-row flex-col sm:space-x-6 ">
             <h1 class="text-2xl text-slate-500 " style="white-space: nowrap;"> {{titulo()}}</h1>
             @if(verPendientes()){
-                <div class="w-full"><search-metrics  [typeSearch]="type"   (onSelectOrder)="onSelectOrder($event)"></search-metrics></div>            
+                <div class="w-full"><search-metrics placeholder="Registrar OP" [typeSearch]="type"   (onSelectOrder)="onSelectOrder($event)"></search-metrics></div>            
             }
         </div>
         <div class="px-1  overflow-auto">
