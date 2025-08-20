@@ -20,15 +20,15 @@ export class PreprensaService {
     return this.http.post(`${this.API_URL}/api/preprensa/ruta-componentes`,{rutas});
   }
 
-  solicitarRevision(orden:string){
-    return this.http.post(`${this.API_URL}/api/preprensa/solicitar-revision`,{orden});
+  solicitarRevision(orden:string,id_usuario:string){
+    return this.http.post(`${this.API_URL}/api/preprensa/solicitar-revision`,{orden, id_usuario});
   }
 
-  aprobarRevision(orden:string,reglas:any[]){
-    return this.http.post(`${this.API_URL}/api/preprensa/aprobar-revision`,{orden, reglas});
+  aprobarRevision(orden:string,reglas:any[],id_usuario:string){
+    return this.http.post(`${this.API_URL}/api/preprensa/aprobar-revision`,{orden, reglas, id_usuario});
   }
 
-  rechazarRevision(orden:string, motivo:string){  
-    return this.http.post(`${this.API_URL}/api/preprensa/rechazar-revision`,{orden,motivo});
+  rechazarRevision(orden:string, motivo:string,id_usuario:string){  
+    return this.http.post(`${this.API_URL}/api/preprensa/rechazar-revision`,{orden,motivo,id_usuario});
   }
 }

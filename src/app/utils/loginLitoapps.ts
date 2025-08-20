@@ -5,15 +5,13 @@ export type LoginFormResult = {
   username: string;
   password: string;
 };
-export const LoginLitoapps  = async(usuarioService:UsuarioService,title="Usuario de Litoapps que solicita los elementos") => {
-    let usernameInput: HTMLInputElement;
+export const LoginLitoapps  = async(usuarioService:UsuarioService,title="Usuario de Litoapps que solicita los elementos") => {    
     let passwordInput: HTMLInputElement;
-
     const { isDismissed, value } = await Swal.fire<LoginFormResult>({
       title,
       html: `
-      <input type="text"  autocomplete="off"  id="usuario" name="usuario" class="swal2-input rounded-md" placeholder="usuario">
-      <input type="password"  autocomplete="new-password" name="pass"  id="contrasenia" class="swal2-input rounded-md" placeholder="password">
+      
+      <input type="password"  autocomplete="new-password" name="pass"  id="contrasenia" class="swal2-input text-xs rounded-md" placeholder="password">
     `,
       showCancelButton: true,
       allowOutsideClick: false,
@@ -21,32 +19,29 @@ export const LoginLitoapps  = async(usuarioService:UsuarioService,title="Usuario
       cancelButtonText: 'Cancelar',
       focusConfirm: false,
       didOpen: () => {
-        const popup = Swal.getPopup()!;
-        usernameInput = popup.querySelector('#usuario') as HTMLInputElement;
-        passwordInput = popup.querySelector('#contrasenia') as HTMLInputElement;
-        usernameInput.onkeyup = (event) =>
-          event.key === 'Enter' && Swal.clickConfirm();
+        const popup = Swal.getPopup()!;        
+        passwordInput = popup.querySelector('#contrasenia') as HTMLInputElement;        
         passwordInput.onkeyup = (event) =>
           event.key === 'Enter' && Swal.clickConfirm();
       },
       preConfirm: () => {
-        const username = usernameInput.value;
+        
         const password = passwordInput.value;
-        if (!username || !password) {
-          Swal.showValidationMessage(`Por favor, ingrese ambos campos`);
+        if (!password) {
+          Swal.showValidationMessage(`Por favor, ingrese la contraseña`);
         }
-        return { username, password };
+        return { password };
       },
     });
     if (isDismissed) {
       return { value: null, isDismissed: true };
     }
-    const { username, password } = value!;
-    const resp = await usuarioService.loginSolicitante(username, password);
+    const {  password } = value!;
+    const resp = await usuarioService.loginSolicitante( password);
     if (resp.error) {
       Swal.fire({
         title: 'Error',
-        text: 'Usuario o contraseña incorrectos',
+        text: 'Contraseña incorrecta',
         icon: 'error',
         confirmButtonText: 'Aceptar',
       });

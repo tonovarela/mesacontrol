@@ -148,13 +148,17 @@ export default class LiberacionComponent implements OnInit {
   }
 
   async solicitarAprobacion() {
-    const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion(
-      '',
-      '¿Está seguro de que desea solicitar la aprobación de las elementos seleccionadas?'
-    );
-    if (!isConfirmed) {
-      return;
-    }
+    // const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion(
+    //   '',
+    //   '¿Está seguro de que desea solicitar la aprobación de las elementos seleccionadas?'
+    // );
+    // if (!isConfirmed) {
+    //   return;
+    // }
+
+    
+
+
     const rutasParaVerificar = this.rutas().map(
       ({ componente, ruta }: RutaElemento) => {
         return {
@@ -176,30 +180,31 @@ export default class LiberacionComponent implements OnInit {
       return;
     }
 
+    const respLogin = await LoginLitoapps(this.usuarioService,"Password de usuario que solicita la aprobación");
+    if (respLogin.isDismissed) {
+      return;
+    }
+    const { value: id_usuario } = respLogin;
+
     await this._guardar();
-    await firstValueFrom(
-      this.prePrensaService.solicitarRevision(this.orden()!)
-    );
+    await firstValueFrom(this.prePrensaService.solicitarRevision(this.orden()!, `${id_usuario!}`));
     this.uiService.mostrarAlertaSuccess('', 'Se han mandado a autorización ');
     this.regresar();
   }
 
   async aprobar() {
+
     // const resp = await this.uiService.mostrarAlertaConfirmacion(
     //   'Confirmar Aprobación',
     //   '¿Está seguro de que desea aprobar la solicitud de aprobación?'
     // );
     // if (!resp.isConfirmed) {
     //   return;
-    // }    
-    //TODO: Generar un login intermedio para saber quién está aprobando o rechazando
-      const {isDismissed,value: id_usuario}  = await LoginLitoapps(this.usuarioService,"Usuario de Litoapps que solicita la aprobación de la liberacion del sobre");
+    // }        
+      const {isDismissed,value: id_usuario}  = await LoginLitoapps(this.usuarioService,"Password de usuario que realiza la aprobación");
       if (isDismissed) {
         return;
-      }      
-      console.log(id_usuario);     
-      return ;
-
+      }            
       const rutas = this.rutas().flatMap((r: RutaElemento) =>
       r.ruta
         .filter((item: ElementoItem) => item.aplica === 1)
@@ -208,19 +213,21 @@ export default class LiberacionComponent implements OnInit {
           id_elemento: item.id_elemento,
           orden_metrics: this.orden(),
         }))
-    );
-      
+    );      
    //Guardar las rutas en base de datos
-    await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!, rutas.flat()));
+
+    await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!,
+                                                               rutas.flat(),
+                                                               `${id_usuario!}`));                                                               
     //Obtencion de la orden para generar el PDF
-    const { orden } = await firstValueFrom(this.metricsService.obtener(this.orden()!));    
-    
+    const { orden } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
     this.pdfService.descargarPDF(orden,"Tonovarela");  
     this.uiService.mostrarAlertaSuccess('','Se ha aprobado la solicitud de aprobación');
     this.regresar();
   }
 
   async rechazar() {
+
     const resp = await Swal.fire({
       title: 'Ingrese el motivo de rechazo',
       input: 'text',
@@ -239,22 +246,19 @@ export default class LiberacionComponent implements OnInit {
 
     const { value: motivo, isDismissed } = resp;
     if (resp.isConfirmed && motivo?.length == 0) {
-      this.uiService.mostrarAlertaError(
-        '',
-        'Se necesita ingresar un motivo para rechazar'
-      );
+      this.uiService.mostrarAlertaError('','Se necesita ingresar un motivo para rechazar');
       return;
     }
     if (isDismissed) {
       return;
     }
-    await firstValueFrom(
-      this.prePrensaService.rechazarRevision(this.orden()!, motivo!)
-    );
-    this.uiService.mostrarAlertaSuccess(
-      '',
-      'Se ha rechazado la solicitud de aprobación'
-    );
+    const respLogin = await LoginLitoapps(this.usuarioService,"Password de usuario que solicita el rechazo.");
+    if (respLogin.isDismissed) {
+      return;
+    }
+    const { value: id_usuario } = respLogin;
+    await firstValueFrom(this.prePrensaService.rechazarRevision(this.orden()!, motivo!,`${id_usuario!}`));
+    this.uiService.mostrarAlertaSuccess('','Se ha rechazado la solicitud de aprobación');
     this.regresar();
   }
 
