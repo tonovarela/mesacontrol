@@ -36,9 +36,9 @@ export class UsuarioService {
       }
 
 
-      public async loginSolicitante(username: string, password: string){
+      public async loginSolicitante( password: string){
         try {
-          const resp = await firstValueFrom(this.http.post<LoginResponse>(`${this.URL}/auth/solicitante`, { login:{username, password} }));          
+          const resp = await firstValueFrom(this.http.post<LoginResponse>(`${this.URL}/auth/solicita`, { login:{ password} }));          
           return {id:resp.usuario.id,error:false}
           
         } catch (error) {

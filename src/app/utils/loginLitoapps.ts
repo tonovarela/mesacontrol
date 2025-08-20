@@ -5,12 +5,12 @@ export type LoginFormResult = {
   username: string;
   password: string;
 };
-export const LoginLitoapps  = async(usuarioService:UsuarioService) => {
+export const LoginLitoapps  = async(usuarioService:UsuarioService,title="Usuario de Litoapps que solicita los elementos") => {
     let usernameInput: HTMLInputElement;
     let passwordInput: HTMLInputElement;
 
     const { isDismissed, value } = await Swal.fire<LoginFormResult>({
-      title: 'Usuario de Litoapps que solicita los elementos',
+      title,
       html: `
       <input type="text"  autocomplete="off"  id="usuario" name="usuario" class="swal2-input rounded-md" placeholder="usuario">
       <input type="password"  autocomplete="new-password" name="pass"  id="contrasenia" class="swal2-input rounded-md" placeholder="password">

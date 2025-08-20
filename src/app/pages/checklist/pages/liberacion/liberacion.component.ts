@@ -25,6 +25,7 @@ import {
 import { PrimeModule } from '@app/lib/prime.module';
 import { MetricsService, PdfService, PreprensaService, UiService, UsuarioService } from '@app/services';
 import { firstValueFrom, switchMap } from 'rxjs';
+import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
 
 
@@ -37,6 +38,8 @@ import { firstValueFrom, switchMap } from 'rxjs';
 })
 export default class LiberacionComponent implements OnInit {
   orden = input<string>();
+
+  
   private pdfService = inject(PdfService);
   private metricsService = inject(MetricsService)
   private usuarioService = inject(UsuarioService);
@@ -182,15 +185,22 @@ export default class LiberacionComponent implements OnInit {
   }
 
   async aprobar() {
-    const resp = await this.uiService.mostrarAlertaConfirmacion(
-      'Confirmar Aprobación',
-      '¿Está seguro de que desea aprobar la solicitud de aprobación?'
-    );
-    if (!resp.isConfirmed) {
-      return;
-    }
+    // const resp = await this.uiService.mostrarAlertaConfirmacion(
+    //   'Confirmar Aprobación',
+    //   '¿Está seguro de que desea aprobar la solicitud de aprobación?'
+    // );
+    // if (!resp.isConfirmed) {
+    //   return;
+    // }    
+    //TODO: Generar un login intermedio para saber quién está aprobando o rechazando
+      const {isDismissed,value: id_usuario}  = await LoginLitoapps(this.usuarioService,"Usuario de Litoapps que solicita la aprobación de la liberacion del sobre");
+      if (isDismissed) {
+        return;
+      }      
+      console.log(id_usuario);     
+      return ;
 
-    const rutas = this.rutas().flatMap((r: RutaElemento) =>
+      const rutas = this.rutas().flatMap((r: RutaElemento) =>
       r.ruta
         .filter((item: ElementoItem) => item.aplica === 1)
         .map((item: ElementoItem) => ({
@@ -199,8 +209,6 @@ export default class LiberacionComponent implements OnInit {
           orden_metrics: this.orden(),
         }))
     );
-    //TODO: Generar un login intermedio para saber quién está aprobando o rechazando
-
       
    //Guardar las rutas en base de datos
     await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!, rutas.flat()));
