@@ -110,13 +110,12 @@
                         <ng-template #template let-data>                 
                            @let sepuedeVisualizar=data.sePuedeVisualizarSobre;  
                            @let colorSVG =data.colorCheckListSobreLiberacion;                                                                                                         
-                            <div class="flex p-1 w-full">
-                                <div class="w-full h-full flex flex-row  justify-center   rounded-lg shadow bg-white dark:bg-gray-800  py-1" 
+                            <div class="w-full  flex items-center justify-center">
+                                <div class="rounded-lg " 
                                     (click)="sepuedeVisualizar ? irRutas(data) : null"
                                     [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'">
-                                    <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
-                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full"></div>
-                                        </div>
+                                    <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />                                    
+                                        </div> 
                                         </div>
 
                         </ng-template>
