@@ -3,6 +3,11 @@ export interface ResponseOrdenMetrics {
 }
 
 
+export interface ResponseOrden {
+    orden:OrdenMetrics
+}
+
+
 
 export interface OrdenMetrics {
     NoOrden: string;

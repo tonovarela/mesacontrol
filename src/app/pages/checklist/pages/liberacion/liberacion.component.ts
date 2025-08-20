@@ -23,8 +23,8 @@ import {
   RutaElemento,
 } from '@app/interfaces/responses/ResponseRutaComponentes';
 import { PrimeModule } from '@app/lib/prime.module';
-import { PreprensaService, UiService } from '@app/services';
-import { firstValueFrom } from 'rxjs';
+import { MetricsService, PdfService, PreprensaService, UiService, UsuarioService } from '@app/services';
+import { firstValueFrom, switchMap } from 'rxjs';
 
 
 
@@ -36,44 +36,48 @@ import { firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LiberacionComponent implements OnInit {
-
   orden = input<string>();
-  private ultimoModulo = "pendientes"
-  stateOptions: any[] = [{ label: 'Si', value: 1 },{ label: 'No', value: 0 }];
-  
+  private pdfService = inject(PdfService);
+  private metricsService = inject(MetricsService)
+  private usuarioService = inject(UsuarioService);
+  private prePrensaService = inject(PreprensaService);
+  private uiService = inject(UiService);
+  private router = inject(Router);
 
-private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
+
+  private ultimoModulo = 'pendientes';
+  stateOptions: any[] = [
+    { label: 'Si', value: 1 },
+    { label: 'No', value: 0 },
+  ];
+
+  private _trabajo = signal<OrdenLiberacionSobre | null>(null);
 
   public trabajo = computed(() => {
     return this._trabajo();
   });
 
-
   public nombreTrabajo = computed(() => {
-    return  `${this._trabajo()?.orden} - ${this._trabajo()?.nombre_trabajo}`;
+    return `${this._trabajo()?.orden} - ${this._trabajo()?.nombre_trabajo}`;
   });
-  public estaEnAprobacion = computed(()=>{
-    return this._trabajo()?.id_estado === "5"
+  public estaEnAprobacion = computed(() => {
+    return this._trabajo()?.id_estado === '5';
   });
 
-  
-
-  public estaPendiente = computed(()=>{
-    return this._trabajo()?.id_estado === "1" || this._trabajo()?.id_estado === "3";
+  public estaPendiente = computed(() => {
+    return (
+      this._trabajo()?.id_estado === '1' || this._trabajo()?.id_estado === '3'
+    );
   });
 
   public estaAprobado = computed(() => {
-    return this._trabajo()?.id_estado === "2";
+    return this._trabajo()?.id_estado === '2';
   });
 
   public estadoTrabajo = computed(() => {
     return this._trabajo()?.descripcion_estado || '';
   });
 
-
-  private prePrensaService = inject(PreprensaService);
-  private uiService = inject(UiService);
-  private router = inject(Router);
   
   public rutas = signal<RutaElemento[]>([]);
   formRutas: FormGroup | undefined;
@@ -84,20 +88,18 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
     if (!this.orden()) {
       this.router.navigate(['/preprensa/pendientes']);
       return;
-    }    
-    const { modulo } = this.router.lastSuccessfulNavigation?.extras?.state || {};    
+    }
+    const { modulo } =
+      this.router.lastSuccessfulNavigation?.extras?.state || {};
     if (modulo) {
       this.ultimoModulo = modulo;
     }
     this.cargarInformacion();
   }
 
-
-  
-
   async cargarInformacion() {
     const orden = this.orden() || '';
-  
+
     const resp = await firstValueFrom(
       this.prePrensaService.obtenerComponentes(orden)
     );
@@ -109,25 +111,19 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
       return { ...r, ruta: JSON.parse(r.ruta) as ElementoItem[] };
     });
     this._trabajo.set(resp.orden!);    
-    //this.estaEnAprobacion.set(resp.orden!.id_estado === "5");
     this.rutas.set(rutas);
   }
 
-
-
   public onAplicaChange(ruta: RutaElemento, item: ElementoItem, opcion: any) {
-    
     item.aplica = opcion.checked ? 1 : 0;
     this.actualizarRuta(ruta);
   }
   public onMarcar(event: any, ruta: RutaElemento) {
-  
     ruta.ruta.forEach((item: ElementoItem) => {
       item.aplica = event.checked ? 1 : 0;
     });
     this.actualizarRuta(ruta);
   }
-
 
   async actualizarRuta(rutaActualizada: RutaElemento) {
     const rutasActuales = this.rutas();
@@ -147,8 +143,6 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
       'Se han guardado los cambios correctamente'
     );
   }
-
-  
 
   async solicitarAprobacion() {
     const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion(
@@ -174,82 +168,95 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
       const mensajeError = `Los siguientes componentes no tienen ningún elemento seleccionado: ${elementosConError.join(
         ', '
       )}`;
-  
-  
+
       this.uiService.mostrarAlertaError('Error', mensajeError);
       return;
     }
 
     await this._guardar();
-    await firstValueFrom(this.prePrensaService.solicitarRevision(this.orden()!));    
+    await firstValueFrom(
+      this.prePrensaService.solicitarRevision(this.orden()!)
+    );
     this.uiService.mostrarAlertaSuccess('', 'Se han mandado a autorización ');
     this.regresar();
   }
 
+  async aprobar() {
+    const resp = await this.uiService.mostrarAlertaConfirmacion(
+      'Confirmar Aprobación',
+      '¿Está seguro de que desea aprobar la solicitud de aprobación?'
+    );
+    if (!resp.isConfirmed) {
+      return;
+    }
 
-  async aprobar(){
-      const resp  =  await this.uiService.mostrarAlertaConfirmacion("Confirmar Aprobación", "¿Está seguro de que desea aprobar la solicitud de aprobación?")
-      if (!resp.isConfirmed) {
-        return;
-      }
+    const rutas = this.rutas().flatMap((r: RutaElemento) =>
+      r.ruta
+        .filter((item: ElementoItem) => item.aplica === 1)
+        .map((item: ElementoItem) => ({
+          componente: r.componente,
+          id_elemento: item.id_elemento,
+          orden_metrics: this.orden(),
+        }))
+    );
+    //TODO: Generar un login intermedio para saber quién está aprobando o rechazando
 
-      const rutas = this.rutas()
-                        .flatMap((r: RutaElemento) => 
-                        r.ruta
-                        .filter((item: ElementoItem) => item.aplica === 1)
-                          .map((item: ElementoItem) => ({
-                                                        componente: r.componente,
-                                                        id_elemento: item.id_elemento,
-                                                        orden_metrics: this.orden()
-                                                        }))
-                                                      );
-
-       
-       await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!, rutas.flat()));
-       //Guardar las rutas en base de datos
       
-       
+   //Guardar las rutas en base de datos
+    await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!, rutas.flat()));
+    //Obtencion de la orden para generar el PDF
+    const { orden } = await firstValueFrom(this.metricsService.obtener(this.orden()!));    
+    this.pdfService.descargarPDF(orden,"Tonovarela");
+    
 
-      this.uiService.mostrarAlertaSuccess("", "Se ha aprobado la solicitud de aprobación");    
-      this.regresar();
+    this.uiService.mostrarAlertaSuccess(
+      '',
+      'Se ha aprobado la solicitud de aprobación'
+    );
+    this.regresar();
   }
 
-  async rechazar(){
-     const resp = await Swal.fire({
-        title: "Ingrese el motivo de rechazo",
-        input: "text",
-        icon: 'info',
-        inputAttributes: {
-          autocapitalize: "off"
-        },
-        showCancelButton: true,
-        confirmButtonText: "Aceptar",
-        cancelButtonText: "Cancelar",
-        showLoaderOnConfirm: true,
-        preConfirm: (motivo) => {
-          return motivo
-        },
-      });
+  async rechazar() {
+    const resp = await Swal.fire({
+      title: 'Ingrese el motivo de rechazo',
+      input: 'text',
+      icon: 'info',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: (motivo) => {
+        return motivo;
+      },
+    });
 
-      const { value :motivo, isDismissed } = resp;
-      if (resp.isConfirmed && motivo?.length == 0) {
-        this.uiService.mostrarAlertaError("", "Se necesita ingresar un motivo para rechazar");        
-        return;
-      }
-      if (isDismissed) {
-        return;
-      }
-      await firstValueFrom(this.prePrensaService.rechazarRevision(this.orden()!, motivo!))
-      this.uiService.mostrarAlertaSuccess("", "Se ha rechazado la solicitud de aprobación");
-      this.regresar();
-
+    const { value: motivo, isDismissed } = resp;
+    if (resp.isConfirmed && motivo?.length == 0) {
+      this.uiService.mostrarAlertaError(
+        '',
+        'Se necesita ingresar un motivo para rechazar'
+      );
+      return;
+    }
+    if (isDismissed) {
+      return;
+    }
+    await firstValueFrom(
+      this.prePrensaService.rechazarRevision(this.orden()!, motivo!)
+    );
+    this.uiService.mostrarAlertaSuccess(
+      '',
+      'Se ha rechazado la solicitud de aprobación'
+    );
+    this.regresar();
   }
 
-
-  public regresar(){
+  public regresar() {
     return this.router.navigate([`/preprensa/${this.ultimoModulo}`]);
   }
-
 
   private async _guardar() {
     const rutas = this.rutas();
@@ -259,6 +266,8 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
         ruta: JSON.stringify(r.ruta),
       };
     });
-    await firstValueFrom(this.prePrensaService.guardarRutaComponentes(rutasParaGuardar));
+    await firstValueFrom(
+      this.prePrensaService.guardarRutaComponentes(rutasParaGuardar)
+    );
   }
 }

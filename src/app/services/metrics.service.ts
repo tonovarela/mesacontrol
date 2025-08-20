@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import {  computed, inject, Injectable, signal } from '@angular/core';
 import { ResponseMateriales } from '@app/interfaces/responses/ResponseMateriales';
-import { OrdenMetrics, ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { OrdenMetrics, ResponseOrden, ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TipoMaterial } from '@app/interfaces/TipoMaterial';
 import { environment } from '@environments/environment.development';
 
@@ -47,8 +47,10 @@ export class MetricsService {
     return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/preprensa/buscar`,{patron});
   }
 
- 
 
+  obtener(orden: string) {
+    return this.http.get<ResponseOrden>(`${this.API_URL}/api/orden/${orden}`);
+  }
 
   agregarOrden(orden: OrdenMetrics) {
     const {NoOrden,TipoProd} = orden;
