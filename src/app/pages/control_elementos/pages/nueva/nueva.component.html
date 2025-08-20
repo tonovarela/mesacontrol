@@ -89,7 +89,11 @@
             </dd>            
           </div>
         </div>
-        <div class="flex flex-col text-sm mt-6">
+        
+      
+      
+        @if(componentes().length > 0){
+          <div class="flex flex-col text-sm mt-6">
           <p-listbox
             [options]="componentes()"
             filterPlaceHolder="Buscar componente"
@@ -107,6 +111,21 @@
     </ng-template>
           </p-listbox>
         </div>
+        }@else {
+          <div class="flex items-center justify-center h-16 mt-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg px-2">
+    <div class="flex items-center gap-2">
+      <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+      </svg>
+      <p class="text-yellow-800 dark:text-yellow-200 font-medium text-sm">
+        Esta orden no tiene definida la liberación de sobre en preprensa
+      </p>
+    </div>
+  </div>
+        }
+        
+
+
       </div>
     </div>
     @if(componenteSeleccionado()){
@@ -128,7 +147,7 @@
         </div>
         <hr class="my-4 border-slate-200 dark:border-slate-700" />
         <div class="flex flex-col gap-4 text-sm mt-6">          
-          <div *ngIf="solicitudActual()?.componentes?.length">
+          <div>
             <ul class="space-y-1">
               @for( item of componenteSeleccionado(); track
               item.componente) {

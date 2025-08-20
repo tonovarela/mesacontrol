@@ -4,7 +4,8 @@ export interface ResponseOrdenMetrics {
 
 
 export interface ResponseOrden {
-    orden:OrdenMetrics
+    orden:OrdenMetrics,
+    usuarioLiberacion?:string 
 }
 
 
