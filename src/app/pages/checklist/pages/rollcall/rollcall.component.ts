@@ -74,10 +74,10 @@ export default class RollcallComponent implements OnInit {
       id_usuario: `${idUsuario}`
         }));
         const { termino,orden } = response as any;
-              
-        if (termino ==true){
-          this.pdfService.descargarPDF(orden, this.usuarioService.StatusSesion()?.usuario?.nombre || '');        
-        }
+
+        // if (termino ==true){
+        //   this.pdfService.descargarPDF(orden, this.usuarioService.StatusSesion()?.usuario?.nombre || '');        
+        // }
         
     this.checkListService.removeActiveCheckList();
     this.isSaving.set(false);
