@@ -24,13 +24,11 @@ import { ComponenteView, Solicitud } from '../../interfaces/interface';
 import { MultiSelect, MultiSelectChangeEvent } from 'primeng/multiselect';
 import { SolicitudComponentService } from '@app/pages/control_elementos/services/solicitudcomponente.service';
 import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
-import { SelectButtonChangeEvent } from 'primeng/selectbutton';
 
-type LoginFormResult = {
-  username: string;
-  password: string;
-};
+import { SelectButtonChangeEvent } from 'primeng/selectbutton';
+import { LoginLitoapps } from '@app/utils/loginLitoapps';
+
+
 
 interface ComponenteV {
   descripcion: string;
@@ -217,7 +215,7 @@ toogleSeleccion() {
                                                 .filter((x) => x.idSeleccionados.length > 0).map((x) => ({ componente: x.componente, elementos: x.idSeleccionados.map((el:any) => el.id_elemento) }));
         
     const orden = this.solicitudActual().orderSelected?.NoOrden;
-    const { value, isDismissed } = await this.LoginLitoapps();
+    const { value, isDismissed } = await LoginLitoapps(this.usuarioService);
     if (isDismissed) {
       return;
     }
@@ -260,53 +258,53 @@ this.uiService.mostrarAlertaError(
      this.actualizarToogleSeleccion();
   }
 
-  async LoginLitoapps() {
-    let usernameInput: HTMLInputElement;
-    let passwordInput: HTMLInputElement;
+  // async LoginLitoapps(usuarioService:UsuarioService) {
+  //   let usernameInput: HTMLInputElement;
+  //   let passwordInput: HTMLInputElement;
 
-    const { isDismissed, value } = await Swal.fire<LoginFormResult>({
-      title: 'Usuario de Litoapps que solicita los elementos',
-      html: `
-      <input type="text"  autocomplete="off"  id="usuario" name="usuario" class="swal2-input rounded-md" placeholder="usuario">
-      <input type="password"  autocomplete="new-password" name="pass"  id="contrasenia" class="swal2-input rounded-md" placeholder="password">
-    `,
-      showCancelButton: true,
-      allowOutsideClick: false,
-      confirmButtonText: 'Login',
-      cancelButtonText: 'Cancelar',
-      focusConfirm: false,
-      didOpen: () => {
-        const popup = Swal.getPopup()!;
-        usernameInput = popup.querySelector('#usuario') as HTMLInputElement;
-        passwordInput = popup.querySelector('#contrasenia') as HTMLInputElement;
-        usernameInput.onkeyup = (event) =>
-          event.key === 'Enter' && Swal.clickConfirm();
-        passwordInput.onkeyup = (event) =>
-          event.key === 'Enter' && Swal.clickConfirm();
-      },
-      preConfirm: () => {
-        const username = usernameInput.value;
-        const password = passwordInput.value;
-        if (!username || !password) {
-          Swal.showValidationMessage(`Por favor, ingrese ambos campos`);
-        }
-        return { username, password };
-      },
-    });
-    if (isDismissed) {
-      return { value: null, isDismissed: true };
-    }
-    const { username, password } = value!;
-    const resp = await this.usuarioService.loginSolicitante(username, password);
-    if (resp.error) {
-      Swal.fire({
-        title: 'Error',
-        text: 'Usuario o contraseña incorrectos',
-        icon: 'error',
-        confirmButtonText: 'Aceptar',
-      });
-      return { value: null, isDismissed: true };
-    }
-    return { isDismissed: false, value: resp.id };
-  }
+  //   const { isDismissed, value } = await Swal.fire<LoginFormResult>({
+  //     title: 'Usuario de Litoapps que solicita los elementos',
+  //     html: `
+  //     <input type="text"  autocomplete="off"  id="usuario" name="usuario" class="swal2-input rounded-md" placeholder="usuario">
+  //     <input type="password"  autocomplete="new-password" name="pass"  id="contrasenia" class="swal2-input rounded-md" placeholder="password">
+  //   `,
+  //     showCancelButton: true,
+  //     allowOutsideClick: false,
+  //     confirmButtonText: 'Login',
+  //     cancelButtonText: 'Cancelar',
+  //     focusConfirm: false,
+  //     didOpen: () => {
+  //       const popup = Swal.getPopup()!;
+  //       usernameInput = popup.querySelector('#usuario') as HTMLInputElement;
+  //       passwordInput = popup.querySelector('#contrasenia') as HTMLInputElement;
+  //       usernameInput.onkeyup = (event) =>
+  //         event.key === 'Enter' && Swal.clickConfirm();
+  //       passwordInput.onkeyup = (event) =>
+  //         event.key === 'Enter' && Swal.clickConfirm();
+  //     },
+  //     preConfirm: () => {
+  //       const username = usernameInput.value;
+  //       const password = passwordInput.value;
+  //       if (!username || !password) {
+  //         Swal.showValidationMessage(`Por favor, ingrese ambos campos`);
+  //       }
+  //       return { username, password };
+  //     },
+  //   });
+  //   if (isDismissed) {
+  //     return { value: null, isDismissed: true };
+  //   }
+  //   const { username, password } = value!;
+  //   const resp = await usuarioService.loginSolicitante(username, password);
+  //   if (resp.error) {
+  //     Swal.fire({
+  //       title: 'Error',
+  //       text: 'Usuario o contraseña incorrectos',
+  //       icon: 'error',
+  //       confirmButtonText: 'Aceptar',
+  //     });
+  //     return { value: null, isDismissed: true };
+  //   }
+  //   return { isDismissed: false, value: resp.id };
+  // }
 }

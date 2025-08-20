@@ -85,7 +85,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   }
 
   async cargarOrdenes() {
-
+    
     try {
       const response = await firstValueFrom(this.produccionService.listar(this._verPendientes()));
       this._ordenesMetrics.set(response.ordenes);

@@ -206,8 +206,8 @@ export default class LiberacionComponent implements OnInit {
     await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!, rutas.flat()));
     //Obtencion de la orden para generar el PDF
     const { orden } = await firstValueFrom(this.metricsService.obtener(this.orden()!));    
-    this.pdfService.descargarPDF(orden,"Tonovarela");
-  
+    
+    this.pdfService.descargarPDF(orden,"Tonovarela");  
     this.uiService.mostrarAlertaSuccess('','Se ha aprobado la solicitud de aprobación');
     this.regresar();
   }
