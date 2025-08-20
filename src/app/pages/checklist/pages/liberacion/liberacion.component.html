@@ -1,5 +1,17 @@
 
 
+@if(!trabajo()){
+    <div class="flex flex-col space-y-6 justify-center items-center py-8 ">
+        <svg class="animate-spin h-24 w-24 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+        </svg>
+        <div class="ml-3 text-blue-600 font-medium text-2xl">Cargando informacion...</div>
+    </div>
+}@else {
+
+  
 <div class="w-full  p-5 rounded-md max-w-7xl mx-auto">
   <div class="flex flex-col md:flex-row items-center justify-between  gap-4">
     <!-- Botón regresar -->
@@ -11,8 +23,7 @@
       </svg>
       Regresar
     </button>
-    
-
+  
     <!-- Barra de acciones -->
     <div class="flex flex-wrap items-center justify-center gap-3">
       @if(estaEnAprobacion()) {
@@ -36,9 +47,7 @@
     </div>
   </div>
 </div>
-
-
-  <div class="max-w-7xl mx-auto mt-8 flex items-center justify-between">    
+<div class="max-w-7xl mx-auto mt-8 flex items-center justify-between">    
   <h1 class="text-lg font-bold">{{nombreTrabajo()}}</h1>
 <div>
     <span
@@ -55,8 +64,7 @@
       {{estadoTrabajo()}}
     </span>
   </div>
-  </div>
-  
+</div>
 <div class="max-w-7xl mx-auto max-h-[700px] overflow-y-auto  mt-5">  
   <div class="flex sm:flex-row flex-col items-center  justify-items-center gap-4 h-auto overflow-auto  w-full ">
     @for(ruta of rutas();track ruta.componente) {
@@ -64,15 +72,12 @@
         <div class="flex  flex-row  justify-between w-full ">
               <h2 class="text-lg font-bold mb-2 text-slate-800 dark:text-slate-100 text-center"> {{ ruta.componente }}</h2>
         <div>          
-          
-          <p-togglebutton
-              class="min-w-36 toogle-liberacion"
-              size="small"          
-              [disabled]="estaAprobado() || estaEnAprobacion()"                                              
+            <p-checkbox 
               (onChange)="onMarcar($event,ruta)"
-              offLabel="Ninguno"
-              onLabel="Todos"
-            />
+              [binary]="true"
+             [disabled]="estaAprobado() || estaEnAprobacion()"
+             ></p-checkbox>
+         
           </div>
         </div>
 
@@ -84,7 +89,9 @@
         @for(item of ruta.ruta;track item.descripcion){
           <div class="flex  items-center justify-between border-b last:border-b-0 w-full   ">
             <span class="text-slate-700 text-xs dark:text-slate-200">{{item.descripcion}}</span>            
-            <p-checkbox [ngModel]="item.aplica == 1 ? true : false" 
+            <p-checkbox 
+             [disabled]="estaAprobado() || estaEnAprobacion()"
+            [ngModel]="item.aplica == 1 ? true : false" 
             (onChange)="onAplicaChange(ruta, item, $event)"            
             class="toogle-liberacion"
             [binary]="true" />
@@ -112,3 +119,6 @@
   </div>
 </div>
 
+
+
+}

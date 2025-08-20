@@ -116,17 +116,14 @@ private  _trabajo = signal<OrdenLiberacionSobre | null>(null);
 
 
   public onAplicaChange(ruta: RutaElemento, item: ElementoItem, opcion: any) {
-    //console.log('onAplicaChange', ruta, item, opcion.value);
-    //console.log(opcion);
+    
     item.aplica = opcion.checked ? 1 : 0;
     this.actualizarRuta(ruta);
   }
   public onMarcar(event: any, ruta: RutaElemento) {
-    //console.log('onMarcar', event.checked, ruta);
-    console.log('onMarcar', event.checked);
-    
+  
     ruta.ruta.forEach((item: ElementoItem) => {
-      item.aplica = event.checked ? 0 : 1;
+      item.aplica = event.checked ? 1 : 0;
     });
     this.actualizarRuta(ruta);
   }
