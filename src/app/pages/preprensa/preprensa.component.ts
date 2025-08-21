@@ -86,7 +86,17 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   columnasAuditoria = columnas;
 
 
-
+ngOnInit(): void {
+    this.autoFitColumns = false;
+    setTimeout(() => { this.iniciarResizeGrid(this.minusHeight) });
+    this.activatedRouter.data.subscribe((data) => {
+      this.titulo.set(data['titulo'] || '');
+      const pendientes = data['pendientes'] || false;
+      this._verPendientes.set(pendientes);
+      this.cargarInformacion();
+    });
+  }
+  
   async descargarPDF(data: any) {
     const { NoOrden }= data    
     const { orden, infoLiberacion } =await firstValueFrom(this.metricsService.obtener(NoOrden));    
@@ -113,16 +123,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   }
 
 
-  ngOnInit(): void {
-    this.autoFitColumns = false;
-    setTimeout(() => { this.iniciarResizeGrid(this.minusHeight) });
-    this.activatedRouter.data.subscribe((data) => {
-      this.titulo.set(data['titulo'] || '');
-      const pendientes = data['pendientes'] || false;
-      this._verPendientes.set(pendientes);
-      this.cargarInformacion();
-    });
-  }
+  
 
   actualizarTipoProd(tipo: string) {
     this.ordenMetricsPorDefinir.update((ordenMetrics) => {
@@ -131,7 +132,6 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     });
 
   }
-
 
   onSelectOrder(ordenMetrics: OrdenMetrics | null) {
     if (!ordenMetrics) {
