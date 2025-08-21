@@ -89,7 +89,8 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
   async descargarPDF(data: any) {
     const { NoOrden }= data    
-    const { orden, usuarioLiberacion } =await firstValueFrom(this.metricsService.obtener(NoOrden));    
+    const { orden, infoLiberacion } =await firstValueFrom(this.metricsService.obtener(NoOrden));    
+    const { usuarioLiberacion } = infoLiberacion || {};
     this.pdfService.descargarPDF(data, usuarioLiberacion || '' );
   }
 

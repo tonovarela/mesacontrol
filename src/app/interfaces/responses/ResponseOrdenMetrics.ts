@@ -5,7 +5,12 @@ export interface ResponseOrdenMetrics {
 
 export interface ResponseOrden {
     orden:OrdenMetrics,
-    usuarioLiberacion?:string 
+    infoLiberacion?: InfoLiberacion ;
+}
+
+export interface InfoLiberacion {    
+    fechaLiberacion: Date;
+    usuarioLiberacion: string;
 }
 
 

@@ -45,10 +45,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   modulo = computed(() => this._modulo());  
   
   ngOnInit(): void {
-
-      this.activatedRoute.data.subscribe(({modulo}) => {        
-        this._modulo.set(modulo || 'activas');        
-      });
+    this.activatedRoute.data.subscribe(({modulo}) => { this._modulo.set(modulo || 'activas');  });
     this.cargarSolicitudes();    
     this.iniciarResizeGrid(0.39, true);
     this.autoFitColumns = true;    
@@ -59,8 +56,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   }
 
   async cargarSolicitudes() {    
-    const response = await firstValueFrom(this.solicitudService.listar(this.modulo() === 'activas'));    
-    //this.estados.set(response.estados);
+    const response = await firstValueFrom(this.solicitudService.listar(this.modulo() === 'activas'));        
     this.solicitudes.set(response.solicitudes);
   }
 
@@ -89,9 +85,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
 
  async verDetallePrestamo(orden:string){
-     const resp =await firstValueFrom(this.solicitudComponenteService.obtenerPrestamos(orden));
-     this._prestamos.set(resp.prestamos);
-     
+  
+     const activas = this.modulo() === 'activas';
+     const resp = await firstValueFrom(this.solicitudComponenteService.obtenerPrestamos(orden,activas));     
+     this._prestamos.set(resp.prestamos);     
  }
 
 

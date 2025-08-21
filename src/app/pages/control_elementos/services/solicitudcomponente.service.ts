@@ -21,8 +21,8 @@ import { ResponsePrestamos } from "../interfaces/interface";
         return this.http.post<SolicitudResponse>(`${this.API_URL}/api/solicitudcomponente/devolucion`, {solicitud:request});
     }
 
-    public obtenerPrestamos(orden:string){
-        return this.http.get<ResponsePrestamos>(`${this.API_URL}/api/solicitudcomponente/prestamos/${orden}`);
+    public obtenerPrestamos(orden:string,activas:boolean){
+        return this.http.get<ResponsePrestamos>(`${this.API_URL}/api/solicitudcomponente/prestamos/${orden}?activas=${activas}`);
     }
 
   }
