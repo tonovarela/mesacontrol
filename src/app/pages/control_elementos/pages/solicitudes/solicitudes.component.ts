@@ -51,6 +51,11 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     this.autoFitColumns = true;    
   }
 
+  tituloModalPrestamos = computed(() => {
+    return this.modulo() === 'activas' ? 'Detalle de préstamos' : 'Historico de préstamos ';
+
+  });
+
   navigateToNueva() {
     this.router.navigate(['/control_elementos/nueva']);
   }

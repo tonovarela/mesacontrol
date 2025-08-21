@@ -221,9 +221,8 @@ export default class LiberacionComponent implements OnInit {
                                                                `${id_usuario!}`));                                                               
     //Obtencion de la orden para generar el PDF
     const { orden,infoLiberacion } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
-    const { usuarioLiberacion} = infoLiberacion!;
-    console.log(infoLiberacion);
-    this.pdfService.descargarPDF(orden,usuarioLiberacion!);  
+    const { usuarioLibero } = infoLiberacion!;    
+    this.pdfService.descargarPDF(orden,usuarioLibero || '' );  
     this.uiService.mostrarAlertaSuccess('','Se ha aprobado la solicitud de aprobación');
     this.regresar();
   }

@@ -10,7 +10,7 @@ export interface ResponseOrden {
 
 export interface InfoLiberacion {    
     fechaLiberacion: Date;
-    usuarioLiberacion: string;
+    usuarioLibero: string;
 }
 
 

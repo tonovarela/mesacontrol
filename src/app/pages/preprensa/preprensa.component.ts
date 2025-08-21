@@ -100,8 +100,9 @@ ngOnInit(): void {
   async descargarPDF(data: any) {
     const { NoOrden }= data    
     const { orden, infoLiberacion } =await firstValueFrom(this.metricsService.obtener(NoOrden));    
-    const { usuarioLiberacion } = infoLiberacion || {};
-    this.pdfService.descargarPDF(data, usuarioLiberacion || '' );
+    
+    const { usuarioLibero } = infoLiberacion!;
+    this.pdfService.descargarPDF(data, usuarioLibero || '' );
   }
 
   fechaLiberacion(data: any, col: any) {
