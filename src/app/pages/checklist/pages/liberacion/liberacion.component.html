@@ -61,7 +61,18 @@
         'bg-red-100 text-red-700 border-red-200 dark:bg-red-900 dark:text-red-200 dark:border-red-700': estadoTrabajo() === 'Rechazado'
       }"
     >
-      {{estadoTrabajo()}}
+    @if(estadoTrabajo()==='Aceptado'){
+      <div class="p-1">
+        <h1 class="uppercase text-lg font-bold">Trabajo Aprobado</h1>
+        <p>Por {{ trabajo()?.usuario_libero }}</p>
+        <p>el día {{ trabajo()?.fecha_liberacion | date :'dd-MM-yyyy ' }}</p>
+      </div>
+        
+
+    }@else{
+          {{estadoTrabajo()}} 
+    }
+      
     </span>
   </div>
 </div>
