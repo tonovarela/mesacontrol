@@ -21,7 +21,9 @@ export  interface Elemento {
   componente?:string;
   descripcion: string;
   isDisabled?:boolean;
-  //id_solicitud?: string ;
+  usuarioPosee?  :string;
+
+
 
 
 }

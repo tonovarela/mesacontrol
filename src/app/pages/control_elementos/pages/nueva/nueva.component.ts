@@ -45,10 +45,10 @@ export default class NuevaComponent implements OnInit {
   public type = TypeSearchMetrics.CONTROL_ELEMENTOS;
 
 
-
-
   public todos = true;
   public isLoading= false;
+
+
   private usuarioService = inject(UsuarioService);
   private produccionService = inject(ProduccionService);
   private solicitudComponenteService = inject(SolicitudComponentService);
@@ -56,13 +56,8 @@ export default class NuevaComponent implements OnInit {
   private router = inject(Router);
   private uiService = inject(UiService);
   private _currentComponente = signal<string | null>(null);
-
-
-
-
   private  _componentes = signal<ComponenteV[]>([]);
   
-
   
   public componentes = computed(()=> {
     const c = this._componentes().map((c:any)=> {
@@ -75,10 +70,7 @@ export default class NuevaComponent implements OnInit {
   
   public componenteSeleccionado = computed(() => {
     if (this._currentComponente()) {
-      const c = this.solicitudActual().componentes.filter(
-        (x) => x.componente === this._currentComponente()
-      );
-      
+      const c = this.solicitudActual().componentes.filter((x) => x.componente === this._currentComponente());
       return c;
     }
     return [];
@@ -102,19 +94,17 @@ export default class NuevaComponent implements OnInit {
 
 
   async onSelectOrder(orden: OrdenMetrics | null) {
-    const resp = await firstValueFrom(
-      this.produccionService.obtenerElementos(orden!.NoOrden)
-    );    
+    const resp = await firstValueFrom(this.produccionService.obtenerElementos(orden!.NoOrden) );    
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
     this._componentes.set([]);
-
     const componentes: any[] = Object.entries(agrupado).map(
       ([componente, elementos]) => {
         const _elementos =
           elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({
             id_elemento,
             componente,
-            descripcion,
+            usuarioPosee :id_solicitud!==null?'Ocupado por usuario':null,
+            descripcion ,
             id_solicitud,
             isDisabled: id_solicitud !== null,
           })) || [];
@@ -125,7 +115,8 @@ export default class NuevaComponent implements OnInit {
         };
       }
     );
-    this._componentes.set(componentes.map((i) => ({ descripcion: i.componente,totalSeleccionados:0 })));    
+    console.log(componentes);
+    this._componentes.set(componentes.map((i) => ({ descripcion: i.componente,totalSeleccionados:0 })));
     this.solicitudActual.set({ orderSelected: orden, componentes });
   }
 
@@ -140,6 +131,7 @@ export default class NuevaComponent implements OnInit {
       return;
     }    
     this.todos =el.elementos>el.seleccionados;
+    
   }
 
 
@@ -158,6 +150,7 @@ export default class NuevaComponent implements OnInit {
   }
 
   seleccionarElemento(event: SelectButtonChangeEvent, componente: string) {
+    
     const elementosSeleccionados = event.value;
     const componenteActual = this.solicitudActual().componentes.find(
       (x) => x.componente === componente
@@ -249,7 +242,6 @@ this.uiService.mostrarAlertaError(
 
   async onChangeSelectComponent(event: any) {
     const selectedComponete = event.value as ComponenteV;
-
     if (!event.value) {
       this._currentComponente.set(null);
       return;

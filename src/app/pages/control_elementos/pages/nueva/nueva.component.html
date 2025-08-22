@@ -7,6 +7,8 @@
        </svg>
        Regresar
      </button>
+
+
   </div>
   
 
@@ -148,6 +150,7 @@
         <hr class="my-4 border-slate-200 dark:border-slate-700" />
         <div class="flex flex-col gap-4 text-sm mt-6">          
           <div>
+          
             <ul class="space-y-1">
               @for( item of componenteSeleccionado(); track
               item.componente) {
@@ -172,7 +175,19 @@
                     [multiple]="true"
                     optionLabel="descripcion"
                     size="small"
-                  >                    
+                  >    
+                  <ng-template #item let-item>
+                    <div class="flex flex-col justify-center items-center w-full">
+                      
+                     <div>
+                      {{item.descripcion}}
+                     </div> 
+                      <div>
+                        {{item.usuarioPosee ??  '&nbsp;'}}
+                      </div>  
+                    </div>
+           
+    </ng-template>                
                   </p-selectbutton>
                 </div>                
               </li>
