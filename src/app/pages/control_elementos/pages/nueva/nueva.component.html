@@ -155,7 +155,6 @@
               @for( item of componenteSeleccionado(); track
               item.componente) {
               <li class="border-b border-slate-200 dark:border-slate-700 pb-2">
-
                 <div class="flex justify-between">
                   <h2 class="text-xl text-purple-500 ">{{ item.componente }}</h2>                
                    <button  (click)="toogleSeleccion()" class="border border-slate-300 w-36 rounded-md px-2 py-1  text-bold">
@@ -163,8 +162,7 @@
                     {{ !todos ? 'Desmarcar todos' : 'Marcar todos' }}
                   </span>
         </button>
-                </div>
-                
+                </div>                
                 <div class="border rounded-sm mt-2 p-2">
                   <p-selectbutton
                   (onChange)="seleccionarElemento($event,item.componente)" 
@@ -177,17 +175,17 @@
                     size="small"
                   >    
                   <ng-template #item let-item>
-                    <div class="flex flex-col justify-center items-center w-full">
-                      
-                     <div>
-                      {{item.descripcion}}
-                     </div> 
-                      <div class="text-[9px] text-gray-500 dark:text-gray-400">
-                        {{item.usuarioPosee ??  '&nbsp;'}}
-                      </div>  
-                    </div>
-           
-    </ng-template>                
+                    <div class="flex flex-col justify-center items-center w-full  uppercase text-[10px]">                      
+                      <div >{{item.descripcion}}</div> 
+                      @if(item.isDisabled){
+                      <div class="text-[9px] text-gray-500 dark:text-gray-400 uppercase">{{`PRESTADO A ${item.usuarioPosee}`}}</div>  
+                    }@else {
+                        <div class="text-[9px] text-green-500 ">
+                          DISPONIBLE
+                        </div>  
+                    }
+                    </div>           
+                  </ng-template>                
                   </p-selectbutton>
                 </div>                
               </li>
