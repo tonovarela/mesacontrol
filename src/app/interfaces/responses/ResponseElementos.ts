@@ -15,6 +15,7 @@ export interface ComponenteElemento {
     id_elemento:  string;
     descripcion:  string;
     id_solicitud: number | null ;
+    usuarioPosee?:string
 }
 
 

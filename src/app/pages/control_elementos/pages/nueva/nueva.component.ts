@@ -100,10 +100,10 @@ export default class NuevaComponent implements OnInit {
     const componentes: any[] = Object.entries(agrupado).map(
       ([componente, elementos]) => {
         const _elementos =
-          elementos?.map(({ id_elemento, descripcion, id_solicitud }) => ({
+          elementos?.map(({ id_elemento, descripcion, id_solicitud,usuarioPosee }) => ({
             id_elemento,
             componente,
-            usuarioPosee :id_solicitud!==null?'Ocupado por usuario':null,
+            usuarioPosee :id_solicitud!==null?usuarioPosee:null,
             descripcion ,
             id_solicitud,
             isDisabled: id_solicitud !== null,
@@ -115,7 +115,7 @@ export default class NuevaComponent implements OnInit {
         };
       }
     );
-    console.log(componentes);
+    
     this._componentes.set(componentes.map((i) => ({ descripcion: i.componente,totalSeleccionados:0 })));
     this.solicitudActual.set({ orderSelected: orden, componentes });
   }
