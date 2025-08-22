@@ -8,6 +8,8 @@ export interface OrdenLiberacionSobre {
     orden:string;
     nombre_trabajo:string;
     descripcion_estado:string;
+    usuario_libero?:string;
+    fecha_liberacion?:Date;
     id_estado:EstadoRevision;
 }
 

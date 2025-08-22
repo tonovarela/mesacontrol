@@ -103,9 +103,7 @@ export default class LiberacionComponent implements OnInit {
   async cargarInformacion() {
     const orden = this.orden() || '';
 
-    const resp = await firstValueFrom(
-      this.prePrensaService.obtenerComponentes(orden)
-    );
+    const resp = await firstValueFrom(this.prePrensaService.obtenerComponentes(orden));
     if (resp.rutas.length === 0) {
       this.router.navigate(['/preprensa/pendientes']);
       return;
@@ -141,10 +139,7 @@ export default class LiberacionComponent implements OnInit {
 
   async guardarCambios() {
     await this._guardar();
-    this.uiService.mostrarAlertaSuccess(
-      '',
-      'Se han guardado los cambios correctamente'
-    );
+    this.uiService.mostrarAlertaSuccess('','Se han guardado los cambios correctamente');
   }
 
   async solicitarAprobacion() {
@@ -154,11 +149,7 @@ export default class LiberacionComponent implements OnInit {
     // );
     // if (!isConfirmed) {
     //   return;
-    // }
-
-    
-
-
+    // }  
     const rutasParaVerificar = this.rutas().map(
       ({ componente, ruta }: RutaElemento) => {
         return {
@@ -172,9 +163,7 @@ export default class LiberacionComponent implements OnInit {
     const rutas = rutasParaVerificar.filter((r) => !r.tieneUnoSeleccionado);
     if (rutas.length > 0) {
       const elementosConError = rutas.map((x) => x.componente);
-      const mensajeError = `Los siguientes componentes no tienen ningún elemento seleccionado: ${elementosConError.join(
-        ', '
-      )}`;
+      const mensajeError = `Los siguientes componentes no tienen ningún elemento seleccionado: ${elementosConError.join(', ')}`;
 
       this.uiService.mostrarAlertaError('Error', mensajeError);
       return;
