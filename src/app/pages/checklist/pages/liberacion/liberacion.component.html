@@ -94,24 +94,7 @@
             [ngModel]="item.aplica == 1 ? true : false" 
             (onChange)="onAplicaChange(ruta, item, $event)"            
             class="toogle-liberacion"
-            [binary]="true" />
-            <!-- <p-selectbutton [ngModel]="item.aplica"  [options]="stateOptions"  optionLabel="label" optionValue="value"
-            allowEmpty="false"
-            unselectable="false"
-            [disabled]="estaAprobado() || estaEnAprobacion()"
-            (onChange)="onAplicaChange(ruta, item, $event)"
-            class="min-w-20 toogle-liberacion"
-              size="small"            
-             size="small" /> -->
-            <!-- <p-togglebutton
-              class="min-w-20 toogle-liberacion"
-              size="small"
-              [disabled]="estaAprobado() || estaEnAprobacion()"
-              (onChange)="onAplicaChange(ruta, item, $event)"
-              [ngModel]="item.aplica"
-              onLabel="Aplica"
-              offLabel="No Aplica"
-            /> -->
+            [binary]="true" />            
           </div>
         }
       </div>

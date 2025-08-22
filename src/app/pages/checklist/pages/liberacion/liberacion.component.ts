@@ -104,6 +104,7 @@ export default class LiberacionComponent implements OnInit {
     const orden = this.orden() || '';
 
     const resp = await firstValueFrom(this.prePrensaService.obtenerComponentes(orden));
+    console.log(resp.orden);
     if (resp.rutas.length === 0) {
       this.router.navigate(['/preprensa/pendientes']);
       return;
