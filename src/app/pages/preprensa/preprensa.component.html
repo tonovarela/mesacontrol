@@ -88,7 +88,7 @@
                                     <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
                                     <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">                                        
                                         @if(liberacion){                                            
-                                        {{liberacion | date:'dd-MM-yyyy hh:mm a' }}    
+                                        {{liberacion | date:'dd-MM-yyyy HH:mm' }}  hrs   
                                         }@else{
                                         <span>--------</span>
                                         }
@@ -116,7 +116,7 @@
                                     <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />                                    
                                     <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">                                        
                                         @if(liberacion){                                            
-                                        {{liberacion | date:'dd-MM-yyyy hh:mm a' }}    
+                                        {{liberacion | date:'dd-MM-yyyy HH:mm' }} hrs   
                                         }@else{
                                         <span>--------</span>
                                         }
