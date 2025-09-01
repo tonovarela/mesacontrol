@@ -28,6 +28,22 @@ import { FormsModule } from '@angular/forms';
 import { SelectButtonChangeEvent } from 'primeng/selectbutton';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
+if (!Object.groupBy) {
+  Object.groupBy = <K extends PropertyKey, V>(
+    list: V[],
+    keyGetter: (obj: V, index: number) => K
+  ): Partial<Record<K, V[]>> => {
+    const map: Partial<Record<K, V[]>> = {};
+    list.forEach((item, index) => {
+      const key = keyGetter(item, index);
+      if (!map[key]) {
+        map[key] = [];
+      }
+      map[key].push(item);
+    });
+    return map;
+  };
+}
 
 
 interface ComponenteV {
@@ -95,6 +111,8 @@ export default class NuevaComponent implements OnInit {
 
   async onSelectOrder(orden: OrdenMetrics | null) {
     const resp = await firstValueFrom(this.produccionService.obtenerElementos(orden!.NoOrden) );    
+
+
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
     this._componentes.set([]);
     const componentes: any[] = Object.entries(agrupado).map(
@@ -115,6 +133,9 @@ export default class NuevaComponent implements OnInit {
         };
       }
     );
+
+
+
     
     this._componentes.set(componentes.map((i) => ({ descripcion: i.componente,totalSeleccionados:0 })));
     this.solicitudActual.set({ orderSelected: orden, componentes });

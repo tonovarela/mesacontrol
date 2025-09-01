@@ -22,6 +22,24 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SolicitudComponentService } from '@app/pages/control_elementos/services/solicitudcomponente.service';
 
+
+if (!Object.groupBy) {
+  Object.groupBy = <K extends PropertyKey, V>(
+    list: V[],
+    keyGetter: (obj: V, index: number) => K
+  ): Partial<Record<K, V[]>> => {
+    const map: Partial<Record<K, V[]>> = {};
+    list.forEach((item, index) => {
+      const key = keyGetter(item, index);
+      if (!map[key]) {
+        map[key] = [];
+      }
+      map[key].push(item);
+    });
+    return map;
+  };
+}
+
 interface ComponenteV {
   descripcion: string;
   totalSeleccionados?: number;
