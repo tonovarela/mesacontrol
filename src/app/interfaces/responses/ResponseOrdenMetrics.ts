@@ -6,6 +6,14 @@ export interface ResponseOrdenMetrics {
 export interface ResponseOrden {
     orden:OrdenMetrics,
     infoLiberacion?: InfoLiberacion ;
+    sobreContenido:ComponenteSobre[],
+
+}
+
+
+export interface ComponenteSobre{
+    componente:string;
+    elementos:string[];
 }
 
 export interface InfoLiberacion {    

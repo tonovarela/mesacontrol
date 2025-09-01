@@ -99,10 +99,10 @@ ngOnInit(): void {
   
   async descargarPDF(data: any) {
     const { NoOrden }= data    
-    const { orden, infoLiberacion } =await firstValueFrom(this.metricsService.obtener(NoOrden));    
-    
-    const { usuarioLibero } = infoLiberacion!;
-    this.pdfService.descargarPDF(data, usuarioLibero || '' );
+    const { orden, infoLiberacion,sobreContenido } =await firstValueFrom(this.metricsService.obtener(NoOrden));    
+      
+    const { usuarioLibero } = infoLiberacion!;    
+    this.pdfService.descargarPDF(data,sobreContenido, usuarioLibero || '' );
   }
 
   fechaLiberacion(data: any, col: any) {
@@ -174,9 +174,7 @@ ngOnInit(): void {
     } else {
       this.checkListService.id_checkListCurrent = id_checklist_actual;
     }
-    await this.checkListService.loadChecklist();
-    //TODO: Revisar si el usuario tiene permisos para hacer la revision del checklist
-    //TODO: Guardar en el estado la ordenMetrics             
+    await this.checkListService.loadChecklist();    
     this.router.navigate([`/rollcall`]);
 
   }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ComponenteSobre } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { columnas } from '@app/pages/data/columnas';
 import { cuerpoMarbete, MarbeteProps } from '@app/templates_print/marbete_checklist';
 import { formatDate } from '@app/utils/formatDate';
@@ -17,7 +18,7 @@ export class PdfService {
   
  columnasAuditoria = columnas;
 
- async descargarPDF(data: any,nombreUsuario:string) {
+ async descargarPDF(data: any,sobreContenido:ComponenteSobre[],nombreUsuario:string) {
     
     let liberacionesCheckList =this.columnasAuditoria.map((col) => {
       const date = this.fechaLiberacion(data, col);
