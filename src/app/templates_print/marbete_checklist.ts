@@ -2,6 +2,7 @@
 import { formatDate } from "@app/utils/formatDate";
 import { TDocumentDefinitions } from "pdfmake/interfaces";
 import { logoLito } from "./logo";
+import { ComponenteSobre } from "@app/interfaces/responses/ResponseOrdenMetrics";
 
 
 export interface MarbeteProps {
@@ -10,161 +11,144 @@ export interface MarbeteProps {
    cliente:string;
    usuario:string;
    vendedor:string;
+   contenidoSobre:ComponenteSobre[],
    fecha_liberacion:(string | null)[]
 
 }
 
-export const cuerpoMarbete = (props:MarbeteProps): TDocumentDefinitions => {
+export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
+  // Asegurarse que contenidoSobre existe
+  const componentes = props.contenidoSobre || [];
+
+  // Crear tablas individuales para cada componente (más simple y fiable)
+  const tablasComponentes = componentes.map(componente => {
+    // Verificar que componente.elementos sea un array
+    const elementos = Array.isArray(componente.elementos) ? componente.elementos : [];
+
+    return {
+      style: 'columnaContenido',
+      margin: [0, 0, 0, 2] as [number, number, number, number], // Corrección de tipo
+      table: {
+        widths: [ '*'],
+        body: [
+          [{
+            text: componente.componente || 'Componente',
+            fillColor: '#e6e6e6',
+            bold: true,            
+            alignment: 'center',
+            fontSize: 5
+          }, ],
+          ...elementos.map((elemento: string) => [            
+            { text: elemento, fontSize: 5 }
+          ])
+        ]
+      }
+    };
+  });
+
+  // Dividir las tablas en cuatro columnas
+  const cuarto = Math.ceil(tablasComponentes.length / 4);
+  const columna1 = tablasComponentes.slice(0, cuarto);
+  const columna2 = tablasComponentes.slice(cuarto, 2 * cuarto);
+  const columna3 = tablasComponentes.slice(2 * cuarto, 3 * cuarto);
+  const columna4 = tablasComponentes.slice(3 * cuarto);
+
   const date = new Date();
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son base 0
-  const year = date.getFullYear();
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const formatedDate = `${day}/${month}/${year} ${hours}:${minutes} hrs`;
+  const formatedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()} `;
+
   const docDefinition: TDocumentDefinitions = {
     pageSize: 'A5',
     pageOrientation: 'landscape',
+    pageMargins: [3, 3, 3, 3],
     content: [
+      // Encabezado
       {
-        columns:[
-          { image: `data:image/png;base64,${logoLito}`,  width: 150, margin: 5, fontSize: 7,  alignment: 'left' },
-          { width: '*',text: 'Liberado por Mesa de control',fontSize:15 ,alignment:'center',  margin:[0,20,0,0]  },
-      ]},
-      
+        columns: [
+          { image: `data:image/png;base64,${logoLito}`, width: 60, margin: [0, 0, 0, 0] },
+          { width: '*', text: 'Liberado por Mesa de control', fontSize: 6, alignment: 'center', margin: [0, 0, 0, 0] }
+        ]
+      },
+
+      // Información básica
       {
-        style: 'container',
+        style: 'containerTiny',
         table: {
           widths: ['*', '*'],
           body: [
-            [{ text: `Fecha: ${formatedDate}`, fillColor: '#cccccc' }, { text: `OP: ${props.numero_orden}`, fillColor: '#cccccc' }]
+            [
+              { text: `Fecha: ${formatedDate}`, fillColor: '#cccccc', fontSize: 5 },
+              { text: `OP: ${props.numero_orden}`, fillColor: '#cccccc', fontSize: 5 }
+            ]
           ]
-        }
+        },
+        margin: [0, 1, 0, 1] as [number, number, number, number] ,// Corrección de tipo
       },
+
       {
-        style: 'container',
+        style: 'containerTiny',
         table: {
-          widths: [100, '*'],
+          widths: [30, '*'],
           body: [
-            [{ text: `Nombre:  `, fillColor: '#cccccc' }, `${props.nombre_trabajo}`],
-            [{ text: `Cliente:`, fillColor: '#cccccc' }, ` ${props.cliente}`],
-            [{ text: `Vendedor:`, fillColor: '#cccccc' }, ` ${props.vendedor.toUpperCase()}`]
+            [{ text: `Nombre:`, fillColor: '#cccccc', fontSize: 5 }, { text: `${props.nombre_trabajo || ''}`, fontSize: 5 }],
+            [{ text: `Cliente:`, fillColor: '#cccccc', fontSize: 5 }, { text: `${props.cliente || ''}`, fontSize: 5 }],
+            [{ text: `Vendedor:`, fillColor: '#cccccc', fontSize: 5 }, { text: `${(props.vendedor || '').toUpperCase()}`, fontSize: 5 }]
           ]
-        }
-      },
-      {
-        style: 'container',
-        table: {
-          widths: [120,  '*', '*'],
-          body: [
-            [
-              { text: 'VALIDACION DE ELEMENTOS', margin: [0, 10, 0, 0],style: 'tableHeader', alignment: 'center', fillColor: '#cccccc',colSpan: 1,rowSpan: 1 },
-              { text: '', alignment: 'left', fillColor: '#cccccc' },
-              { text: '', style: 'tableHeader', alignment: 'center', fillColor: '#cccccc', },
-        
-            ],
-            [
-              { text: '', alignment: 'center' },
-              { text: 'CHECKLIST', alignment: 'center',style: 'tableHeader' },
-              { text: 'FECHA DE APROBACIÓN', style: 'tableHeader', alignment: 'center' },
-        
-            ],
-            [
-              { text: 'Liberación al cliente', alignment: 'left',margin: [0, 10, 0, 0],rowSpan:2 },
-              { text: 'Prueba de color', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[0]?`${props.fecha_liberacion[0]}`:'NO APLICA', alignment: 'center' },        
-
-            ],
-            [
-              { text: '', alignment: 'left'  },
-              { text: 'Dummy vestido', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[1]?`${props.fecha_liberacion[1]}`:'NO APLICA', alignment: 'center' },
-              
-
-            ],
-
-            [
-              { text: 'Liberación sobre viajero', margin: [0, 25, 0, 0], alignment: 'left' ,rowSpan: 4},
-              { text: 'Prueba de color', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[2]?`${props.fecha_liberacion[2]}`:'NO APLICA', alignment: 'center' },              
-
-            ],
-            [
-              { text: '', alignment: 'left' },
-              { text: 'Dummy blanco', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[3]?`${props.fecha_liberacion[3]}`:'NO APLICA', alignment: 'center' },              
-
-            ],
-            [
-              { text: '', alignment: 'left' },
-              { text: 'Dummy vestido', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[4]?`${props.fecha_liberacion[4]}`:'NO APLICA', alignment: 'center' },              
-
-            ],
-            [
-              { text: '', alignment: 'left' },
-              { text: 'Liberacion', margin: [10, 0, 0, 0] },
-              { text: props.fecha_liberacion[5]?`${props.fecha_liberacion[5]}`:'NO APLICA', alignment: 'center' },
-
-            ],
-
-          ]
-        }
+        },
+        margin: [0, 1, 0, 1] as [number, number, number, number] ,// Corrección de tipo
       },
 
+      // Título del contenido
       {
-        style: 'container',
+        style: 'containerTiny',
         table: {
           widths: ['*'],
-          body: [
-            [
+          body: [[{ text: 'CONTENIDO DEL SOBRE', fillColor: '#cccccc', bold: true, alignment: 'center', fontSize: 5 }]]
+        },
+        margin: [0, 1, 0, 1] as [number, number, number, number] ,// Corrección de tipo
+      },
 
-              { text: `  ${props.usuario}`, alignment: 'center' }
-            ]
-          ]
-        }
+      // Componentes en cuatro columnas
+      {
+        columns: [
+          { width: '24%', stack: columna1, margin: [0, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo
+          { width: '24%', stack: columna2, margin: [2, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo
+          { width: '24%', stack: columna3, margin: [2, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo
+          { width: '24%', stack: columna4, margin: [2, 0, 0, 0] as [number, number, number, number] }// Corrección de tipo
+        ]
+      },
+
+      // Pie
+      {
+        style: 'containerTiny',
+        table: {
+          widths: ['*'],
+          body: [[{ text: `Liberado por: ${props.usuario || ''}`, alignment: 'center', fontSize: 5 }]]
+        },
+        margin: [0, 1, 0, 1] as [number, number, number, number] ,// Corrección de tipo
       },
 
       {
-        style: 'container',
+        style: 'containerTiny',
         table: {
-          widths: [50, '*'],
-          body: [
-            [
-              { text: 'NOTA:', fillColor: '#cccccc',fontSize:10 },
-              { fontSize:8,
-                text: 'Por ningun motivo el usuario del sobre viajero debe de manipular los elementos ya que estos son autorizados por el cliente. Si ya terminaste de ocupar el sobre, favor de regresarlo al area responsable ya que otros procesos lo necesitan.',
-                alignment: 'center'
-              }
-            ]
-          ]
-        }
+          widths: [15, '*'],
+          body: [[
+            { text: 'NOTA:', fillColor: '#cccccc', fontSize: 4 },
+            {
+              fontSize: 4,
+              text: 'Por ningun motivo el usuario del sobre viajero debe de manipular los elementos ya que estos son autorizados por el cliente. Si ya terminaste de ocupar el sobre, favor de regresarlo al area responsable ya que otros procesos lo necesitan.',
+              alignment: 'center'
+            }
+          ]]
+        },
+        margin: [0, 1, 0, 1] as [number, number, number, number] ,// Corrección de tipo
       }
     ],
     styles: {
-      header: {
-        fontSize: 10,
-        bold: true,
-        margin: [0, 0, 0, 10]
-      },
-      container: {
-        fontSize:8,
-        margin: [0, 5, 0, 5]
-      },
-      tableHeader: {
-        bold: true,
-        fontSize: 8,
-        color: 'black'
-      }
+      containerTiny: { fontSize: 5, margin: [0, 0.5, 0, 0.5] as [number, number, number, number] },// Corrección de tipo
+      columnaContenido: { fontSize: 5, margin: [0, 0, 0, 0.5] as [number, number, number, number] }// Corrección de tipo
     },
-    defaultStyle: {
-      fontSize: 8
-    }
+    defaultStyle: { fontSize: 5 }
   };
-
-
-
-
 
   return docDefinition;
 };
