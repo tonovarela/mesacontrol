@@ -57,9 +57,10 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
   const formatedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()} `;
 
   const docDefinition: TDocumentDefinitions = {
-    pageSize: 'A5',
+    pageSize: 'A6',
     pageOrientation: 'landscape',
-    pageMargins: [3, 3, 3, 3],
+    
+    pageMargins: [20, 10, 20, 0],
     content: [
       // Encabezado
       {
