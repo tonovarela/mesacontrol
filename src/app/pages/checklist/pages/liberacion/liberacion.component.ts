@@ -166,6 +166,12 @@ export default class LiberacionComponent implements OnInit {
     // if (!isConfirmed) {
     //   return;
     // }  
+
+    if (this.rutas().filter(r => r.aplica === "1").length ===0){
+      this.uiService.mostrarAlertaError('Error', 'No hay componentes seleccionados para el marbete.');
+      return;
+    }
+
     const rutasParaVerificar = this.rutas().filter(r => r.aplica === "1").map(
       ({ componente, ruta }: RutaElemento) => {
         return {
@@ -180,7 +186,6 @@ export default class LiberacionComponent implements OnInit {
     if (rutas.length > 0) {
       const elementosConError = rutas.map((x) => x.componente);
       const mensajeError = `Los siguientes componentes no tienen ningún elemento seleccionado: ${elementosConError.join(', ')}`;
-
       this.uiService.mostrarAlertaError('Error', mensajeError);
       return;
     }
@@ -206,6 +211,8 @@ export default class LiberacionComponent implements OnInit {
     // if (!resp.isConfirmed) {
     //   return;
     // }        
+
+    
       const {isDismissed,value: id_usuario}  = await LoginLitoapps(this.usuarioService,"Password de usuario que realiza la aprobación");
       if (isDismissed) {
         return;
