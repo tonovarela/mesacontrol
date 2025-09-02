@@ -23,6 +23,7 @@ export enum EstadoRevision {
 export interface Ruta {
     componente: string;
     id_ruta:    string;
+    aplica?: string;
     ruta:       string;
 }
 

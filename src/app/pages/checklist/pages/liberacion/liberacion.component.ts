@@ -81,17 +81,17 @@ export default class LiberacionComponent implements OnInit {
     return this._trabajo()?.descripcion_estado || '';
   });
 
-  
   public rutas = signal<RutaElemento[]>([]);
   formRutas: FormGroup | undefined;
-
   constructor(private fb: FormBuilder) {}
+
 
   ngOnInit() {
     if (!this.orden()) {
       this.router.navigate(['/preprensa/pendientes']);
       return;
     }
+    
     const { modulo } =
       this.router.lastSuccessfulNavigation?.extras?.state || {};
     if (modulo) {
@@ -109,9 +109,15 @@ export default class LiberacionComponent implements OnInit {
       return;
     }
     let rutas = resp.rutas.map((r: Ruta) => {
-      return { ...r, ruta: JSON.parse(r.ruta) as ElementoItem[] };
+      const ruta = JSON.parse(r.ruta) as ElementoItem[];
+      if (!r.aplica ){
+        r.aplica ="1";
+      }
+      console.log(r);      
+      return { ...r, ruta };
     });
-    this._trabajo.set(resp.orden!);    
+    this._trabajo.set(resp.orden!);
+    
     this.rutas.set(rutas);
   }
 
