@@ -30,6 +30,7 @@ export interface Ruta {
 export interface  RutaElemento {
     componente: string;    
     id_ruta:    string;
+    aplica?: string;
     ruta:       ElementoItem[];
     
 }

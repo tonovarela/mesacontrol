@@ -117,9 +117,11 @@
       class="bg-white border h-auto min-w-[300px] border-slate-400 dark:bg-slate-800 dark:border-white rounded-lg shadow flex flex-col items-center "
     >
     <div class="flex justify-start flex-row w-full space-x-2 items-center text-[9px]  mb-2 bg-slate-600 text-white p-2 rounded-t-md">    
-          <p-checkbox  [binary]="true" [disabled]="estaAprobado() || estaEnAprobacion()"></p-checkbox>
-          <label>Forma parte del marbete</label>
-     
+      <p-checkbox           
+      [ngModel]="ruta.aplica == '1' ? true : false"
+      (onChange)="onAplicaRutaChange(ruta, $event)"
+       [binary]="true" [disabled]="estaAprobado() || estaEnAprobacion()"></p-checkbox>
+      <label>Forma parte del marbete</label>                     
     </div>
     <div class="px-4 w-full">
 <div class="flex flex-row justify-between w-full border-b mb-2  ">        
@@ -132,7 +134,7 @@
           <p-checkbox
             (onChange)="onMarcar($event, ruta)"
             [binary]="true"
-            [disabled]="estaAprobado() || estaEnAprobacion()"
+            [disabled]="estaAprobado() || estaEnAprobacion() || ruta.aplica == '0'"
           >
           </p-checkbox>
         </div>
@@ -153,19 +155,15 @@
           item.descripcion
         }}</span>
         <p-checkbox
-          [disabled]="estaAprobado() || estaEnAprobacion()"
+          [disabled]="estaAprobado() || estaEnAprobacion() || ruta.aplica == '0'"
           [ngModel]="item.aplica == 1 ? true : false"
           (onChange)="onAplicaChange(ruta, item, $event)"
           class="toogle-liberacion"
           [binary]="true"
         />
       </div>
-
-
       }
-
-    </div>
-      
+    </div>      
     </div>
     }
   </div>

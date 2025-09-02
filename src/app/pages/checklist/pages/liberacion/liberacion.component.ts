@@ -100,6 +100,17 @@ export default class LiberacionComponent implements OnInit {
     this.cargarInformacion();
   }
 
+
+  onAplicaRutaChange(rutaElemento: RutaElemento, opcion: any) {
+    rutaElemento.aplica = opcion.checked ? '1' : '0';
+    if (rutaElemento.aplica === '0') {
+      rutaElemento.ruta.forEach((item: ElementoItem) => {
+        item.aplica = 0;
+      });
+    }
+    this.actualizarRuta(rutaElemento);
+  }
+
   async cargarInformacion() {
     const orden = this.orden() || '';
 
@@ -109,11 +120,10 @@ export default class LiberacionComponent implements OnInit {
       return;
     }
     let rutas = resp.rutas.map((r: Ruta) => {
-      const ruta = JSON.parse(r.ruta) as ElementoItem[];
+      const ruta = JSON.parse(r.ruta) as ElementoItem[];          
       if (!r.aplica ){
         r.aplica ="1";
-      }
-      console.log(r);      
+      }            
       return { ...r, ruta };
     });
     this._trabajo.set(resp.orden!);
@@ -156,7 +166,7 @@ export default class LiberacionComponent implements OnInit {
     // if (!isConfirmed) {
     //   return;
     // }  
-    const rutasParaVerificar = this.rutas().map(
+    const rutasParaVerificar = this.rutas().filter(r => r.aplica === "1").map(
       ({ componente, ruta }: RutaElemento) => {
         return {
           componente,
@@ -200,7 +210,9 @@ export default class LiberacionComponent implements OnInit {
       if (isDismissed) {
         return;
       }            
-      const rutas = this.rutas().flatMap((r: RutaElemento) =>
+      const rutas = this.rutas()
+      .filter(r => r.aplica === "1")
+      .flatMap((r: RutaElemento) =>
       r.ruta
         .filter((item: ElementoItem) => item.aplica === 1)
         .map((item: ElementoItem) => ({
@@ -270,8 +282,7 @@ export default class LiberacionComponent implements OnInit {
         ruta: JSON.stringify(r.ruta),
       };
     });
-    await firstValueFrom(
-      this.prePrensaService.guardarRutaComponentes(rutasParaGuardar)
-    );
+    
+    await firstValueFrom(this.prePrensaService.guardarRutaComponentes(rutasParaGuardar));
   }
 }
