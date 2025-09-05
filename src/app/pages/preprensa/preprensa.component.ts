@@ -42,7 +42,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
 
   public ordenesMetrics = computed(() => {    
-    return this._ordenesMetrics().map( (orden:any) =>{
+    const ordenes= this._ordenesMetrics().map( (orden:any) =>{
       let sePuedeVisualizarSobre =false;
       if (orden.estadoRutas !== null) {
         sePuedeVisualizarSobre= true;
@@ -50,11 +50,13 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
       if (orden.id_estado ==='2' && orden.estadoRutas === null) {
         sePuedeVisualizarSobre=false;
       }      
+      
       return { ...orden ,
         colorCheckListSobreLiberacion:this.colorLiberacion(orden.estadoRutas),
         sePuedeVisualizarSobre 
       }
-    });
+    });    
+    return ordenes;
   }
 
 );

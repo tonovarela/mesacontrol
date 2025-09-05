@@ -100,6 +100,11 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   }
 
 
+  actualizarProduccionMetrics(){
+    console.log('Actualizar Produccion Metrics');
+  }
+
+
   async loadDataOrder(orden: string) {
     this.cargandoDetalle.set(true);
     const response = await firstValueFrom(this.produccionService.detalle(orden));
