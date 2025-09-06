@@ -58,4 +58,8 @@ export class ProduccionService {
         return this.http.get<ResponseBitacoraMuestra>(`${this.API_URL}/api/produccion/bitacora/${id_produccion}`);
     }
 
+    sincronizar(orden:string){
+        return this.http.get(`${this.API_URL}/api/produccion/sincronizar/${orden}`);
+    }
+
 }
