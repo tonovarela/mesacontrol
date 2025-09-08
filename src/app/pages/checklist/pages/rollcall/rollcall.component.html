@@ -10,6 +10,7 @@
         [title]="title()" 
         [lastPageVisited]="pageService.getPreviousUrl()"    
         (onSave)="onSave($event)"
+        (onClose)="close()"
         [isSaving]="isSaving()"
         ></checklist-view>       
         }            

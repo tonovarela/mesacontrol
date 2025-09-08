@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, output, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { Router } from '@angular/router';
 
 import { ChecklistViewComponent } from '../../components/checklist-view/checklist-view.component';
 import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
@@ -22,17 +21,12 @@ export default class RollcallComponent implements OnInit {
   public pageService = inject(PageService)
   private usuarioService = inject(UsuarioService);
   private pdfService = inject(PdfService);
-  ngOnInit(): void {
-    if (this.checkList() == null) {
-      this.router.navigate(['/preprensa']);
-    }
-    
-  }
-  private checkListService = inject(CheckListService);
-  
-  checkList = computed(() => this.checkListService.checkList());
-  router = inject(Router);
+  onClose =output<void>();
 
+  ngOnInit(): void {            
+  }
+  private checkListService = inject(CheckListService);  
+  checkList = computed(() => this.checkListService.checkList());  
   opMetrics = computed(() => `${this.checkListService.currentMetricsOP()?.NoOrden || ''}  ${this.checkListService.currentMetricsOP()?.NombreTrabajo || ''}`);
   isSaving = signal<boolean>(false);
 
@@ -42,6 +36,8 @@ export default class RollcallComponent implements OnInit {
   });
 
 
+
+  
 
   async onSave(checkList: CheckListAnswered) {
     this.isSaving.set(true);
@@ -74,16 +70,19 @@ export default class RollcallComponent implements OnInit {
       id_usuario: `${idUsuario}`
         }));
         const { termino,orden } = response as any;
-
-        // if (termino ==true){
-        //   this.pdfService.descargarPDF(orden, this.usuarioService.StatusSesion()?.usuario?.nombre || '');        
-        // }
-        
+              
     this.checkListService.removeActiveCheckList();
     this.isSaving.set(false);
-    this.router.navigate([this.pageService.getPreviousUrl()]);
+    this.onClose.emit();
+    //this.router.navigate([this.pageService.getPreviousUrl()]);
 
   }
 
+
+  close(){
+    this.checkListService.removeActiveCheckList();
+    this.onClose.emit();
+    
+  }
 
 }

@@ -27,6 +27,7 @@ export class ChecklistViewComponent   {
   checkList = input.required<CheckListDisplay>();
   title = input.required<string>();
   onSave = output<CheckListAnswered>();
+  onClose = output<void>();
   lastPageVisited = input<string>();
 
   options =computed(() => {
@@ -87,7 +88,9 @@ export class ChecklistViewComponent   {
 
   
   regresar(): void {
-    this.router.navigate([this.lastPageVisited() || '/preprensa']);
+    //this.checkListService.removeActiveCheckList();
+  this.onClose.emit();  
+    //this.router.navigate([this.lastPageVisited() || '/preprensa']);
   
   }
 

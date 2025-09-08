@@ -75,9 +75,8 @@ export class CheckListService  {
             })]
             
           })); 
-          //console.log(options);         
-
-          this._checkList.set({detail , options});    
+          
+          this._checkList.set({detail , options});              
           
         }catch(error) {
           this._checkList.set(null);

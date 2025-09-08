@@ -15,11 +15,12 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, T
 import { columnas } from '../data/columnas';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { formatDate } from '../../utils/formatDate';
+import { RollcallModalComponent } from '@app/shared/rollcall.modal/rollcall.modal.component';
 
 
 @Component({
   selector: 'app-preprensa',
-  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent],
+  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent],
   templateUrl: './preprensa.component.html',
   providers: [DetailRowService],
   styleUrl: './preprensa.component.css',
@@ -40,6 +41,8 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   private usuarioService = inject(UsuarioService);
 
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
+
+
 
   public ordenesMetrics = computed(() => {    
     const ordenes= this._ordenesMetrics().map( (orden:any) =>{
@@ -135,7 +138,6 @@ ngOnInit(): void {
     });
 
   }
-
   onSelectOrder(ordenMetrics: OrdenMetrics | null) {
     if (!ordenMetrics) {
       return;
@@ -144,7 +146,6 @@ ngOnInit(): void {
   }
 
   async cargarInformacion() {
-
     this.cargando.set(true);
     try {
       this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
@@ -156,20 +157,24 @@ ngOnInit(): void {
     }
     finally {
       this.cargando.set(false);
-
-
     }
   }
 
   irRutas(orden:any){    
+
+    //console.log(orden);
     this.router.navigateByUrl(`/rollcall/liberacion/${orden.NoOrden}`, { state:{ modulo:orden.id_estado ==='2'?'liberadas':'pendientes'}});
   }
 
+
+  mostrarCheckList = signal(false);
+
   async ir(ordenMetrics: OrdenMetrics, actual: { id_checkActual: string, liberacion?: Date }) {
     const { id_checkActual, liberacion } = actual;
+    const { id_checklist_actual } = ordenMetrics;
 
+      
 
-    const { id_checklist_actual } = ordenMetrics
     this.checkListService.currentMetricsOP.set(ordenMetrics);
     if (liberacion) {
       this.checkListService.id_checkListCurrent = id_checkActual;
@@ -177,8 +182,14 @@ ngOnInit(): void {
       this.checkListService.id_checkListCurrent = id_checklist_actual;
     }
     await this.checkListService.loadChecklist();    
-    this.router.navigate([`/rollcall`]);
+    this.mostrarCheckList.set(true);
+     
+    //this.router.navigate([`/rollcall`]);
+  }
 
+  cerrarModalCheckList(){
+    this.mostrarCheckList.set(false);
+    this.checkListService.removeActiveCheckList();
   }
 
   cerrarOrdenMetricsPorDefinir() {

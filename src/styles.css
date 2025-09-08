@@ -60,10 +60,18 @@
 @layer reset, primeng;
 
 
+
+
+
 /* Reset CSS */
 @layer reset {
     button,
     input {
 
     }
+}
+
+
+.swal2-container {
+  z-index: 10000 !important;
 }

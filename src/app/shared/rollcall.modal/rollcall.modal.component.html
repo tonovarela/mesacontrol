@@ -1,0 +1,15 @@
+<p-dialog #dialogModal [modal]="true"
+[closable]="false"
+ [(visible)]="visible" 
+ [showHeader]="false"
+ [maximizable]="true" [closeOnEscape]="false"
+ (onHide)="closeModal()"
+ styleClass="transparent-modal"
+ >
+    <ng-template  #headless >            
+        <div>
+      <app-rollcall (onClose)="closeModal()"></app-rollcall>
+        </div>
+    </ng-template>    
+    
+</p-dialog>

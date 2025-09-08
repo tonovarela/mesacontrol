@@ -1,0 +1,19 @@
+/* Aplica el efecto de transparencia y desenfoque al contenedor principal del diálogo */
+:host ::ng-deep .transparent-modal .p-dialog {
+  background: rgba(30, 41, 59, 0.7); /* Fondo oscuro semi-transparente (ajusta el color y la opacidad) */
+  backdrop-filter: blur(12px); /* Efecto de desenfoque del fondo */
+  -webkit-backdrop-filter: blur(12px); /* Para compatibilidad con Safari */
+  border-radius: 12px; /* Bordes redondeados */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
+}
+
+/* Asegura que el área de contenido no tenga un fondo propio que opaque el efecto */
+:host ::ng-deep .transparent-modal .p-dialog-content {
+  background: transparent;
+  border-radius: 12px;
+}
+
+/* Opcional: Ajusta la transparencia del overlay (el fondo oscuro detrás del modal) */
+:host ::ng-deep .p-dialog-mask.p-component-overlay {
+    background-color: rgba(0, 0, 0, 0.4); 
+}

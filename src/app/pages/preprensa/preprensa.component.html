@@ -242,3 +242,7 @@
             </form>
         </ng-template>
     </p-dialog>
+
+    @if(mostrarCheckList()){        
+    <rollcall-modal (onClose)="cerrarModalCheckList()"></rollcall-modal>
+    }

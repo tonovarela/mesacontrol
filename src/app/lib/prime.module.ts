@@ -16,7 +16,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 
 
 @NgModule({ 
-    exports: [MultiSelectModule,FloatLabelModule,TextareaModule,ButtonModule,ToggleSwitchModule, CardModule,ToggleButtonModule,SelectButtonModule,AutoCompleteModule,DialogModule,ListboxModule,CheckboxModule]
+    exports: [MultiSelectModule,        
+        FloatLabelModule,TextareaModule,ToggleSwitchModule, CardModule,ToggleButtonModule,SelectButtonModule,AutoCompleteModule,DialogModule,ListboxModule,CheckboxModule]
     
    })
 export class PrimeModule { }
