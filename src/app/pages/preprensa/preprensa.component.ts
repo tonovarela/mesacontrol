@@ -15,12 +15,15 @@ import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, T
 import { columnas } from '../data/columnas';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { formatDate } from '../../utils/formatDate';
-import { RollcallModalComponent } from '@app/shared/rollcall.modal/rollcall.modal.component';
+import { RollcallModalComponent } from '@app/pages/components/rollcall.modal/rollcall.modal.component';
+import { LiberacionModalComponent } from '../components/liberacion.modal/liberacion.modal.component';
 
 
 @Component({
   selector: 'app-preprensa',
-  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent],
+  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,
+    LiberacionModalComponent
+  ],
   templateUrl: './preprensa.component.html',
   providers: [DetailRowService],
   styleUrl: './preprensa.component.css',
@@ -31,6 +34,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   public type = TypeSearchMetrics.PREPRENSA;
   protected minusHeight = 0.30;
   private metricsService = inject(MetricsService);
+  private _ordenLiberacion =  signal<OrdenMetrics | null>(null);
   private checkListService = inject(CheckListService);
   private pdfService = inject(PdfService);
   private uiService = inject(UiService);
@@ -39,11 +43,8 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   private router = inject(Router);
   private activatedRouter = inject(ActivatedRoute);
   private usuarioService = inject(UsuarioService);
-
+  public mostrarCheckList  = computed(()=>this.checkListService.checkList() !==null);
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
-
-
-
   public ordenesMetrics = computed(() => {    
     const ordenes= this._ordenesMetrics().map( (orden:any) =>{
       let sePuedeVisualizarSobre =false;
@@ -64,7 +65,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
 );
 
-
+  public ordenLiberacion = computed(()=> this._ordenLiberacion()?.NoOrden || '' );
   private colorLiberacion(id_estado: string): string {
   if (id_estado == "1" ) return 'fill-white py-1 rounded-full bg-purple-600';  
   if (id_estado == "2") return 'fill-white py-1 rounded-full bg-lime-700';
@@ -83,12 +84,13 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
   public titulo = signal<string>('');
 
+  columnasAuditoria = columnas;
+
+
   constructor() {
     super();
     this.checkListService.removeActiveCheckList();
   }
-
-  columnasAuditoria = columnas;
 
 
 ngOnInit(): void {
@@ -160,20 +162,18 @@ ngOnInit(): void {
     }
   }
 
-  irRutas(orden:any){    
-
-    //console.log(orden);
-    this.router.navigateByUrl(`/rollcall/liberacion/${orden.NoOrden}`, { state:{ modulo:orden.id_estado ==='2'?'liberadas':'pendientes'}});
+  irRutas(orden:OrdenMetrics){   
+    this._ordenLiberacion.set(orden);
+    //this.router.navigateByUrl(`/rollcall/liberacion/${orden.NoOrden}`, { state:{ modulo:orden.id_estado ==='2'?'liberadas':'pendientes'}});
   }
 
 
-  mostrarCheckList = signal(false);
+ 
 
   async ir(ordenMetrics: OrdenMetrics, actual: { id_checkActual: string, liberacion?: Date }) {
     const { id_checkActual, liberacion } = actual;
     const { id_checklist_actual } = ordenMetrics;
 
-      
 
     this.checkListService.currentMetricsOP.set(ordenMetrics);
     if (liberacion) {
@@ -182,13 +182,11 @@ ngOnInit(): void {
       this.checkListService.id_checkListCurrent = id_checklist_actual;
     }
     await this.checkListService.loadChecklist();    
-    this.mostrarCheckList.set(true);
-     
-    //this.router.navigate([`/rollcall`]);
+  
   }
 
   cerrarModalCheckList(){
-    this.mostrarCheckList.set(false);
+
     this.checkListService.removeActiveCheckList();
   }
 
@@ -203,5 +201,19 @@ ngOnInit(): void {
     this.guardandoOrdenMetrics.set(false);
     this.cargarInformacion();
     this.ordenMetricsPorDefinir.set(null);
+  }
+
+
+
+
+    mostrarModalLiberacion = computed(()=>{
+
+      return this._ordenLiberacion()!==null;
+
+    });
+
+
+  cerrarModalLiberacion(){
+      this._ordenLiberacion.set(null);
   }
 }

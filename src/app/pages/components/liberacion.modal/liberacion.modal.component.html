@@ -1,0 +1,17 @@
+
+<p-dialog #dialogModal [modal]="true"
+[closable]="false"
+ [(visible)]="visible" 
+ [showHeader]="false"
+ [maximizable]="true" 
+ [closeOnEscape]="false"
+ (onHide)="closeModal()"
+ styleClass="transparent-modal"
+ >
+    <ng-template  #headless >            
+        <div>
+         <liberacion [orden]="orden()" (onClose)="closeModal()"></liberacion>
+        </div>
+    </ng-template>    
+    
+</p-dialog>

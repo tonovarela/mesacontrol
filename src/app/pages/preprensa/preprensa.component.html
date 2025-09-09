@@ -67,7 +67,7 @@
                         </ng-template>
                     </e-column>
                     @for(col of columnasAuditoria; track col.indice) {
-                    <e-column [width]="150">
+                    <e-column [width]="170">
                         <ng-template #headerTemplate>
                             <div class="flex flex-col items-center justify-center">
                                 <p class="font-bold text-[8px]" [ngClass]="col.color">{{col.titulo}}</p>
@@ -134,6 +134,10 @@
     
     </div>
     }    
+
+
+
+
     <p-dialog header="Editar Orden" [modal]="true" [visible]="puedeDefinirOrdenMetrics()" [style]="{ width: '50rem' }"
         [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
         <ng-template #headless>
@@ -246,3 +250,11 @@
     @if(mostrarCheckList()){        
     <rollcall-modal (onClose)="cerrarModalCheckList()"></rollcall-modal>
     }
+  
+   @if(mostrarModalLiberacion()){   
+    <liberacion-modal  
+      [orden]="ordenLiberacion()" (onClose)="cerrarModalLiberacion()"></liberacion-modal>
+   }
+         
+
+    

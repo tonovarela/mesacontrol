@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, output, ViewChild } from '@angular/core';
 import { PrimeModule } from '@app/lib/prime.module';
-import RollcallComponent from '@app/pages/checklist/pages/rollcall/rollcall.component';
+import RollcallComponent from '@app/pages/checklist/components/rollcall/rollcall.component';
+
 
 @Component({
   selector: 'rollcall-modal',

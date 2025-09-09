@@ -36,6 +36,7 @@ export class CheckListService  {
   private _checkList  = signal<CheckListDisplay | null >(null);  
   private router = inject(Router);
 
+  
 
   public id_checkListCurrent ='';
   public checkList = computed(() => this._checkList());
@@ -51,6 +52,7 @@ export class CheckListService  {
   
 
   async loadChecklist()  {
+   
     const opMetrics = this.currentMetricsOP()?.NoOrden || '';
      try {      
          const observable =this.http.get<ResponseGetCheckList>(`${this.API_URL}/api/checklist/${this.id_checkListCurrent}?orden=${opMetrics}`);
@@ -72,12 +74,9 @@ export class CheckListService  {
                 type: event.evento === 'ACEPTADO' ? LogEventType.ACCEPTED: LogEventType.REJECTED, 
                 extraInformation: event.comments || '',
               } as LogEvent;
-            })]
-            
+            })] 
           })); 
-          
-          this._checkList.set({detail , options});              
-          
+          this._checkList.set({detail , options});                      
         }catch(error) {
           this._checkList.set(null);
           this.router.navigate(['/preprensa']);
