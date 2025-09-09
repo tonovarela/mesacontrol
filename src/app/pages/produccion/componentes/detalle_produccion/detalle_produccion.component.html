@@ -76,6 +76,13 @@
                 </e-column>
                 
                 <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">
+                    <!-- TODO: Pendiente solo para Offset -->
+                    <ng-template #template let-detalle>
+                        <input type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
+                            (change)="onTrazoChange(detalle.id_produccion, $event)" class="cursor-pointer" />
+                    </ng-template>
+                </e-column>
+                <e-column [allowFiltering]="false" width=100 headerText='Carta color' textAlign="Center">
                     <ng-template #template let-detalle>
                         <input type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
                             (change)="onTrazoChange(detalle.id_produccion, $event)" class="cursor-pointer" />

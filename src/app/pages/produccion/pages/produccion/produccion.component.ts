@@ -122,8 +122,10 @@ export default class ProduccionComponent
       );
     } finally {
       this.cargando.set(false);
+      this.autoFitColumns = false;
+
     }
-    this.autoFitColumns = false;
+    
     setTimeout(() => this.iniciarResizeGrid(this.minusHeight));
   }
 
