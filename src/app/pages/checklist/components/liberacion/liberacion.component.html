@@ -26,11 +26,40 @@
 </div>
 }@else {
 
-<div class="w-full px-4 py-1 rounded-md  mx-auto">
-  <div class="flex flex-col md:flex-row justify-end gap-2">
-    <!-- Botón regresar -->
+<div class="w-full px-4 py-1 rounded-md  mx-auto mt-2">
+  <div class="flex flex-col md:flex-row justify-end space-x-10">        
+    <!-- Barra de acciones -->
+    <div class="flex flex-wrap items-center justify-center gap-1">
+      @if(estaEnAprobacion()) {
+      <button
+        class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50"
+        (click)="aprobar()"
+      >
+        Aprobar
+      </button>
+      <button
+        class="px-4 py-2 bg-gray-100 text-red-600 dark:bg-gray-800 dark:text-red-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400/50"
+        (click)="rechazar()"
+      >
+        Rechazar
+      </button>
+      } @if(estaPendiente() ){
+      <button
+        class="px-4 py-2 bg-gray-100 text-blue-600 dark:bg-gray-800 dark:text-blue-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400/50"
+        (click)="guardarCambios()"
+      >
+        Guardar
+      </button>
+      <button
+        class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50"
+        (click)="solicitarAprobacion()"
+      >
+        Solicitar aprobación
+      </button>
+      }
+    </div>
     <button
-      class="flex items-center gap-2 px-4 py-2 bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white text-xs font-medium rounded-lg shadow transition duration-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1"
+      class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
       (click)="regresar()"
     >
       <svg
@@ -42,42 +71,11 @@
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          stroke-width="2.5"
+          d="M6 18L18 6M6 6l12 12"
         ></path>
-      </svg>
-      Cerrar
+      </svg>      
     </button>
-    <!-- Barra de acciones -->
-    <div class="flex flex-wrap items-center justify-center gap-1">
-      @if(estaEnAprobacion()) {
-      <button
-        class="px-4 py-2 bg-green-600 text-white rounded-md shadow text-xs font-semibold hover:bg-green-700 transition"
-        (click)="aprobar()"
-      >
-        Aprobar
-      </button>
-      <button
-        class="px-4 py-2 bg-red-600 text-white rounded-md shadow text-xs font-semibold hover:bg-red-700 transition"
-        (click)="rechazar()"
-      >
-        Rechazar
-      </button>
-      } @if(estaPendiente() ){
-      <button
-        class="px-4 py-2 bg-blue-600 text-white rounded-md shadow text-xs font-semibold hover:bg-blue-700 transition"
-        (click)="guardarCambios()"
-      >
-        Guardar
-      </button>
-      <button
-        class="px-4 py-2 bg-green-600 text-white rounded-md shadow text-xs font-semibold hover:bg-green-700 transition"
-        (click)="solicitarAprobacion()"
-      >
-        Solicitar aprobación
-      </button>
-      }
-    </div>
   </div>
 </div>
 <div class="w-full  mx-auto mt-8 flex items-center justify-around">
@@ -97,12 +95,14 @@
       }"
     >
       @if(estadoTrabajo()==='Aceptado'){
-      <div class=" w-full flex flex-row space-x-4 px-2  py-1">
-        <h1 class="uppercase font-bold">Trabajo Aprobado</h1>
-        <span class="text-[9px] flex flex-col">
-        <p>Por {{ trabajo()?.usuario_libero }}</p>
-        <p>el día {{ trabajo()?.fecha_liberacion | date : "dd-MM-yyyy " }}</p>
-        </span>        
+      <div class="flex items-center space-x-2 text-green-600 dark:text-green-400 py-1 ">
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        <div class="flex flex-col">
+          <span class="text-sm font-medium">Aprobado por {{ trabajo()?.usuario_libero }}</span>
+          <span class="text-xs font-light text-gray-500 dark:text-gray-400">{{ trabajo()?.fecha_liberacion | date : "dd-MM-yyyy" }}</span>
+        </div>
       </div>
       }@else{
       {{ estadoTrabajo() }}
@@ -110,10 +110,11 @@
     </div>
   </div>
 </div>
-<div class="w-full mx-auto max-h-[700px] px-5 overflow-y-auto mt-5">
-  <div class="flex sm:flex-row flex-col items-center justify-items-center gap-4 h-auto overflow-auto  border-2 border-slate-300 dark:border-slate-700 p-4 rounded-lg">
+<div class="w-full mx-auto max-h-[700px].  px-5 overflow-y-auto mt-5 ">
+  <div class="flex sm:flex-row flex-col justify-evenly  gap-4 h-auto overflow-auto  border-2 py-4 rounded-md bg-slate-300  ">
     @for(ruta of rutas();track ruta.componente) {
     <div class="bg-white border h-auto min-w-[300px] border-slate-400 dark:bg-slate-800 dark:border-white rounded-lg shadow ">
+
     <div class="flex justify-start flex-row w-full space-x-2 items-center text-[9px]  mb-2 bg-slate-600 text-white p-2 rounded-t-md">    
       <p-checkbox           
       [ngModel]="ruta.aplica == '1' ? true : false"
@@ -168,7 +169,7 @@
     </div>      
     </div>
     }
-  </div>
+  </div>  
 </div>
 
 }
