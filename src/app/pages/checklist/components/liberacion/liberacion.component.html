@@ -102,8 +102,7 @@
         <span class="text-[9px] flex flex-col">
         <p>Por {{ trabajo()?.usuario_libero }}</p>
         <p>el día {{ trabajo()?.fecha_liberacion | date : "dd-MM-yyyy " }}</p>
-        </span>
-        
+        </span>        
       </div>
       }@else{
       {{ estadoTrabajo() }}
