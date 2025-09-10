@@ -18,6 +18,7 @@ import { formatDate } from '../../utils/formatDate';
 import { RollcallModalComponent } from '@app/pages/components/rollcall.modal/rollcall.modal.component';
 import { LiberacionModalComponent } from '../components/liberacion.modal/liberacion.modal.component';
 
+import { effect } from '@angular/core';
 
 @Component({
   selector: 'app-preprensa',
@@ -90,6 +91,15 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   constructor() {
     super();
     this.checkListService.removeActiveCheckList();
+
+    effect(async() => {
+      if (this.checkListService.checklistSaved()){ 
+        console.log("Info");
+         //this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
+         const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))
+        this._ordenesMetrics.set([...response.ordenes])
+       }
+  });    
   }
 
 

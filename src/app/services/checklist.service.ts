@@ -6,7 +6,7 @@ import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { CheckListDisplay } from '@app/pages/checklist/interfaces/CheckListAnswered';
 import { LogEvent, LogEventType } from '@app/pages/checklist/interfaces/LogEvent';
 import { environment } from '@environments/environment.development';
-import { firstValueFrom, of } from 'rxjs';
+import { firstValueFrom, of, tap } from 'rxjs';
 
 export type  PropsSaveCheckList={
   orden: string;   
@@ -36,7 +36,8 @@ export class CheckListService  {
   private _checkList  = signal<CheckListDisplay | null >(null);  
   private router = inject(Router);
   
-  
+   private _checklistSaved = signal<boolean>(false);
+   public checklistSaved = this._checklistSaved.asReadonly();
 
   public id_checkListCurrent ='';
   public checkList = computed(() => this._checkList());
@@ -46,7 +47,11 @@ export class CheckListService  {
   constructor() { }
   
   saveChecklist(props:PropsSaveCheckList) {    
-    return this.http.post(`${this.API_URL}/api/checklist/registrar`, {...props});
+    return this.http.post(`${this.API_URL}/api/checklist/registrar`, {...props}).pipe(
+      tap(() => this._checklistSaved.set(true)),
+      tap(() => setTimeout(() => this._checklistSaved.set(false), 1000))
+
+    );
   }
 
   
