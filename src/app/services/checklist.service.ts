@@ -35,7 +35,7 @@ export class CheckListService  {
   private http = inject(HttpClient)
   private _checkList  = signal<CheckListDisplay | null >(null);  
   private router = inject(Router);
-
+  
   
 
   public id_checkListCurrent ='';

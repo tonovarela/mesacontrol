@@ -14,6 +14,7 @@ export class RollcallModalComponent implements OnInit, AfterViewInit {
 
   @ViewChild('dialogModal') dialogModal :any;
   onClose = output<void>();
+  
   visible= true;
 
   ngAfterViewInit(): void {
@@ -29,6 +30,7 @@ export class RollcallModalComponent implements OnInit, AfterViewInit {
     this.onClose.emit();
   }
 
+  
   
 
 

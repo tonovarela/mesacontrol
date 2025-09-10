@@ -248,12 +248,16 @@
     </p-dialog>
 
     @if(mostrarCheckList()){        
-    <rollcall-modal (onClose)="cerrarModalCheckList()"></rollcall-modal>
+    <rollcall-modal 
+    (onClose)="cerrarModalCheckList()"
+    ></rollcall-modal>
     }
   
    @if(mostrarModalLiberacion()){   
     <liberacion-modal  
-      [orden]="ordenLiberacion()" (onClose)="cerrarModalLiberacion()"></liberacion-modal>
+      [orden]="ordenLiberacion()"
+      (onClose)="cerrarModalLiberacion()"
+       ></liberacion-modal>
    }
          
 

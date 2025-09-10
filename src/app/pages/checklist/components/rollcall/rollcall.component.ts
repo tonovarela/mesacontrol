@@ -21,7 +21,9 @@ export default class RollcallComponent implements OnInit {
   public pageService = inject(PageService)
   private usuarioService = inject(UsuarioService);
   private pdfService = inject(PdfService);
+ 
   onClose =output<void>();
+  
 
   ngOnInit(): void {            
   }
@@ -74,6 +76,7 @@ export default class RollcallComponent implements OnInit {
     this.checkListService.removeActiveCheckList();
     this.isSaving.set(false);
     this.onClose.emit();
+    //this.onSave.emit();
     //this.router.navigate([this.pageService.getPreviousUrl()]);
 
   }
