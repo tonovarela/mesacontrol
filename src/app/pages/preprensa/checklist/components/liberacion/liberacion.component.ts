@@ -7,6 +7,7 @@ import {
   inject,
   input,
   OnInit,
+  output,
   signal,
 } from '@angular/core';
 import {
@@ -23,29 +24,33 @@ import {
   RutaElemento,
 } from '@app/interfaces/responses/ResponseRutaComponentes';
 import { PrimeModule } from '@app/lib/prime.module';
-import { MetricsService, PdfService, PreprensaService, UiService, UsuarioService } from '@app/services';
+import { CheckListService, MetricsService, PdfService, PreprensaService, UiService, UsuarioService } from '@app/services';
 import { firstValueFrom, switchMap } from 'rxjs';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
+import { columnas } from '@app/pages/data/columnas';
 
 
 
 @Component({
-  selector: 'app-liberacion',
+  selector: 'liberacion',
   imports: [CommonModule, PrimeModule, ReactiveFormsModule, FormsModule],
   templateUrl: './liberacion.component.html',
   styleUrl: './liberacion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class LiberacionComponent implements OnInit {
-  orden = input<string>();
+export  class LiberacionComponent implements OnInit {
 
-  
+
+  orden = input<string>();
+  onClose = output<void>();
+  columnasAuditoria = columnas;;
   private pdfService = inject(PdfService);
   private metricsService = inject(MetricsService)
   private usuarioService = inject(UsuarioService);
   private prePrensaService = inject(PreprensaService);
   private uiService = inject(UiService);
-  private router = inject(Router);
+  private checkListService = inject(CheckListService);
+//  private router = inject(Router);
 
 
   private ultimoModulo = 'pendientes';
@@ -86,18 +91,8 @@ export default class LiberacionComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
 
-  ngOnInit() {
-    if (!this.orden()) {
-      this.router.navigate(['/preprensa/pendientes']);
-      return;
-    }
-    
-    const { modulo } =
-      this.router.lastSuccessfulNavigation?.extras?.state || {};
-    if (modulo) {
-      this.ultimoModulo = modulo;
-    }
-    this.cargarInformacion();
+  ngOnInit() {        
+    this.cargarInformacion();    
   }
 
 
@@ -113,10 +108,9 @@ export default class LiberacionComponent implements OnInit {
 
   async cargarInformacion() {
     const orden = this.orden() || '';
-
     const resp = await firstValueFrom(this.prePrensaService.obtenerComponentes(orden));    
     if (resp.rutas.length === 0) {
-      this.router.navigate(['/preprensa/pendientes']);
+       this.regresar();
       return;
     }
     let rutas = resp.rutas.map((r: Ruta) => {
@@ -126,9 +120,8 @@ export default class LiberacionComponent implements OnInit {
       }            
       return { ...r, ruta };
     });
-    this._trabajo.set(resp.orden!);
-    
-    this.rutas.set(rutas);
+    this._trabajo.set(resp.orden!);    
+    this.rutas.set(rutas);    
   }
 
   public onAplicaChange(ruta: RutaElemento, item: ElementoItem, opcion: any) {
@@ -166,7 +159,6 @@ export default class LiberacionComponent implements OnInit {
     // if (!isConfirmed) {
     //   return;
     // }  
-
     if (this.rutas().filter(r => r.aplica === "1").length ===0){
       this.uiService.mostrarAlertaError('Error', 'No hay componentes seleccionados para el marbete.');
       return;
@@ -195,10 +187,10 @@ export default class LiberacionComponent implements OnInit {
       return;
     }
     const { value: id_usuario } = respLogin;
-
     await this._guardar();
     await firstValueFrom(this.prePrensaService.solicitarRevision(this.orden()!, `${id_usuario!}`));
     this.uiService.mostrarAlertaSuccess('', 'Se han mandado a autorización ');
+    this.checkListService.updatListCheckList();
     this.regresar();
   }
 
@@ -238,6 +230,7 @@ export default class LiberacionComponent implements OnInit {
     const { usuarioLibero } = infoLiberacion!;    
     this.pdfService.descargarPDF(orden,sobreContenido,usuarioLibero || '' );  
     this.uiService.mostrarAlertaSuccess('','Se ha aprobado la solicitud de aprobación');
+    this.checkListService.updatListCheckList();
     this.regresar();
   }
 
@@ -274,11 +267,13 @@ export default class LiberacionComponent implements OnInit {
     const { value: id_usuario } = respLogin;
     await firstValueFrom(this.prePrensaService.rechazarRevision(this.orden()!, motivo!,`${id_usuario!}`));
     this.uiService.mostrarAlertaSuccess('','Se ha rechazado la solicitud de aprobación');
+    this.checkListService.updatListCheckList();
     this.regresar();
   }
 
   public regresar() {
-    return this.router.navigate([`/preprensa/${this.ultimoModulo}`]);
+    this.onClose.emit();
+        
   }
 
   private async _guardar() {

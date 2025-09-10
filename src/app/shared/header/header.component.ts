@@ -13,7 +13,7 @@ import { Usuario } from '../../interfaces/models/Usuario';
 })
 export class HeaderComponent implements OnInit {
 
-  Foto = computed(() => `${!environment.production?'https://servicios.litoprocess.com':''}/colaboradores/api/foto/${this.usuarioService.StatusSesion()?.usuario?.personal}`);
+  Foto = computed(() => `${environment.baseAvatarUrl}/${this.usuarioService.StatusSesion()?.usuario?.personal}`);
   usuarioService = inject(UsuarioService);
   uiService = inject(UiService);
   esDark = false;

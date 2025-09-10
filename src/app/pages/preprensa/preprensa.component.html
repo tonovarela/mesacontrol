@@ -25,13 +25,13 @@
                 [pageSettings]='pageSettings'                                
                 >
                 <e-columns>                    
-                    <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=100>
+                    <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="80">
                     </e-column>                
-                    <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width=80>
+                    <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width="70">
                     </e-column>
-                    <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width=150>
+                    <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width="170">
                     </e-column>    
-                    <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=150>
+                    <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width="150">
                     </e-column>
                     @if(!verPendientes()){
                         <e-column  [allowFiltering]="false" headerText='Marbete' width=80>
@@ -42,17 +42,17 @@
                             </ng-template>
                         </e-column>
                     }
-                    <e-column field='Vendedor' [allowFiltering]="true" width=150>
-                    </e-column>
-                    <e-column field='CantidadEntregar' [allowFiltering]="true" textAlign="right" headerText='Cant'
-                        width=100>
+                    <!-- <e-column field='Vendedor' [allowFiltering]="true" width=150>
+                    </e-column> -->
+                    <e-column field='CantidadEntregar' [allowFiltering]="true"  headerText='Cant'
+                        width="80">
                         <ng-template #template let-data>
                             <div class="flex flex-col">
                                 <span>{{data.CantidadEntregar | number}}</span>
                             </div>
                         </ng-template>
                     </e-column>
-                    <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
+                    <!-- <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
                         <ng-template #template let-data>
                             <div class="flex flex-col">
                                 <span>{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>
@@ -65,9 +65,9 @@
                                 <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
                             </div>
                         </ng-template>
-                    </e-column>
+                    </e-column> -->
                     @for(col of columnasAuditoria; track col.indice) {
-                    <e-column [width]="170">
+                    <e-column [width]="120">
                         <ng-template #headerTemplate>
                             <div class="flex flex-col items-center justify-center">
                                 <p class="font-bold text-[8px]" [ngClass]="col.color">{{col.titulo}}</p>
@@ -81,12 +81,12 @@
                             @let sepuedeVisualizar=estaHabilitado || liberacion ;
                             @let id_checkActual=getCheckListKey(data,col);
                             @if (data.id_checklist_actual){
-                            <div class="flex p-1 w-full">
-                                <div class="w-full h-full flex flex-row    rounded-lg shadow bg-white dark:bg-gray-800  py-1"
+                            <div class="flex w-full py-1">
+                                <div class="w-full  h-full flex flex-col items-center    rounded-lg shadow bg-white dark:bg-gray-800 "
                                     [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
                                     (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">
                                     <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
-                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">                                        
+                                    <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">                                        
                                         @if(liberacion){                                            
                                         {{liberacion | date:'dd-MM-yyyy HH:mm' }}  hrs   
                                         }@else{
@@ -96,25 +96,24 @@
                                 </div>
                             </div>
                             }@else{
-                            <div class="flex flex-row gap-2 text-center text-pink-900">
-                                
+                            <div class="flex flex-row gap-2 text-center text-pink-900">                                
                                 ---------
                             </div>
                             }
                         </ng-template>
                     </e-column>
                     }
-                    <e-column  [allowFiltering]="false" headerText='Liberación de sobre' width='150' >
+                    <e-column  [allowFiltering]="false" headerText='Liberación de sobre' width='120' >
                         <ng-template #template let-data>                 
                            @let sepuedeVisualizar=data.sePuedeVisualizarSobre;  
                            @let colorSVG =data.colorCheckListSobreLiberacion;     
                           @let liberacion =data.liberacionRutas;                                                  
-                            <div class="flex p-1 w-full ">
-                                <div class="w-full h-full flex flex-row    rounded-lg shadow bg-white dark:bg-gray-800  py-1" 
+                            <div class="flex w-full py-1  ">
+                                <div class="w-full  h-full flex flex-col items-center    rounded-lg shadow bg-white dark:bg-gray-800" 
                                     (click)="sepuedeVisualizar ? irRutas(data) : null"
                                     [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'">
                                     <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />                                    
-                                    <div class="text-[10px] text-gray-500 dark:text-white text-center w-full">                                        
+                                    <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">                                        
                                         @if(liberacion){                                            
                                         {{liberacion | date:'dd-MM-yyyy HH:mm' }} hrs   
                                         }@else{

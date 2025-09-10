@@ -6,7 +6,7 @@ import { CheckListAnswered } from '../../interfaces/CheckListAnswered';
 import { CheckListService, MetricsService, PageService, PdfService } from '@app/services';
 import { CommonModule } from '@angular/common';
 import { UsuarioService } from '@app/services/usuario.service';
-import { OrdenMetrics } from '../../../../interfaces/responses/ResponseOrdenMetrics';
+
 
 
 @Component({

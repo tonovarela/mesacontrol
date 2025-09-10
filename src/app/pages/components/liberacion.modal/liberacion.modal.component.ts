@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, input, OnInit, output, ViewChild } from '@angular/core';
 import { PrimeModule } from '@app/lib/prime.module';
-import { LiberacionComponent } from '@app/pages/checklist/components/liberacion/liberacion.component';
+import { LiberacionComponent } from '@app/pages/preprensa/checklist/components/liberacion/liberacion.component';
+
 
 @Component({
   selector: 'liberacion-modal',

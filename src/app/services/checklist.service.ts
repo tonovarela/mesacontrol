@@ -3,10 +3,17 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResponseGetCheckList } from '@app/interfaces/responses/ResponseGetCheckList';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { CheckListDisplay } from '@app/pages/checklist/interfaces/CheckListAnswered';
-import { LogEvent, LogEventType } from '@app/pages/checklist/interfaces/LogEvent';
+import { CheckListDisplay } from '@app/pages/preprensa/checklist/interfaces/CheckListAnswered';
+
+import { LogEvent, LogEventType } from '@app/pages/preprensa/checklist/interfaces/LogEvent';
+
 import { environment } from '@environments/environment.development';
 import { firstValueFrom, of, tap } from 'rxjs';
+
+
+
+
+
 
 export type  PropsSaveCheckList={
   orden: string;   
@@ -42,6 +49,7 @@ export class CheckListService  {
   public id_checkListCurrent ='';
   public checkList = computed(() => this._checkList());
   public currentMetricsOP = signal<OrdenMetrics | null >(null);
+  readonly BASE_AVATAR= environment.baseAvatarUrl;
   
 
   constructor() { }
@@ -50,8 +58,12 @@ export class CheckListService  {
     return this.http.post(`${this.API_URL}/api/checklist/registrar`, {...props}).pipe(
       tap(() => this._checklistSaved.set(true)),
       tap(() => setTimeout(() => this._checklistSaved.set(false), 1000))
-
     );
+  }
+
+  updatListCheckList(){
+    this._checklistSaved.set(true);
+    setTimeout(() =>this._checklistSaved.set(false), 1000);      
   }
 
   
@@ -61,9 +73,7 @@ export class CheckListService  {
     const opMetrics = this.currentMetricsOP()?.NoOrden || '';
      try {      
          const observable =this.http.get<ResponseGetCheckList>(`${this.API_URL}/api/checklist/${this.id_checkListCurrent}?orden=${opMetrics}`);
-          const {checkList:detail,checkListDetalle } = await firstValueFrom(observable);                      
-          
-          
+          const {checkList:detail,checkListDetalle } = await firstValueFrom(observable);                                          
           const options = checkListDetalle.map((item) => ({
             id: item.id,
             label: item.label,
@@ -75,11 +85,12 @@ export class CheckListService  {
                 id: event.id_bitacora,
                 by: event.nombreUsuario,
                 date: new Date(event.fecha_registro),
-                urlUserAvatar:`https://servicios.litoprocess.com/colaboradores/api/foto/${event.personal || 'XXX'}`,
+                urlUserAvatar:`${this.BASE_AVATAR}/${event.personal || 'XXX'}`,
                 type: event.evento === 'ACEPTADO' ? LogEventType.ACCEPTED: LogEventType.REJECTED, 
                 extraInformation: event.comments || '',
               } as LogEvent;
             })] 
+            
           })); 
           this._checkList.set({detail , options});                      
         }catch(error) {
@@ -92,8 +103,7 @@ export class CheckListService  {
   this._checkList.set(null);
   this.currentMetricsOP.set(null);
   this.id_checkListCurrent = '';
-  
-  
+ 
  }
 
 }

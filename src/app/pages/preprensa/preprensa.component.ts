@@ -1,30 +1,36 @@
-import { PrimeModule } from '../../lib/prime.module';
-import { FormsModule } from '@angular/forms';
-import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
-import { SynfusionModule } from '@app/lib/synfusion.module';
-import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { MetricsService, UiService, CheckListService, PdfService, UsuarioService } from '@app/services';
-import { firstValueFrom } from 'rxjs';
+// Angular Core
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
-import { DetailRowService } from '@syncfusion/ej2-angular-grids'
-import { AuditComponent } from '@app/shared/svg/audit/audit.component';
+import { FormsModule } from '@angular/forms';
+// Angular Router
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, Type, ViewChild } from '@angular/core';
-import { columnas } from '../data/columnas';
+// RxJS
+import { firstValueFrom } from 'rxjs';
+// Syncfusion
+import { TextWrapSettingsModel, DetailRowService } from '@syncfusion/ej2-angular-grids';
+// Módulos y Librerías
+import { PrimeModule } from '@app/lib/prime.module';
+import { SynfusionModule } from '@app/lib/synfusion.module';
+// Componentes Base
+import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
+// Servicios
+import { MetricsService, UiService, CheckListService, PdfService, UsuarioService } from '@app/services';
+// Interfaces y Tipos
+import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
-import { formatDate } from '../../utils/formatDate';
+// Componentes
+import { AuditComponent } from '@app/shared/svg/audit/audit.component';
+import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { RollcallModalComponent } from '@app/pages/components/rollcall.modal/rollcall.modal.component';
 import { LiberacionModalComponent } from '../components/liberacion.modal/liberacion.modal.component';
+// Data y Utilities
+import { columnas } from '../data/columnas';
+import { formatDate } from '../../utils/formatDate';
 
-import { effect } from '@angular/core';
 
 @Component({
   selector: 'app-preprensa',
-  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,
-    LiberacionModalComponent
-  ],
+  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,LiberacionModalComponent],
   templateUrl: './preprensa.component.html',
   providers: [DetailRowService],
   styleUrl: './preprensa.component.css',

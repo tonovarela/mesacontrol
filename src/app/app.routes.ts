@@ -31,14 +31,6 @@ export const routes: Routes = [
 
     ]
   },
-  {
-    path: 'rollcall', component: MainLayoutComponent,
-    children: [
-     // { path: "", loadComponent: () => import('./pages/checklist/pages/rollcall/rollcall.component')},
-      {path:"liberacion/:orden", loadComponent: () => import('./pages/checklist/pages/liberacion/liberacion.component')},
-      { path: '**', redirectTo: '' }
-    ]
-  },
   { path: '**', redirectTo: 'preprensa' }
 ];
 

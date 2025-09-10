@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, output, ViewChild } from '@angular/core';
 import { PrimeModule } from '@app/lib/prime.module';
-import RollcallComponent from '@app/pages/checklist/components/rollcall/rollcall.component';
+import RollcallComponent from '@app/pages/preprensa/checklist/components/rollcall/rollcall.component';
+
 
 
 @Component({
@@ -8,7 +9,6 @@ import RollcallComponent from '@app/pages/checklist/components/rollcall/rollcall
   imports: [PrimeModule,RollcallComponent],
   templateUrl: './rollcall.modal.component.html',
   styleUrl: './rollcall.modal.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RollcallModalComponent implements OnInit, AfterViewInit {
 
