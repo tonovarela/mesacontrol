@@ -190,7 +190,7 @@ export  class LiberacionComponent implements OnInit {
     await this._guardar();
     await firstValueFrom(this.prePrensaService.solicitarRevision(this.orden()!, `${id_usuario!}`));
     this.uiService.mostrarAlertaSuccess('', 'Se han mandado a autorización ');
-    this.checkListService.updatListCheckList();
+    this.checkListService.updateListCheckList();
     this.regresar();
   }
 
@@ -230,7 +230,7 @@ export  class LiberacionComponent implements OnInit {
     const { usuarioLibero } = infoLiberacion!;    
     this.pdfService.descargarPDF(orden,sobreContenido,usuarioLibero || '' );  
     this.uiService.mostrarAlertaSuccess('','Se ha aprobado la solicitud de aprobación');
-    this.checkListService.updatListCheckList();
+    this.checkListService.updateListCheckList();
     this.regresar();
   }
 
@@ -267,7 +267,7 @@ export  class LiberacionComponent implements OnInit {
     const { value: id_usuario } = respLogin;
     await firstValueFrom(this.prePrensaService.rechazarRevision(this.orden()!, motivo!,`${id_usuario!}`));
     this.uiService.mostrarAlertaSuccess('','Se ha rechazado la solicitud de aprobación');
-    this.checkListService.updatListCheckList();
+    this.checkListService.updateListCheckList();
     this.regresar();
   }
 

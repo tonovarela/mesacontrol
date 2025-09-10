@@ -25,11 +25,15 @@ export default class RollcallComponent implements OnInit {
   onClose =output<void>();
   
 
-  ngOnInit(): void {            
+  ngOnInit(): void {   
+
   }
   private checkListService = inject(CheckListService);  
   checkList = computed(() => this.checkListService.checkList());  
   opMetrics = computed(() => `${this.checkListService.currentMetricsOP()?.NoOrden || ''}  ${this.checkListService.currentMetricsOP()?.NombreTrabajo || ''}`);
+  fechaEmision = computed(() => `${this.checkListService.currentMetricsOP()?.FechaEmision || ''}`);
+  fechaEntrega =computed(() => `${this.checkListService.currentMetricsOP()?.FechaEntrega || ''}`);
+  vendedor =computed(() => `${this.checkListService.currentMetricsOP()?.Vendedor || ''}`);
   isSaving = signal<boolean>(false);
 
   title = computed(() => {

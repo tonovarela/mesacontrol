@@ -1,7 +1,52 @@
 <div class="w-full pt-8">
     <div class="max-w-4xl mx-auto border bg-white dark:bg-gray-800 dark:border-gray-700 shadow-lg rounded-lg overflow-hidden">
-        <div class="flex items-center justify-between text-center p-2 bg-gray-100 dark:bg-gray-700">
-            <h1 class="w-full font-bold">{{opMetrics() }}</h1>
+        <!-- Header con información de la orden -->
+        <div class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-gray-700 dark:to-gray-600 p-4">
+            <h1 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 text-center">
+                {{opMetrics()}}
+            </h1>
+            
+            <!-- Grid de información -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Vendedor -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Vendedor</span>
+                    </div>
+                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-100 mt-1">
+                        {{vendedor()}}
+                    </p>
+                </div>
+
+                <!-- Fecha de emisión -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Fecha emisión</span>
+                    </div>
+                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-100 mt-1">
+                        {{ fechaEmision() | date:'dd/MM/yyyy'  }}
+                    </p>
+                </div>
+
+                <!-- Fecha de entrega -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                    <div class="flex items-center space-x-2">
+                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="text-xs font-medium text-gray-500 dark:text-gray-400">Fecha entrega</span>
+                    </div>
+                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-100 mt-1">
+                        {{ fechaEntrega() | date:'dd/MM/yyyy'  }}
+                    </p>
+                </div>
+            </div>
         </div>     
              
         @if(checkList()!=null) {                
@@ -16,6 +61,4 @@
         }            
         
     </div>
-
 </div>
-

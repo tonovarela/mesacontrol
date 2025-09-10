@@ -179,8 +179,7 @@ ngOnInit(): void {
   }
 
   irRutas(orden:OrdenMetrics){   
-    this._ordenLiberacion.set(orden);
-    //this.router.navigateByUrl(`/rollcall/liberacion/${orden.NoOrden}`, { state:{ modulo:orden.id_estado ==='2'?'liberadas':'pendientes'}});
+    this._ordenLiberacion.set(orden);    
   }
 
 
@@ -189,8 +188,6 @@ ngOnInit(): void {
   async ir(ordenMetrics: OrdenMetrics, actual: { id_checkActual: string, liberacion?: Date }) {
     const { id_checkActual, liberacion } = actual;
     const { id_checklist_actual } = ordenMetrics;
-
-
     this.checkListService.currentMetricsOP.set(ordenMetrics);
     if (liberacion) {
       this.checkListService.id_checkListCurrent = id_checkActual;
@@ -202,7 +199,6 @@ ngOnInit(): void {
   }
 
   cerrarModalCheckList(){
-
     this.checkListService.removeActiveCheckList();
   }
 

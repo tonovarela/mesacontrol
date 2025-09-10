@@ -61,7 +61,7 @@ export class CheckListService  {
     );
   }
 
-  updatListCheckList(){
+  updateListCheckList(){
     this._checklistSaved.set(true);
     setTimeout(() =>this._checklistSaved.set(false), 1000);      
   }
