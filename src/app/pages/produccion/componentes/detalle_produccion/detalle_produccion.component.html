@@ -70,7 +70,7 @@
                 <e-column [allowFiltering]="false" textAlign="Center" width=70 headerText='VoBo'>
                     <ng-template #template let-detalle>
                         <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"
-                            [(ngModel)]="detalle.voBo" (change)="onVoBoChange(detalle.id_produccion, $event)"
+                            [(ngModel)]="detalle.voBo" (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
                             class="cursor-pointer" />
                     </ng-template>
                 </e-column>
@@ -78,14 +78,19 @@
                 <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">
                     <!-- TODO: Pendiente solo para Offset -->
                     <ng-template #template let-detalle>
+                        
                         <input type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
-                            (change)="onTrazoChange(detalle.id_produccion, $event)" class="cursor-pointer" />
+                            (change)="updateCheck(detalle.id_produccion, $event,'trazo')"
+                             class="cursor-pointer" />
                     </ng-template>
                 </e-column>
-                <e-column [allowFiltering]="false" width=100 headerText='Carta color' textAlign="Center">
-                    <ng-template #template let-detalle>
-                        <input type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
-                            (change)="onTrazoChange(detalle.id_produccion, $event)" class="cursor-pointer" />
+                <e-column [allowFiltering]="false" width=100 headerText='Carta color' textAlign="Center">                    
+                    <ng-template #template let-detalle>                                            
+                        <input type="checkbox"  [id]="detalle.id_produccion" 
+                            [disabled]="detalle.id_estado != '1'" 
+                            [(ngModel)]="detalle.carta_color"
+                            (change)="updateCheck(detalle.id_produccion, $event,'carta')"
+                             class="cursor-pointer" />
                     </ng-template>
                 </e-column>
                 

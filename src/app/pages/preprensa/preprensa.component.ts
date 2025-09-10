@@ -99,10 +99,11 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
     this.checkListService.removeActiveCheckList();
 
     effect(async() => {
-      if (this.checkListService.checklistSaved()){ 
-        console.log("Info");
-         //this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
-         const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))
+      if (this.checkListService.checklistSaved()){         
+        this._ordenesMetrics.set([]);
+        this.grid.showSpinner();        
+        const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))
+        this.grid.hideSpinner();
         this._ordenesMetrics.set([...response.ordenes])
        }
   });    

@@ -12,7 +12,7 @@ import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
   imports: [ FormsModule, CommonModule, PrimeModule, SynfusionModule],
   templateUrl: './detalle_produccion.component.html',
   styleUrl: './detalle_produccion.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  //changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleProduccionComponent extends BaseGridComponent  implements OnInit {   
   @Input() detalles!: any[];
@@ -22,9 +22,8 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
   @Input() registrarMuestra =true;
 
   @Output() selectMuestra = new EventEmitter<any>();
-  @Output() cerrarMuestra = new EventEmitter<string>();
-  @Output() voBoChange = new EventEmitter<{ id: string, event: any }>();
-  @Output() trazoChange = new EventEmitter<{ id: string, event: any }>();
+  @Output() cerrarMuestra = new EventEmitter<string>();  
+  @Output() onChange = new EventEmitter<{ id: string, value: boolean,tipo:string }>();
   @Output() verHistorial = new EventEmitter<any>();
   protected minusHeight = 0.30;
   
@@ -37,11 +36,11 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
     this.iniciarResizeGrid(0.28,false);
   }
 
-  onVoBoChange(id: string, event: any) {
-    this.voBoChange.emit({ id, event });
-  }
-  onTrazoChange(id: string, event: any) {
-    this.trazoChange.emit({ id, event });
+  
+
+  
+  updateCheck(id: string, event: any, tipo:string) {    
+    this.onChange.emit({ id, value: event.target.checked as boolean, tipo });    
   }
 
   onVerHistorial(detalle: any) {    

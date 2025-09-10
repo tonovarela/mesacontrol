@@ -29,8 +29,16 @@
             </e-columns>
         </ejs-grid>
 
-        <detalle-produccion [orden]="currentOrder()" [detalles]="currentDetail()" [selectedId]="selectedMuestra()?.id_produccion || null" (selectMuestra)="onSelectMuestra($event)" (verHistorial)="onVerHistorial($event)" (cerrarMuestra)="cerrarMuestra($event)"
-            (voBoChange)="onChangeVoBo($event.id, $event.event)" (trazoChange)="onChangeTrazo($event.id, $event.event)">
+        <detalle-produccion 
+        [orden]="currentOrder()" 
+              [detalles]="currentDetail()" 
+              [selectedId]="selectedMuestra()?.id_produccion || null" 
+             (selectMuestra)="onSelectMuestra($event)"              
+             (verHistorial)="onVerHistorial($event)" 
+             (cerrarMuestra)="cerrarMuestra($event)"
+            (onChange)="change($event.id, $event.value, $event.tipo)"
+            
+            >
         </detalle-produccion>
     </div>
     } 
@@ -121,8 +129,9 @@
             <div class="py-1 px-2 w-full">
                 <search-metrics [typeSearch]="type" placeholder="Registrar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
             </div>
-            <detalle-produccion [orden]="currentOrder()" [detalles]="currentDetail()" [selectedId]="selectedMuestra()?.id_produccion || null" (selectMuestra)="onSelectMuestra($event)" (verHistorial)="onVerHistorial($event)" (cerrarMuestra)="cerrarMuestra($event)"
-                (voBoChange)="onChangeVoBo($event.id, $event.event)" (trazoChange)="onChangeTrazo($event.id, $event.event)">
+            <detalle-produccion [orden]="currentOrder()" [detalles]="currentDetail()" [selectedId]="selectedMuestra()?.id_produccion || null" (selectMuestra)="onSelectMuestra($event)" (verHistorial)="onVerHistorial($event)" (cerrarMuestra)="cerrarMuestra($event)"                
+                (onChange)="change($event.id, $event.value, $event.tipo)"
+            >
             </detalle-produccion>
         </div>
     </div>

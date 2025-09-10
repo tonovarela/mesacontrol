@@ -46,6 +46,16 @@ export class ProduccionService {
         });
     }
 
+    actualizarCarta(id_produccion: string, carta: boolean, id_usuario: string) {
+        return this.http.put(`${this.API_URL}/api/produccion/carta`, {
+            request: {
+                carta,
+                id_produccion,
+                id_usuario
+            }
+        });
+    }
+
     finalizarMuestra(request: { id_produccion: string, id_usuario: string }) {
         return this.http.put(`${this.API_URL}/api/produccion/finalizar`, { request });
     }

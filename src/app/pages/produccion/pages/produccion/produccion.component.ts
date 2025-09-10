@@ -144,6 +144,7 @@ export default class ProduccionComponent
       ...item,
       trazo: item.trazo === '1' ? true : false, // Convertir el valor a booleano
       voBo: item.voBo === '1' ? true : false, // Convertir el valor a booleano
+      carta_color: item.carta_color === '1' ? true : false, // Convertir el valor a booleano
     }));
     this._currentOrder.update((orderModel) => {
       return { ...orderModel, detalle: newData };
@@ -200,7 +201,30 @@ export default class ProduccionComponent
     this.selectedMuestra.set(null);
   }
 
-  async onChangeTrazo(id_produccion: string, event: any) {
+ 
+
+ 
+
+  async change(id_produccion: string, event: boolean, tipo:string) {
+    switch (tipo) {
+      case 'trazo':
+        await this.onChangeTrazo(id_produccion, { target: { checked: event } });
+        break;
+      case 'voBo':
+        await this.onChangeVoBo(id_produccion, { target: { checked: event } });
+        break;
+      case 'carta':
+        await this.onChangeCarta(id_produccion, { target: { checked: event } });
+        break;
+      default:
+        console.warn(`Tipo desconocido: ${tipo}`);
+        break;
+    }
+    
+  }
+    
+
+  private async onChangeTrazo(id_produccion: string, event: any) {
     const checked = event.target.checked;
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
     try {
@@ -221,7 +245,7 @@ export default class ProduccionComponent
     }
   }
 
-  async onChangeVoBo(id_produccion: string, event: any) {
+  private async onChangeVoBo(id_produccion: string, event: any) {
     const checked = event.target.checked;
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
     try {
@@ -241,6 +265,27 @@ export default class ProduccionComponent
       );
     }
   }
+
+
+  private async onChangeCarta(id_produccion: string, event: any) {    
+   const checked = event.target.checked;            
+   const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id!;
+   try {
+     await firstValueFrom(
+       this.produccionService.actualizarCarta(
+         id_produccion,
+         checked,
+         `${id_usuario}`
+       )
+     );
+     const orden = this.currentDetail()[0].orden_metrics;
+     await this.loadDataOrder(orden);
+   } catch (error) {
+     this.uiService.mostrarAlertaError('Error al actualizar Carta Color','No se pudo actualizar el estado de Carta Color. Inténtalo de nuevo más tarde.');
+   }
+
+
+}
 
   async onVerHistorial(detalle: any) {
     const { id_produccion } = detalle;
