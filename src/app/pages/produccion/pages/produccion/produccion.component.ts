@@ -103,7 +103,7 @@ export default class ProduccionComponent
     const {rowData:orden,  cellIndex} =  args;
    if (cellIndex !== 0) {
     return;
-   }    
+   }        
       this.onSelectOrder(orden);
   }
 
@@ -144,7 +144,8 @@ export default class ProduccionComponent
       ...item,
       trazo: item.trazo === '1' ? true : false, // Convertir el valor a booleano
       voBo: item.voBo === '1' ? true : false, // Convertir el valor a booleano
-      carta_color: item.carta_color === '1' ? true : false, // Convertir el valor a booleano
+      carta_color: item.carta_color === '1' ? true : false, // Convertir el valor a booleano,
+      puedeRegistrarOffset: item.proceso.includes('OFFSET'),
     }));
     this._currentOrder.update((orderModel) => {
       return { ...orderModel, detalle: newData };

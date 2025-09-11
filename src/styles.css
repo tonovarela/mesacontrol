@@ -25,6 +25,10 @@
     
 }
 
+.no-metrics {
+  @apply bg-pink-400;
+} 
+
 /* Animación de aparición */
 @layer utilities {
     .animate-fade-in {

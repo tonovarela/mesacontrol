@@ -4,15 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { RowDataBoundEventArgs, TextWrapSettingsModel} from '@syncfusion/ej2-angular-grids';
 
 
 @Component({
-  selector: 'detalle-produccion',
+  selector: 'detalle-produccion',  
   imports: [ FormsModule, CommonModule, PrimeModule, SynfusionModule],
   templateUrl: './detalle_produccion.component.html',
   styleUrl: './detalle_produccion.component.css',
-  //changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetalleProduccionComponent extends BaseGridComponent  implements OnInit {   
   @Input() detalles!: any[];
@@ -32,18 +32,25 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
   constructor() {
     super();
   }
-  ngOnInit(): void {   
+  ngOnInit(): void {       
     this.iniciarResizeGrid(0.28,false);
   }
 
   
+  rowDataBound(args: RowDataBoundEventArgs): void {
+    const data = args.data as any;        
+    if (data.enMetrics !=='1'){            
+      (args.row as HTMLTableRowElement).classList.add('no-metrics');
+    }       
+  }
 
   
   updateCheck(id: string, event: any, tipo:string) {    
     this.onChange.emit({ id, value: event.target.checked as boolean, tipo });    
   }
 
-  onVerHistorial(detalle: any) {    
+  onVerHistorial(detalle: any) {  
+    
     this.verHistorial.emit(detalle);
   }
 

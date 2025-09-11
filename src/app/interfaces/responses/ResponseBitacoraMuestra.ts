@@ -2,6 +2,7 @@ export interface ResponseBitacoraMuestra {
     muestras: Muestra[];
     trazo?:EventoActividad;
     voBo?:EventoActividad;
+    carta?:EventoActividad;
 }
 
 export interface EventoActividad {

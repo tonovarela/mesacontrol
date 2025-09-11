@@ -1,8 +1,11 @@
 <div class="w-full h-fit border-2  ">    
         <ejs-grid #grid [dataSource]='detalles' [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings "
-            [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='10'
-            (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid" allowReordering='true'
-            [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
+            [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='false' rowHeight='10'
+            (rowDataBound)="rowDataBound($event)"
+            (dataBound)='dataBound()'
+            [allowSelection]='false'
+            [allowExcelExport]='true' [height]="heightGrid" allowReordering='true'
+            [allowFiltering]='true' allowPaging="true " allowResizing="true" allowSorting="true"
             [pageSettings]='pageSettings'>
             <e-columns>                
                 <e-column [allowFiltering]="false" width=100 headerText='Detalles'>
@@ -73,13 +76,10 @@
                             [(ngModel)]="detalle.voBo" (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
                             class="cursor-pointer" />
                     </ng-template>
-                </e-column>
-                
-                <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">
-                    <!-- TODO: Pendiente solo para Offset -->
-                    <ng-template #template let-detalle>
-                        
-                        <input type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
+                </e-column>                
+                <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">                
+                    <ng-template #template let-detalle>                            
+                        <input *ngIf="detalle.puedeRegistrarOffset" type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
                             (change)="updateCheck(detalle.id_produccion, $event,'trazo')"
                              class="cursor-pointer" />
                     </ng-template>
