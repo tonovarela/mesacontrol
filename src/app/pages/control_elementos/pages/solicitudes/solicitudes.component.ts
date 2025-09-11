@@ -48,7 +48,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     this.activatedRoute.data.subscribe(({modulo}) => { this._modulo.set(modulo || 'activas');  });
     this.cargarSolicitudes();    
     this.iniciarResizeGrid(0.39, true);
-    this.autoFitColumns = true;    
+    this.autoFitColumns = false;    
   }
 
   tituloModalPrestamos = computed(() => {

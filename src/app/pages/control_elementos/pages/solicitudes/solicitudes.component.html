@@ -1,10 +1,10 @@
-<div id="initial" class="min-h-screen bg-gray-50 dark:bg-gray-900">
+<div id="initial" class="min-h-screen bg-gray-50 dark:bg-gray-900 ">
     <!-- Header minimalista -->
-    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div class="max-w-7xl mx-auto  ">
-            <div class="flex justify-between items-center py-2">       
+    <div class="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto ">
+            <div class="flex justify-between items-center px-3 py-4 ">       
                 <div class="flex items-center space-x-4">                    
-                    <h1 class="text-2xl font-light text-gray-900 dark:text-gray-100">
+                    <h1 class="text-2xl font-light text-gray-900 dark:text-gray-100">                      
                         {{ modulo()=="activas" ? 'Control de elementos' : "Histórico control de elementos" }}
                     </h1>
                 </div>              
@@ -31,11 +31,11 @@
                         [pageSettings]='pageSettings'
                         >
             <e-columns>                
-                <e-column field='NoOrden' headerText='OP' width='100'></e-column>
-                <e-column field='nombreTrabajo' headerText='Trabajo' width='100'></e-column>
-                <e-column field='Vendedor' headerText='Vendedor' width='100'></e-column>
-                <e-column field='NombreCliente' headerText='NombreCliente' width='100'></e-column>                                
-                <e-column  headerText='Detalle'  allowFiltering="false" width='150'>
+                <e-column field='NoOrden' headerText='OP' width='40'></e-column>
+                <e-column field='nombreTrabajo' headerText='Trabajo' width='150'></e-column>
+                <e-column field='Vendedor' headerText='Vendedor' width='60'></e-column>
+                <!-- <e-column field='NombreCliente' headerText='NombreCliente' width='60'></e-column>                                 -->
+                <e-column  headerText='Detalle'  allowFiltering="false" width='50'>
                     <ng-template #template let-data>
                         <a (click)="verDetallePrestamo(data.NoOrden)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">
                             <!-- Icono Detalle (histórico/archivo) -->
@@ -48,7 +48,7 @@
                     </ng-template>
                 </e-column>
                 @if(modulo() == "activas") {
-                <e-column  headerText=''  allowFiltering="false" width='150'>
+                <e-column  headerText=''  allowFiltering="false" width='50'>
                     <ng-template #template let-data>
                         <a (click)="irDetalle(data)" class="flex items-center justify-center gap-1 text-blue-500 hover:underline hover:cursor-pointer">
                             <!-- Icono Devolución (flecha circular) -->
