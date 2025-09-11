@@ -1,263 +1,441 @@
 <div class="relative">
-@if(cargando() ){
-    <div class="fixed inset-0 flex flex-col space-y-6 justify-center items-center bg-transparent dark:bg-gray-900 z-50">
-        <svg class="animate-spin h-24 w-24 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-        </svg>
-        <div class="text-blue-600 font-medium text-2xl">Cargando datos...</div>
+  @if(cargando() ){
+  <div
+    class="fixed inset-0 flex flex-col space-y-6 justify-center items-center bg-transparent dark:bg-gray-900 z-50"
+  >
+    <svg
+      class="animate-spin h-24 w-24 text-blue-600"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      ></circle>
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+      ></path>
+    </svg>
+    <div class="text-blue-600 font-medium text-2xl">Cargando datos...</div>
+  </div>
+  } @else {
+  <div id="initial" class="flex flex-col">
+    <div class="py-1 px-2 flex sm:flex-row flex-col sm:space-x-6">
+      <h1 class="text-2xl text-slate-500" style="white-space: nowrap">
+        {{ titulo() }}
+      </h1>
+      @if(verPendientes()){
+      <div class="w-full">
+        <search-metrics
+          placeholder="Registrar OP"
+          [typeSearch]="type"
+          (onSelectOrder)="onSelectOrder($event)"
+        ></search-metrics>
+      </div>
+      }
     </div>
-    }
-    @else {    
-    <div id="initial" class="flex flex-col">
-        <div class="py-1 px-2  flex sm:flex-row flex-col sm:space-x-6 ">
-            <h1 class="text-2xl text-slate-500 " style="white-space: nowrap;"> {{titulo()}}</h1>
-            @if(verPendientes()){
-                <div class="w-full"><search-metrics placeholder="Registrar OP" [typeSearch]="type"   (onSelectOrder)="onSelectOrder($event)"></search-metrics></div>            
-            }
-        </div>
-        <div class="px-1  overflow-auto">
-            <ejs-grid #grid [dataSource]='ordenesMetrics()' [textWrapSettings]='wrapSettings'
-                [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true'
-                rowHeight='30' (dataBound)='dataBound()' [allowExcelExport]='true' [height]="heightGrid"
-                allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
-                [pageSettings]='pageSettings'                                
+    <div class="px-1 overflow-auto">
+      <ejs-grid
+        #grid
+        [dataSource]="ordenesMetrics()"
+        [textWrapSettings]="wrapSettings"
+        [filterSettings]="filterSettings"
+        [allowTextWrap]="true"
+        [enableAdaptiveUI]="false"
+        [enableHover]="true"
+        rowHeight="30"
+        (dataBound)="dataBound()"
+        [allowExcelExport]="true"
+        [height]="heightGrid"
+        allowReordering="true"
+        [allowFiltering]="true"
+        allowPaging="true "
+        allowResizing="true"
+        allowSorting="true"
+        [pageSettings]="pageSettings"
+      >
+        <e-columns>
+          <e-column
+            field="NoOrden"
+            [allowFiltering]="true"
+            headerText="Orden"
+            width="80"
+          >
+          </e-column>
+          <e-column
+            field="TipoProd"
+            [allowFiltering]="true"
+            headerText="Tipo"
+            width="70"
+          >
+          </e-column>
+          <e-column
+            field="NombreTrabajo"
+            [allowFiltering]="true"
+            headerText="Nombre de trabajo"
+            width="170"
+          >
+          </e-column>
+          <e-column
+            field="NombreCliente"
+            [allowFiltering]="true"
+            headerText="Cliente"
+            width="150"
+          >
+          </e-column>
+          @if(!verPendientes()){
+          <e-column [allowFiltering]="false" headerText="Marbete" width="80">
+            <ng-template #template let-data>
+              <div class="flex flex-col items-center justify-center">
+                <button (click)="descargarPDF(data)" class="w-7 h-7">
+                  <svg
+                    viewBox="0 0 400 400"
+                    class="fill-red-700 dark:fill-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                      <defs></defs>
+                      <title></title>
+                      <g id="xxx-word">
+                        <path
+                          class="cls-1"
+                          d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,0,1,10,0V95h70a5,5,0,0,1,0,10Z"
+                        ></path>
+                        <path
+                          class="cls-1"
+                          d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"
+                        ></path>
+                        <path
+                          class="cls-1"
+                          d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"
+                        ></path>
+                        <path
+                          class="cls-1"
+                          d="M275,280H125a5,5,0,0,1,0-10H275a5,5,0,0,1,0,10Z"
+                        ></path>
+                        <path
+                          class="cls-1"
+                          d="M200,330H125a5,5,0,0,1,0-10h75a5,5,0,0,1,0,10Z"
+                        ></path>
+                        <path
+                          class="cls-1"
+                          d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"
+                        ></path>
+                        <path
+                          class="cls-1"
+                          d="M145,236h-9.61V182.68h21.84q9.34,0,13.85,4.71a16.37,16.37,0,0,1-.37,22.95,17.49,17.49,0,0,1-12.38,4.53H145Zm0-29.37h11.37q4.45,0,6.8-2.19a7.58,7.58,0,0,0,2.34-5.82,8,8,0,0,0-2.17-5.62q-2.17-2.34-7.83-2.34H145Z"
+                        ></path>
+                        <path
+                          class="cls-1"
+                          d="M183,236V182.68H202.7q10.9,0,17.5,7.71t6.6,19q0,11.33-6.8,18.95T200.55,236Zm9.88-7.85h8a14.36,14.36,0,0,0,10.94-4.84q4.49-4.84,4.49-14.41a21.91,21.91,0,0,0-3.93-13.22,12.22,12.22,0,0,0-10.37-5.41h-9.14Z"
+                        ></path>
+                        <path
+                          class="cls-1"
+                          d="M245.59,236H235.7V182.68h33.71v8.24H245.59v14.57h18.75v8H245.59Z"
+                        ></path>
+                      </g>
+                    </g>
+                  </svg>
+                </button>
+              </div>
+            </ng-template>
+          </e-column>
+          }
+          <e-column
+            field="CantidadEntregar"
+            [allowFiltering]="true"
+            headerText="Cant"
+            width="80"
+          >
+            <ng-template #template let-data>
+              <div class="flex justify-end pr-1">
+                <div>{{ data.CantidadEntregar | number }} </div>
+              </div>
+            </ng-template>
+          </e-column>
+          @for(col of columnasAuditoria; track col.indice) {
+          <e-column [width]="120">
+            <ng-template #headerTemplate>
+              <div class="flex flex-col items-center justify-center">
+                <p class="font-bold text-[8px]" [ngClass]="col.color">{{ col.titulo }}</p>
+                <div class="text-[8px]">{{ col.subtitulo }}</div>
+              </div>
+            </ng-template>
+            <ng-template #template let-data>
+              @let estaHabilitado=esAuditHabilitado(data, col); @let
+              colorSVG=colorChecklist(data,col); @let
+              liberacion=fechaLiberacion(data,col); @let
+              sepuedeVisualizar=estaHabilitado || liberacion ; @let
+              id_checkActual=getCheckListKey(data,col); @if
+              (data.id_checklist_actual){
+              <div class="flex w-full py-1">
+                <div
+                  class="w-full h-full flex flex-col items-center rounded-lg shadow bg-white dark:bg-gray-800"
+                  [ngClass]="
+                    sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'
+                  "
+                  (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null"
                 >
-                <e-columns>                    
-                    <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="80">
-                    </e-column>                
-                    <e-column field='TipoProd' [allowFiltering]="true" headerText='Tipo' width="70">
-                    </e-column>
-                    <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Nombre de trabajo' width="170">
-                    </e-column>    
-                    <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width="150">
-                    </e-column>
-                    @if(!verPendientes()){
-                        <e-column  [allowFiltering]="false" headerText='Marbete' width=80>
-                            <ng-template #template let-data>
-                                <button  (click)="descargarPDF(data)" class="flex items-center  w-7 h-7">
-                                    <svg viewBox="0 0 400 400" class="fill-red-700 dark:fill-white" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs>  </defs> <title></title> <g id="xxx-word"> <path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,0,1,10,0V95h70a5,5,0,0,1,0,10Z"></path> <path class="cls-1" d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z"></path> <path class="cls-1" d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z"></path> <path class="cls-1" d="M275,280H125a5,5,0,0,1,0-10H275a5,5,0,0,1,0,10Z"></path> <path class="cls-1" d="M200,330H125a5,5,0,0,1,0-10h75a5,5,0,0,1,0,10Z"></path> <path class="cls-1" d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z"></path> <path class="cls-1" d="M145,236h-9.61V182.68h21.84q9.34,0,13.85,4.71a16.37,16.37,0,0,1-.37,22.95,17.49,17.49,0,0,1-12.38,4.53H145Zm0-29.37h11.37q4.45,0,6.8-2.19a7.58,7.58,0,0,0,2.34-5.82,8,8,0,0,0-2.17-5.62q-2.17-2.34-7.83-2.34H145Z"></path> <path class="cls-1" d="M183,236V182.68H202.7q10.9,0,17.5,7.71t6.6,19q0,11.33-6.8,18.95T200.55,236Zm9.88-7.85h8a14.36,14.36,0,0,0,10.94-4.84q4.49-4.84,4.49-14.41a21.91,21.91,0,0,0-3.93-13.22,12.22,12.22,0,0,0-10.37-5.41h-9.14Z"></path> <path class="cls-1" d="M245.59,236H235.7V182.68h33.71v8.24H245.59v14.57h18.75v8H245.59Z"></path> </g> </g></svg>                                    
-                                </button>
-                            </ng-template>
-                        </e-column>
+                  <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
+                  <div
+                    class="text-[9px] text-gray-500 dark:text-white text-center w-full"
+                  >
+                    @if(liberacion){
+                    {{ liberacion | date : "dd-MM-yyyy HH:mm" }} hrs }@else{
+                    <span>--------</span>
                     }
-                    <!-- <e-column field='Vendedor' [allowFiltering]="true" width=150>
-                    </e-column> -->
-                    <e-column field='CantidadEntregar' [allowFiltering]="true"  headerText='Cant'
-                        width="80">
-                        <ng-template #template let-data>
-                            <div class="flex flex-col">
-                                <span>{{data.CantidadEntregar | number}}</span>
-                            </div>
-                        </ng-template>
-                    </e-column>
-                    <!-- <e-column field='FechaEmision' [allowFiltering]="false" headerText='Emision' width=100>
-                        <ng-template #template let-data>
-                            <div class="flex flex-col">
-                                <span>{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>
-                            </div>
-                        </ng-template>
-                    </e-column>
-                    <e-column field='FechaEntrega' [allowFiltering]="false" headerText='Entrega' width=110>
-                        <ng-template #template let-data>
-                            <div class="flex flex-col">
-                                <span>{{data.FechaEntrega | date:'dd-MM-yyyy'}}</span>
-                            </div>
-                        </ng-template>
-                    </e-column> -->
-                    @for(col of columnasAuditoria; track col.indice) {
-                    <e-column [width]="120">
-                        <ng-template #headerTemplate>
-                            <div class="flex flex-col items-center justify-center">
-                                <p class="font-bold text-[8px]" [ngClass]="col.color">{{col.titulo}}</p>
-                                <div class="text-[8px]">{{col.subtitulo}}</div>
-                            </div>    
-                        </ng-template>
-                        <ng-template #template let-data>
-                            @let estaHabilitado=esAuditHabilitado(data, col);
-                            @let colorSVG=colorChecklist(data,col);
-                            @let liberacion=fechaLiberacion(data,col);
-                            @let sepuedeVisualizar=estaHabilitado || liberacion ;
-                            @let id_checkActual=getCheckListKey(data,col);
-                            @if (data.id_checklist_actual){
-                            <div class="flex w-full py-1">
-                                <div class="w-full  h-full flex flex-col items-center    rounded-lg shadow bg-white dark:bg-gray-800 "
-                                    [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
-                                    (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">
-                                    <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
-                                    <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">                                        
-                                        @if(liberacion){                                            
-                                        {{liberacion | date:'dd-MM-yyyy HH:mm' }}  hrs   
-                                        }@else{
-                                        <span>--------</span>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            }@else{
-                            <div class="flex flex-row gap-2 text-center text-pink-900">                                
-                                ---------
-                            </div>
-                            }
-                        </ng-template>
-                    </e-column>
+                  </div>
+                </div>
+              </div>
+              }@else{
+              <div class="flex flex-row gap-2 text-center text-pink-900">
+                ---------
+              </div>
+              }
+            </ng-template>
+          </e-column>
+          }
+          <e-column
+            [allowFiltering]="false"
+            headerText="Liberación de sobre"
+            width="120"
+          >
+            <ng-template #template let-data>
+              @let sepuedeVisualizar=data.sePuedeVisualizarSobre; @let colorSVG
+              =data.colorCheckListSobreLiberacion; @let liberacion
+              =data.liberacionRutas;
+              <div class="flex w-full py-1">
+                <div
+                  class="w-full h-full flex flex-col items-center rounded-lg shadow bg-white dark:bg-gray-800"
+                  (click)="sepuedeVisualizar ? irRutas(data) : null"
+                  [ngClass]="
+                    sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'
+                  "
+                >
+                  <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
+                  <div
+                    class="text-[9px] text-gray-500 dark:text-white text-center w-full"
+                  >
+                    @if(liberacion){
+                    {{ liberacion | date : "dd-MM-yyyy HH:mm" }} hrs }@else{
+                    <span>--------</span>
                     }
-                    <e-column  [allowFiltering]="false" headerText='Liberación de sobre' width='120' >
-                        <ng-template #template let-data>                 
-                           @let sepuedeVisualizar=data.sePuedeVisualizarSobre;  
-                           @let colorSVG =data.colorCheckListSobreLiberacion;     
-                          @let liberacion =data.liberacionRutas;                                                  
-                            <div class="flex w-full py-1  ">
-                                <div class="w-full  h-full flex flex-col items-center    rounded-lg shadow bg-white dark:bg-gray-800" 
-                                    (click)="sepuedeVisualizar ? irRutas(data) : null"
-                                    [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'">
-                                    <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />                                    
-                                    <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">                                        
-                                        @if(liberacion){                                            
-                                        {{liberacion | date:'dd-MM-yyyy HH:mm' }} hrs   
-                                        }@else{
-                                        <span>--------</span>
-                                        }
-                                    </div>
-                                        </div> 
-                                        </div>
-
-                        </ng-template>
-                    </e-column>
-                </e-columns>
-               
-                
-            </ejs-grid>
-        </div>
-    
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
     </div>
-    }    
+  </div>
+  }
 
+  <p-dialog
+    header="Editar Orden"
+    [modal]="true"
+    [visible]="puedeDefinirOrdenMetrics()"
+    [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  >
+    <ng-template #headless>
+      <form
+        (ngSubmit)="guardarOrdenMetricsPorDefinir()"
+        #formOrden="ngForm"
+        class="p-8"
+      >
+        <!-- Campos informativos de la OP -->
+        <div
+          class="mb-6 grid sm:grid-cols-2 text-gray-700 dark:text-white gap-4"
+        >
+          <div>
+            <label class="block mb-1 text-sm font-medium">N° Orden</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
+              [value]="ordenMetricsPorDefinir()?.NoOrden"
+              disabled
+            />
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">Vendedor</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
+              [value]="ordenMetricsPorDefinir()?.NombreTrabajo"
+              disabled
+            />
+          </div>
 
+          <div>
+            <label class="block mb-1 text-sm font-medium">Cliente</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
+              [value]="ordenMetricsPorDefinir()?.NombreCliente"
+              disabled
+            />
+          </div>
 
+          <div>
+            <label class="block mb-1 text-sm font-medium"
+              >Cantidad a entregar</label
+            >
+            <input
+              type="text"
+              class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
+              [value]="
+                ordenMetricsPorDefinir()?.CantidadEntregar | number : '1.0-0'
+              "
+              disabled
+            />
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">Vendedor</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
+              [value]="ordenMetricsPorDefinir()?.Vendedor"
+              disabled
+            />
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">Estatus</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
+              [value]="ordenMetricsPorDefinir()?.EstatusOrden"
+              disabled
+            />
+          </div>
 
-    <p-dialog header="Editar Orden" [modal]="true" [visible]="puedeDefinirOrdenMetrics()" [style]="{ width: '50rem' }"
-        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-        <ng-template #headless>
-            <form (ngSubmit)="guardarOrdenMetricsPorDefinir()" #formOrden="ngForm" class="p-8">
-                <!-- Campos informativos de la OP -->
-                <div class="mb-6 grid sm:grid-cols-2  text-gray-700 dark:text-white gap-4">
-                    <div>
-                        <label class="block mb-1 text-sm font-medium ">N° Orden</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
-                            [value]="ordenMetricsPorDefinir()?.NoOrden" disabled>
-                    </div>
-                    <div>
-                        <label class="block mb-1 text-sm font-medium ">Vendedor</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
-                            [value]="ordenMetricsPorDefinir()?.NombreTrabajo" disabled>
-                    </div>
-    
-                    <div>
-                        <label class="block mb-1 text-sm font-medium ">Cliente</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
-                            [value]="ordenMetricsPorDefinir()?.NombreCliente" disabled>
-                    </div>
-    
-                    <div>
-                        <label class="block mb-1 text-sm font-medium ">Cantidad a entregar</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
-                            [value]="ordenMetricsPorDefinir()?.CantidadEntregar |  number:'1.0-0'" disabled>
-    
-                    </div>
-                    <div>
-                        <label class="block mb-1 text-sm font-medium ">Vendedor</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
-                            [value]="ordenMetricsPorDefinir()?.Vendedor " disabled>
-                    </div>
-                    <div>
-                        <label class="block mb-1 text-sm font-medium ">Estatus</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
-                            [value]="ordenMetricsPorDefinir()?.EstatusOrden " disabled>
-                    </div>
-    
-                    <div>
-                        <label class="block mb-1 text-sm font-medium ">Fecha Emisión</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
-                            [value]="ordenMetricsPorDefinir()?.FechaEmision | date:'dd-MM-yyyy'" disabled>
-                    </div>
-                    <div>
-                        <label class="block mb-1 text-sm font-medium ">Fecha Entrega</label>
-                        <input type="text" class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
-                            [value]="ordenMetricsPorDefinir()?.FechaEntrega | date:'dd-MM-yyyy'" disabled>
-                    </div>
-    
-                </div>
-                <div class="mb-6">
-                    @if(ordenMetricsPorDefinir()?.TipoProd!=null){
-                    <label class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Código de producto:
-                        {{ordenMetricsPorDefinir()?.TipoProd}}</label>
-                    }@else{
-                    <span class="block mb-2 text-sm  font-medium text-white bg-pink-600 p-2 rounded-md">Código de producto:
-                        <b>{{ordenMetricsPorDefinir()?.TipoProdReal}}</b> no es reconocido, favor de especificar</span>
-                    }
-    
-    
-                </div>
-    
-                <div class="mb-6 text-gray-700 dark:text-white">
-    
-                    <label for="tipoProd" class="block mb-2 text-sm font-medium ">Tipo de producto</label>
-                    <select [ngModel]="ordenMetricsPorDefinir()?.TipoProd" (ngModelChange)="actualizarTipoProd($event)"
-                        id="tipoProd" name="tipoProd" required
-                        class="block w-full px-3 py-2 border border-gray-300 dark:text-slate-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-    
-                        @if(ordenMetricsPorDefinir()?.TipoProd== null) {
-                        <option value="null" selected>Sin especificar</option>
-                        }
-                        @for( tipo of catalogoTiposProductos(); track tipo.id ) {
-                        <option [value]="tipo.id">{{tipo.value}}</option>
-                        }
-                    </select>
-                </div>
-                <div class="flex justify-end gap-4">
-                    <button type="button" [disabled]="guardandoOrdenMetrics()" (click)="cerrarOrdenMetricsPorDefinir() "
-                        class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded shadow transition">
-                        Cerrar
-                    </button>
-                    @if( !guardandoOrdenMetrics()){
-                    <button type="submit" [disabled]="ordenMetricsPorDefinir()?.TipoProd== null"
-                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition disabled:bg-gray-300">
-                        Guardar
-                    </button>
-                    }@else{
-                    <button type="button"
-                        class="flex items-center gap-2 px-4 py-2 bg-blue-600  text-white rounded shadow transition">
-                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-                        </svg>
-                        Guardando...
-                    </button>
-                    }
-    
-    
-    
-                </div>
-            </form>
-        </ng-template>
-    </p-dialog>
+          <div>
+            <label class="block mb-1 text-sm font-medium">Fecha Emisión</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
+              [value]="
+                ordenMetricsPorDefinir()?.FechaEmision | date : 'dd-MM-yyyy'
+              "
+              disabled
+            />
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">Fecha Entrega</label>
+            <input
+              type="text"
+              class="block w-full px-3 py-2 border border-gray-300 rounded dark:text-slate-700 bg-gray-100"
+              [value]="
+                ordenMetricsPorDefinir()?.FechaEntrega | date : 'dd-MM-yyyy'
+              "
+              disabled
+            />
+          </div>
+        </div>
+        <div class="mb-6">
+          @if(ordenMetricsPorDefinir()?.TipoProd!=null){
+          <label
+            class="block mb-2 text-sm font-medium text-gray-700 dark:text-white"
+            >Código de producto: {{ ordenMetricsPorDefinir()?.TipoProd }}</label
+          >
+          }@else{
+          <span
+            class="block mb-2 text-sm font-medium text-white bg-pink-600 p-2 rounded-md"
+            >Código de producto:
+            <b>{{ ordenMetricsPorDefinir()?.TipoProdReal }}</b> no es
+            reconocido, favor de especificar</span
+          >
+          }
+        </div>
 
-    @if(mostrarCheckList()){        
-    <rollcall-modal 
-    (onClose)="cerrarModalCheckList()"
-    ></rollcall-modal>
-    }
-  
-   @if(mostrarModalLiberacion()){   
-    <liberacion-modal  
-      [orden]="ordenLiberacion()"
-      (onClose)="cerrarModalLiberacion()"
-       ></liberacion-modal>
-   }
-         
+        <div class="mb-6 text-gray-700 dark:text-white">
+          <label for="tipoProd" class="block mb-2 text-sm font-medium"
+            >Tipo de producto</label
+          >
+          <select
+            [ngModel]="ordenMetricsPorDefinir()?.TipoProd"
+            (ngModelChange)="actualizarTipoProd($event)"
+            id="tipoProd"
+            name="tipoProd"
+            required
+            class="block w-full px-3 py-2 border border-gray-300 dark:text-slate-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            @if(ordenMetricsPorDefinir()?.TipoProd== null) {
+            <option value="null" selected>Sin especificar</option>
+            } @for( tipo of catalogoTiposProductos(); track tipo.id ) {
+            <option [value]="tipo.id">{{ tipo.value }}</option>
+            }
+          </select>
+        </div>
+        <div class="flex justify-end gap-4">
+          <button
+            type="button"
+            [disabled]="guardandoOrdenMetrics()"
+            (click)="cerrarOrdenMetricsPorDefinir()"
+            class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded shadow transition"
+          >
+            Cerrar
+          </button>
+          @if( !guardandoOrdenMetrics()){
+          <button
+            type="submit"
+            [disabled]="ordenMetricsPorDefinir()?.TipoProd == null"
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition disabled:bg-gray-300"
+          >
+            Guardar
+          </button>
+          }@else{
+          <button
+            type="button"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded shadow transition"
+          >
+            <svg
+              class="animate-spin h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              ></path>
+            </svg>
+            Guardando...
+          </button>
+          }
+        </div>
+      </form>
+    </ng-template>
+  </p-dialog>
 
-    
+  @if(mostrarCheckList()){
+  <rollcall-modal (onClose)="cerrarModalCheckList()"></rollcall-modal>
+  } @if(mostrarModalLiberacion()){
+  <liberacion-modal
+    [orden]="ordenLiberacion()"
+    (onClose)="cerrarModalLiberacion()"
+  ></liberacion-modal>
+  }
+</div>

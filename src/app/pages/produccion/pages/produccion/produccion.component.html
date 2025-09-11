@@ -65,25 +65,16 @@
                         [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
                         <e-columns>
                             <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="40">
-                                <ng-template #template let-data>
-                                    <!-- <div class="flex flex-col justify-start items-start"> -->
-                                        <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>
-                                    <!-- </div> -->
+                                <ng-template #template let-data>                            
+                                        <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>                            
                                 </ng-template>
                             </e-column>
                             <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="150">
                             </e-column>
-                            <!-- <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=100>
-                            </e-column> -->
+                            
                             <e-column field='Vendedor' [allowFiltering]="true" width="80">
                             </e-column>
-                            <!-- <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true" headerText='Cant' width=60>
-                                <ng-template #template let-data>
-                                    <div class="flex flex-col">
-                                        <span>{{data.CantidadEntregar | number}}</span>
-                                    </div>
-                                </ng-template>
-                            </e-column> -->
+                            
                             <e-column field='tieneInfo' headerText="Tiene info" textAlign="Center" [allowFiltering]="false" width="40">
                                 <ng-template #template let-data>
                                     <div class="flex  items-center justify-center w-full">
@@ -134,8 +125,7 @@
                 <search-metrics [typeSearch]="type" placeholder="Registrar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
             </div>
             <detalle-produccion [orden]="currentOrder()" [detalles]="currentDetail()" [selectedId]="selectedMuestra()?.id_produccion || null" (selectMuestra)="onSelectMuestra($event)" (verHistorial)="onVerHistorial($event)" (cerrarMuestra)="cerrarMuestra($event)"                
-                (onChange)="change($event.id, $event.value, $event.tipo)"
-            >
+                (onChange)="change($event.id, $event.value, $event.tipo)">
             </detalle-produccion>
         </div>
     </div>
