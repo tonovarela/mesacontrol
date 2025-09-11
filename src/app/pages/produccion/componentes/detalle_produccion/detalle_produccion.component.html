@@ -74,14 +74,14 @@
                     <ng-template #template let-detalle>
                         <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"
                             [(ngModel)]="detalle.voBo" (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
-                            class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-200 dark:disabled:bg-gray-700" />
+                            class="cursor-pointer   disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-500 dark:disabled:bg-gray-400" />
                     </ng-template>
                 </e-column>                
                 <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">                
                     <ng-template #template let-detalle>                            
                         <input *ngIf="detalle.puedeRegistrarOffset" type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
                             (change)="updateCheck(detalle.id_produccion, $event,'trazo')"
-                             class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-200 dark:disabled:bg-gray-700" />
+                             class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-500 dark:disabled:bg-gray-400" />
                     </ng-template>
                 </e-column>
                 <e-column [allowFiltering]="false" width=100 headerText='Carta color' textAlign="Center">                    
@@ -90,7 +90,7 @@
                             [disabled]="detalle.id_estado != '1'" 
                             [(ngModel)]="detalle.carta_color"
                             (change)="updateCheck(detalle.id_produccion, $event,'carta')"
-                             class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-200 dark:disabled:bg-gray-700" />
+                             class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-500 dark:disabled:bg-gray-400" />
                     </ng-template>
                 </e-column>
                 
