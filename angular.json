@@ -28,7 +28,11 @@
               }
             ],
             "styles": [
-              
+              {
+                "bundleName": "asistente",
+                "input": "src/asistente.css",
+                "inject": true
+              },
               {
                 "bundleName": "syncfusion-light",
                 "input": "src/syncfusion-light.css",

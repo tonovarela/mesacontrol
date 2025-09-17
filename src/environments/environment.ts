@@ -1,8 +1,8 @@
 export const environment = {
     production:true,
     apiUrl: '/mesacontrol2',  
-    baseAvatarUrl: 'https://servicios.litoprocess.com/colaboradores/api/foto',
-    baseURLDossier:"https://servicios.litoprocess.com/MicroStrategyLibrary",
+    baseAvatarUrl: '/colaboradores/api/foto',
+    baseURLDossier:"/MicroStrategyLibrary",
     usuarioDossier:"produccion",
     baseURLFontAwesome:"/cierreturno/assets/fontawesome/js/all.min.js",
     passwordDossier:"pro_mstr22$",
