@@ -27,11 +27,12 @@ import { LiberacionModalComponent } from '../components/liberacion.modal/liberac
 import { columnas } from '../data/columnas';
 import { formatDate } from '../../utils/formatDate';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
+import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
 
 
 @Component({
   selector: 'app-preprensa',
-  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,LiberacionModalComponent, TruncatePipe],
+  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,LiberacionModalComponent, TruncatePipe,PdfComponent],
   templateUrl: './preprensa.component.html',
   providers: [DetailRowService],
   styleUrl: './preprensa.component.css',
