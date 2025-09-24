@@ -26,11 +26,12 @@ import { LiberacionModalComponent } from '../components/liberacion.modal/liberac
 // Data y Utilities
 import { columnas } from '../data/columnas';
 import { formatDate } from '../../utils/formatDate';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 
 @Component({
   selector: 'app-preprensa',
-  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,LiberacionModalComponent],
+  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,LiberacionModalComponent, TruncatePipe],
   templateUrl: './preprensa.component.html',
   providers: [DetailRowService],
   styleUrl: './preprensa.component.css',

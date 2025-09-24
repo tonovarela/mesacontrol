@@ -82,6 +82,11 @@
             headerText="Nombre de trabajo"
             width="170"
           >
+          <ng-template #template let-data>
+              <div class="flex flex-col">
+                <div  [title]="data.NombreTrabajo">{{ data.NombreTrabajo | truncate:45 }}</div>                
+              </div>
+            </ng-template>
           </e-column>
           <e-column
             field="NombreCliente"
@@ -89,6 +94,11 @@
             headerText="Cliente"
             width="150"
           >
+          <ng-template #template let-data>
+              <div class="flex flex-col">
+                <div  [title]="data.NombreCliente">{{ data.NombreCliente | truncate:40 }}</div>                
+              </div>
+            </ng-template>
           </e-column>
           @if(!verPendientes()){
           <e-column [allowFiltering]="false" headerText="Marbete" width="80">
@@ -161,7 +171,7 @@
             width="80"
           >
             <ng-template #template let-data>
-              <div class="flex justify-end pr-1">
+              <div class="flex flex-row justify-end pr-3">
                 <div>{{ data.CantidadEntregar | number }} </div>
               </div>
             </ng-template>
