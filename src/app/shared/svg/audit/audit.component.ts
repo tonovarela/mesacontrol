@@ -9,11 +9,10 @@ import { ChangeDetectionStrategy, Component,  input ,output} from '@angular/core
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuditComponent  { 
-
-  enabled = input.required<boolean>();
-  
+  enabled = input.required<boolean>();  
   onClick = output<void>();
   color = input<string>('text-gray-500');
+  
 
   
   

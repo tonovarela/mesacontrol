@@ -66,25 +66,27 @@
             field="NoOrden"
             [allowFiltering]="true"
             headerText="Orden"
-            width="80"
+            width="100"
           >
           </e-column>
+          @if(verPendientes()){
           <e-column
             field="TipoProd"
             [allowFiltering]="true"
             headerText="Tipo"
-            width="70"
+            width="80"
           >
           </e-column>
+        }
           <e-column
             field="NombreTrabajo"
             [allowFiltering]="true"
             headerText="Nombre de trabajo"
-            width="170"
+            width="200"
           >
           <ng-template #template let-data>
               <div class="flex flex-col">
-                <div  [title]="data.NombreTrabajo">{{ data.NombreTrabajo | truncate:45 }}</div>                
+                <div  [title]="data.NombreTrabajo">{{ data.NombreTrabajo | truncate:25 }}</div>                
               </div>
             </ng-template>
           </e-column>
@@ -92,11 +94,11 @@
             field="NombreCliente"
             [allowFiltering]="true"
             headerText="Cliente"
-            width="150"
+            width="170"
           >
           <ng-template #template let-data>
               <div class="flex flex-col">
-                <div  [title]="data.NombreCliente">{{ data.NombreCliente | truncate:40 }}</div>                
+                <div  [title]="data.NombreCliente">{{ data.NombreCliente | truncate:20 }}</div>                
               </div>
             </ng-template>
           </e-column>
@@ -162,22 +164,24 @@
                 </button>
               </div>
             </ng-template>
-          </e-column>
-          }
+          </e-column>          
+        }
+          @if(verPendientes()){
           <e-column
             field="CantidadEntregar"
             [allowFiltering]="true"
             headerText="Cant"
             width="80"
-          >
+          >          
             <ng-template #template let-data>
               <div class="flex flex-row justify-end pr-3">
                 <div>{{ data.CantidadEntregar | number }} </div>
               </div>
             </ng-template>
           </e-column>
+        }
           @for(col of columnasAuditoria; track col.indice) {
-          <e-column [width]="120">
+          <e-column [width]="150">
             <ng-template #headerTemplate>
               <div class="flex flex-col items-center justify-center">
                 <p class="font-bold text-[8px]" [ngClass]="col.color">{{ col.titulo }}</p>
@@ -185,26 +189,24 @@
               </div>
             </ng-template>
             <ng-template #template let-data>
-              @let estaHabilitado=esAuditHabilitado(data, col); @let
-              colorSVG=colorChecklist(data,col); @let
-              liberacion=fechaLiberacion(data,col); @let
-              sepuedeVisualizar=estaHabilitado || liberacion ; @let
-              id_checkActual=getCheckListKey(data,col); @if
-              (data.id_checklist_actual){
-              <div class="flex w-full py-1">
-                <div
-                  class="w-full h-full flex flex-col items-center rounded-lg shadow bg-white dark:bg-gray-800"
-                  [ngClass]="
-                    sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'
-                  "
-                  (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null"
-                >
+              @let estaHabilitado=esAuditHabilitado(data, col); 
+              @let colorSVG=colorChecklist(data,col); 
+              @let liberacion=fechaLiberacion(data,col); 
+              @let sepuedeVisualizar=estaHabilitado || liberacion ; 
+              @let id_checkActual=getCheckListKey(data,col); 
+
+
+              @if (data.id_checklist_actual){
+              <div class="flex w-full py-0.5">
+                <div class="w-full h-full flex flex-row items-center rounded-lg shadow bg-white dark:bg-gray-800 px-1  py-0.5"
+                  [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
+                  (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">
                   <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
-                  <div
-                    class="text-[9px] text-gray-500 dark:text-white text-center w-full"
-                  >
+                  <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">
+
                     @if(liberacion){
-                    {{ liberacion | date : "dd-MM-yyyy HH:mm" }} hrs }@else{
+                    {{ liberacion | date : "dd-MM-yyyy HH:mm" }} hrs }
+                    @else{
                     <span>--------</span>
                     }
                   </div>
@@ -221,24 +223,19 @@
           <e-column
             [allowFiltering]="false"
             headerText="Liberación de sobre"
-            width="120"
+            width="150"
           >
             <ng-template #template let-data>
-              @let sepuedeVisualizar=data.sePuedeVisualizarSobre; @let colorSVG
-              =data.colorCheckListSobreLiberacion; @let liberacion
-              =data.liberacionRutas;
+              @let sepuedeVisualizar=data.sePuedeVisualizarSobre; 
+              @let colorSVG=data.colorCheckListSobreLiberacion; 
+              @let liberacion=data.liberacionRutas;
               <div class="flex w-full py-1">
                 <div
-                  class="w-full h-full flex flex-col items-center rounded-lg shadow bg-white dark:bg-gray-800"
+                  class="w-full h-full flex flex-row items-center rounded-lg shadow bg-white dark:bg-gray-800"
                   (click)="sepuedeVisualizar ? irRutas(data) : null"
-                  [ngClass]="
-                    sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'
-                  "
-                >
+                  [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'">
                   <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
-                  <div
-                    class="text-[9px] text-gray-500 dark:text-white text-center w-full"
-                  >
+                  <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">
                     @if(liberacion){
                     {{ liberacion | date : "dd-MM-yyyy HH:mm" }} hrs }@else{
                     <span>--------</span>
