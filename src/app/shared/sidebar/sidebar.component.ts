@@ -79,9 +79,16 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
     {
       nombre: 'Revisión  sobres',
       icono: 'assets/img/sobre.svg',
-      path: '/sobreteca/trabajos',
+      path: '/sobreteca/sobres',
+      claseSize: 'w-8 h-8 svg-icon',
+    },
+    {
+      nombre: 'Sobres confirmados',
+      icono: 'assets/img/sobre-confirmado.svg',
+      path: '/sobreteca/sobres-confirmados',
       claseSize: 'w-8 h-8 svg-icon',
     }
+
   ]);
 
   ngAfterViewInit(): void {
