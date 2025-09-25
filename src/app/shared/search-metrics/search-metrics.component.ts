@@ -6,7 +6,7 @@ import { TypeSearchMetrics } from '@app/interfaces/type';
 
 import { PrimeModule } from '@app/lib/prime.module';
 import { MetricsService } from '@app/services';
-import {  Observable, Subject, switchMap } from 'rxjs';
+import {  Observable, of, Subject, switchMap } from 'rxjs';
 
 
 @Component({  
@@ -55,12 +55,18 @@ export class SearchMetricsComponent implements OnInit,OnDestroy {
       
     this.valorQuerySubject.pipe(
       switchMap(query => {
-        if ([TypeSearchMetrics.PREPRENSA,TypeSearchMetrics.PRODUCCION].includes(tipoSearch) ){  
+        if ([TypeSearchMetrics.PREPRENSA,
+              TypeSearchMetrics.PRODUCCION].includes(tipoSearch) ){  
           busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery, this.paraProduccion());
-        }else {    
+        }
+        if (tipoSearch === TypeSearchMetrics.CONTROL_ELEMENTOS) {    
           busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery,true);
         }
-        return busquedaObservable;
+        if (tipoSearch === TypeSearchMetrics.SOBRESPREPRENSA) {    
+          console.log("buscar sobres");
+          busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery,true);
+        }
+        return busquedaObservable || of({ ordenes: [] });
 
       })
     ).subscribe((response) => {
