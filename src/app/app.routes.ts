@@ -31,6 +31,14 @@ export const routes: Routes = [
 
     ]
   },
+  {
+    path:'sobreteca', component:MainLayoutComponent,
+    children:[
+      { path: "sobres", loadComponent: () => import('./pages/sobreteca/pages/sobres/sobres.component') },
+      //{ path: "sobres-confirmados", loadComponent: () => import('./pages/sobreteca/pages/sobres-confirmados/sobres-confirmados.component') },
+      { path: '**', redirectTo: 'sobres' }
+    ]     
+  },
   { path: '**', redirectTo: 'preprensa' }
 ];
 
