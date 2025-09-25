@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'details-svg',
+  selector: 'loading',
   imports: [],
-  templateUrl: './details.component.html',  
+  templateUrl: './loading.component.html',  
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DetailsComponent { }
+export class LoadingComponent { }

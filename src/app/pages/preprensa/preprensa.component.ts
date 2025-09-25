@@ -28,12 +28,13 @@ import { columnas } from '../data/columnas';
 import { formatDate } from '../../utils/formatDate';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
+import { LoadingComponent } from '@app/shared/loading/loading.component';
 
 
 
 @Component({
   selector: 'app-preprensa',
-  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,LiberacionModalComponent, TruncatePipe,PdfComponent],
+  imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,LiberacionModalComponent, TruncatePipe,PdfComponent,LoadingComponent],
   templateUrl: './preprensa.component.html',
   providers: [DetailRowService],
   styleUrl: './preprensa.component.css',

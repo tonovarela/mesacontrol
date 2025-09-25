@@ -12,7 +12,7 @@ import { Subject, switchMap } from 'rxjs';
   selector: 'search-employee',
   imports: [PrimeModule, FormsModule, CommonModule],
   templateUrl: './search-employee.component.html',
-  styleUrl: './search-employee.component.css',
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchEmployeeComponent {

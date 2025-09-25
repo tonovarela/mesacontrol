@@ -12,8 +12,7 @@ import {  Observable, Subject, switchMap } from 'rxjs';
 @Component({  
   selector: 'search-metrics',
   imports: [PrimeModule,FormsModule,CommonModule],
-  templateUrl: './search-metrics.component.html',
-  styleUrl: './search-metrics.component.css',
+  templateUrl: './search-metrics.component.html',  
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchMetricsComponent implements OnInit,OnDestroy { 
