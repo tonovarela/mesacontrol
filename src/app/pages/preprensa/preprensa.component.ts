@@ -30,6 +30,7 @@ import { TruncatePipe } from '../../pipes/truncate.pipe';
 import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
 
 
+
 @Component({
   selector: 'app-preprensa',
   imports: [RouterModule, CommonModule, PrimeModule, FormsModule, SynfusionModule, AuditComponent, SearchMetricsComponent,RollcallModalComponent,LiberacionModalComponent, TruncatePipe,PdfComponent],

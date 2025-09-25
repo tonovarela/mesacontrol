@@ -73,12 +73,17 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
       path: '/control_elementos/historico',
       claseSize: 'w-7 h-7 svg-icon',
     }
+  ]);
 
-  ])
+  public rutasSobreteca = signal<Ruta[]>([
+    {
+      nombre: 'Revisión  sobres',
+      icono: 'assets/img/sobre.svg',
+      path: '/sobreteca/trabajos',
+      claseSize: 'w-8 h-8 svg-icon',
+    }
+  ]);
 
-
-  
-  
   ngAfterViewInit(): void {
     
   }
