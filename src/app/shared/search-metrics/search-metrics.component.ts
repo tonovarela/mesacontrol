@@ -34,9 +34,7 @@ export class SearchMetricsComponent implements OnInit,OnDestroy {
   private valorQuerySubject: Subject<string> = new Subject<string>();  
   private metrisService = inject(MetricsService);
   
-  paraProduccion = computed(() => {
-    return this.typeSearch() === 1;
-  });
+  paraProduccion = computed(() => {return this.typeSearch() === 1;});
 
 
   constructor() {
@@ -55,16 +53,14 @@ export class SearchMetricsComponent implements OnInit,OnDestroy {
       
     this.valorQuerySubject.pipe(
       switchMap(query => {
-        if ([TypeSearchMetrics.PREPRENSA,
-              TypeSearchMetrics.PRODUCCION].includes(tipoSearch) ){  
+        if ([TypeSearchMetrics.PREPRENSA,TypeSearchMetrics.PRODUCCION].includes(tipoSearch) ){  
           busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery, this.paraProduccion());
         }
         if (tipoSearch === TypeSearchMetrics.CONTROL_ELEMENTOS) {    
           busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery,true);
         }
-        if (tipoSearch === TypeSearchMetrics.SOBRESPREPRENSA) {    
-          console.log("buscar sobres");
-          busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery,true);
+        if (tipoSearch === TypeSearchMetrics.SOBRESPREPRENSA) {            
+          busquedaObservable = this.metrisService.buscarRegistroSobre(this.valorQuery);
         }
         return busquedaObservable || of({ ordenes: [] });
 

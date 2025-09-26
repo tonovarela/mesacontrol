@@ -2,7 +2,8 @@
    <!-- <loading></loading> -->
 <div id="initial" class="dark:bg-gray-900 h-screen">
    <div class="w-full">
-      <search-metrics  placeholder="Buscar sobre por OP" [typeSearch]="type"      
+      <search-metrics  placeholder="Buscar sobre por OP" [typeSearch]="type" 
+      (onSelectOrder)="onSelectOrder($event)" 
       ></search-metrics>
     </div>
     

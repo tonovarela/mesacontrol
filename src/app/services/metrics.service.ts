@@ -47,6 +47,10 @@ export class MetricsService {
     return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/preprensa/buscar`,{patron});
   }
 
+  buscarRegistroSobre(patron: string) {  
+    return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/sobreteca/sobre/buscar`,{patron});
+  }
+
 
   obtener(orden: string) {
     return this.http.get<ResponseOrden>(`${this.API_URL}/api/orden/${orden}`);
