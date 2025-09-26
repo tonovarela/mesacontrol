@@ -86,7 +86,7 @@
                 </e-column>
                 <e-column [allowFiltering]="false" width=100 headerText='Carta color' textAlign="Center">                    
                     <ng-template #template let-detalle>                                            
-                        <input type="checkbox"  [id]="detalle.id_produccion" 
+                        <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox"  [id]="detalle.id_produccion" 
                             [disabled]="detalle.id_estado != '1'" 
                             [(ngModel)]="detalle.carta_color"
                             (change)="updateCheck(detalle.id_produccion, $event,'carta')"
