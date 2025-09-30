@@ -1,9 +1,12 @@
 <p-dialog #dialogModal [modal]="true"
 [closable]="false"
  [(visible)]="visible" 
- [showHeader]="false"
- [maximizable]="true" [closeOnEscape]="false"
+
+ 
+ [maximizable]="true" 
+ [closeOnEscape]="false" 
  (onHide)="closeModal()"
+
  styleClass="transparent-modal"
  >
     <ng-template  #headless >            

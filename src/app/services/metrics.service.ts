@@ -55,16 +55,7 @@ export class MetricsService {
   }
 
   
-  registrarSobre(orden:string){
-    return this.http.post(`${this.API_URL}/api/sobreteca/sobre`,{orden});
-  }
-
-
-  listarSobres(historico:boolean =true) {                
-    return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/sobreteca/sobre?historico=${historico}`);
-  }
-
-
+  
   obtener(orden: string) {
     return this.http.get<ResponseOrden>(`${this.API_URL}/api/orden/${orden}`);
   }

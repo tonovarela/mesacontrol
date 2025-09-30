@@ -6,21 +6,27 @@ import {
   inject,
   OnInit,
   signal,
+  ViewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
+import { DetalleSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
+import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { MetricsService } from '@app/services';
+import { MetricsService, SobreService } from '@app/services';
 import { LoadingComponent } from '@app/shared/loading/loading.component';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 
 @Component({
   selector: 'app-sobres',
   imports: [
     SynfusionModule,
+    PrimeModule,
     CommonModule,
+    FormsModule,
     SearchMetricsComponent,
     //  LoadingComponent
   ],
@@ -29,31 +35,23 @@ import { firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class SobresComponent  extends BaseGridComponent implements OnInit {
-  public readonly type = TypeSearchMetrics.SOBRESPREPRENSA;
-  metricsService = inject(MetricsService);
-  protected minusHeight = 0.3;
+  @ViewChild('dialogModal') dialogModal :any;
+
+  public readonly type = TypeSearchMetrics.SOBRESPREPRENSA;      
+  private sobreService = inject(SobreService);
   private _ordenes= signal<OrdenMetrics[]>([]);
+  protected minusHeight = 0.3;  
+  public mostrarModalSobre = false;    
   public ordenes = computed(() => this._ordenes());
-  
 
-  
+  public contenidoSobre = signal<any[]>([]);
 
-  async onSelectOrder(orden: OrdenMetrics | null) {
-    if (orden === null) {
-      return;
-    }
-    try {
-      const response = await firstValueFrom(this.metricsService.registrarSobre(orden.NoOrden));
-      this.cargarInformacion(false);
-    } catch (error) {
-      console.error('Error al registrar el sobre:', error);
-    }
-  }
-
- constructor() {
+   constructor() {
     super();
   }
   
+
+
   ngOnInit(): void {
     this.cargarInformacion(false);
     this.iniciarResizeGrid(this.minusHeight, true);
@@ -61,10 +59,48 @@ export default class SobresComponent  extends BaseGridComponent implements OnIni
 
   async cargarInformacion(historico:boolean) {
     try {
-      const response =await firstValueFrom(this.metricsService.listarSobres(historico));      
+      const response =await firstValueFrom(this.sobreService.listar(historico));      
       this._ordenes.set(response.ordenes);
     } catch (error) {
       console.error('Error al cargar la información:', error);
     }
   }
+
+
+  async verDetalle(orden: OrdenMetrics) {
+     this.mostrarModalSobre = true;
+     this.dialogModal.maximized = true;
+     const response =await firstValueFrom(this.sobreService.contenido(orden.NoOrden))
+     const contenido = response.contenido.map(item => ({...item,aplica: item.aplica=='1' }));     
+     this.contenidoSobre.set(contenido);        
+  }
+
+  cerrarDetalle() { this.mostrarModalSobre =false;    }
+
+
+  async onSelectOrder(orden: OrdenMetrics | null) {
+    if (orden === null) {
+      return;
+    }
+
+    try {      
+      const response = await firstValueFrom(this.sobreService.registrar(orden.NoOrden));  
+      this.cargarInformacion(false);
+    } catch (error) {
+      console.error('Error al registrar el sobre:', error);
+    }
+
+  }
+
+
+  async onCheckboxChange(detalleSobre: DetalleSobre) {
+    const {aplica,id} = detalleSobre;    
+    await firstValueFrom(this.sobreService.actualizarDetalle(id, aplica));
+
+    
+
+  }
+
+
+
 }
