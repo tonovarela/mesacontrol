@@ -1,136 +1,222 @@
+
+import { ChangeDetectionStrategy,Component,computed,inject,OnInit,signal,ViewChild,} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { PrimeModule } from '@app/lib/prime.module';
+import { SynfusionModule } from '@app/lib/synfusion.module';
+import { firstValueFrom, map } from 'rxjs';
+import Swal from 'sweetalert2';
+
+
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { DetalleSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
-import { PrimeModule } from '@app/lib/prime.module';
-import { SynfusionModule } from '@app/lib/synfusion.module';
-import { MetricsService, SobreService } from '@app/services';
 import { LoadingComponent } from '@app/shared/loading/loading.component';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { firstValueFrom, map } from 'rxjs';
+import { LoginLitoapps } from '@app/utils/loginLitoapps';
+
+import { MetricsService,SobreService,UiService,UsuarioService} from '@app/services';
 
 @Component({
   selector: 'app-sobres',
-  imports: [
-    SynfusionModule,
-    PrimeModule,
-    CommonModule,
-    FormsModule,
-    SearchMetricsComponent,
-    //  LoadingComponent
+  imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent,
+  //  LoadingComponent
   ],
   templateUrl: './sobres.component.html',
   styleUrl: './sobres.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class SobresComponent  extends BaseGridComponent implements OnInit {
-  @ViewChild('dialogModal') dialogModal :any;
+export default class SobresComponent
+  extends BaseGridComponent
+  implements OnInit
+{
+  @ViewChild('dialogModal') dialogModal: any;
 
-  public readonly type = TypeSearchMetrics.SOBRESPREPRENSA;      
-  private sobreService = inject(SobreService);
+  public readonly type = TypeSearchMetrics.SOBRESPREPRENSA;
   public ordenActual = signal<OrdenMetrics | null>(null);
-  private _ordenes= signal<OrdenMetrics[]>([]);
-  protected minusHeight = 0.3;  
-  public mostrarModalSobre = false;    
   public ordenes = computed(() => this._ordenes());
-
   public contenidoSobre = signal<any[]>([]);
+  public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
+  public verPendientes = computed(() => this._verPendientes());
+  public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
 
-   constructor() {
+  private _verPendientes = signal<boolean>(true);
+  private _sobreService = inject(SobreService);
+  private _activatedRouter = inject(ActivatedRoute);
+  private _uiService = inject(UiService);
+  private _usuarioService = inject(UsuarioService);
+  private _ordenes = signal<OrdenMetrics[]>([]);
+  protected minusHeight = 0.3;
+
+  constructor() {
     super();
   }
-  
 
-
-  ngOnInit(): void {
-    this.cargarInformacion(false);
+  ngOnInit(): void {    
     this.iniciarResizeGrid(this.minusHeight, true);
+    this._activatedRouter.data.subscribe((data:any) => {
+      const pendientes = data['pendientes'] || false;
+      this._verPendientes.set(pendientes);
+      this.cargarInformacion();   
+  });
+
   }
 
-  async cargarInformacion(historico:boolean) {
+  public async verDetalle(orden: OrdenMetrics) {
+    this.dialogModal.maximized = true;
+    const response = await firstValueFrom(
+      this._sobreService.contenido(orden.NoOrden)
+    );
+    const contenido = response.contenido.map((item) => ({
+      ...item,
+      aplica: item.aplica == '1',
+    }));
+    this.ordenActual.set(orden);
+    this.contenidoSobre.set(contenido);
+  }
+
+  public cerrarDetalle() {
+    this.ordenActual.set(null);
+  }
+
+  public async onSelectOrder(orden: OrdenMetrics | null) {
+    if (orden === null) {
+      return;
+    }
     try {
-      const response =await firstValueFrom(this.sobreService.listar(historico));      
-      this._ordenes.set(response.ordenes);
+      const response = await firstValueFrom(
+        this._sobreService.registrar(orden.NoOrden)
+      );
+      this.cargarInformacion();
+    } catch (error) {
+      console.error('Error al registrar el sobre:', error);
+    } finally {
+      await this.verDetalle(orden!);
+    }
+  }
+
+  public async onCheckboxChange(detalleSobre: DetalleSobre) {
+    const { aplica, id } = detalleSobre;
+    await firstValueFrom(this._sobreService.actualizarDetalle(id, aplica));
+  }
+
+  public estaEnAprobacion = computed(() => {
+    if (this.ordenActual() === null) return false;
+    return this.ordenActual()?.id_estado === '5';
+  });
+
+  public estaPendiente = computed(() => {
+    if (this.ordenActual() === null) return false;
+    return (
+      this.ordenActual()?.id_estado === '1' ||
+      this.ordenActual()?.id_estado === '3'
+    );
+  });
+
+  public nombreTrabajo = computed(() => {
+    if (this.ordenActual() === null) return '';
+    return `${this.ordenActual()?.NoOrden}  - ${
+      this.ordenActual()?.NombreTrabajo
+    }`;
+  });
+
+  public async solicitarAprobacion() {
+    const { isConfirmed } = await this._uiService.mostrarAlertaConfirmacion('','¿Está seguro de que desea solicitar la aprobación de las elementos seleccionadas?');
+    if (!isConfirmed) {
+      return;
+    }
+    const orden = this.ordenActual()?.NoOrden;
+    try {
+      await firstValueFrom(this._sobreService.solicitarAprobacion(orden!,"1"));
+    } catch (error) {
+      //console.error('Error al solicitar aprobación:', error);
+    }
+    this._uiService.mostrarAlertaSuccess('', 'Se han mandado a autorización ');
+    this.cerrarDetalle();
+    this.cargarInformacion();
+    
+  }
+
+  public async rechazar() {
+    const resp = await Swal.fire({
+      title: 'Ingrese el motivo de rechazo',
+      input: 'text',
+      icon: 'info',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: (motivo) => {
+        return motivo;
+      },
+    });
+    const { value: motivo, isDismissed } = resp;
+
+    if (resp.isConfirmed && motivo?.length == 0) {
+      this._uiService.mostrarAlertaError(
+        '',
+        'Se necesita ingresar un motivo para rechazar'
+      );
+      return;
+    }
+    if (isDismissed) {
+      return;
+    }
+    const responseLogin = await LoginLitoapps(
+      this._usuarioService,
+      'Password de usuario que solicita el rechazo.'
+    );
+    if (responseLogin.isDismissed) {
+      return;
+    }
+    const { value: id_usuario } = responseLogin;
+
+    const orden = this.ordenActual()?.NoOrden;
+    await firstValueFrom(this._sobreService.rechazar(orden!, motivo!,`${id_usuario!}`));
+    this._uiService.mostrarAlertaSuccess(
+      '',
+      'Se ha rechazado la solicitud de aprobación'
+    );
+    this.cerrarDetalle();
+    this.cargarInformacion();
+  }
+
+  public async aprobar() {
+    const { isDismissed, value: id_usuario } = await LoginLitoapps(
+      this._usuarioService,
+      'Password de usuario que realiza la aprobación'
+    );
+
+    if (isDismissed) {
+      return;
+    }
+    const orden = this.ordenActual()?.NoOrden;
+    
+    try {
+      await firstValueFrom(this._sobreService.aprobar(orden!,`${id_usuario!}`));
+    } catch (error) {
+      console.error('Error al aprobar:', error);
+    }
+    this._uiService.mostrarAlertaSuccess(
+      '',
+      'Se ha aprobado la solicitud de aprobación'
+    );
+    this.cerrarDetalle();
+    this.cargarInformacion();
+  }
+
+  private async cargarInformacion() {
+    try {
+      const obs$ = this._sobreService.listar(this._verPendientes());      
+      const {ordenes} = await firstValueFrom(obs$);      
+      this._ordenes.set(ordenes);      
     } catch (error) {
       console.error('Error al cargar la información:', error);
     }
   }
-
-
-  async verDetalle(orden: OrdenMetrics) {
-     this.mostrarModalSobre = true;
-     this.dialogModal.maximized = true;
-     
-     const response =await firstValueFrom(this.sobreService.contenido(orden.NoOrden))
-     const contenido = response.contenido.map(item => ({...item,aplica: item.aplica=='1' }));     
-     this.ordenActual.set(orden);
-     this.contenidoSobre.set(contenido);        
-  }
-
-  cerrarDetalle() { 
-    this.ordenActual.set(null);
-    this.mostrarModalSobre =false;    }
-
-
-  async onSelectOrder(orden: OrdenMetrics | null) {
-    if (orden === null) {
-      return;
-    }
-
-    try {      
-      const response = await firstValueFrom(this.sobreService.registrar(orden.NoOrden));  
-      this.cargarInformacion(false);
-    } catch (error) {
-      console.error('Error al registrar el sobre:', error);
-    }
-
-  }
-
-
-  async onCheckboxChange(detalleSobre: DetalleSobre) {
-    const {aplica,id} = detalleSobre;    
-    await firstValueFrom(this.sobreService.actualizarDetalle(id, aplica));  
-  }
-
-  estaEnAprobacion = computed(() => {
-    if (this.ordenActual()===null) return false;
-    return this.ordenActual()?.id_estado === "5"; 
-  });
-
-  estaPendiente= computed(() => {
-    if (this.ordenActual()===null) return false;
-    return this.ordenActual()?.id_estado === "1"; 
-  });
-  nombreTrabajo = computed(() => {
-    if (this.ordenActual()===null) return '';
-    return `${this.ordenActual()?.NoOrden}  - ${this.ordenActual()?.NombreTrabajo}`; 
-  });
-
-
-  solicitarAprobacion() {
-
-  }
-
-  guardarCambios(){
-  }
-
-  rechazar(){
-
-  }
-  aprobar(){  
-
-  }
-
-
 }

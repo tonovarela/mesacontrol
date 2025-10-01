@@ -42,8 +42,22 @@ export class SobreService {
 
   actualizarDetalle(id:string, aplica:string) {
     return this.http.put(`${this.API_URL}/api/sobreteca/sobre/detalle`,{id,aplica});
+  
+  }
+
+  solicitarAprobacion(orden:string,
+                      id_usuario:string) {        
+    return this.http.post(`${this.API_URL}/api/sobreteca/sobre/revision`,{orden,id_usuario});
   }
   
+  aprobar(orden:string,
+         id_usuario:string) {
+    return this.http.post(`${this.API_URL}/api/sobreteca/sobre/autorizar`,{orden,id_usuario});
+  }
+
+  rechazar(orden:string, motivo:string,id_usuario:string) {
+    return this.http.post(`${this.API_URL}/api/sobreteca/sobre/rechazar`,{orden,id_usuario,motivo});
+  }
 
 
   
