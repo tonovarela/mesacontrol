@@ -1,13 +1,17 @@
 <div class="relative">
    <!-- <loading></loading> -->
-<div id="initial" class="dark:bg-gray-900 h-screen">
-<!-- {{titulo()}} -->
+<div id="initial" class="dark:bg-gray-900 h-screen flex flex-col">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-1">      
+      <div class="  py-1 px-2 flex sm:flex-row flex-col sm:space-x-6 items-center">
+  <h1 class="text-2xl text-center  text-slate-500" >
+        {{ titulo() }}
+      </h1>
   @if(verPendientes()){
-  <div class="w-2/3 mx-auto rounded-md">
-      <search-metrics  placeholder="Buscar sobre por OP" [typeSearch]="type"  (onSelectOrder)="onSelectOrder($event)" ></search-metrics>
+  <div class="w-full">
+      <search-metrics  placeholder="Buscar sobre por OP" [typeSearch]="type"  (onSelectOrder)="onSelectOrder($event)"/>
     </div>
   }  
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">      
+  </div>
         <ejs-grid #grid 
         [dataSource]='ordenes()'                  
          [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
@@ -18,9 +22,10 @@
                   <ng-template #template let-data>
   <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
     [ngClass]="{
-      'bg-green-100 text-green-800': data.id_estado == 1,
-      'bg-yellow-100 text-yellow-800': data.id_estado == 2,
-      'bg-red-100 text-red-800': data.id_estado == 3
+      'bg-green-100 text-green-800': data.id_estado == 2,
+      'bg-yellow-100 text-yellow-800': data.id_estado == 1,
+      'bg-red-100 text-red-800': data.id_estado == 3,
+      'bg-gray-100 text-gray-800': data.id_estado == 5,
     }"
   >
     {{ data.descripcion }}
@@ -93,15 +98,9 @@
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2.5"
-          d="M6 18L18 6M6 6l12 12"
-        ></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
       </svg>      
     </button>
-
 
   </div>
 </div>
