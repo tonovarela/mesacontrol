@@ -1,131 +1,223 @@
 <div class="relative">
-   <!-- <loading></loading> -->
-<div id="initial" class="dark:bg-gray-900 h-screen flex flex-col">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-1">      
-      <div class="  py-1 px-2 flex sm:flex-row flex-col sm:space-x-6 items-center">
-  <h1 class="text-2xl text-center  text-slate-500" >
-        {{ titulo() }}
-      </h1>
-  @if(verPendientes()){
-  <div class="w-full">
-      <search-metrics  placeholder="Buscar sobre por OP" [typeSearch]="type"  (onSelectOrder)="onSelectOrder($event)"/>
-    </div>
-  }  
-  </div>
-        <ejs-grid #grid 
-        [dataSource]='ordenes()'                  
-         [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-            [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true">
-            <e-columns>
-                <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>
-                <e-column field='descripcion' headerText='Estado' width='120'  >
-                  <ng-template #template let-data>
-  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-    [ngClass]="{
+  <!-- <loading></loading> -->
+  <div id="initial" class="dark:bg-gray-900 h-screen flex flex-col">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-1">
+      <div
+        class="py-1 px-2 flex sm:flex-row flex-col sm:space-x-6 items-center"
+      >
+        <h1 class="text-2xl text-center text-slate-500">
+          {{ titulo() }}
+        </h1>
+        @if(verPendientes()){
+        <div class="w-full">
+          <search-metrics
+            placeholder="Buscar sobre por OP"
+            [typeSearch]="type"
+            (onSelectOrder)="onSelectOrder($event)"
+          />
+        </div>
+        }
+      </div>
+      <ejs-grid
+        #grid
+        [dataSource]="ordenes()"
+        [filterSettings]="filterSettings"
+        [allowTextWrap]="true"
+        [enableAdaptiveUI]="false"
+        [enableHover]="true"
+        rowHeight="30"
+        (dataBound)="dataBound()"
+        [allowExcelExport]="true"
+        [height]="heightGrid"
+        allowReordering="true"
+        [allowFiltering]="true"
+        allowPaging="true "
+        allowResizing="true"
+        allowSorting="true"
+      >
+        <e-columns>
+          <e-column
+            field="NoOrden"
+            headerText="OP"
+            width="120"
+            textAlign="Center"
+          ></e-column>
+          <e-column field="descripcion" headerText="Estado" width="120">
+            <ng-template #template let-data>
+              <span
+                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                [ngClass]="{
       'bg-green-100 text-green-800': data.id_estado == 2,
       'bg-yellow-100 text-yellow-800': data.id_estado == 1,
       'bg-red-100 text-red-800': data.id_estado == 3,
       'bg-gray-100 text-gray-800': data.id_estado == 5,
     }"
-  >
-    {{ data.descripcion }}
-  </span>
-                 </ng-template>
-                </e-column>
-                <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>
-                <e-column field='Vendedor' headerText='Vendedor' width='200' textAlign='Left' ></e-column>                
-                <e-column >
-                  <ng-template #template let-data>
-                    <a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">
-                      <!-- Icono Detalle (histórico/archivo) -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path d="M8 10h8M8 14h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                      </svg>
-                      Detalle
-                    </a>
-                  </ng-template>
-                </e-column>
-                </e-columns>
-         </ejs-grid>
-            </div>    
-</div>
-</div>
-
-<p-dialog 
-#dialogModal 
-[visible]="tieneOrdenSeleccionada()"  
-[maximizable]="true" 
-[showHeader]="false" 
-[closeOnEscape]="false"
->
-<ng-template  #headless >        
-        <div class="w-full px-4 py-1 rounded-md  mx-auto mt-2">     
-  <div class="flex flex-col md:flex-row justify-end space-x-10">        
-    <!-- Barra de acciones -->     
-    <div class="flex flex-wrap items-center justify-center gap-1">      
-      @if(estaEnAprobacion()) {
-      <button
-        class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50"
-        (click)="aprobar()"
-      >
-        Aprobar
-      </button>
-      <button
-        class="px-4 py-2 bg-gray-100 text-red-600 dark:bg-gray-800 dark:text-red-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400/50"
-        (click)="rechazar()"
-      >
-        Rechazar
-      </button>
-      } 
-      @if(estaPendiente() ){      
-      <button
-        class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50"
-        (click)="solicitarAprobacion()"
-      >
-        Solicitar aprobación
-      </button>
-      }
-  
-    </div> 
-    <button
-      class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-      (click)="cerrarDetalle()"
-    >
-      <svg
-        class="w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>      
-    </button>
-
+              >
+                {{ data.descripcion }}
+              </span>
+            </ng-template>
+          </e-column>
+          <e-column
+            field="NombreTrabajo"
+            headerText="Cliente"
+            width="150"
+            textAlign="Left"
+          ></e-column>
+          <e-column
+            field="Vendedor"
+            headerText="Vendedor"
+            width="200"
+            textAlign="Left"
+          ></e-column>
+          <e-column>
+            <ng-template #template let-data>
+              <a
+                (click)="verDetalle(data)"
+                class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer"
+              >
+                <!-- Icono Detalle (histórico/archivo) -->
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-4 h-4 inline-block"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <rect
+                    x="4"
+                    y="4"
+                    width="16"
+                    height="16"
+                    rx="3"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                  <path
+                    d="M8 10h8M8 14h5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Detalle
+              </a>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
   </div>
 </div>
-    <div class="flex flex-row  justify-between gap-4">
-      
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 class="text-lg font-bold pb-2">{{ nombreTrabajo() }}</h1>   
-<ejs-grid 
-        [dataSource]='contenidoSobre()'                  
-         [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-            [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]="true" allowPaging="true " allowResizing="true" allowSorting="true">
-      <e-columns>
-              <e-column field='componente' header='Componente' width='120' textAlign='Left'></e-column>
-              <e-column field='elemento' header='Elemento' width='120' textAlign='Left'></e-column>
-              <e-column field='aplica' header='Fecha de Creación' width='120'  allowReordering='false'  textAlign='Left'>
-               <ng-template #template let-data>
-                 <div class="flex items-center">                  
-                  <input type="checkbox" [(ngModel)]="data.aplica" [disabled]="!estaPendiente()"  (ngModelChange)="onCheckboxChange(data)" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">                   
-                 </div>
-               </ng-template>
-              </e-column>              
-      </e-columns>
-      </ejs-grid>
-      </div>       
-      </div>
-</ng-template>
-</p-dialog>
 
+<p-dialog
+  #dialogModal
+  [visible]="tieneOrdenSeleccionada()"
+  [maximizable]="true"
+  [showHeader]="false"
+  [closeOnEscape]="false"
+>
+  <ng-template #headless>
+    <div class="w-full px-4 py-1 rounded-md mx-auto mt-2">
+      <div class="flex flex-col md:flex-row justify-end space-x-10">
+        <!-- Barra de acciones -->
+        <div class="flex flex-wrap items-center justify-center gap-1">
+          @if(estaEnAprobacion()) {
+          <button
+            class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50"
+            (click)="aprobar()"
+          >
+            Aprobar
+          </button>
+          <button
+            class="px-4 py-2 bg-gray-100 text-red-600 dark:bg-gray-800 dark:text-red-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400/50"
+            (click)="rechazar()"
+          >
+            Rechazar
+          </button>
+          } @if(estaPendiente() ){
+          <button
+            class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50"
+            (click)="solicitarAprobacion()"
+          >
+            Solicitar aprobación
+          </button>
+          }
+        </div>
+        <button
+          class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          (click)="cerrarDetalle()"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-row justify-between gap-4">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-lg font-bold pb-2">{{ nombreTrabajo() }}</h1>
+        <ejs-grid
+          [dataSource]="contenidoSobre()"
+          [filterSettings]="filterSettings"
+          [allowTextWrap]="true"
+          [enableAdaptiveUI]="false"
+          [enableHover]="true"
+          rowHeight="30"
+          (dataBound)="dataBound()"
+          [allowExcelExport]="true"
+          [height]="heightGrid"
+          allowReordering="true"
+          [allowFiltering]="true"
+          allowPaging="true "
+          allowResizing="true"
+          allowSorting="true"
+        >
+          <e-columns>
+            <e-column
+              field="componente"
+              header="Componente"
+              width="120"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="elemento"
+              header="Elemento"
+              width="120"
+              textAlign="Left"
+            ></e-column>
+            <e-column
+              field="aplica"
+              header="Fecha de Creación"
+              width="120"
+              allowReordering="false"
+              textAlign="Left"
+            >
+              <ng-template #template let-data>
+                <div class="flex items-center">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="data.aplica"
+                    [disabled]="!estaPendiente()"
+                    (ngModelChange)="onCheckboxChange(data)"
+                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
+                </div>
+              </ng-template>
+            </e-column>
+          </e-columns>
+        </ejs-grid>
+      </div>
+    </div>
+  </ng-template>
+</p-dialog>
