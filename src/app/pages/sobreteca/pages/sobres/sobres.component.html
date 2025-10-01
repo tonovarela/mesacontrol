@@ -54,13 +54,19 @@
 
 
 
-<p-dialog header="Contenido del sobre"  #dialogModal [(visible)]="mostrarModalSobre"  [maximizable]="true" [showHeader]="false" [closeOnEscape]="false"  >
-<ng-template  #headless >            
-        <div class="w-full px-4 py-1 rounded-md  mx-auto mt-2">
+<p-dialog 
+#dialogModal 
+[(visible)]="mostrarModalSobre"  
+[maximizable]="true" 
+[showHeader]="false" 
+[closeOnEscape]="false"
+>
+<ng-template  #headless >        
+        <div class="w-full px-4 py-1 rounded-md  mx-auto mt-2">     
   <div class="flex flex-col md:flex-row justify-end space-x-10">        
-    <!-- Barra de acciones -->
-    <div class="flex flex-wrap items-center justify-center gap-1">
-      <!-- @if(estaEnAprobacion()) {
+    <!-- Barra de acciones -->     
+    <div class="flex flex-wrap items-center justify-center gap-1">      
+      @if(estaEnAprobacion()) {
       <button
         class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50"
         (click)="aprobar()"
@@ -88,7 +94,7 @@
         Solicitar aprobación
       </button>
       }
-   -->
+  
     </div> 
     <button
       class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
@@ -113,7 +119,9 @@
   </div>
 </div>
     <div class="flex flex-row  justify-between gap-4">
+      
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h1 class="text-lg font-bold pb-2">{{ nombreTrabajo() }}</h1>   
 <ejs-grid 
         [dataSource]='contenidoSobre()'                  
          [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
@@ -130,8 +138,7 @@
               </e-column>              
       </e-columns>
       </ejs-grid>
-      </div>
-       
+      </div>       
       </div>
 </ng-template>
 </p-dialog>

@@ -39,6 +39,7 @@ export default class SobresComponent  extends BaseGridComponent implements OnIni
 
   public readonly type = TypeSearchMetrics.SOBRESPREPRENSA;      
   private sobreService = inject(SobreService);
+  public ordenActual = signal<OrdenMetrics | null>(null);
   private _ordenes= signal<OrdenMetrics[]>([]);
   protected minusHeight = 0.3;  
   public mostrarModalSobre = false;    
@@ -70,12 +71,16 @@ export default class SobresComponent  extends BaseGridComponent implements OnIni
   async verDetalle(orden: OrdenMetrics) {
      this.mostrarModalSobre = true;
      this.dialogModal.maximized = true;
+     
      const response =await firstValueFrom(this.sobreService.contenido(orden.NoOrden))
      const contenido = response.contenido.map(item => ({...item,aplica: item.aplica=='1' }));     
+     this.ordenActual.set(orden);
      this.contenidoSobre.set(contenido);        
   }
 
-  cerrarDetalle() { this.mostrarModalSobre =false;    }
+  cerrarDetalle() { 
+    this.ordenActual.set(null);
+    this.mostrarModalSobre =false;    }
 
 
   async onSelectOrder(orden: OrdenMetrics | null) {
@@ -95,12 +100,37 @@ export default class SobresComponent  extends BaseGridComponent implements OnIni
 
   async onCheckboxChange(detalleSobre: DetalleSobre) {
     const {aplica,id} = detalleSobre;    
-    await firstValueFrom(this.sobreService.actualizarDetalle(id, aplica));
+    await firstValueFrom(this.sobreService.actualizarDetalle(id, aplica));  
+  }
 
-    
+  estaEnAprobacion = computed(() => {
+    if (this.ordenActual()===null) return false;
+    return this.ordenActual()?.id_estado === "5"; 
+  });
+
+  estaPendiente= computed(() => {
+    if (this.ordenActual()===null) return false;
+    return this.ordenActual()?.id_estado === "1"; 
+  });
+  nombreTrabajo = computed(() => {
+    if (this.ordenActual()===null) return '';
+    return `${this.ordenActual()?.NoOrden}  - ${this.ordenActual()?.NombreTrabajo}`; 
+  });
+
+
+  solicitarAprobacion() {
 
   }
 
+  guardarCambios(){
+  }
+
+  rechazar(){
+
+  }
+  aprobar(){  
+
+  }
 
 
 }
