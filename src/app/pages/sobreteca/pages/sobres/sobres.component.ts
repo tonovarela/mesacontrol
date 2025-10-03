@@ -20,10 +20,10 @@ import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { MetricsService,SobreService,UiService,UsuarioService} from '@app/services';
 import { DetailDataBoundEventArgs, DetailRowService, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
 
-// interface Componente {
-//   name: string;
-//   code: string;
-// }
+interface ComponenteAgrupado {
+  nombre: string;
+  elementos:any[];
+}
 @Component({
   selector: 'app-sobres',
   imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent,
@@ -34,13 +34,15 @@ import { DetailDataBoundEventArgs, DetailRowService, Grid, GridComponent } from 
   providers:[DetailRowService],  
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class SobresComponent extends BaseGridComponent implements OnInit,AfterViewInit
+export default class SobresComponent extends BaseGridComponent implements OnInit
 
 {
   @ViewChild('dialogModal') dialogModal: any;
 
   public readonly type = TypeSearchMetrics.SOBRESPREPRENSA;
   public ordenActual = signal<OrdenMetrics | null>(null);
+
+  public componentesAgrupados = signal<ComponenteAgrupado[]>([]);  
   public ordenes = computed(() => this._ordenes());
   public contenidoSobre = signal<any[]>([]);
   public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
@@ -59,13 +61,9 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     super();
   }
 
-  ngAfterViewInit(): void {
 
-    
-      //this.grid.detailRowModule.expandAll();
-  }
+  ngOnInit(): void {
 
-  ngOnInit(): void {    
     this.iniciarResizeGrid(this.minusHeight, true);
     this._activatedRouter.data.subscribe((data:any) => {
       const pendientes = data['pendientes'] || false;
@@ -86,9 +84,8 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
 
     if (contenido.length > 0) {
       const componentes = new Set([ ...contenido.map((item) => item.componente)]);   
-      console.log(componentes );
-     const nuevoArreglo=  Array.from(componentes).map((name) => ({ name, elementos :  contenido.filter((item) => item.componente === name) }));
-      console.log(nuevoArreglo);
+     const componentesAgrupado=  Array.from(componentes).map((componente) => ({  nombre:componente, elementos :  contenido.filter((item) => item.componente === componente) }));
+      this.componentesAgrupados.set(componentesAgrupado);
     }
 
     //setTimeout(() => {
