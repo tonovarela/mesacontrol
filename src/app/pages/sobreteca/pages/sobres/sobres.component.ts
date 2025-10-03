@@ -28,9 +28,8 @@ import { MetricsService,SobreService,UiService,UsuarioService} from '@app/servic
   styleUrl: './sobres.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class SobresComponent
-  extends BaseGridComponent
-  implements OnInit
+export default class SobresComponent extends BaseGridComponent implements OnInit
+
 {
   @ViewChild('dialogModal') dialogModal: any;
 
@@ -56,12 +55,12 @@ export default class SobresComponent
 
   ngOnInit(): void {    
     this.iniciarResizeGrid(this.minusHeight, true);
+
     this._activatedRouter.data.subscribe((data:any) => {
       const pendientes = data['pendientes'] || false;
       this._verPendientes.set(pendientes);
       this.cargarInformacion();   
   });
-
   }
 
   public async verDetalle(orden: OrdenMetrics) {

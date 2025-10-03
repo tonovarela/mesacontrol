@@ -50,9 +50,7 @@ import { ResponseBitacoraMuestra as BitacoraMuestra } from '../../../../interfac
   styleUrl: './produccion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ProduccionComponent
-  extends BaseGridComponent
-  implements OnInit
+export default class ProduccionComponent extends BaseGridComponent implements OnInit
 {
   public estadosMuestra = signal<EstadoMuestra[]>([]);
   public selectedMuestra = signal<Detalle | null>(null);
