@@ -13,8 +13,10 @@ import { ListboxModule } from 'primeng/listbox';
 import { CheckboxModule } from 'primeng/checkbox';
 
 
+
 @NgModule({ 
     exports: [MultiSelectModule,        
+        ListboxModule,
         FloatLabelModule,TextareaModule,ToggleSwitchModule, CardModule,ToggleButtonModule,SelectButtonModule,AutoCompleteModule,DialogModule,ListboxModule,CheckboxModule]
     
    })

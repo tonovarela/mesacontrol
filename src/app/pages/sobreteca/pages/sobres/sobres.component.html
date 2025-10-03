@@ -47,13 +47,13 @@
                 </e-column>
                 </e-columns>
          </ejs-grid>
-            </div>    
+    </div>    
 </div>
 </div>
 
 <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"   [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
 <ng-template  #headless >        
-        <div class="w-full p-1 border-2  mx-auto mt-2">        
+        <div class="w-full p-1  mx-auto mt-2">        
   <div class="flex flex-col md:flex-row justify-around space-x-10">            
     <h1 class="text-lg font-bold pb-2">{{ nombreTrabajo() }}</h1>             
     <span
@@ -114,15 +114,19 @@
   </div>
        </div>
     <div class="flex flex-row  justify-between gap-4">      
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"> 
+      <div class="flex flex-col md:flex-row space-x-3 mb-4">        
+        <div class="w-full">
 <ejs-grid  [dataSource]='contenidoSobre()'  [filterSettings]="filterSettings"  [allowTextWrap]='true' 
             [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()' [allowExcelExport]='true' 
-            [pageSettings]='pageSettings'
+            [pageSettings]='pageSettings'            
+            (detailDataBound)='detailDataBound($event)'
             [height]="heightGrid" allowReordering='true' [allowFiltering]="true" allowPaging="true " allowResizing="true" allowSorting="true">
       <e-columns>
-              <e-column field='componente' header='Componente' width='120' textAlign='Left'></e-column>
-              <e-column field='elemento' header='Elemento' width='120' textAlign='Left'></e-column>
-              <e-column field='aplica' header='Fecha de Creación' width='120'  allowReordering='false'  textAlign='Left'>
+              <e-column field='componente' headerText='Componente' width='120' textAlign='Left'></e-column>
+              <e-column field='proceso' headerText='Proceso' width='120' textAlign='Left'></e-column>
+              <e-column field='elemento' headerText='Elemento' width='120' textAlign='Left'></e-column>
+              <e-column field='aplica'   headerText='en Sobre' width='120'   allowFiltering="false" allowReordering='false'  textAlign='Left'>
                <ng-template #template let-data>
                  <div class="flex items-center">                  
                   <input type="checkbox" [(ngModel)]="data.aplica" [disabled]="!estaPendiente()"  (ngModelChange)="onCheckboxChange(data)" class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">                   
@@ -130,7 +134,20 @@
                </ng-template>
               </e-column>              
       </e-columns>
-      </ejs-grid>
+       <!-- <ng-template #detailTemplate let-data>     
+      <pre>
+        {{ data | json }}
+      </pre>
+       </ng-template>  -->
+</ejs-grid>
+        </div>
+
+
+      </div>
+             
+
+
+
       </div>       
       </div>
 </ng-template>

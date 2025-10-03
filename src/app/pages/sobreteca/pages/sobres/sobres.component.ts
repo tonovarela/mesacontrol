@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy,Component,computed,inject,OnInit,signal,ViewChild,} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy,Component,computed,inject,OnInit,signal,ViewChild,} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +18,12 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
 import { MetricsService,SobreService,UiService,UsuarioService} from '@app/services';
+import { DetailDataBoundEventArgs, DetailRowService, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
 
+interface Componente {
+  name: string;
+  code: string;
+}
 @Component({
   selector: 'app-sobres',
   imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent,
@@ -26,9 +31,10 @@ import { MetricsService,SobreService,UiService,UsuarioService} from '@app/servic
   ],
   templateUrl: './sobres.component.html',
   styleUrl: './sobres.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers:[DetailRowService],  
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class SobresComponent extends BaseGridComponent implements OnInit
+export default class SobresComponent extends BaseGridComponent implements OnInit,AfterViewInit
 
 {
   @ViewChild('dialogModal') dialogModal: any;
@@ -49,12 +55,23 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   private _ordenes = signal<OrdenMetrics[]>([]);
   protected minusHeight = 0.3;
 
+  public componentes :Componente[] = [];
+
+  
+
   constructor() {
     super();
   }
 
+  ngAfterViewInit(): void {
+
+    
+      //this.grid.detailRowModule.expandAll();
+  }
+
   ngOnInit(): void {    
     this.iniciarResizeGrid(this.minusHeight, true);
+     
 
     this._activatedRouter.data.subscribe((data:any) => {
       const pendientes = data['pendientes'] || false;
@@ -64,7 +81,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   }
 
   public async verDetalle(orden: OrdenMetrics) {
-    this.dialogModal.maximized = true;
+    //this.dialogModal.maximized = true;
     const response = await firstValueFrom(
       this._sobreService.contenido(orden.NoOrden)
     );
@@ -72,8 +89,18 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       ...item,
       aplica: item.aplica == '1',
     }));
-    this.ordenActual.set(orden);
+    this.ordenActual.set(orden);    
     this.contenidoSobre.set(contenido);
+
+    if (contenido.length > 0) {
+      const componentes = new Set([ ...contenido.map((item) => item.componente)]);    
+      this.componentes = Array.from(componentes).map((name) => ({ name, code: name }));      
+    }
+
+    //setTimeout(() => {
+    //(this.grid as GridComponent).detailRowModule.expandAll();
+    ///}, 2000);  
+    
   }
 
   public cerrarDetalle() {
@@ -218,4 +245,20 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       console.error('Error al cargar la información:', error);
     }
   }
+
+
+
+   detailDataBound(e: DetailDataBoundEventArgs ) {
+    // console.log('detalle',(e.data as any)['componente']);
+    //  let detail = new Grid({
+    //         //dataSource: 
+    //         //data.filter((item: Object) => (item as any )['componente'] === (e.data as any)['componente']),
+    //         columns: [
+    //             { field: 'Componente', headerText: 'componente', width: 110 },
+                
+    //         ]
+    //     });
+    //     detail.appendTo((e.detailElement as HTMLElement).querySelector('.custom-grid') as HTMLElement);
+
+   }
 }
