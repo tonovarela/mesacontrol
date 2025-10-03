@@ -55,10 +55,6 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   private _ordenes = signal<OrdenMetrics[]>([]);
   protected minusHeight = 0.3;
 
- // public componentes :Componente[] = [];
-
-  
-
   constructor() {
     super();
   }
@@ -71,8 +67,6 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
 
   ngOnInit(): void {    
     this.iniciarResizeGrid(this.minusHeight, true);
-     
-
     this._activatedRouter.data.subscribe((data:any) => {
       const pendientes = data['pendientes'] || false;
       this._verPendientes.set(pendientes);
@@ -82,9 +76,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
 
   public async verDetalle(orden: OrdenMetrics) {
     //this.dialogModal.maximized = true;
-    const response = await firstValueFrom(
-      this._sobreService.contenido(orden.NoOrden)
-    );
+    const response = await firstValueFrom(this._sobreService.contenido(orden.NoOrden));
     const contenido = response.contenido.map((item) => ({
       ...item,
       aplica: item.aplica == '1',
@@ -93,8 +85,10 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     this.contenidoSobre.set(contenido);
 
     if (contenido.length > 0) {
-      const componentes = new Set([ ...contenido.map((item) => item.componente)]);    
-      //this.componentes = Array.from(componentes).map((name) => ({ name, code: name }));      
+      const componentes = new Set([ ...contenido.map((item) => item.componente)]);   
+      console.log(componentes );
+     const nuevoArreglo=  Array.from(componentes).map((name) => ({ name, elementos :  contenido.filter((item) => item.componente === name) }));
+      console.log(nuevoArreglo);
     }
 
     //setTimeout(() => {
