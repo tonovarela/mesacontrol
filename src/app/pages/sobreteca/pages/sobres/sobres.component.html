@@ -53,8 +53,8 @@
 
 <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"   [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
 <ng-template  #headless >        
-        <div class="max-w-7xl px-4 py-1 rounded-md  mx-auto mt-2">        
-  <div class="flex flex-col md:flex-row justify-between space-x-10">            
+        <div class="w-full p-1 border-2  mx-auto mt-2">        
+  <div class="flex flex-col md:flex-row justify-around space-x-10">            
     <h1 class="text-lg font-bold pb-2">{{ nombreTrabajo() }}</h1>             
     <span
           class="py-2 px-4 inline-flex text-xs leading-5 font-semibold rounded-full"
@@ -112,7 +112,7 @@
   
    
   </div>
-</div>
+       </div>
     <div class="flex flex-row  justify-between gap-4">      
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">      
 <ejs-grid  [dataSource]='contenidoSobre()'  [filterSettings]="filterSettings"  [allowTextWrap]='true' 
