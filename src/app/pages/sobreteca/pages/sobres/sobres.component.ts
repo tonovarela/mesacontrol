@@ -20,14 +20,14 @@ import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { MetricsService,SobreService,UiService,UsuarioService} from '@app/services';
 import { DetailDataBoundEventArgs, DetailRowService, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
 
-interface Componente {
-  name: string;
-  code: string;
-}
+// interface Componente {
+//   name: string;
+//   code: string;
+// }
 @Component({
   selector: 'app-sobres',
   imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent,
-  //  LoadingComponent
+   // LoadingComponent
   ],
   templateUrl: './sobres.component.html',
   styleUrl: './sobres.component.css',
@@ -55,7 +55,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   private _ordenes = signal<OrdenMetrics[]>([]);
   protected minusHeight = 0.3;
 
-  public componentes :Componente[] = [];
+ // public componentes :Componente[] = [];
 
   
 
@@ -94,7 +94,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
 
     if (contenido.length > 0) {
       const componentes = new Set([ ...contenido.map((item) => item.componente)]);    
-      this.componentes = Array.from(componentes).map((name) => ({ name, code: name }));      
+      //this.componentes = Array.from(componentes).map((name) => ({ name, code: name }));      
     }
 
     //setTimeout(() => {
