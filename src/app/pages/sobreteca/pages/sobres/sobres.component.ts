@@ -73,7 +73,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   }
 
   public async verDetalle(orden: OrdenMetrics) {
-    //this.dialogModal.maximized = true;
+    this.dialogModal.maximized = true;
     const response = await firstValueFrom(this._sobreService.contenido(orden.NoOrden));
     const contenido = response.contenido.map((item) => ({
       ...item,
