@@ -87,11 +87,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
      const componentesAgrupado=  Array.from(componentes).map((componente) => ({  nombre:componente, elementos :  contenido.filter((item) => item.componente === componente) }));
       this.componentesAgrupados.set(componentesAgrupado);
     }
-
-    //setTimeout(() => {
-    //(this.grid as GridComponent).detailRowModule.expandAll();
-    ///}, 2000);  
-    
+ 
   }
 
   public cerrarDetalle() {
@@ -237,19 +233,4 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     }
   }
 
-
-
-   detailDataBound(e: DetailDataBoundEventArgs ) {
-    // console.log('detalle',(e.data as any)['componente']);
-    //  let detail = new Grid({
-    //         //dataSource: 
-    //         //data.filter((item: Object) => (item as any )['componente'] === (e.data as any)['componente']),
-    //         columns: [
-    //             { field: 'Componente', headerText: 'componente', width: 110 },
-                
-    //         ]
-    //     });
-    //     detail.appendTo((e.detailElement as HTMLElement).querySelector('.custom-grid') as HTMLElement);
-
-   }
 }
