@@ -1,5 +1,11 @@
 export interface ResponseContenidoSobre {
     contenido: DetalleSobre[];
+    autorizacion?: Autorizacion;
+}
+
+export interface Autorizacion {    
+    fecha_registro: string;
+    motivo: string;
 }
 
 export interface DetalleSobre {
