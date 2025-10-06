@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
-import { DetalleSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
+import { Autorizacion, DetalleSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { LoadingComponent } from '@app/shared/loading/loading.component';
@@ -48,13 +48,17 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
   public verPendientes = computed(() => this._verPendientes());
   public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
-
+  public liberacionInfo = computed(() => {
+    return this._autorizacion();
+  });
+  private _autorizacion = signal<Autorizacion | null>(null);
   private _verPendientes = signal<boolean>(true);
   private _sobreService = inject(SobreService);
   private _activatedRouter = inject(ActivatedRoute);
   private _uiService = inject(UiService);
   private _usuarioService = inject(UsuarioService);
   private _ordenes = signal<OrdenMetrics[]>([]);
+
   protected minusHeight = 0.3;
 
   constructor() {
@@ -80,6 +84,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       aplica: item.aplica == '1',
     }));
     this.ordenActual.set(orden);    
+    this._autorizacion.set(response.autorizacion || null);
     this.contenidoSobre.set(contenido);
 
     if (contenido.length > 0) {
