@@ -181,13 +181,22 @@ export  class LiberacionComponent implements OnInit {
       this.uiService.mostrarAlertaError('Error', mensajeError);
       return;
     }
-
-    const respLogin = await LoginLitoapps(this.usuarioService,"Password de usuario que solicita la aprobación");
-    if (respLogin.isDismissed) {
-      return;
-    }
-    const { value: id_usuario } = respLogin;
+    // const respLogin = await LoginLitoapps(this.usuarioService,"Password de usuario que solicita la aprobación");
+    // if (respLogin.isDismissed) {
+    //   return;
+    // }
+    // const { value: id_usuario } = respLogin;
+    const id_usuario = this.usuarioService.StatusSesion().usuario?.id;
     await this._guardar();
+
+    const { orden,infoLiberacion,sobreContenido } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
+    console.log( { orden,infoLiberacion,sobreContenido });
+    // const { usuarioLibero } = infoLiberacion!;    
+    // this.pdfService.descargarPDF(orden,sobreContenido,usuarioLibero || '' );  
+
+    return;
+
+    //Aqui imprimir el marbete
     await firstValueFrom(this.prePrensaService.solicitarRevision(this.orden()!, `${id_usuario!}`));
     this.uiService.mostrarAlertaSuccess('', 'Se han mandado a autorización ');
     this.checkListService.updateListCheckList();

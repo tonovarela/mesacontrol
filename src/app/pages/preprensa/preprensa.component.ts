@@ -64,10 +64,9 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
       }
       if (orden.id_estado ==='2' && orden.estadoRutas === null) {
         sePuedeVisualizarSobre=false;
-      }      
-      
+      }            
       return { ...orden ,
-        colorCheckListSobreLiberacion:this.colorLiberacion(orden.estadoRutas),
+        colorCheckListSobreLiberacion: this.colorLiberacion(orden.estadoRutas),
         sePuedeVisualizarSobre 
       }
     });    
