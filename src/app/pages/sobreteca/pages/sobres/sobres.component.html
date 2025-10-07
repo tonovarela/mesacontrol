@@ -134,14 +134,17 @@
   </div>
        </div>  
     <div class="bg-slate-300 w-3/4 mx-auto dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-140px)] overflow-y-auto flex flex-wrap gap-4 mb-8">               
-      @for(grupo of componentesAgrupados();track grupo.nombre) {
-    <div class="bg-white border h-fit  border-slate-400 dark:border-white dark:bg-slate-800 rounded-lg shadow p-4 w-full max-w-96 sm:w-96">
-        <h2 class="text-lg font-bold mb-4 text-slate-800 dark:text-slate-100 border-b pb-2">{{ grupo.nombre }}</h2>
+      @for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
+    <div class="bg-white border h-fit  border-slate-100 dark:border-white dark:bg-slate-800 rounded shadow  w-full max-w-96 lg:w-96 md:w-62 sm:w-60">
+      <div class="w-full bg-slate-700  ">
+        <h2 class="text-lg font-bold mb-4 px-2 py-1 text-white dark:text-slate-100 border-b pb-2">{{ grupo.nombre }} </h2>
+      </div>
+
         @for(elemento of grupo.elementos; track elemento.id) {
-        <div  class="flex items-center justify-between py-1 border-b  last:border-b-0">
+        <div  class="flex items-center justify-between py-1 border-b  p-4 last:border-b-0">
           <div class="flex flex-row space-x-2 text-[9px]">
-            <div class=" text-slate-700 dark:text-slate-700">{{ elemento.elemento }}</div>            
-            <div class=" text-slate-500 dark:text-slate-500">{{ elemento.proceso }}</div>            
+            <div class=" text-slate-700 dark:text-white">{{ elemento.elemento }}</div>            
+            <div class=" text-slate-500 dark:text-white">{{ elemento.proceso }}</div>            
           </div>        
            <p-checkbox           
            [(ngModel)]="elemento.aplica"
