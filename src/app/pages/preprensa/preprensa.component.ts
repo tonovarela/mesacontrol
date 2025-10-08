@@ -76,6 +76,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 );
 
   public ordenLiberacion = computed(()=> this._ordenLiberacion()?.NoOrden || '' );
+
   private colorLiberacion(id_estado: string): string {
   if (id_estado == "1" ) return 'fill-white py-1 rounded-full bg-purple-600';  
   if (id_estado == "2") return 'fill-white py-1 rounded-full bg-lime-700';
@@ -186,9 +187,6 @@ ngOnInit(): void {
     this._ordenLiberacion.set(orden);    
   }
 
-
- 
-
   async ir(ordenMetrics: OrdenMetrics, actual: { id_checkActual: string, liberacion?: Date }) {
     const { id_checkActual, liberacion } = actual;
     const { id_checklist_actual } = ordenMetrics;
@@ -219,14 +217,7 @@ ngOnInit(): void {
     this.ordenMetricsPorDefinir.set(null);
   }
 
-
-
-
-    mostrarModalLiberacion = computed(()=>{
-
-      return this._ordenLiberacion()!==null;
-
-    });
+  mostrarModalLiberacion = computed(()=>this._ordenLiberacion()!==null);
 
 
   cerrarModalLiberacion(){

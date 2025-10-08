@@ -28,12 +28,15 @@ import { CheckListService, MetricsService, PdfService, PreprensaService, UiServi
 import { firstValueFrom, switchMap } from 'rxjs';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { columnas } from '@app/pages/data/columnas';
+import { ComponenteSobre } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { InfoLiberacion } from '../../../../../interfaces/responses/ResponseOrdenMetrics';
+import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
 
 
 
 @Component({
   selector: 'liberacion',
-  imports: [CommonModule, PrimeModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, PrimeModule, ReactiveFormsModule, FormsModule,PdfComponent],
   templateUrl: './liberacion.component.html',
   styleUrl: './liberacion.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -152,18 +155,11 @@ export  class LiberacionComponent implements OnInit {
   }
 
   async solicitarAprobacion() {
-    // const { isConfirmed } = await this.uiService.mostrarAlertaConfirmacion(
-    //   '',
-    //   '¿Está seguro de que desea solicitar la aprobación de las elementos seleccionadas?'
-    // );
-    // if (!isConfirmed) {
-    //   return;
-    // }  
+
     if (this.rutas().filter(r => r.aplica === "1").length ===0){
       this.uiService.mostrarAlertaError('Error', 'No hay componentes seleccionados para el marbete.');
       return;
     }
-
     const rutasParaVerificar = this.rutas().filter(r => r.aplica === "1").map(
       ({ componente, ruta }: RutaElemento) => {
         return {
@@ -181,27 +177,40 @@ export  class LiberacionComponent implements OnInit {
       this.uiService.mostrarAlertaError('Error', mensajeError);
       return;
     }
-    // const respLogin = await LoginLitoapps(this.usuarioService,"Password de usuario que solicita la aprobación");
-    // if (respLogin.isDismissed) {
-    //   return;
-    // }
-    // const { value: id_usuario } = respLogin;
-    const id_usuario = this.usuarioService.StatusSesion().usuario?.id;
+        
+    const id_usuario = this.usuarioService.StatusSesion().usuario?.id;    
     await this._guardar();
-
-    const { orden,infoLiberacion,sobreContenido } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
-    console.log( { orden,infoLiberacion,sobreContenido });
-    // const { usuarioLibero } = infoLiberacion!;    
-    // this.pdfService.descargarPDF(orden,sobreContenido,usuarioLibero || '' );  
-
-    return;
-
-    //Aqui imprimir el marbete
     await firstValueFrom(this.prePrensaService.solicitarRevision(this.orden()!, `${id_usuario!}`));
+    await this.descargarMarbetePrevio();
     this.uiService.mostrarAlertaSuccess('', 'Se han mandado a autorización ');
     this.checkListService.updateListCheckList();
     this.regresar();
   }
+
+
+  public async  descargarMarbetePrevio(){
+    const id_usuario = this.usuarioService.StatusSesion().usuario?.id;    
+    const { orden } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
+    const { componentesSobre,infoLiberacion} = this.preSobreContenido();          
+    this.pdfService.descargarPDF(orden,componentesSobre,infoLiberacion.usuarioLibero );  
+  }
+
+
+  private preSobreContenido = computed(()=>{
+    const componentesSobre:ComponenteSobre[] =this.rutas()
+       .filter(r => r.aplica === "1")
+       .map(({ componente, ruta }: RutaElemento) => 
+         ( {
+           componente,
+           elementos:ruta.filter(x=>x.aplica===1).map((item:ElementoItem)=>item.descripcion)        
+         })      
+    );
+    const infoLiberacion:InfoLiberacion ={
+      fechaLiberacion: new Date(),
+      usuarioLibero: this.usuarioService.StatusSesion().usuario?.nombre!
+    };
+    return {componentesSobre,infoLiberacion};
+  });
 
   async aprobar() {
 
