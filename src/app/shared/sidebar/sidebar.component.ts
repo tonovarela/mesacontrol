@@ -83,7 +83,7 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
       claseSize: 'w-8 h-8 svg-icon',
     },
     {
-      nombre: 'Sobres confirmados',
+      nombre: 'Sin gaveta asignada',
       icono: 'assets/img/sobre-confirmado.svg',
       path: '/sobreteca/sobres-confirmados',
       claseSize: 'w-8 h-8 svg-icon',

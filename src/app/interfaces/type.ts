@@ -2,7 +2,8 @@ export enum TypeSearchMetrics  {
     PREPRENSA,
     PRODUCCION,
     CONTROL_ELEMENTOS,
-    SOBRESPREPRENSA
+    SOBRESPREPRENSA,
+    //CON_GAVETA_ASIGNADA,
   }
 
   

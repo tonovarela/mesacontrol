@@ -57,11 +57,11 @@ export class SearchMetricsComponent implements OnInit,OnDestroy {
           busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery, this.paraProduccion());
         }
         if (tipoSearch === TypeSearchMetrics.CONTROL_ELEMENTOS) {    
-          busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery,true);
+          busquedaObservable = this.metrisService.buscarPorPatron(this.valorQuery);
         }
         if (tipoSearch === TypeSearchMetrics.SOBRESPREPRENSA) {            
           busquedaObservable = this.metrisService.buscarRegistroSobre(this.valorQuery);
-        }
+        }        
         return busquedaObservable || of({ ordenes: [] });
 
       })

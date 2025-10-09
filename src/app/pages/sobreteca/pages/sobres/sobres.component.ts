@@ -13,12 +13,12 @@ import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Autorizacion, DetalleSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
-import { LoadingComponent } from '@app/shared/loading/loading.component';
+//import { LoadingComponent } from '@app/shared/loading/loading.component';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
 import { MetricsService,SobreService,UiService,UsuarioService} from '@app/services';
-import { DetailDataBoundEventArgs, DetailRowService, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
+import { DetailDataBoundEventArgs, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 
 interface ComponenteAgrupado {
@@ -27,12 +27,10 @@ interface ComponenteAgrupado {
 }
 @Component({
   selector: 'app-sobres',
-  imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent,
-   // LoadingComponent
-  ],
+  imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent],
   templateUrl: './sobres.component.html',
   styleUrl: './sobres.component.css',
-  providers:[DetailRowService],  
+  providers:[],  
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class SobresComponent extends BaseGridComponent implements OnInit
