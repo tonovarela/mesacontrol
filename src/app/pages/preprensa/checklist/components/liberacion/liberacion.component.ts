@@ -192,7 +192,7 @@ export  class LiberacionComponent implements OnInit {
     const id_usuario = this.usuarioService.StatusSesion().usuario?.id;    
     const { orden } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
     const { componentesSobre,infoLiberacion} = this.preSobreContenido();          
-    this.pdfService.descargarPDF(orden,componentesSobre,infoLiberacion.usuarioLibero );  
+    this.pdfService.descargarPDF(orden,componentesSobre,infoLiberacion.usuarioLibero ,true);  
   }
 
 
@@ -212,17 +212,7 @@ export  class LiberacionComponent implements OnInit {
     return {componentesSobre,infoLiberacion};
   });
 
-  async aprobar() {
-
-    // const resp = await this.uiService.mostrarAlertaConfirmacion(
-    //   'Confirmar Aprobación',
-    //   '¿Está seguro de que desea aprobar la solicitud de aprobación?'
-    // );
-    // if (!resp.isConfirmed) {
-    //   return;
-    // }        
-
-    
+  async aprobar() {      
       const {isDismissed,value: id_usuario}  = await LoginLitoapps(this.usuarioService,"Password de usuario que realiza la aprobación");
       if (isDismissed) {
         return;
@@ -238,11 +228,11 @@ export  class LiberacionComponent implements OnInit {
           orden_metrics: this.orden(),
         }))
     );      
-   //Guardar las rutas en base de datos
-
+   
     await firstValueFrom(this.prePrensaService.aprobarRevision(this.orden()!,
                                                                rutas.flat(),
                                                                `${id_usuario!}`));                                                               
+   
     //Obtencion de la orden para generar el PDF
     const { orden,infoLiberacion,sobreContenido } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
     const { usuarioLibero } = infoLiberacion!;    

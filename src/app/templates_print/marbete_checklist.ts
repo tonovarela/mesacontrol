@@ -12,6 +12,7 @@ export interface MarbeteProps {
    usuario:string;
    vendedor:string;
    contenidoSobre:ComponenteSobre[],
+   preMarbete:boolean,
    fecha_liberacion:(string | null)[]
 
 }
@@ -19,6 +20,7 @@ export interface MarbeteProps {
 export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
   // Asegurarse que contenidoSobre existe
   const componentes = props.contenidoSobre || [];
+  
 
   // Crear tablas individuales para cada componente (más simple y fiable)
   const tablasComponentes = componentes.map(componente => {
@@ -123,7 +125,7 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
         style: 'containerTiny',
         table: {
           widths: ['*'],
-          body: [[{ text: `Liberado por: ${props.usuario || ''}`, alignment: 'center', fontSize: 5 }]]
+          body: [[{ text: `${props.preMarbete ? 'Impreso' : 'Liberado'}  por: ${props.usuario || ''}`, alignment: 'center', fontSize: 5 }]]
         },
         margin: [0, 1, 0, 1] as [number, number, number, number] ,// Corrección de tipo
       },

@@ -18,15 +18,15 @@ export class PdfService {
   
  columnasAuditoria = columnas;
 
- async descargarPDF(data: any,sobreContenido:ComponenteSobre[],nombreUsuario:string) {    
+ async descargarPDF(data: any,sobreContenido:ComponenteSobre[],nombreUsuario:string,preMarbete =false) {    
     if (sobreContenido.length==0) {
       return;
     }
-
     let liberacionesCheckList =this.columnasAuditoria.map((col) => {
       const date = this.fechaLiberacion(data, col);
       return !date? null : formatDate(date);      
     });      
+
     await this.obtenerPDF( {
       vendedor: data?.Vendedor || '',   
       contenidoSobre:sobreContenido,   
@@ -34,6 +34,7 @@ export class PdfService {
       nombre_trabajo: data?.NombreTrabajo || '',
       cliente: data?.NombreCliente || '',
       fecha_liberacion:liberacionesCheckList,
+      preMarbete,
       usuario: nombreUsuario       
     });
     
