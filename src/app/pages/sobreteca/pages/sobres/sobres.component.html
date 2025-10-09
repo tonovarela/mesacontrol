@@ -153,7 +153,8 @@
       <div class="w-full bg-slate-700  border-0 rounded  flex justify-between items-center">        
           <h2 class="text-lg font-bold  px-2 py-1 text-white dark:text-slate-100 ">{{ grupo.nombre }}</h2>
           <div class="px-4">
-           <p-checkbox                     
+           <p-checkbox     
+           
           [binary]="true" 
           (onChange)="toggleGrupo(i,$event)"
           [disabled]="!estaPendiente()">
@@ -166,7 +167,7 @@
             <div class=" text-slate-700 dark:text-white">{{ elemento.elemento }}</div>            
             <div class=" text-slate-500 dark:text-white">{{ elemento.proceso }}</div>            
           </div>        
-           <p-checkbox           
+           <p-checkbox                      
            [(ngModel)]="elemento.aplica"
            (ngModelChange)="onCheckboxChange(elemento.id,elemento.aplica)"
           [binary]="true" 

@@ -180,7 +180,8 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     }
     const orden = this.ordenActual()?.NoOrden;
     try {
-      await firstValueFrom(this._sobreService.solicitarAprobacion(orden!,"1"));
+      const id_usuario = this._usuarioService.StatusSesion().usuario?.id || "1";
+      await firstValueFrom(this._sobreService.solicitarAprobacion(orden!,`${id_usuario}`));
     } catch (error) {
       console.error('Error al solicitar la aprobación:', error);
     }
@@ -301,7 +302,8 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     //return ;
     
     try {
-      await firstValueFrom(this._sobreService.actualizarGaveta(orden, numero_gaveta));
+      const id_usuario = this._usuarioService.StatusSesion().usuario?.id || "1";
+      await firstValueFrom(this._sobreService.actualizarGaveta(orden, numero_gaveta,`${id_usuario}`));
       this._uiService.mostrarAlertaSuccess('', 'Número de gaveta actualizado correctamente');
       this.cargarInformacion();      
     // Actualizar la orden actual con el nuevo número de gaveta          
