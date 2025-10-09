@@ -263,27 +263,30 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     this.cargarInformacion();
   }
 
-  public async actualizarGaveta() {
+  public async actualizarGaveta(orden:string) {
+    // Crear opciones del 1 al 60 para el select
+    const opcionesGaveta: { [key: string]: string } = {};
+    for (let i = 1; i <= 60; i++) {
+      opcionesGaveta[i.toString()] = i.toString();
+    }
+
     const resp = await Swal.fire({
       title: 'Actualizar número de gaveta',
-      input: 'text',
+      input: 'select',
       inputLabel: 'Número de gaveta',
-      inputValue: this.ordenActual()?.no_gaveta || '',
+      inputOptions: opcionesGaveta,
+      inputValue: this.ordenActual()?.no_gaveta || '1',
       icon: 'info',
-      inputAttributes: {
-        autocapitalize: 'off',
-        placeholder: 'Ingrese el número de gaveta'
-      },
       showCancelButton: true,
       confirmButtonText: 'Actualizar',
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: (numero_gaveta) => {
-        if (!numero_gaveta || numero_gaveta.trim() === '') {
-          Swal.showValidationMessage('Debe ingresar un número de gaveta');
+        if (!numero_gaveta) {
+          Swal.showValidationMessage('Debe seleccionar un número de gaveta');
           return false;
         }
-        return numero_gaveta.trim();
+        return numero_gaveta;
       },
     });
 
@@ -293,17 +296,15 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       return;
     }
 
-    const orden = this.ordenActual()?.NoOrden;
+    
+    //console.log({orden, numero_gaveta});
+    //return ;
     
     try {
-      await firstValueFrom(this._sobreService.actualizarGaveta(orden!, numero_gaveta));
+      await firstValueFrom(this._sobreService.actualizarGaveta(orden, numero_gaveta));
       this._uiService.mostrarAlertaSuccess('', 'Número de gaveta actualizado correctamente');
-      this.cargarInformacion();
-      
-      // Actualizar la orden actual con el nuevo número de gaveta
-      const ordenActualizada = { ...this.ordenActual()!, no_gaveta: numero_gaveta };
-      this.ordenActual.set(ordenActualizada);
-      
+      this.cargarInformacion();      
+    // Actualizar la orden actual con el nuevo número de gaveta          
     } catch (error) {
       console.error('Error al actualizar gaveta:', error);
       this._uiService.mostrarAlertaError('', 'Error al actualizar el número de gaveta');
