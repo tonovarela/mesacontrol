@@ -19,20 +19,39 @@
                 <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>
                 <e-column field='descripcion' headerText='Estado' width='120'  >
                   <ng-template #template let-data>
-  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-    [ngClass]="{
-      'bg-green-100 text-green-800': data.id_estado == 2,
-      'bg-yellow-100 text-yellow-800': data.id_estado == 1,
-      'bg-red-100 text-red-800': data.id_estado == 3,
-      'bg-gray-100 text-gray-800': data.id_estado == 5,
-    }"
-  >
-    {{ data.descripcion }}
-  </span>
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': data.id_estado == 2,
+                      'bg-yellow-100 text-yellow-800': data.id_estado == 1,
+                      'bg-red-100 text-red-800': data.id_estado == 3,
+                      'bg-gray-100 text-gray-800': data.id_estado == 5,
+                    }"
+                  >
+                    {{ data.descripcion }}
+                  </span>
                  </ng-template>
                 </e-column>
                 <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>
                 <e-column field='Vendedor' headerText='Vendedor' width='200' textAlign='Left' ></e-column>                
+                @if(!verPendientes()){
+                <e-column field='no_gaveta' headerText='# Gaveta' width='150' textAlign='Center'  >
+                  <ng-template #template let-data>
+                    <span *ngIf="data.no_gaveta; else sinGaveta">{{ data.no_gaveta }}</span>
+                    <ng-template #sinGaveta>
+                       <button
+        class="p-1 bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 border border-blue-200 dark:border-blue-700 rounded-md text-xs font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400/50 flex items-center gap-2"
+        (click)="actualizarGaveta()"
+        title="Actualizar número de gaveta"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+        </svg>
+        Gaveta
+      </button>
+                    </ng-template>
+                  </ng-template>
+                </e-column>
+                }
                 <e-column >
                   <ng-template #template let-data>
                     <a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">
@@ -56,7 +75,9 @@
   
         <div class="w-full p-1  mx-auto mt-2">        
   <div class="flex flex-col md:flex-row justify-between space-x-10 px-3">            
-    <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>             
+    <div class="flex flex-col">
+      <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>      
+    </div>             
     @if(ordenActual()!.id_estado =='2'){
        <div
       class="inline-block px-3  w-72  rounded-md text-md font-semibold bg-green-100 text-green-700 border-green-200 dark:bg-green-900 dark:text-green-200 dark:border-green-700'   "
@@ -115,6 +136,9 @@
         Solicitar aprobación
       </button>
       }
+      
+      <!-- Botón para actualizar gaveta -->
+     
   
     </div> 
     <button
@@ -134,7 +158,7 @@
   </div>
        </div>  
     <div class="bg-slate-300 w-3/4 mx-auto dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-140px)] overflow-y-auto flex flex-wrap gap-4 mb-8">               
-@for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
+        @for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
     <div class="bg-white border h-fit   dark:border-white dark:bg-slate-800 rounded shadow  w-full max-w-96 lg:w-96 md:w-62 sm:w-60">
       <div class="w-full bg-slate-700  border-0 rounded  flex justify-between items-center">        
           <h2 class="text-lg font-bold  px-2 py-1 text-white dark:text-slate-100 ">{{ grupo.nombre }}</h2>
@@ -144,11 +168,7 @@
           (onChange)="toggleGrupo(i,$event)"
           [disabled]="!estaPendiente()">
         </p-checkbox>          
-          </div>
-          
-
-        
-        
+          </div>                        
       </div>
         @for(elemento of grupo.elementos; track elemento.id) {
         <div  class="flex items-center justify-between py-1 border-b  p-4 last:border-b-0">
@@ -165,11 +185,8 @@
         </div>
       }
       </div>
-      }
-      
-    </div>
-
-
+      }      
+    </div>∫
 </ng-template>
 </p-dialog>
 

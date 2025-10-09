@@ -59,6 +59,9 @@ export class SobreService {
     return this.http.post(`${this.API_URL}/api/sobreteca/sobre/rechazar`,{orden,id_usuario,motivo});
   }
 
+  actualizarGaveta(orden: string, no_gaveta: string) {
+    return this.http.put(`${this.API_URL}/api/sobreteca/sobre/gaveta`, { orden, no_gaveta });
+  }
 
   
 

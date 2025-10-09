@@ -41,6 +41,7 @@ export interface OrdenMetrics {
     pruebaColor_idEstado?: string;
     id_estado?:string;
     descripcion?:string;
+    no_gaveta?:number;
     clienteDummyVestido_checklist?: string;
     clienteDummyVestido_idEstado?: string;
     viajeroPruebaColor_checkList?: string;

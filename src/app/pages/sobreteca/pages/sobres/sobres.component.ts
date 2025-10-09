@@ -263,6 +263,53 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     this.cargarInformacion();
   }
 
+  public async actualizarGaveta() {
+    const resp = await Swal.fire({
+      title: 'Actualizar número de gaveta',
+      input: 'text',
+      inputLabel: 'Número de gaveta',
+      inputValue: this.ordenActual()?.no_gaveta || '',
+      icon: 'info',
+      inputAttributes: {
+        autocapitalize: 'off',
+        placeholder: 'Ingrese el número de gaveta'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Actualizar',
+      cancelButtonText: 'Cancelar',
+      showLoaderOnConfirm: true,
+      preConfirm: (numero_gaveta) => {
+        if (!numero_gaveta || numero_gaveta.trim() === '') {
+          Swal.showValidationMessage('Debe ingresar un número de gaveta');
+          return false;
+        }
+        return numero_gaveta.trim();
+      },
+    });
+
+    const { value: numero_gaveta, isDismissed } = resp;
+
+    if (isDismissed || !numero_gaveta) {
+      return;
+    }
+
+    const orden = this.ordenActual()?.NoOrden;
+    
+    try {
+      await firstValueFrom(this._sobreService.actualizarGaveta(orden!, numero_gaveta));
+      this._uiService.mostrarAlertaSuccess('', 'Número de gaveta actualizado correctamente');
+      this.cargarInformacion();
+      
+      // Actualizar la orden actual con el nuevo número de gaveta
+      const ordenActualizada = { ...this.ordenActual()!, no_gaveta: numero_gaveta };
+      this.ordenActual.set(ordenActualizada);
+      
+    } catch (error) {
+      console.error('Error al actualizar gaveta:', error);
+      this._uiService.mostrarAlertaError('', 'Error al actualizar el número de gaveta');
+    }
+  }
+
   private async cargarInformacion() {
     try {
       const obs$ = this._sobreService.listar(this._verPendientes());      
