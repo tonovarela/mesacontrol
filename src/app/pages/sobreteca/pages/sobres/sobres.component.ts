@@ -19,6 +19,7 @@ import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
 import { MetricsService,SobreService,UiService,UsuarioService} from '@app/services';
 import { DetailDataBoundEventArgs, DetailRowService, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
+import { CheckboxChangeEvent } from 'primeng/checkbox';
 
 interface ComponenteAgrupado {
   nombre: string;
@@ -67,7 +68,6 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
 
 
   ngOnInit(): void {
-
     this.iniciarResizeGrid(this.minusHeight, true);
     this._activatedRouter.data.subscribe((data:any) => {
       const pendientes = data['pendientes'] || false;
@@ -115,8 +115,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     }
   }
 
-  public async onCheckboxChange(detalleSobre: DetalleSobre) {
-    const { aplica, id } = detalleSobre;
+  public async onCheckboxChange(id:string,aplica:string) {
     await firstValueFrom(this._sobreService.actualizarDetalle(id, aplica));
   }
 
@@ -133,6 +132,27 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     );
   });
 
+  async toggleGrupo(index: number, $event: CheckboxChangeEvent) {
+
+    const { checked } = $event;      
+    const componentesModificados = [...this.componentesAgrupados()];
+    const grupoSeleccionado = componentesModificados[index];    
+    if (!grupoSeleccionado) return;        
+    const porModificar = grupoSeleccionado.elementos.map(item => item.id);        
+    componentesModificados[index] = {
+      ...grupoSeleccionado,
+      elementos: grupoSeleccionado.elementos.map(item => ({
+        ...item,
+        aplica: checked
+      }))
+    };
+    this.componentesAgrupados.set(componentesModificados);    
+    for (const id of porModificar) {
+       await this.onCheckboxChange(id, checked ? '1' : '0');
+    }
+    
+  }
+
   public nombreTrabajo = computed(() => {
     if (this.ordenActual() === null) return '';
     return `${this.ordenActual()?.NoOrden}  - ${
@@ -141,6 +161,19 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   });
 
   public async solicitarAprobacion() {
+
+    const elementosRevision = this.componentesAgrupados().map(item =>{
+      const tieneSoloUna = item.elementos.some((el:any) => el.aplica);
+      return { grupo: item.nombre, tieneSoloUna };
+    });    
+
+    const algunGrupoSinSeleccion = elementosRevision.some(item => !item.tieneSoloUna);
+    const gruposConSeleccionRequerida = elementosRevision.filter(item => !item.tieneSoloUna).map(item => item.grupo);
+    if(algunGrupoSinSeleccion){
+      this._uiService.mostrarAlertaError('',`Los componentes ${gruposConSeleccionRequerida.join(', ')} deben tener al menos un elemento seleccionado`);
+      return;
+    }
+
     const { isConfirmed } = await this._uiService.mostrarAlertaConfirmacion('','¿Está seguro de que desea solicitar la aprobación de las elementos seleccionadas?');
     if (!isConfirmed) {
       return;
@@ -149,7 +182,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     try {
       await firstValueFrom(this._sobreService.solicitarAprobacion(orden!,"1"));
     } catch (error) {
-      //console.error('Error al solicitar aprobación:', error);
+      console.error('Error al solicitar la aprobación:', error);
     }
     this._uiService.mostrarAlertaSuccess('', 'Se han mandado a autorización ');
     this.cerrarDetalle();
@@ -205,6 +238,8 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   }
 
   public async aprobar() {
+
+  
     const { isDismissed, value: id_usuario } = await LoginLitoapps(
       this._usuarioService,
       'Password de usuario que realiza la aprobación'

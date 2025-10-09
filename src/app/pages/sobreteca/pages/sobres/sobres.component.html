@@ -134,12 +134,22 @@
   </div>
        </div>  
     <div class="bg-slate-300 w-3/4 mx-auto dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-140px)] overflow-y-auto flex flex-wrap gap-4 mb-8">               
-      @for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
+@for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
     <div class="bg-white border h-fit   dark:border-white dark:bg-slate-800 rounded shadow  w-full max-w-96 lg:w-96 md:w-62 sm:w-60">
-      <div class="w-full bg-slate-700  border-0 rounded ">
-        <h2 class="text-lg font-bold mb-4 px-2 py-1 text-white dark:text-slate-100 border-b pb-2">{{ grupo.nombre }} </h2>
-      </div>
+      <div class="w-full bg-slate-700  border-0 rounded  flex justify-between items-center">        
+          <h2 class="text-lg font-bold  px-2 py-1 text-white dark:text-slate-100 ">{{ grupo.nombre }}</h2>
+          <div class="px-4">
+           <p-checkbox                     
+          [binary]="true" 
+          (onChange)="toggleGrupo(i,$event)"
+          [disabled]="!estaPendiente()">
+        </p-checkbox>          
+          </div>
+          
 
+        
+        
+      </div>
         @for(elemento of grupo.elementos; track elemento.id) {
         <div  class="flex items-center justify-between py-1 border-b  p-4 last:border-b-0">
           <div class="flex flex-row space-x-2 text-[9px]">
@@ -148,7 +158,7 @@
           </div>        
            <p-checkbox           
            [(ngModel)]="elemento.aplica"
-           (ngModelChange)="onCheckboxChange(elemento)"
+           (ngModelChange)="onCheckboxChange(elemento.id,elemento.aplica)"
           [binary]="true" 
           [disabled]="!estaPendiente()">
         </p-checkbox>          
