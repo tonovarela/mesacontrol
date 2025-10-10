@@ -10,54 +10,19 @@
     </div>
   
   </div>
-        <!-- <ejs-grid #grid 
+        <ejs-grid #grid 
         [dataSource]='ordenes()' [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
         [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
         [pageSettings]='pageSettings'
         >
             <e-columns>
-                <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>
-                <e-column field='descripcion' headerText='Estado' width='120'  >
-                  <ng-template #template let-data>
-                  <span class="px-2 inline-flex  leading-5 font-semibold rounded-full"
-                    [ngClass]="{
-                      'bg-green-100 text-green-800': data.id_estado == 2,
-                      'bg-yellow-100 text-yellow-800': data.id_estado == 1,
-                      'bg-red-100 text-red-800': data.id_estado == 3,
-                      'bg-gray-100 text-gray-800': data.id_estado == 5,
-                    }"
-                  >
-                    {{ data.descripcion }}
-                  </span>
-                 </ng-template>
-                </e-column>
+                <e-column field='id_prestamo' headerText='id_prestamo' width='120' textAlign='Center' ></e-column>               
+                <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>               
                 <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>
-                <e-column field='Vendedor' headerText='Vendedor' width='200' textAlign='Left' ></e-column>                
-                
-                <e-column field='no_gaveta' headerText='# Gaveta' width='150' textAlign='Center'  >
-                  <ng-template #template let-data>
-
-                    @if(data.id_estado == '2') {
-                    <span *ngIf="data.no_gaveta; else sinGaveta">{{ data.no_gaveta }}</span>
-                    <ng-template #sinGaveta>
-                       <button class=" my-1 px-2  bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 border border-blue-200 dark:border-blue-700 rounded-md text-[10px] font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400/50 flex items-center gap-2"
-                            (click)="actualizarGaveta(data.NoOrden)"
-                            title="Actualizar número de gaveta"
-                          >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-        </svg>
-        Gaveta
-      </button>
-          
-                    </ng-template>
-                  }
-                  </ng-template>
-                </e-column>
-                
+                <e-column field='Vendedor' headerText='Vendedor' width='200' textAlign='Left' ></e-column>                                                                
                 <e-column >
                   <ng-template #template let-data>
-                    <a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">                      
+                    <a   class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">                      
                       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/>
                         <path d="M8 10h8M8 14h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -67,7 +32,7 @@
                   </ng-template>
                 </e-column>
                 </e-columns>
-         </ejs-grid> -->
+         </ejs-grid>
     </div>    
 </div>
 

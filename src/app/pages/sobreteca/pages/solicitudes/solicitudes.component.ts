@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
@@ -9,7 +10,7 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 
 @Component({
   selector: 'app-solicitudes-sobre',
-  imports: [SynfusionModule,SearchMetricsComponent],
+  imports: [SynfusionModule,SearchMetricsComponent,CommonModule],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +21,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
    private _activatedRouter = inject(ActivatedRoute);
    public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
    public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
+   public ordenes = computed(()=>{return [];});
   constructor() {
     super();   
   }
