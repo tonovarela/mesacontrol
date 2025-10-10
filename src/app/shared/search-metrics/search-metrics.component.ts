@@ -9,6 +9,7 @@ import { MetricsService } from '@app/services';
 import {  Observable, of, Subject, switchMap } from 'rxjs';
 
 
+
 @Component({  
   selector: 'search-metrics',
   imports: [PrimeModule,FormsModule,CommonModule],
@@ -62,6 +63,9 @@ export class SearchMetricsComponent implements OnInit,OnDestroy {
         if (tipoSearch === TypeSearchMetrics.SOBRESPREPRENSA) {            
           busquedaObservable = this.metrisService.buscarRegistroSobre(this.valorQuery);
         }        
+        if (tipoSearch === TypeSearchMetrics.CON_GAVETA_ASIGNADA) {            
+          busquedaObservable = this.metrisService.buscarRegistroSobre(this.valorQuery);
+        }        
         return busquedaObservable || of({ ordenes: [] });
 
       })
@@ -69,9 +73,15 @@ export class SearchMetricsComponent implements OnInit,OnDestroy {
       this.cargandoBusqueda.set(false);
       this.OPsBusqueda.set(response.ordenes);
     })
-
    
   }
+
+
+  esBusquedaConGavetaAsignada = computed(()=>{
+    return this.typeSearch() === TypeSearchMetrics.CON_GAVETA_ASIGNADA;
+  })
+  
+
 
   async onSelect({ value }: { value: OrdenMetrics }) {
     this.selectedOP = value!;    

@@ -19,7 +19,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   private uiService= inject(UiService);
    private _activatedRouter = inject(ActivatedRoute);
    public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
-   public readonly type = TypeSearchMetrics.SOBRESPREPRENSA
+   public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
   constructor() {
     super();   
   }
