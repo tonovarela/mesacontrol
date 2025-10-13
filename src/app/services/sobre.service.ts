@@ -7,6 +7,7 @@ import { environment } from '@environments/environment.development';
 import { LiberacionComponent } from '../pages/preprensa/checklist/components/liberacion/liberacion.component';
 import { ListboxModule } from 'primeng/listbox';
 import { ResponseContenidoSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
+import { ResponsePrestamo } from '@app/pages/sobreteca/interface/interface';
 
 
 @Injectable({
@@ -20,11 +21,6 @@ export class SobreService {
   constructor() { }
 
   
-
-  // buscar(patron: string) {  
-  //   return this.http.post<ResponseOrdenMetrics>(`${this.API_URL}/api/sobreteca/sobre/buscar`,{patron});
-  // }
-
   
   registrar(orden:string){
     return this.http.post(`${this.API_URL}/api/sobreteca/sobre`,{orden});
@@ -61,6 +57,13 @@ export class SobreService {
 
   actualizarGaveta(orden: string, no_gaveta: string,id_usuario:string) {
     return this.http.put(`${this.API_URL}/api/sobreteca/sobre/gaveta`, { orden, no_gaveta,id_usuario });
+  }
+
+
+  informacionPrestamo(orden:string) {    
+
+    return this.http.get<ResponsePrestamo>(`${this.API_URL}/api/sobreteca/prestamo/sobre/${orden}`)
+    
   }
 
   

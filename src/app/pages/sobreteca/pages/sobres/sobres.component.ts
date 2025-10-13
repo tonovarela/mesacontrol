@@ -45,9 +45,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
   public verPendientes = computed(() => this._verPendientes());
   public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
-  public liberacionInfo = computed(() => {
-    return this._autorizacion();
-  });
+  public liberacionInfo = computed(() =>  this._autorizacion());
   private _autorizacion = signal<Autorizacion | null>(null);
   private _verPendientes = signal<boolean>(true);
   private _sobreService = inject(SobreService);
