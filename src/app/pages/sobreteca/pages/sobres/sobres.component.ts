@@ -20,11 +20,9 @@ import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { MetricsService,SobreService,UiService,UsuarioService} from '@app/services';
 import { DetailDataBoundEventArgs, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
+import { ComponenteAgrupado } from '../../interface/interface';
 
-interface ComponenteAgrupado {
-  nombre: string;
-  elementos:any[];
-}
+
 @Component({
   selector: 'app-sobres',
   imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent],
@@ -262,8 +260,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     this.cargarInformacion();
   }
 
-  public async actualizarGaveta(orden:string) {
-    // Crear opciones del 1 al 60 para el select
+  public async actualizarGaveta(orden:string) {    
     const opcionesGaveta: { [key: string]: string } = {};
     for (let i = 1; i <= 60; i++) {
       opcionesGaveta[i.toString()] = i.toString();

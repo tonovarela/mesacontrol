@@ -37,7 +37,7 @@
 </div>
 
 
-<!-- <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"   [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
+<p-dialog  #dialogModal [visible]="false"   [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
 <ng-template #headless >        
   
         <div class="w-full p-1  mx-auto mt-2">        
@@ -45,7 +45,7 @@
     <div class="flex flex-col">
       <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>      
     </div>             
-    @if(ordenActual()!.id_estado !='2'){       
+    <!-- @if(ordenActual()!.id_estado !='2'){       
 <div class="p-2  text-xs font-semibold rounded-lg"
           [ngClass]="{
             'bg-green-100 text-green-800': ordenActual()!.id_estado == '2',
@@ -57,14 +57,13 @@
           {{ ordenActual()!.descripcion }}
         </div>
 
-    }
+    } -->
     
     <div class="flex flex-row justify-end items-center space-x-4">      
 <div class="flex flex-wrap items-center justify-center gap-1 ">      
-  @if(ordenActual()!.id_estado =='2'){
-  <div
-      class="inline-block px-3  w-72  rounded-md text-md font-semibold bg-green-100 text-green-700 border-green-200 dark:bg-green-900 dark:text-green-200 dark:border-green-700'   "
-      >
+
+  <!-- @if(ordenActual()!.id_estado =='2'){
+  <div class="inline-block px-3  w-72  rounded-md text-md font-semibold bg-green-100 text-green-700 border-green-200 dark:bg-green-900 dark:text-green-200 dark:border-green-700">
     <div class="flex items-center space-x-2 text-green-600 dark:text-green-400 py-1 ">
         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
@@ -77,22 +76,16 @@
         </div>
       </div>
     </div>   
-  }
+  } -->
 
 
-      @if(estaEnAprobacion()) {
+      <!-- @if(estaEnAprobacion()) {
       <button
-        class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50"
-        (click)="aprobar()"
-      >
-        Aprobar
-      </button>
-      <button
-        class="px-4 py-2 bg-gray-100 text-red-600 dark:bg-gray-800 dark:text-red-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400/50"
-        (click)="rechazar()"
-      >
-        Rechazar
-      </button>
+      (click)="aprobar()"
+       class="px-4 py-2 bg-gray-100 text-green-600 dark:bg-gray-800 dark:text-green-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/50">Aprobar</button>
+      <button 
+      (click)="rechazar()"
+      class="px-4 py-2 bg-gray-100 text-red-600 dark:bg-gray-800 dark:text-red-400 border border-gray-200 dark:border-gray-700 rounded-md text-xs font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400/50" >Rechazar</button>
       } 
       @if(estaPendiente() ){      
       <button
@@ -102,7 +95,7 @@
         Solicitar aprobación
       </button>
       }
-      
+       -->
          
     </div> 
     <button
@@ -122,11 +115,9 @@
       <div class="w-full bg-slate-700  border-0 rounded  flex justify-between items-center">        
           <h2 class="text-lg font-bold  px-2 py-1 text-white dark:text-slate-100 ">{{ grupo.nombre }}</h2>
           <div class="px-4">
-           <p-checkbox     
-           
-          [binary]="true" 
-          (onChange)="toggleGrupo(i,$event)"
-          [disabled]="!estaPendiente()">
+           <p-checkbox                
+          [binary]="true"           
+          [disabled]="true">
         </p-checkbox>          
           </div>                        
       </div>
@@ -137,10 +128,9 @@
             <div class=" text-slate-500 dark:text-white">{{ elemento.proceso }}</div>            
           </div>        
            <p-checkbox                      
-           [(ngModel)]="elemento.aplica"
-           (ngModelChange)="onCheckboxChange(elemento.id,elemento.aplica)"
+           [ngModel]="elemento.aplica"           
           [binary]="true" 
-          [disabled]="!estaPendiente()">
+          disabled="true">
         </p-checkbox>          
         </div>
       }
@@ -148,5 +138,5 @@
       }      
     </div>
 </ng-template>
-</p-dialog> -->
+</p-dialog>
 
