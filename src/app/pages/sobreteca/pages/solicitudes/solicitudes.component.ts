@@ -46,10 +46,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     return `${this.ordenActual()?.NoOrden}  - ${this.ordenActual()?.NombreTrabajo}`;
   });
 
-  ngAfterViewInit(): void {
-    
-  }
-
+  
   constructor() {
     super();   
   }
@@ -64,6 +61,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     this.ordenActual.set(null);
     this.componentesAgrupados.set([]);
 
+  }
+
+  verDetalle(orden:OrdenMetrics){
+    console.log("------");
   }
 
   public async onSelectOrder(orden: OrdenMetrics | null) {
