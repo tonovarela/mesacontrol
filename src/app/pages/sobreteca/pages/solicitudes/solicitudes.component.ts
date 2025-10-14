@@ -70,10 +70,6 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   } 
 
 
-
-
-
-
   cerrarDetalle(){
     this.ordenActual.set(null);
     this.componentesAgrupados.set([]);
