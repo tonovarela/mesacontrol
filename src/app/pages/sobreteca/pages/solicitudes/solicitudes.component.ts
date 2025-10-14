@@ -46,7 +46,11 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     return `${this.ordenActual()?.NoOrden}  - ${this.ordenActual()?.NombreTrabajo}`;
   });
 
-  
+  ngAfterViewInit(): void {
+    
+    
+  }
+
   constructor() {
     super();   
   }
