@@ -21,7 +21,28 @@
                 <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>
                 <e-column field='Vendedor' headerText='Vendedor' width='200' textAlign='Left' ></e-column>                
                 
-                <e-column field='no_gaveta' headerText='# Gaveta' width='150' textAlign='Center'  ></e-column>                
+                <e-column field='no_gaveta' headerText='# Gaveta' width='150' textAlign='Center'  ></e-column>
+                <e-column headerText='Estado Préstamo' width='150' textAlign='Center'>
+                  <ng-template #template let-data>
+                    <div class="flex items-center justify-center">                                            
+                      @if(data.enPrestamo) {
+                        <div class="flex items-center gap-1 text-orange-600">
+                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                          </svg>
+                          <span class="text-xs font-medium">Prestado</span>
+                        </div>
+                      } @else {
+                        <div class="flex items-center gap-1 text-green-600">
+                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8-1.41-1.42z"/>
+                          </svg>
+                          <span class="text-xs font-medium">Disponible</span>
+                        </div>
+                      }
+                    </div>
+                  </ng-template>
+                </e-column>                
                 <e-column >
                   <ng-template #template let-data>
                     <a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">                      
@@ -40,43 +61,34 @@
 
 
 <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"  [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
-<ng-template #headless >        
-  
-  -
+<ng-template #headless >          
     <div class="w-full p-1  mx-auto mt-2">        
   <div class="flex flex-col md:flex-row justify-between items-center space-x-10 px-3">            
-    <div class="flex flex-col">
-      <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>      
-    </div>             
-        
-    <div class="flex flex-row justify-end items-center space-x-4">      
-<div class="flex flex-wrap items-center justify-center gap-1 ">                 
-    </div> 
-    <button
-      class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-      (click)="cerrarDetalle()"
-    >
+    <div class="flex flex-col">      
+    </div>                     
+    <div class="flex flex-row justify-end items-center space-x-4">         
+    <button class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+    (click)="cerrarDetalle()">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" >
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
       </svg>      
     </button>
     </div>         
   </div>
-    </div>  
-    
-    <div class="flex sm:flex-row flex-col items-end justify-end px-2">        
-      <div class="sm:w-1/2 md:2/3 w-full">
-        @if(ordenActual()!.enPrestamo){
-           <button  class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
+    </div>      
+    <div class="flex sm:flex-row flex-col  items-center justify-between px-10" > 
+      <div class=" w-full "> 
+         <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>    
+      </div>       
+      <div class="flex justify-end w-full mb-4 ">
+        @if(!ordenActual()!.enPrestamo){
+           <button (click)="solicitarPrestamo()"  class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
             Prestar Material
           </button>
           }@else
            {
 
-          <div class="mx-5 mb-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-2">
-    
-    <div class="flex items-center mb-1">      
-    </div>          
+        <div class="w-full max-w-2xl  bg-blue-50  dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg  p-2">        
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">      
       <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
         <div class="flex items-center">
@@ -85,10 +97,8 @@
           </svg>
           <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Fecha de Préstamo</span>
         </div>
-        <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">15/10/2024 - 14:30</p>
-      </div>
-
-      
+        <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.fecha_prestamo | date: 'dd/MM/yyyy - HH:mm' }}</p>
+      </div>      
       <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
         <div class="flex  items-center">
           <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,19 +106,17 @@
           </svg>
           <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Prestado a</span>
         </div>
-        <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">Juan Pérez</p>        
+        <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.nombre }}</p>        
       </div>            
       
       <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">        
-        <button class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm">
+        <button (click)="devolverPrestamo()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
           </svg>
-          Devolver Préstamo
+          Devolver 
         </button>
-      </div>
-
-  
+      </div>  
       </div>
   </div>
 
@@ -125,7 +133,7 @@
 
 
     
-       <div class="bg-slate-300   dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-300px)] overflow-y-auto flex flex-wrap gap-4   mx-5 ">               
+       <div class="bg-slate-300   dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto flex flex-wrap gap-4   mx-5 ">               
         @for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
     <div class="bg-white border h-fit   dark:border-white dark:bg-slate-800 rounded shadow  w-full max-w-96   md:w-62 sm:w-60">
       <div class="w-full bg-slate-700  border-0 rounded  flex justify-between items-center">        

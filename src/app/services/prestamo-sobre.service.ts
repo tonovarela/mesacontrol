@@ -16,4 +16,12 @@ export class PrestamoSobreService {
   informacion(orden:string) {      
       return this.http.get<ResponsePrestamo>(`${this.API_URL}/api/sobreteca/prestamo/sobre/${orden}`)      
     }
+
+  prestar(orden:string,id_usuario:number) {      
+      return this.http.post(`${this.API_URL}/api/sobreteca/prestamo`,{orden,id_usuario})      
+    }
+
+  devolver(orden:string,id_usuario:number) {      
+      return this.http.put(`${this.API_URL}/api/sobreteca/prestamo`,{orden,id_usuario})
+    }
 }

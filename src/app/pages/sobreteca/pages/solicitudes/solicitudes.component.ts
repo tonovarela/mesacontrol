@@ -7,13 +7,15 @@ import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { PrestamoSobreService, SobreService, UiService } from '@app/services';
+import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
+import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { firstValueFrom } from 'rxjs';
-import { ComponenteAgrupado, OrdenConGaveta } from '../../interface/interface';
+import { ComponenteAgrupado, Solicitante } from '../../interface/interface';
 
 interface OrdenPrestamo  extends OrdenMetrics {
-  enPrestamo:boolean
+  enPrestamo:boolean,
+  solicitante?:Solicitante
 
 }
 
@@ -35,6 +37,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   private _activatedRouter = inject(ActivatedRoute);
   private _sobreService = inject(SobreService);
   private _prestamoService  =  inject(PrestamoSobreService);
+  private _usuarioService = inject(UsuarioService);
 
 
   public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
@@ -42,7 +45,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
    
   public ordenes = computed(()=>{return this._ordenes();});
-  private _ordenes = signal<OrdenConGaveta[]>([]);
+  private _ordenes = signal<any[]>([]);
    
   public nombreTrabajo = computed(() => {
     if (this.ordenActual() === null) return '';
@@ -62,8 +65,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   async cargarInformacion(){
     try {
-    const response =await  firstValueFrom( this._sobreService.conGaveta())
-    this._ordenes.set(response.ordenes);
+    const response =await firstValueFrom( this._sobreService.conGaveta())
+    const ordenes = response.ordenes.map(orden=>({...orden,enPrestamo:orden.enPrestamo==="1"}))    
+    this._ordenes.set(ordenes);
+    
     }catch(error){
     console.log(error);
     }       
@@ -73,7 +78,6 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   cerrarDetalle(){
     this.ordenActual.set(null);
     this.componentesAgrupados.set([]);
-
   }
 
   async verDetalle(orden:OrdenMetrics){
@@ -93,19 +97,50 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     }
      const numero_orden = orden.NoOrden;
      const responseOrden = await firstValueFrom(this._sobreService.contenido(numero_orden));
-     const responsePrestamo = await firstValueFrom(this._prestamoService.informacion(numero_orden));
+     const { enPrestamo, solicitante } = await firstValueFrom(this._prestamoService.informacion(numero_orden));
 
      const contenido = responseOrden.contenido.map((item:any) => ({...item,a: item.aplica == '1'}));
-     this.ordenActual.set({...orden,enPrestamo:responsePrestamo.enPrestamo});                                                                
+     this.ordenActual.set({...orden,enPrestamo,solicitante});                                                                
      if (contenido.length > 0) {
         const componentes = new Set([ ...contenido.map((item) => item.componente)]);   
         const componentesAgrupado=  Array.from(componentes).map((componente) => ({  nombre:componente, elementos :  contenido.filter((item) => item.componente === componente) }));
         this.componentesAgrupados.set(componentesAgrupado);
      }
-     this.dialogModal.maximized = true;
+     this.dialogModal.maximized = true;  
+  }
 
-    //Verifica si tiene prestamo
 
-  
+   public async solicitarPrestamo(){
+    const { NoOrden:orden } = this.ordenActual()!;
+    const {isDismissed,value:id_usuario} =await LoginLitoapps(this._usuarioService,"Login del usuario que solicita");
+    if (isDismissed){ return; }
+    try{
+      await firstValueFrom(this._prestamoService.prestar(orden,id_usuario!));      
+      this.uiService.mostrarAlertaSuccess("",'Solicitud de préstamo realizada con éxito');
+      this.cargarInformacion();      
+      this.ordenActual.set(null);
+    }catch(error){
+      console.log(error);
+    }
+    
+     
+  }
+
+   public async devolverPrestamo(){
+    
+     const { NoOrden:orden,no_gaveta } = this.ordenActual()!;
+    const {isDismissed,value:id_usuario} =await LoginLitoapps(this._usuarioService,"Login del usuario que devuelve");
+    if (isDismissed){ return  }
+    try {
+       await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!));      
+      this.uiService.mostrarAlertaSuccess("",'Devolución de préstamo realizada con éxito, el sobre ya debera de colocarse en la gaveta '+no_gaveta);
+      this.cargarInformacion();
+      this.ordenActual.set(null);      
+    }catch(error){
+      console.log(error);
+    }
+    
   }
 }
+
+

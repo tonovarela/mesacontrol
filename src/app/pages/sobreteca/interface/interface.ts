@@ -5,6 +5,13 @@ export interface ComponenteAgrupado {
 
 export interface ResponsePrestamo {
   enPrestamo: boolean;
+  solicitante?:Solicitante;
+}
+
+export interface Solicitante {
+  personal: string;
+  fecha_prestamo:Date;
+  nombre:string
 }
 
 export interface ResponseSobreConGaveta {
@@ -22,4 +29,6 @@ export interface OrdenConGaveta {
   no_gaveta:     string;
   enPrestamo:    string;
 }
+
+
 
