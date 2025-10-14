@@ -1,13 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import {  computed, inject, Injectable, signal } from '@angular/core';
-import { ResponseMateriales } from '@app/interfaces/responses/ResponseMateriales';
-import { OrdenMetrics, ResponseOrden, ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { TipoMaterial } from '@app/interfaces/TipoMaterial';
-import { environment } from '@environments/environment.development';
-import { LiberacionComponent } from '../pages/preprensa/checklist/components/liberacion/liberacion.component';
-import { ListboxModule } from 'primeng/listbox';
+import { inject, Injectable } from '@angular/core';
 import { ResponseContenidoSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
-import { ResponsePrestamo } from '@app/pages/sobreteca/interface/interface';
+import { ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { ResponseSobreConGaveta } from '@app/pages/sobreteca/interface/interface';
+import { environment } from '@environments/environment.development';
 
 
 @Injectable({
@@ -27,9 +23,12 @@ export class SobreService {
   }
 
 
-  listar(historico:boolean =true) {                
-    return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/sobreteca/sobre?historico=${historico}`);
+  listar(pendientes:boolean =true) {                
+    return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/sobreteca/sobre?pendientes=${pendientes}`);
+  }
 
+  conGaveta(){
+    return this.http.get<ResponseSobreConGaveta>(`${this.API_URL}/api/sobreteca/sobre/conGaveta`);
   }
 
   contenido(orden:string) {        
@@ -60,15 +59,7 @@ export class SobreService {
   }
 
 
-  informacionPrestamo(orden:string) {    
-
-    return this.http.get<ResponsePrestamo>(`${this.API_URL}/api/sobreteca/prestamo/sobre/${orden}`)
     
-  }
-
-  
-
-  
 
 
   

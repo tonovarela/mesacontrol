@@ -1,7 +1,7 @@
 
    <!-- <loading></loading> -->
 <div id="initial" class="dark:bg-gray-900 h-screen flex flex-col ">
-    <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 pt-1">      
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-1">      
       <div class="  py-1 px-2 flex sm:flex-row flex-col sm:space-x-6 items-center">
   <h1 class="text-2xl text-center  text-slate-500">{{ titulo() }}</h1>
   
@@ -17,20 +17,7 @@
         >
             <e-columns>
                 <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>
-                <e-column field='descripcion' headerText='Estado' width='120'  >
-                  <ng-template #template let-data>
-                  <span class="px-2 inline-flex  leading-5 font-semibold rounded-full"
-                    [ngClass]="{
-                      'bg-green-100 text-green-800': data.id_estado == 2,
-                      'bg-yellow-100 text-yellow-800': data.id_estado == 1,
-                      'bg-red-100 text-red-800': data.id_estado == 3,
-                      'bg-gray-100 text-gray-800': data.id_estado == 5,
-                    }"
-                  >
-                    {{ data.descripcion }}
-                  </span>
-                 </ng-template>
-                </e-column>
+               
                 <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>
                 <e-column field='Vendedor' headerText='Vendedor' width='200' textAlign='Left' ></e-column>                
                 

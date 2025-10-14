@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {  ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { UiService, UsuarioService } from '@app/services';
 
@@ -18,7 +18,7 @@ interface Ruta {
   styleUrl: './sidebar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidebarComponent   implements OnInit,AfterViewInit {
+export class SidebarComponent   implements OnInit {
   
   router = inject(Router);
   uiService= inject(UiService);
@@ -89,7 +89,7 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
       claseSize: 'w-8 h-8 svg-icon',
     },
     {
-      nombre: 'Solicitudes',
+      nombre: 'Prestamo',
       icono: 'assets/img/prestamo.svg',
       path: '/sobreteca/solicitudes',
       claseSize: 'w-8 h-8 svg-icon',
@@ -104,9 +104,7 @@ export class SidebarComponent   implements OnInit,AfterViewInit {
 
   
 
-  ngAfterViewInit(): void {
-    
-  }
+
   ngOnInit(): void {
     
   }

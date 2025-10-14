@@ -3,6 +3,7 @@ export * from './metrics.service';
 export * from './page.service';
 export * from './pdf.service';
 export * from './preprensa.service';
+export * from './prestamo-sobre.service';
 export * from './produccion.service';
 export * from './sobre.service';
 export * from './solicitud.service';

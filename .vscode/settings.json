@@ -3,5 +3,31 @@
         "angular-*": {
             "externalTemplate": true
         }
-    }
+    },
+    "typescript.preferences.strict": true,
+    "typescript.validate.enable": true,
+    "typescript.reportStyleChecksAsWarnings": true,
+    "typescript.suggest.autoImports": true,
+    "typescript.suggest.paths": true,
+    "typescript.preferences.includePackageJsonAutoImports": "on",
+    "typescript.inlayHints.parameterNames.enabled": "literals",
+    "typescript.inlayHints.parameterTypes.enabled": true,
+    "typescript.inlayHints.variableTypes.enabled": true,
+    "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+    "typescript.preferences.quoteStyle": "single",
+    "typescript.format.semicolons": "insert",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit",
+        "source.fixAll.eslint": "explicit"
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+    "problems.showCurrentInStatus": true,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "files.eol": "\n"
 }

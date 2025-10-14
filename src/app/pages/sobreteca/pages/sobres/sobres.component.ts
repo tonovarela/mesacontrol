@@ -36,9 +36,10 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
 {
   @ViewChild('dialogModal') dialogModal: any;
 
+  protected minusHeight = 0.3;
+
   public readonly type = TypeSearchMetrics.SOBRESPREPRENSA;
   public ordenActual = signal<OrdenMetrics | null>(null);
-
   public componentesAgrupados = signal<ComponenteAgrupado[]>([]);  
   public ordenes = computed(() => this._ordenes());
   public contenidoSobre = signal<any[]>([]);
@@ -46,6 +47,8 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   public verPendientes = computed(() => this._verPendientes());
   public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
   public liberacionInfo = computed(() =>  this._autorizacion());
+
+
   private _autorizacion = signal<Autorizacion | null>(null);
   private _verPendientes = signal<boolean>(true);
   private _sobreService = inject(SobreService);
@@ -53,9 +56,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   private _uiService = inject(UiService);
   private _usuarioService = inject(UsuarioService);
   private _ordenes = signal<OrdenMetrics[]>([]);
-
-  protected minusHeight = 0.3;
-
+  
   constructor() {
     super();
   }
@@ -147,12 +148,14 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     
   }
 
+
   public nombreTrabajo = computed(() => {
     if (this.ordenActual() === null) return '';
     return `${this.ordenActual()?.NoOrden}  - ${
       this.ordenActual()?.NombreTrabajo
     }`;
   });
+
 
   public async solicitarAprobacion() {
 
@@ -184,6 +187,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     this.cargarInformacion();
     
   }
+
 
   public async rechazar() {
     const resp = await Swal.fire({
@@ -232,6 +236,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     this.cargarInformacion();
   }
 
+
   public async aprobar() {
 
   
@@ -257,6 +262,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     this.cerrarDetalle();
     this.cargarInformacion();
   }
+
 
   public async actualizarGaveta(orden:string) {    
     const opcionesGaveta: { [key: string]: string } = {};
@@ -315,5 +321,8 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       console.error('Error al cargar la información:', error);
     }
   }
+
+
+  
 
 }
