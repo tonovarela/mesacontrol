@@ -40,10 +40,8 @@
                     @if(data.id_estado == '2') {
                     <span *ngIf="data.no_gaveta; else sinGaveta">{{ data.no_gaveta }}</span>
                     <ng-template #sinGaveta>
-                       <button class=" my-1 px-2  bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 border border-blue-200 dark:border-blue-700 rounded-md text-[10px] font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400/50 flex items-center gap-2"
-                            (click)="actualizarGaveta(data.NoOrden)"
-                            title="Actualizar número de gaveta"
-                          >
+                  <button class="my-1 px-2  bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300 border border-blue-200 dark:border-blue-700 rounded-md text-[10px] font-medium hover:bg-blue-200 dark:hover:bg-blue-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400/50 flex items-center gap-2"
+                            (click)="actualizarGaveta(data.NoOrden)" title="Actualizar número de gaveta">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
         </svg>

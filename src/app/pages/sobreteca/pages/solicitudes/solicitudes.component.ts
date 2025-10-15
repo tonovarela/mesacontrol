@@ -10,7 +10,7 @@ import { SynfusionModule } from '@app/lib/synfusion.module';
 import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { firstValueFrom } from 'rxjs';
-import { ComponenteAgrupado, Solicitante } from '../../interface/interface';
+import { Bitacora, ComponenteAgrupado, Solicitante } from '../../interface/interface';
 
 interface OrdenPrestamo  extends OrdenMetrics {
   enPrestamo:boolean,
@@ -32,15 +32,18 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   protected minusHeight = 0.3;
    
    
-  private uiService= inject(UiService);
+  private _uiService= inject(UiService);
   private _activatedRouter = inject(ActivatedRoute);
   private _sobreService = inject(SobreService);
   private _prestamoService  =  inject(PrestamoSobreService);
   private _usuarioService = inject(UsuarioService);
 
 
-  public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
+  public bitacoraSobre = signal<Bitacora[]>([]);
   public mostrarBitacora = signal(false)
+
+  public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
+  
   public ordenActual = signal<OrdenPrestamo | null>(null);
   public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
    
@@ -90,7 +93,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     }  
     const tieneGaveta = orden?.no_gaveta && orden.no_gaveta > 0;
     if (!tieneGaveta) {
-      this.uiService.mostrarAlertaError('',`El sobre con la orden ${orden.NoOrden} no tiene gaveta asignada, por favor asignar antes de continuar`);
+      this._uiService.mostrarAlertaError('',`El sobre con la orden ${orden.NoOrden} no tiene gaveta asignada, por favor asignar antes de continuar`);
       return;
     }
      const numero_orden = orden.NoOrden;
@@ -113,7 +116,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     const id_usuario = this._usuarioService.StatusSesion().usuario?.id;
     try{
       await firstValueFrom(this._prestamoService.prestar(orden,id_usuario!));      
-      this.uiService.mostrarAlertaSuccess("",'Solicitud de préstamo realizada con éxito');
+      this._uiService.mostrarAlertaSuccess("",'Solicitud de préstamo realizada con éxito');
       this.cargarInformacion();      
       this.ordenActual.set(null);
     }catch(error){
@@ -132,7 +135,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     try {
 
       await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!,this.ordenActual()!.solicitante!.id_prestamo));      
-      this.uiService.mostrarAlertaSuccess("",'Devolución de préstamo realizada con éxito, el sobre ya debera de colocarse en la gaveta '+no_gaveta);
+      this._uiService.mostrarAlertaSuccess("",'Devolución de préstamo realizada con éxito, el sobre ya debera de colocarse en la gaveta '+no_gaveta);
       this.cargarInformacion();
       this.ordenActual.set(null);      
 
@@ -140,9 +143,28 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
       console.log(error);
 
-    }    
-    
+    }        
   }
+
+
+
+   public async verBitacora(orden:string) {
+    try {
+      const response = await firstValueFrom(this._sobreService.bitacora(orden));
+      const bitacora = response.bitacora;      
+      this.bitacoraSobre.set(bitacora);
+      this.mostrarBitacora.set(true);            
+    } catch (error) {      
+      this._uiService.mostrarAlertaError('', 'Error al cargar la bitácora');
+    }
+  }
+
+  public cerrarBitacora() {
+    this.mostrarBitacora.set(false);
+    this.bitacoraSobre.set([]);
+  }
+
+  
 }
 
 

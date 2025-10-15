@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ResponseContenidoSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
 import { ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { ResponseSobreConGaveta } from '@app/pages/sobreteca/interface/interface';
+import { ResponseBitacoraSobre, ResponseSobreConGaveta } from '@app/pages/sobreteca/interface/interface';
 import { environment } from '@environments/environment.development';
 
 
@@ -57,6 +57,14 @@ export class SobreService {
   actualizarGaveta(orden: string, no_gaveta: string,id_usuario:string) {
     return this.http.put(`${this.API_URL}/api/sobreteca/sobre/gaveta`, { orden, no_gaveta,id_usuario });
   }
+
+  bitacora(orden:string) {
+
+    return this.http.get<ResponseBitacoraSobre>(`${this.API_URL}/api/sobreteca/sobre/bitacora/${orden}`);
+    
+  }
+
+  
 
 
     

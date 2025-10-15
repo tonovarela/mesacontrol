@@ -33,3 +33,19 @@ export interface OrdenConGaveta {
 
 
 
+export interface ResponseBitacoraSobre {
+  bitacora: Bitacora[];
+}
+
+export interface Bitacora {
+  id:             string;
+  op_metrics:     string;
+  id_usuario:     string;
+  evento:         string;
+  motivo:         string;
+  fecha_registro: Date;
+}
+
+
+
+

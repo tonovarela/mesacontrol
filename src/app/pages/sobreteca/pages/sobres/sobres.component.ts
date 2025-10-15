@@ -1,24 +1,23 @@
 
-import { AfterViewInit, ChangeDetectionStrategy,Component,computed,inject,OnInit,signal,ViewChild,} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { firstValueFrom, map } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import Swal from 'sweetalert2';
 
 
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
-import { Autorizacion, DetalleSobre } from '@app/interfaces/responses/ResponseContenidoSobre';
+import { Autorizacion } from '@app/interfaces/responses/ResponseContenidoSobre';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 //import { LoadingComponent } from '@app/shared/loading/loading.component';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
-import { MetricsService,SobreService,UiService,UsuarioService} from '@app/services';
-import { DetailDataBoundEventArgs, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
+import { SobreService, UiService, UsuarioService } from '@app/services';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 import { ComponenteAgrupado } from '../../interface/interface';
 
@@ -312,6 +311,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     }
   }
 
+
   private async cargarInformacion() {
     try {
       const obs$ = this._sobreService.listar(this._verPendientes());      
@@ -321,8 +321,6 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       console.error('Error al cargar la información:', error);
     }
   }
-
-
   
 
 }
