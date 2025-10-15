@@ -2,25 +2,28 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+
+import { firstValueFrom } from 'rxjs';
+
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { firstValueFrom } from 'rxjs';
+
+import { TruncatePipe } from '@app/pipes/truncate.pipe';
+import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { Bitacora, ComponenteAgrupado, Solicitante } from '../../interface/interface';
 
 interface OrdenPrestamo  extends OrdenMetrics {
   enPrestamo:boolean,
   solicitante?:Solicitante
-
 }
 
 @Component({
   selector: 'app-solicitudes-sobre',
-  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule],
+  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,TruncatePipe],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,6 +52,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
    
   public ordenes = computed(()=>{return this._ordenes();});
   private _ordenes = signal<any[]>([]);
+
+  // Propiedades para la edición de vigencia
+  public editandoVigencia = signal<string | null>(null);
+  public nuevaVigencia = signal<string>('');
    
   public nombreTrabajo = computed(() => {
     if (this.ordenActual() === null) return '';
@@ -61,6 +68,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   }
 
   ngOnInit(): void {
+    this.autoFitColumns=false;
       this.iniciarResizeGrid(this.minusHeight, true);  
       this.cargarInformacion();          
   }
@@ -129,9 +137,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
    public async devolverPrestamo(){
 
      const { NoOrden:orden,no_gaveta } = this.ordenActual()!;
-
      const id_usuario = this._usuarioService.StatusSesion().usuario?.id;         
-
     try {
 
       await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!,this.ordenActual()!.solicitante!.id_prestamo));      
@@ -162,6 +168,46 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   public cerrarBitacora() {
     this.mostrarBitacora.set(false);
     this.bitacoraSobre.set([]);
+  }
+
+
+
+  setVigencia(fecha:any){
+    
+   this.nuevaVigencia.set(fecha.target.value);
+}
+
+  // Métodos para editar vigencia
+  public iniciarEdicionVigencia(ordenNo: string, vigenciaActual: Date) {
+    this.editandoVigencia.set(ordenNo);
+    // Convertir fecha a formato YYYY-MM-DD para el input date
+    const fecha = new Date(vigenciaActual);
+    const fechaFormateada = fecha.toISOString().split('T')[0];
+    this.nuevaVigencia.set(fechaFormateada);
+  }
+
+  public cancelarEdicionVigencia() {
+    this.editandoVigencia.set(null);
+    this.nuevaVigencia.set('');
+  }
+
+  public async guardarVigencia(ordenNo: string) {
+    if (!this.nuevaVigencia()) {
+      this._uiService.mostrarAlertaError('', 'Debe seleccionar una fecha válida');
+      return;
+    }
+    const id_usuario = this._usuarioService.StatusSesion().usuario?.id;          
+    try {
+
+      await firstValueFrom(this._sobreService.actualizarVigencia(ordenNo, this.nuevaVigencia(), id_usuario!.toString()));      
+      this._uiService.mostrarAlertaSuccess('', 'Vigencia actualizada correctamente');
+      this.cancelarEdicionVigencia();
+      this.cargarInformacion(); // Recargar datos
+
+    } catch (error) {
+      console.log(error);
+      this._uiService.mostrarAlertaError('', 'Error al actualizar la vigencia');
+    }
   }
 
   

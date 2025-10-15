@@ -1,34 +1,34 @@
 // Angular Core
-import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 // Angular Router
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 // RxJS
 import { firstValueFrom } from 'rxjs';
 // Syncfusion
-import { TextWrapSettingsModel, DetailRowService } from '@syncfusion/ej2-angular-grids';
+import { DetailRowService, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 // Módulos y Librerías
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 // Componentes Base
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 // Servicios
-import { MetricsService, UiService, CheckListService, PdfService, UsuarioService } from '@app/services';
+import { CheckListService, MetricsService, PdfService, UiService } from '@app/services';
 // Interfaces y Tipos
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 // Componentes
-import { AuditComponent } from '@app/shared/svg/audit/audit.component';
-import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { RollcallModalComponent } from '@app/pages/components/rollcall.modal/rollcall.modal.component';
+import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
+import { AuditComponent } from '@app/shared/svg/audit/audit.component';
 import { LiberacionModalComponent } from '../components/liberacion.modal/liberacion.modal.component';
 // Data y Utilities
 import { columnas } from '../data/columnas';
-import { formatDate } from '../../utils/formatDate';
-import { TruncatePipe } from '../../pipes/truncate.pipe';
-import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
+//import { formatDate } from '../../utils/formatDate';
 import { LoadingComponent } from '@app/shared/loading/loading.component';
+import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 
 
@@ -51,9 +51,9 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
   private _verPendientes = signal<boolean>(true);
-  private router = inject(Router);
+  //private router = inject(Router);
   private activatedRouter = inject(ActivatedRoute);
-  private usuarioService = inject(UsuarioService);
+  //private usuarioService = inject(UsuarioService);
   public mostrarCheckList  = computed(()=>this.checkListService.checkList() !==null);
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
   public ordenesMetrics = computed(() => {    

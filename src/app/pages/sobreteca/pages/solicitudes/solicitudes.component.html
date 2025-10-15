@@ -16,16 +16,61 @@
         [pageSettings]='pageSettings'
         >
             <e-columns>
-                <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>
-               
-                <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>                              
-                <e-column field='no_gaveta' headerText='# Gaveta' width='150' textAlign='Center'  ></e-column>
-                <e-column field='vigencia' headerText='Vigencia' width='150' textAlign='Center' >
-                  <ng-template #template let-data>                    
-                      {{ data.vigencia | date: 'dd-MM-yyyy' }}                                        
+                <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>               
+                <e-column field='NombreTrabajo' headerText='Nombre' width='200' textAlign='Left' >
+                  <ng-template #template let-data>
+                    <span title="{{data.NombreTrabajo}}">{{ data.NombreTrabajo | truncate:30 }}</span>
+                  </ng-template>
+                </e-column>                              
+                <e-column field='no_gaveta' headerText='# Gaveta' width='100' textAlign='Center'  ></e-column>
+                <e-column field='vigencia' headerText='Vigencia' width='180' textAlign='Center' >
+                  <ng-template #template let-data>
+                    @if (editandoVigencia() === data.NoOrden) {
+                      <!-- Modo edición -->
+                      <div class="flex items-center gap-1 justify-center">
+                        <input 
+                          type="date" 
+                          [value]="nuevaVigencia()"  
+                          (input)="setVigencia($event)"                        
+                          class="w-32 px-2 py-1 text-xs border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <button 
+                          (click)="guardarVigencia(data.NoOrden)"
+                          class="p-1 text-green-600 hover:text-green-800 hover:bg-green-100 rounded"
+                          title="Guardar"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                          </svg>
+                        </button>
+                        <button 
+                          (click)="cancelarEdicionVigencia()"
+                          class="p-1 text-red-600 hover:text-red-800 hover:bg-red-100 rounded"
+                          title="Cancelar"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    } @else {
+                      <!-- Modo visualización -->
+                      <div class="flex items-center gap-2 justify-center group">
+                        <span >{{ data.vigencia | date: 'dd-MM-yyyy' }}</span>
+                        <button 
+                          (click)="iniciarEdicionVigencia(data.NoOrden, data.vigencia)"
+                          class="p-1 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="Editar vigencia"
+                        >
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                          </svg>
+                        </button>
+                      </div>
+                    }
                   </ng-template>
                 </e-column>
-                <e-column headerText='Bitacora' width='150' textAlign='Center'>
+                <e-column headerText='Bitacora' width='100' textAlign='Center'>
                   <ng-template #template let-data>
                     <a  
                     (click)="verBitacora(data.NoOrden)"
@@ -36,7 +81,7 @@
                   </a>
                   </ng-template>
                 </e-column>
-                <e-column headerText='Estado' width='150' >
+                <e-column headerText='Estado' width='100' >
                   <ng-template #template let-data>
                     <div class="flex flex-row items-center justify-start  gap-3 ">                                            
                       @if(data.enPrestamo) {                        

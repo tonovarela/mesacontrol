@@ -64,6 +64,10 @@ export class SobreService {
     
   }
 
+  actualizarVigencia(orden: string, vigencia: string, id_usuario: string) {
+    return this.http.put(`${this.API_URL}/api/sobreteca/sobre/vigencia`, { orden, vigencia, id_usuario });
+  }
+
   
 
 
