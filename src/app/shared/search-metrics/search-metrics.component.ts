@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal, output, input, OnInit, computed, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnDestroy, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OrdenMetrics, ResponseOrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 
 import { PrimeModule } from '@app/lib/prime.module';
 import { MetricsService } from '@app/services';
-import {  Observable, of, Subject, switchMap } from 'rxjs';
+import { Observable, of, Subject, switchMap } from 'rxjs';
 
 
 
@@ -80,6 +80,10 @@ export class SearchMetricsComponent implements OnInit,OnDestroy {
   esBusquedaConGavetaAsignada = computed(()=>{
     return this.typeSearch() === TypeSearchMetrics.CON_GAVETA_ASIGNADA;
   })
+
+  // Rutas de los SVGs optimizados
+  public readonly gavetaAsignadaSvg = 'assets/img/gaveta-asignada.svg';
+  public readonly gavetaSinAsignarSvg = 'assets/img/gaveta-sin-asignar.svg';
   
 
 
