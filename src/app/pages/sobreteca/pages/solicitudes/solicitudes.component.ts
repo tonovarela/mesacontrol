@@ -212,6 +212,13 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     }
   }
 
+  // Método para dar de baja un sobre (solo maquetado)
+  public darDeBajaSobre(ordenNo: string) {
+    // TODO: Implementar lógica para dar de baja el sobre
+    console.log('Dar de baja sobre:', ordenNo);
+    this._uiService.mostrarAlertaError('Función no implementada', 'La funcionalidad de dar de baja el sobre aún no está implementada');
+  }
+
   
 }
 

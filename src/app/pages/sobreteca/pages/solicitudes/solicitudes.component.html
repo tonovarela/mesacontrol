@@ -99,9 +99,10 @@
                     </div>
                   </ng-template>
                 </e-column>                
-                <e-column >
+                <e-column  width='100'>
                   <ng-template #template let-data>
-                    <a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">
+                    <div class="flex flex-row items-center justify-center gap-2">
+<a  (click)="verDetalle(data)" class="flex items-center  justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">
                       @if(data.enPrestamo) {
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
@@ -114,6 +115,25 @@
                         <span>Prestar</span>
                       }
                   </a>
+                                    
+                    </div>
+                    
+                  </ng-template>
+                </e-column>
+                <e-column>
+                  <ng-template #template let-data>
+                    <button 
+                      (click)="darDeBajaSobre(data.NoOrden)"
+                      class="flex items-center justify-center gap-1 px-2 py-1 text-red-600 hover:text-red-800 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                      title="Dar de baja el sobre"
+                      [disabled]="data.enPrestamo"
+                      [class.opacity-50]="data.enPrestamo"
+                      [class.cursor-not-allowed]="data.enPrestamo"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>                    
+                    </button>
                   </ng-template>
                 </e-column>
                 </e-columns>
