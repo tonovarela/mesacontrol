@@ -40,6 +40,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
 
   public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
+  public mostrarBitacora = signal(false)
   public ordenActual = signal<OrdenPrestamo | null>(null);
   public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
    
@@ -86,10 +87,8 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   public async onSelectOrder(orden: OrdenMetrics | null) {
     if (!orden) {
       return;
-    }
-    
+    }  
     const tieneGaveta = orden?.no_gaveta && orden.no_gaveta > 0;
-
     if (!tieneGaveta) {
       this.uiService.mostrarAlertaError('',`El sobre con la orden ${orden.NoOrden} no tiene gaveta asignada, por favor asignar antes de continuar`);
       return;
@@ -97,7 +96,6 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
      const numero_orden = orden.NoOrden;
      const responseOrden = await firstValueFrom(this._sobreService.contenido(numero_orden));
      const { enPrestamo, solicitante } = await firstValueFrom(this._prestamoService.informacion(numero_orden));
-
      const contenido = responseOrden.contenido.map((item:any) => ({...item,a: item.aplica == '1'}));
      this.ordenActual.set({...orden,enPrestamo,solicitante});                                                                
      if (contenido.length > 0) {
@@ -128,16 +126,21 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
    public async devolverPrestamo(){
 
      const { NoOrden:orden,no_gaveta } = this.ordenActual()!;
+
      const id_usuario = this._usuarioService.StatusSesion().usuario?.id;         
+
     try {
+
       await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!,this.ordenActual()!.solicitante!.id_prestamo));      
       this.uiService.mostrarAlertaSuccess("",'Devolución de préstamo realizada con éxito, el sobre ya debera de colocarse en la gaveta '+no_gaveta);
       this.cargarInformacion();
       this.ordenActual.set(null);      
+
     }catch(error){
+
       console.log(error);
-    }
-    
+
+    }    
     
   }
 }

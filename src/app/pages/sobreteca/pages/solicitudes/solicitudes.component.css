@@ -1,3 +1,19 @@
 :host {
   display: block;
 }
+.e-grid .e-rowcell {
+  font-size: 10px; 
+  @apply  font-roboto;
+  
+}
+
+.e-grid .e-gridheader{
+  font-size: 10px;
+  @apply rounded-t-lg;
+}
+
+.e-grid .e-headertext{  
+  font-size: 9px;  
+  @apply font-roboto;
+}
+

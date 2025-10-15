@@ -18,46 +18,61 @@
             <e-columns>
                 <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>
                
-                <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>
-                <e-column field='Vendedor' headerText='Vendedor' width='200' textAlign='Left' ></e-column>                
-                
+                <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>                              
                 <e-column field='no_gaveta' headerText='# Gaveta' width='150' textAlign='Center'  ></e-column>
-                <e-column headerText='Estado Préstamo' width='150' textAlign='Center'>
+                <e-column headerText='Bitacora' width='150' textAlign='Center'>
                   <ng-template #template let-data>
-                    <div class="flex items-center justify-center">                                            
-                      @if(data.enPrestamo) {
-                        <div class="flex items-center gap-1 text-orange-600">
-                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    <a   class="flex items-center justify-center gap-1 text-blue-500 hover:underline hover:cursor-pointer">                      
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>                        
+                  </a>
+                  </ng-template>
+                </e-column>
+                <e-column headerText='Estado' width='150' >
+                  <ng-template #template let-data>
+                    <div class="flex flex-row items-center justify-start  gap-3 ">                                            
+                      @if(data.enPrestamo) {                        
+                          <svg class="w-5 h-5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                           </svg>
-                          <span class="text-xs font-medium">Prestado</span>
-                        </div>
-                      } @else {
-                        <div class="flex items-center gap-1 text-green-600">
-                          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <span class="text-purple-700 ">Prestado</span>
+                        
+                      } @else {                        
+                          <svg class="w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8-1.41-1.42z"/>
                           </svg>
-                          <span class="text-xs font-medium">Disponible</span>
-                        </div>
+                          <span class="text-green-700 ">Disponible</span>                        
                       }
                     </div>
                   </ng-template>
                 </e-column>                
                 <e-column >
                   <ng-template #template let-data>
-                    <a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">                      
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path d="M8 10h8M8 14h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                      </svg>
-                      Detalle
-                    </a>
+                    <a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer">
+                      @if(data.enPrestamo) {
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                        </svg>
+                        <span>Devolver</span>
+                      } @else {
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                        <span>Prestar</span>
+                      }
+                  </a>
                   </ng-template>
                 </e-column>
                 </e-columns>
          </ejs-grid>
     </div>    
 </div>
+
+<p-dialog   [visible]="mostrarBitacora()"  [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
+<ng-template #headless >
+  </ng-template>
+</p-dialog>
 
 
 <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"  [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
@@ -82,7 +97,7 @@
       </div>       
       <div class="flex justify-end w-full mb-4 ">
         @if(!ordenActual()!.enPrestamo){
-           <button (click)="solicitarPrestamo()"  class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-3 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
+           <button (click)="solicitarPrestamo()"  class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
             Prestar Material
           </button>
           }@else
