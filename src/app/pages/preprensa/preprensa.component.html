@@ -106,8 +106,8 @@
           <e-column [width]="150">
             <ng-template #headerTemplate>
               <div class="flex flex-col items-center justify-center">
-                <p class="font-bold text-[8px]" [ngClass]="col.color">{{ col.titulo }}</p>
-                <div class="text-[8px]">{{ col.subtitulo }}</div>
+                <p class="font-light text-[8px]" >{{ col.titulo }}</p>
+                <div class="text-[10px] font-bold" [ngClass]="col.color">{{ col.subtitulo }}</div>
               </div>
             </ng-template>
             <ng-template #template let-data>
@@ -116,16 +116,13 @@
               @let liberacion=fechaLiberacion(data,col); 
               @let sepuedeVisualizar=estaHabilitado || liberacion ; 
               @let id_checkActual=getCheckListKey(data,col); 
-
-
-              @if (data.id_checklist_actual){
+              @if (data.id_checklist_actual) {
               <div class="flex w-full py-0.5">
                 <div class="w-full h-full flex flex-row items-center rounded-lg shadow bg-white dark:bg-gray-800 px-1  py-0.5"
                   [ngClass]="sepuedeVisualizar ? 'cursor-pointer' : 'cursor-not-allowed'"
                   (click)="sepuedeVisualizar? ir(data,{id_checkActual,liberacion}) : null">
                   <audit-svg [color]="colorSVG" [enabled]="sepuedeVisualizar" />
                   <div class="text-[9px] text-gray-500 dark:text-white text-center w-full">
-
                     @if(liberacion){
                     {{ liberacion | date : "dd-MM-yyyy HH:mm" }} hrs }
                     @else{
@@ -134,7 +131,7 @@
                   </div>
                 </div>
               </div>
-              }@else{
+              }@else{                
               <div class="flex flex-row gap-2 text-center text-pink-900">
                 ---------
               </div>
