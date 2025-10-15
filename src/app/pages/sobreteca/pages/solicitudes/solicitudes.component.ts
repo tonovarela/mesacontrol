@@ -174,6 +174,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   setVigencia(fecha:any){
     
+    
    this.nuevaVigencia.set(fecha.target.value);
 }
 
@@ -182,7 +183,8 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     this.editandoVigencia.set(ordenNo);
     // Convertir fecha a formato YYYY-MM-DD para el input date
     const fecha = new Date(vigenciaActual);
-    const fechaFormateada = fecha.toISOString().split('T')[0];
+    
+    const fechaFormateada = fecha.toISOString().split('T')[0];    
     this.nuevaVigencia.set(fechaFormateada);
   }
 

@@ -24,10 +24,10 @@
                 </e-column>                              
                 <e-column field='no_gaveta' headerText='# Gaveta' width='100' textAlign='Center'  ></e-column>
                 <e-column field='vigencia' headerText='Vigencia' width='180' textAlign='Center' >
-                  <ng-template #template let-data>
+                  <ng-template #template let-data>                    
                     @if (editandoVigencia() === data.NoOrden) {
                       <!-- Modo edición -->
-                      <div class="flex items-center gap-1 justify-center">
+                      <div class="flex items-center gap-1 justify-center">                        
                         <input 
                           type="date" 
                           [value]="nuevaVigencia()"  
