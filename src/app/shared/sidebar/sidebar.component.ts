@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {  ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { UiService, UsuarioService } from '@app/services';
 
@@ -94,12 +94,12 @@ export class SidebarComponent   implements OnInit {
       path: '/sobreteca/solicitudes',
       claseSize: 'w-8 h-8 svg-icon',
     },
-    {
-      nombre: 'Histórico',
-      icono: 'assets/img/historico-prestamo.svg',
-      path: '/sobreteca/historico',
-      claseSize: 'w-8 h-8 svg-icon',
-    }
+    // {
+    //   nombre: 'Histórico',
+    //   icono: 'assets/img/historico-prestamo.svg',
+    //   path: '/sobreteca/historico',
+    //   claseSize: 'w-8 h-8 svg-icon',
+    // }
   ]);
 
   
