@@ -9,7 +9,6 @@ import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { firstValueFrom } from 'rxjs';
 import { ComponenteAgrupado, Solicitante } from '../../interface/interface';
 
@@ -111,9 +110,9 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
 
    public async solicitarPrestamo(){
-    const { NoOrden:orden } = this.ordenActual()!;
-    const {isDismissed,value:id_usuario} =await LoginLitoapps(this._usuarioService,"Login del usuario que solicita");
-    if (isDismissed){ return; }
+
+    const { NoOrden:orden } = this.ordenActual()!;    
+    const id_usuario = this._usuarioService.StatusSesion().usuario?.id;
     try{
       await firstValueFrom(this._prestamoService.prestar(orden,id_usuario!));      
       this.uiService.mostrarAlertaSuccess("",'Solicitud de préstamo realizada con éxito');
@@ -127,18 +126,18 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   }
 
    public async devolverPrestamo(){
-    
+
      const { NoOrden:orden,no_gaveta } = this.ordenActual()!;
-    const {isDismissed,value:id_usuario} =await LoginLitoapps(this._usuarioService,"Login del usuario que devuelve");
-    if (isDismissed){ return  }
+     const id_usuario = this._usuarioService.StatusSesion().usuario?.id;         
     try {
-       await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!,this.ordenActual()!.solicitante!.id_prestamo));      
+      await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!,this.ordenActual()!.solicitante!.id_prestamo));      
       this.uiService.mostrarAlertaSuccess("",'Devolución de préstamo realizada con éxito, el sobre ya debera de colocarse en la gaveta '+no_gaveta);
       this.cargarInformacion();
       this.ordenActual.set(null);      
     }catch(error){
       console.log(error);
     }
+    
     
   }
 }
