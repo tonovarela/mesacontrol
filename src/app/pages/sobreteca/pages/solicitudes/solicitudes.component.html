@@ -20,6 +20,11 @@
                
                 <e-column field='NombreTrabajo' headerText='Cliente' width='150' textAlign='Left' ></e-column>                              
                 <e-column field='no_gaveta' headerText='# Gaveta' width='150' textAlign='Center'  ></e-column>
+                <e-column field='vigencia' headerText='Vigencia' width='150' textAlign='Center' >
+                  <ng-template #template let-data>                    
+                      {{ data.vigencia | date: 'dd-MM-yyyy' }}                                        
+                  </ng-template>
+                </e-column>
                 <e-column headerText='Bitacora' width='150' textAlign='Center'>
                   <ng-template #template let-data>
                     <a  
