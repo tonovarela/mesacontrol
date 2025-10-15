@@ -132,7 +132,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     const {isDismissed,value:id_usuario} =await LoginLitoapps(this._usuarioService,"Login del usuario que devuelve");
     if (isDismissed){ return  }
     try {
-       await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!));      
+       await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!,this.ordenActual()!.solicitante!.id_prestamo));      
       this.uiService.mostrarAlertaSuccess("",'Devolución de préstamo realizada con éxito, el sobre ya debera de colocarse en la gaveta '+no_gaveta);
       this.cargarInformacion();
       this.ordenActual.set(null);      

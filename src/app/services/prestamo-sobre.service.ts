@@ -21,7 +21,7 @@ export class PrestamoSobreService {
       return this.http.post(`${this.API_URL}/api/sobreteca/prestamo`,{orden,id_usuario})      
     }
 
-  devolver(orden:string,id_usuario:number) {      
-      return this.http.put(`${this.API_URL}/api/sobreteca/prestamo`,{orden,id_usuario})
+  devolver(orden:string,id_usuario:number,id_prestamo:number) {      
+      return this.http.put(`${this.API_URL}/api/sobreteca/prestamo`,{orden,id_usuario,id_prestamo})
     }
 }

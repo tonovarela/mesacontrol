@@ -9,6 +9,7 @@ export interface ResponsePrestamo {
 }
 
 export interface Solicitante {
+  id_prestamo:number;
   personal: string;
   fecha_prestamo:Date;
   nombre:string

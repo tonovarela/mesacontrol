@@ -87,7 +87,6 @@
           </button>
           }@else
            {
-
         <div class="w-full max-w-2xl  bg-blue-50  dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg  p-2">        
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">      
       <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
@@ -107,8 +106,7 @@
           <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Prestado a</span>
         </div>
         <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.nombre }}</p>        
-      </div>            
-      
+      </div>                  
       <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">        
         <button (click)="devolverPrestamo()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,27 +116,15 @@
         </button>
       </div>  
       </div>
-  </div>
-
-        }
-  
-
-      </div>
-      
-
-
-
-    </div>
-
-
-
-    
+        </div>
+        }  
+      </div>      
+    </div>    
        <div class="bg-slate-300   dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto flex flex-wrap gap-4   mx-5 ">               
         @for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
     <div class="bg-white border h-fit   dark:border-white dark:bg-slate-800 rounded shadow  w-full max-w-96   md:w-62 sm:w-60">
       <div class="w-full bg-slate-700  border-0 rounded  flex justify-between items-center">        
-          <h2 class="text-lg font-bold  px-2 py-1 text-white dark:text-slate-100 ">{{ grupo.nombre }}</h2>
-          
+          <h2 class="text-lg font-bold  px-2 py-1 text-white dark:text-slate-100 ">{{ grupo.nombre }}</h2>          
       </div>
         @for(elemento of grupo.elementos; track elemento.id) {
         <div  class="flex items-center justify-between py-1 border-b  p-4 last:border-b-0">
