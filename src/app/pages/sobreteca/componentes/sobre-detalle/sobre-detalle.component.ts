@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, input, OnInit, output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PrimeModule } from '@app/lib/prime.module';
+import { ComponenteAgrupado } from '../../interface/interface';
 
 @Component({
   selector: 'sobre-detalle',
@@ -16,7 +17,7 @@ export class SobreDetalleComponent implements OnInit,AfterViewInit {
 
   
   public ordenActual = input<any | null>(null);
-  public componentesAgrupados = input<any[]>([]);
+  public componentesAgrupados = input<ComponenteAgrupado[]>([]);
   public onCerrarDetalle = output<void>();
   public onDevolverPrestamo = output<void>();
   public onSolicitarPrestamo = output<void>();
@@ -29,9 +30,7 @@ export class SobreDetalleComponent implements OnInit,AfterViewInit {
   });
 
   ngAfterViewInit(): void {
-    this.dialogModal.maximized = true;
-    console.log('ngAfterViewInit dialogModal');
-   // throw new Error('Method not implemented.');
+    this.dialogModal.maximized = true;      
   }
 
   ngOnInit(): void {

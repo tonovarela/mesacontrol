@@ -31,7 +31,7 @@ interface OrdenPrestamo  extends OrdenMetrics {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class SolicitudesComponent extends BaseGridComponent implements OnInit { 
-  //@ViewChild('dialogModal') dialogModal: any;
+  
   public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
   public componentesAgrupados = signal<ComponenteAgrupado[]>([]);    
   protected minusHeight = 0.3;
