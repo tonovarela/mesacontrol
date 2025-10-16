@@ -14,6 +14,7 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 
 import { TruncatePipe } from '@app/pipes/truncate.pipe';
 import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
+import { BitacoraEventoComponent } from '../../componentes/bitacora-evento/bitacora-evento.component';
 import { Bitacora, ComponenteAgrupado, Solicitante } from '../../interface/interface';
 
 interface OrdenPrestamo  extends OrdenMetrics {
@@ -23,7 +24,7 @@ interface OrdenPrestamo  extends OrdenMetrics {
 
 @Component({
   selector: 'app-solicitudes-sobre',
-  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,TruncatePipe],
+  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,BitacoraEventoComponent,TruncatePipe],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

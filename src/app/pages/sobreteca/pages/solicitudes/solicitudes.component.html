@@ -114,10 +114,8 @@
                         </svg>
                         <span>Prestar</span>
                       }
-                  </a>
-                                    
-                    </div>
-                    
+                  </a>                                    
+                    </div>                    
                   </ng-template>
                 </e-column>
                 <e-column>
@@ -141,79 +139,8 @@
     </div>    
 </div>
 
-<p-dialog   [visible]="mostrarBitacora()"  [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
-<ng-template #headless >
-  <div class="w-full p-4 mx-auto mt-2">
-    <!-- Header del modal -->
-    <div class="flex flex-col md:flex-row justify-between items-center space-x-4 px-3 mb-2">
-      <div class="flex items-center space-x-3">
-        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-        </svg>
-        <h2 class="text-base font-bold text-gray-800 dark:text-white">Bitácora del sobre</h2>
-      </div>
-      <button class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-        (click)="cerrarBitacora()">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
-    </div>
 
-    <!-- Contenido de la bitácora -->
-    <div class="bg-gray-50 border-2 dark:bg-gray-800 rounded-lg p-2 max-h-[70vh] overflow-y-auto">
-      @if (bitacoraSobre().length === 0) {
-        <div class="text-center py-8">
-          <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          <p class="text-gray-500 dark:text-gray-400 text-lg">No hay registros en la bitácora</p>
-        </div>
-      } @else {
-        <div class="space-y-4">
-          @for (registro of bitacoraSobre(); track registro.id) {
-            <div class="bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <div class="p-2">
-                <!-- Header del registro -->
-                <div class="flex items-start justify-between mb-1">
-                  <div class="flex items-center space-x-3">
-                    <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                    <div>
-                      <h3 class="text-xs font-semibold text-gray-800 dark:text-white">{{ registro.evento | uppercase }}</h3>                      
-                    </div>
-                  </div>
-                  <div class="text-right">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-300">
-                      {{ registro.fecha_registro | date: 'dd/MM/yyyy' }}
-                    </p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">
-                      {{ registro.fecha_registro | date: 'HH:mm:ss' }}
-                    </p>
-                  </div>
-                </div>
-
-                <!-- Detalles del registro -->
-                <div class="grid grid-cols-1  ">                                  
-                  <!-- Motivo -->                  
-                    <div class="flex items-start space-x-2">
-                      <svg class="w-4 h-4 text-gray-500 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                      </svg>
-                      <div class="text-xs font-roboto font-medium">
-                        <p class=" text-gray-500 dark:text-gray-400">Motivo</p>
-                        <p class=" text-gray-700 dark:text-gray-300">{{ registro.motivo }}</p>
-                      </div>
-                    </div>                  
-                </div>
-              </div>
-            </div>
-          }
-        </div>
-      }
-    </div>
-  </div>
-</ng-template>
-</p-dialog>
+<bitacora-evento [mostrarBitacora]="mostrarBitacora()" [bitacoraSobre]="bitacoraSobre()" (onCerrarBitacora)="cerrarBitacora()"></bitacora-evento>
 
 
 <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"  [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
