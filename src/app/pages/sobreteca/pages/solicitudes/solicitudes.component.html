@@ -11,8 +11,20 @@
   
   </div>
       <ejs-grid #grid 
-        [dataSource]='ordenes()' [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-        [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true " allowResizing="true" allowSorting="true"
+        [dataSource]='ordenes()' 
+        [filterSettings]="filterSettings" 
+        [allowTextWrap]='true'
+        [enableAdaptiveUI]='false'
+        [enableHover]='true'
+        rowHeight='30'
+        (dataBound)='dataBound()'
+        [allowExcelExport]='true'
+        [height]="heightGrid"
+        [allowReordering]='true'
+        [allowFiltering]='true' 
+        allowPaging="true" 
+        allowResizing="true" 
+        allowSorting="true"
         [pageSettings]='pageSettings'
         >
             <e-columns>
@@ -140,10 +152,25 @@
 </div>
 
 
-<bitacora-evento [mostrarBitacora]="mostrarBitacora()" [bitacoraSobre]="bitacoraSobre()" (onCerrarBitacora)="cerrarBitacora()"></bitacora-evento>
 
 
-<p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"  [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
+<bitacora-evento *ngIf="mostrarBitacora()"
+                 [bitacoraSobre]="bitacoraSobre()" 
+                 (onCerrarBitacora)="cerrarBitacora()"
+                 />                
+
+
+
+<sobre-detalle  *ngIf="tieneOrdenSeleccionada()"
+                [ordenActual]="ordenActual()"
+                [componentesAgrupados]="componentesAgrupados()"
+                (onCerrarDetalle)="cerrarDetalle()"
+                (onDevolverPrestamo)="devolverPrestamo()"
+                (onSolicitarPrestamo)="solicitarPrestamo()"
+                />
+  
+
+<!-- <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"  [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
 <ng-template #headless >          
     <div class="w-full p-1  mx-auto mt-2">        
   <div class="flex flex-col md:flex-row justify-between items-center space-x-10 px-3">            
@@ -222,5 +249,5 @@
       }      
     </div>
 </ng-template>
-</p-dialog>
+</p-dialog> -->
 

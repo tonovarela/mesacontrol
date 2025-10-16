@@ -13,7 +13,7 @@ import { Bitacora } from '../../interface/interface';
 export class BitacoraEventoComponent {
 
 
-   public mostrarBitacora = input<boolean>(false);
+   //public mostrarBitacora = input<boolean>(false);
 
    public bitacoraSobre = input<Bitacora[]>([]);
 

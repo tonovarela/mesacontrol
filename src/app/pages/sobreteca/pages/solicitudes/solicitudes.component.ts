@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -15,6 +15,7 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 import { TruncatePipe } from '@app/pipes/truncate.pipe';
 import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { BitacoraEventoComponent } from '../../componentes/bitacora-evento/bitacora-evento.component';
+import { SobreDetalleComponent } from '../../componentes/sobre-detalle/sobre-detalle.component';
 import { Bitacora, ComponenteAgrupado, Solicitante } from '../../interface/interface';
 
 interface OrdenPrestamo  extends OrdenMetrics {
@@ -24,13 +25,13 @@ interface OrdenPrestamo  extends OrdenMetrics {
 
 @Component({
   selector: 'app-solicitudes-sobre',
-  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,BitacoraEventoComponent,TruncatePipe],
+  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,BitacoraEventoComponent,SobreDetalleComponent,TruncatePipe],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class SolicitudesComponent extends BaseGridComponent implements OnInit { 
-  @ViewChild('dialogModal') dialogModal: any;
+  //@ViewChild('dialogModal') dialogModal: any;
   public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
   public componentesAgrupados = signal<ComponenteAgrupado[]>([]);    
   protected minusHeight = 0.3;
@@ -58,10 +59,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   public editandoVigencia = signal<string | null>(null);
   public nuevaVigencia = signal<string>('');
    
-  public nombreTrabajo = computed(() => {
-    if (this.ordenActual() === null) return '';
-    return `${this.ordenActual()?.NoOrden}  - ${this.ordenActual()?.NombreTrabajo}`;
-  });
+  // public nombreTrabajo = computed(() => {
+  //   if (this.ordenActual() === null) return '';
+  //   return `${this.ordenActual()?.NoOrden}  - ${this.ordenActual()?.NombreTrabajo}`;
+  // });
 
 
   constructor() {
@@ -115,7 +116,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
         const componentesAgrupado=  Array.from(componentes).map((componente) => ({  nombre:componente, elementos :  contenido.filter((item) => item.componente === componente) }));
         this.componentesAgrupados.set(componentesAgrupado);
      }
-     this.dialogModal.maximized = true;  
+     //this.dialogModal.maximized = true;  
   }
 
 
