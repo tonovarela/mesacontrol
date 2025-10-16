@@ -1,1 +1,80 @@
-<p>sobre-detalle works!</p>,
+<p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"  [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
+<ng-template #headless >          
+    <div class="w-full p-1  mx-auto mt-2">        
+  <div class="flex flex-col md:flex-row justify-between items-center space-x-10 px-3">            
+    <div class="flex flex-col">      
+    </div>                     
+    <div class="flex flex-row justify-end items-center space-x-4">         
+    <button class="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-800 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+    (click)="cerrarDetalle()">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" >        
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>        
+      </svg>      
+    </button>
+    </div>         
+  </div>
+    </div>      
+    <div class="flex sm:flex-row flex-col  items-center justify-between px-10" > 
+      <div class=" w-full "> 
+         <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>    
+      </div>       
+      <div class="flex justify-end w-full mb-4 ">
+        @if(!ordenActual()!.enPrestamo){
+           <button (click)="solicitarPrestamo()"  class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
+            Prestar Material
+          </button>
+          }@else
+           {
+        <div class="w-full max-w-2xl  bg-blue-50  dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg  p-2">        
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">      
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center">
+          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Fecha de Préstamo</span>
+        </div>
+        <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.fecha_prestamo | date: 'dd/MM/yyyy - HH:mm' }}</p>
+      </div>      
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
+        <div class="flex  items-center">
+          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Prestado a</span>
+        </div>
+        <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.nombre }}</p>        
+      </div>                  
+      <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">        
+        <button (click)="devolverPrestamo()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+          </svg>
+          Devolver 
+        </button>
+      </div>  
+      </div>
+        </div>
+        }  
+      </div>      
+    </div>    
+       <div class="bg-slate-300   dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto flex flex-wrap gap-4   mx-5 ">               
+        @for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
+    <div class="bg-white border h-fit   dark:border-white dark:bg-slate-800 rounded shadow  w-full max-w-96   md:w-62 sm:w-60">
+      <div class="w-full bg-slate-700  border-0 rounded  flex justify-between items-center">        
+          <h2 class="text-lg font-bold  px-2 py-1 text-white dark:text-slate-100 ">{{ grupo.nombre }}</h2>          
+      </div>
+        @for(elemento of grupo.elementos; track elemento.id) {
+        <div  class="flex items-center justify-between py-1 border-b  p-4 last:border-b-0">
+          <div class="flex flex-row space-x-2 text-[9px]">
+            <div class=" text-slate-700 dark:text-white">{{ elemento.elemento }}</div>            
+            <div class=" text-slate-500 dark:text-white">{{ elemento.proceso }}</div>            
+          </div>                  
+           <p-checkbox [ngModel]="true" [binary]="true" checked disabled="true"/>        
+        </div>
+      }
+      </div>
+      }      
+    </div>
+</ng-template>
+</p-dialog>
