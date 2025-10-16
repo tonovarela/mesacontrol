@@ -14,6 +14,7 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 
 import { TruncatePipe } from '@app/pipes/truncate.pipe';
 import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
+import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { BitacoraEventoComponent } from '../../componentes/bitacora-evento/bitacora-evento.component';
 import { SobreDetalleComponent } from '../../componentes/sobre-detalle/sobre-detalle.component';
 import { Bitacora, ComponenteAgrupado, Solicitante } from '../../interface/interface';
@@ -115,15 +116,18 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
         const componentes = new Set([ ...contenido.map((item) => item.componente)]);   
         const componentesAgrupado=  Array.from(componentes).map((componente) => ({  nombre:componente, elementos :  contenido.filter((item) => item.componente === componente) }));
         this.componentesAgrupados.set(componentesAgrupado);
-     }
-     //this.dialogModal.maximized = true;  
+     }     
   }
 
 
    public async solicitarPrestamo(){
 
     const { NoOrden:orden } = this.ordenActual()!;    
-    const id_usuario = this._usuarioService.StatusSesion().usuario?.id;
+    const {value:id_usuario, isDismissed} = await LoginLitoapps(this._usuarioService,"Login del usuario para solicitar préstamo");    
+    if (isDismissed) {
+      return;
+    }    
+    
     try{
       await firstValueFrom(this._prestamoService.prestar(orden,id_usuario!));      
       this._uiService.mostrarAlertaSuccess("",'Solicitud de préstamo realizada con éxito');
