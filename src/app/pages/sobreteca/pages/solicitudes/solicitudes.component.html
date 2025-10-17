@@ -158,15 +158,19 @@
                 (onSolicitarPrestamo)="solicitarPrestamo()"/>
   
 
-                <p-dialog header="Confirmar Dar de Baja" [visible]="true" [modal]="true" [closable]="false" [responsive]="true" [style]="{width: '700px'}">
+                <p-dialog  header="Confirmar Dar de Baja" 
+                [visible]="ordenBaja()!==null"
+                [modal]="true"
+                
+                 [closable]="false" [responsive]="true" [style]="{width: '700px'}">
                   <ng-template #headless >
                     <div class="px-12 py-5 text-center">
                       <h1 class="text-2xl">Desea asociar esta sobre con otra orden de produccion?</h1>
                       <div class="flex flex-row justify-center mt-9">
                         <div class="gap-4 flex flex-row">
                       <button class=" px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Sí</button>
-                      <button class=" px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2">No, solo darlo de baja</button>
-                      <button class=" px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2">Cancelar</button>
+                      <button (click)="confirmarBajaSobre()" class=" px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2">No, solo darlo de baja</button>
+                      <button (click)="cerrarBajaSobre()" class=" px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2">Cancelar</button>
                         </div>
                       
                       </div>

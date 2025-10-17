@@ -43,6 +43,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   private _ordenes = signal<any[]>([]);
 
 
+  public ordenBaja = signal<string | null>(null);
+
+  
+
   public bitacoraSobre = signal<Bitacora[]>([]);
   public mostrarBitacora = signal(false)
   public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);  
@@ -217,13 +221,37 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   // Método para dar de baja un sobre (solo maquetado)
   public async darDeBajaSobre(ordenNo: string) {
     // TODO: Implementar lógica para dar de baja el sobre
-    const {isConfirmed,  value  } = await this._uiService.mostrarAlertaConfirmacion('Confirmar', `¿Está seguro de que desea dar de baja el sobre con orden ${ordenNo}?`, 'Sí, dar de baja', 'Cancelar');
-    if (!isConfirmed) {
+    this.ordenBaja.set(ordenNo);
+    // const {isConfirmed,  value  } = await this._uiService.mostrarAlertaConfirmacion('Confirmar', `¿Está seguro de que desea dar de baja el sobre con orden ${ordenNo}?`, 'Sí, dar de baja', 'Cancelar');
+    // if (!isConfirmed) {
+    //   return;
+    // }    
+  
+  }
+
+
+  public async confirmarBajaSobre(){
+    const ordenNo = this.ordenBaja();
+    if (!ordenNo) {
       return;
     }
-    
-    
+    try {
+      const id_usuario = this._usuarioService.StatusSesion().usuario?.id;          
+     // await firstValueFrom(this._sobreService.darDeBaja(ordenNo, id_usuario!.toString()));      
+      this._uiService.mostrarAlertaSuccess('', `El sobre con orden ${ordenNo} ha sido dado de baja correctamente`);
+      this.cargarInformacion(); 
+      this.ordenBaja.set(null);
+    } catch (error) {
+      console.log(error);
+      this._uiService.mostrarAlertaError('', 'Error al dar de baja el sobre');
+    }
   }
+
+  public cerrarBajaSobre(){
+    this.ordenBaja.set(null);
+  }
+
+
 
   
 }
