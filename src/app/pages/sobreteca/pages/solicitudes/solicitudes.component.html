@@ -180,7 +180,7 @@
                   </p-dialog>
 
 <p-dialog header="Asociar Op " 
-                [visible]="estaAsociandoOP()"
+                [visible]="estatusAsociacion().asociando"
                 [modal]="true"                
                  [closable]="false" [responsive]="true" [style]="{width: '900px'}">
                   <ng-template #headless >
@@ -191,18 +191,19 @@
 <div class="card mt-6" *ngIf="opPorAsociar()">
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
         
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+
+      <div class="flex flex-col ">
+        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Sobre sálida</span>
+        <span class="text-lg font-semibold text-blue-600 dark:text-blue-400">{{ estatusAsociacion().op }}</span>
+      </div>
       <!-- Número de Orden -->
-      <div class="flex flex-col">
-        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">No. Orden</span>
+      <div class="flex flex-col ">
+        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">No. Orden Asociada</span>
         <span class="text-lg font-semibold text-blue-600 dark:text-blue-400">{{ opPorAsociar()?.NoOrden }}</span>
       </div>
       
-      <!-- Nombre del Trabajo -->
-      <div class="flex flex-col">
-        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Nombre del Trabajo</span>
-        <span class="text-base text-gray-800 dark:text-gray-100">{{ opPorAsociar()?.NombreTrabajo }}</span>
-      </div>
+      
       
      
 
@@ -213,7 +214,7 @@
     <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
       <div class="flex flex-col">
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Tipo de Material <span class="text-red-500">*</span>
+          Especifique el tipo de material de la orden asociada <span class="text-red-500">*</span>
         </label>        
         <select 
         [(ngModel)]="tipoMaterialSeleccionado"
@@ -243,6 +244,7 @@
             Cancelar
           </button>
           <button             
+          (click)="confirmarAsociacionOP()"
             [disabled]="!tipoMaterialSeleccionado() || tipoMaterialSeleccionado() === ''"
             [class]="(tipoMaterialSeleccionado() && tipoMaterialSeleccionado() !== '') 
               ? 'px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm'

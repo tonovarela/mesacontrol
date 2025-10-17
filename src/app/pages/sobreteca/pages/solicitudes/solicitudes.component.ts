@@ -46,7 +46,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   public ordenBaja = signal<string | null>(null);
   public tipoMaterialSeleccionado = signal<string>(''); // Cambiar de null a string vacío
-  public estaAsociandoOP = signal(false);
+  public estatusAsociacion = signal({asociando:false,op:''});
   public opPorAsociar = signal<OrdenMetrics | null>(null);  
 
   public typeSearch = TypeSearchMetrics.PREPRENSA;
@@ -229,7 +229,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   public async darDeBajaSobre(ordenNo: string) {    
     this.ordenBaja.set(ordenNo);      
-    this.estaAsociandoOP.set(false);
+    this.estatusAsociacion.set({asociando:false,op:''});
     this.opPorAsociar.set(null);
   }
 
@@ -256,14 +256,16 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   }
 
   public asociarOrden(){
-    this.estaAsociandoOP.set(true);
+    
+    const ordenBaja = this.ordenBaja();  
+    this.estatusAsociacion.set({asociando:true,op:ordenBaja!});
     this.cerrarBajaSobre();
 
 
   }
 
   public cerrarAsociacionOP(){
-    this.estaAsociandoOP.set(false);
+    this.estatusAsociacion.set({asociando:false,op:''});
   }
 
 
@@ -272,7 +274,16 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
       return;
     }
     this.opPorAsociar.set(orden);
-    console.log(orden);
+    //console.log(orden);
+
+  }
+
+  public async confirmarAsociacionOP(){
+    const ordenBaja = this.estatusAsociacion().op;
+    const orderPorAsociar = this.opPorAsociar();
+    console.log({ordenBaja,orderPorAsociar});
+      
+     this.cerrarAsociacionOP();
 
   }
 
