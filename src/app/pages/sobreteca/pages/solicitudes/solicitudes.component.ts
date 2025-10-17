@@ -274,16 +274,23 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
       return;
     }
     this.opPorAsociar.set(orden);
-    //console.log(orden);
 
   }
 
   public async confirmarAsociacionOP(){
     const ordenBaja = this.estatusAsociacion().op;
-    const orderPorAsociar = this.opPorAsociar();
-    console.log({ordenBaja,orderPorAsociar});
-      
+    const { NoOrden:ordenAsociada, TipoProd:tipoProd} = this.opPorAsociar()!;
+    const id_usuario = this._usuarioService.StatusSesion().usuario?.id;
+    try{
+      await firstValueFrom(this._sobreService.asociar(ordenBaja,ordenAsociada,`${id_usuario}`));
+      await firstValueFrom(this._sobreService.eliminar(ordenBaja, `${id_usuario}`));  
+      this._uiService.mostrarAlertaSuccess('',`La orden de producción ${ordenAsociada} ha sido asociada correctamente a la orden ${ordenBaja}`);    
+    }catch(error){
+      this._uiService.mostrarAlertaError("","No se pude asociar la orden");
+    }
+    
      this.cerrarAsociacionOP();
+     this.cargarInformacion();
 
   }
 
