@@ -229,6 +229,8 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   public async darDeBajaSobre(ordenNo: string) {    
     this.ordenBaja.set(ordenNo);      
+    this.estaAsociandoOP.set(false);
+    this.opPorAsociar.set(null);
   }
 
 
