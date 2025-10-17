@@ -87,14 +87,14 @@
                   </a>
                   </ng-template>
                 </e-column>
-                <e-column headerText='Estado' width='100' >
+                <e-column headerText='Estado' width='250' >
                   <ng-template #template let-data>
                     <div class="flex flex-row items-center justify-start  gap-3 ">                                            
                       @if(data.enPrestamo) {                        
                           <svg class="w-5 h-5 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                           </svg>
-                          <span class="text-purple-700 ">Prestado</span>
+                          <span class="text-purple-700 ">Prestado a {{data.solicitante}}</span>
                         
                       } @else {                        
                           <svg class="w-5 h-5 text-green-700" fill="currentColor" viewBox="0 0 24 24">
@@ -157,3 +157,20 @@
                 (onDevolverPrestamo)="devolverPrestamo()"
                 (onSolicitarPrestamo)="solicitarPrestamo()"/>
   
+
+                <p-dialog header="Confirmar Dar de Baja" [visible]="true" [modal]="true" [closable]="false" [responsive]="true" [style]="{width: '700px'}">
+                  <ng-template #headless >
+                    <div class="px-12 py-5 text-center">
+                      <h1 class="text-2xl">Desea asociar esta sobre con otra orden de produccion?</h1>
+                      <div class="flex flex-row justify-center mt-9">
+                        <div class="gap-4 flex flex-row">
+                      <button class=" px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Sí</button>
+                      <button class=" px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2">No, solo darlo de baja</button>
+                      <button class=" px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2">Cancelar</button>
+                        </div>
+                      
+                      </div>
+                      
+                    </div>
+                  </ng-template>
+                  </p-dialog>

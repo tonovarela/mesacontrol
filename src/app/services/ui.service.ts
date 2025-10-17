@@ -1,5 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
-import { Drawer, DrawerInterface, InstanceOptions } from 'flowbite';
+import { Injectable } from '@angular/core';
 import swal, { SweetAlertResult } from 'sweetalert2';
 
 @Injectable({
@@ -8,12 +7,16 @@ import swal, { SweetAlertResult } from 'sweetalert2';
 export class UiService {  
   constructor() { }
 
+
+
+
   toggleSidebar() {    
   }
 
   mostrarAlertaError(titulo:string, mensaje:string) {
     swal.fire(titulo, mensaje, 'error');
   }
+
   mostrarAlertaErrorAutoClose(titulo:string, mensaje:string, timer = 1000) {
     swal.fire({
       title: titulo,
@@ -76,11 +79,5 @@ export class UiService {
     
 
   }
-
-
-  
-
-  
-
 
 }

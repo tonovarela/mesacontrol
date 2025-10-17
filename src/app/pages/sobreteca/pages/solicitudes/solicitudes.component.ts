@@ -21,6 +21,7 @@ import { Bitacora, ComponenteAgrupado, Solicitante } from '../../interface/inter
 
 interface OrdenPrestamo  extends OrdenMetrics {
   enPrestamo:boolean,
+
   solicitante?:Solicitante
 }
 
@@ -33,56 +34,47 @@ interface OrdenPrestamo  extends OrdenMetrics {
 })
 export default class SolicitudesComponent extends BaseGridComponent implements OnInit { 
   
-  public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
-  public componentesAgrupados = signal<ComponenteAgrupado[]>([]);    
-  protected minusHeight = 0.3;
-   
-   
+  protected minusHeight = 0.3;   
   private _uiService= inject(UiService);
   private _activatedRouter = inject(ActivatedRoute);
   private _sobreService = inject(SobreService);
   private _prestamoService  =  inject(PrestamoSobreService);
   private _usuarioService = inject(UsuarioService);
+  private _ordenes = signal<any[]>([]);
 
 
   public bitacoraSobre = signal<Bitacora[]>([]);
   public mostrarBitacora = signal(false)
-
-  public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);
-  
+  public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);  
   public ordenActual = signal<OrdenPrestamo | null>(null);
-  public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);
-   
+  public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);   
   public ordenes = computed(()=>{return this._ordenes();});
-  private _ordenes = signal<any[]>([]);
+  public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
+  public componentesAgrupados = signal<ComponenteAgrupado[]>([]);    
+
 
   // Propiedades para la edición de vigencia
   public editandoVigencia = signal<string | null>(null);
   public nuevaVigencia = signal<string>('');
    
-  // public nombreTrabajo = computed(() => {
-  //   if (this.ordenActual() === null) return '';
-  //   return `${this.ordenActual()?.NoOrden}  - ${this.ordenActual()?.NombreTrabajo}`;
-  // });
-
-
+  
   constructor() {
     super();   
   }
 
   ngOnInit(): void {
     this.autoFitColumns=false;
-      this.iniciarResizeGrid(this.minusHeight, true);  
-      this.cargarInformacion();          
+    this.iniciarResizeGrid(this.minusHeight, true);  
+    this.cargarInformacion();          
   }
 
 
   async cargarInformacion(){
+
     try {
     const response =await firstValueFrom( this._sobreService.conGaveta())
     const ordenes = response.ordenes.map(orden=>({...orden,enPrestamo:orden.enPrestamo==="1"}))    
-    this._ordenes.set(ordenes);
-    
+    this._ordenes.set(ordenes);    
     }catch(error){
     console.log(error);
     }       
@@ -103,10 +95,11 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
       return;
     }  
     const tieneGaveta = orden?.no_gaveta && orden.no_gaveta > 0;
+
     if (!tieneGaveta) {
       this._uiService.mostrarAlertaError('',`El sobre con la orden ${orden.NoOrden} no tiene gaveta asignada, por favor asignar antes de continuar`);
       return;
-    }
+    }    
      const numero_orden = orden.NoOrden;
      const responseOrden = await firstValueFrom(this._sobreService.contenido(numero_orden));
      const { enPrestamo, solicitante } = await firstValueFrom(this._prestamoService.informacion(numero_orden));
@@ -116,7 +109,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
         const componentes = new Set([ ...contenido.map((item) => item.componente)]);   
         const componentesAgrupado=  Array.from(componentes).map((componente) => ({  nombre:componente, elementos :  contenido.filter((item) => item.componente === componente) }));
         this.componentesAgrupados.set(componentesAgrupado);
-     }     
+     }          
   }
 
 
@@ -129,10 +122,12 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     }    
     
     try{
+
       await firstValueFrom(this._prestamoService.prestar(orden,id_usuario!));      
       this._uiService.mostrarAlertaSuccess("",'Solicitud de préstamo realizada con éxito');
       this.cargarInformacion();      
       this.ordenActual.set(null);
+
     }catch(error){
       console.log(error);
     }
@@ -144,6 +139,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
      const { NoOrden:orden,no_gaveta } = this.ordenActual()!;
      const id_usuario = this._usuarioService.StatusSesion().usuario?.id;         
+
     try {
 
       await firstValueFrom(this._prestamoService.devolver(orden,id_usuario!,this.ordenActual()!.solicitante!.id_prestamo));      
@@ -155,7 +151,8 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
       console.log(error);
 
-    }        
+    } 
+
   }
 
 
@@ -171,6 +168,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     }
   }
 
+
   public cerrarBitacora() {
     this.mostrarBitacora.set(false);
     this.bitacoraSobre.set([]);
@@ -178,9 +176,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
 
 
-  setVigencia(fecha:any){
-    
-    
+  setVigencia(fecha:any){        
    this.nuevaVigencia.set(fecha.target.value);
 }
 
@@ -219,10 +215,14 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   }
 
   // Método para dar de baja un sobre (solo maquetado)
-  public darDeBajaSobre(ordenNo: string) {
+  public async darDeBajaSobre(ordenNo: string) {
     // TODO: Implementar lógica para dar de baja el sobre
-    console.log('Dar de baja sobre:', ordenNo);
-    this._uiService.mostrarAlertaError('Función no implementada', 'La funcionalidad de dar de baja el sobre aún no está implementada');
+    const {isConfirmed,  value  } = await this._uiService.mostrarAlertaConfirmacion('Confirmar', `¿Está seguro de que desea dar de baja el sobre con orden ${ordenNo}?`, 'Sí, dar de baja', 'Cancelar');
+    if (!isConfirmed) {
+      return;
+    }
+    
+    
   }
 
   
