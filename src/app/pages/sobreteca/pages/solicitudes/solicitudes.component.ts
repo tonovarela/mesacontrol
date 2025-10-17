@@ -13,7 +13,7 @@ import { SynfusionModule } from '@app/lib/synfusion.module';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 
 import { TruncatePipe } from '@app/pipes/truncate.pipe';
-import { PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
+import { MetricsService, PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { BitacoraEventoComponent } from '../../componentes/bitacora-evento/bitacora-evento.component';
 import { SobreDetalleComponent } from '../../componentes/sobre-detalle/sobre-detalle.component';
@@ -27,7 +27,7 @@ interface OrdenPrestamo  extends OrdenMetrics {
 
 @Component({
   selector: 'app-solicitudes-sobre',
-  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,BitacoraEventoComponent,SobreDetalleComponent,TruncatePipe],
+  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,BitacoraEventoComponent,SobreDetalleComponent,TruncatePipe,SearchMetricsComponent],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,11 +40,16 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   private _sobreService = inject(SobreService);
   private _prestamoService  =  inject(PrestamoSobreService);
   private _usuarioService = inject(UsuarioService);
+  private _metricsService = inject(MetricsService);
   private _ordenes = signal<any[]>([]);
 
 
   public ordenBaja = signal<string | null>(null);
+  public tipoMaterialSeleccionado = signal<string>(''); // Cambiar de null a string vacío
+  public estaAsociandoOP = signal(false);
+  public opPorAsociar = signal<OrdenMetrics | null>(null);  
 
+  public typeSearch = TypeSearchMetrics.PREPRENSA;
   
 
   public bitacoraSobre = signal<Bitacora[]>([]);
@@ -55,6 +60,8 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   public ordenes = computed(()=>{return this._ordenes();});
   public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
   public componentesAgrupados = signal<ComponenteAgrupado[]>([]);    
+
+  public catalogoTiposProductos = computed(() => this._metricsService.TipoMateriales());
 
 
   // Propiedades para la edición de vigencia
@@ -218,15 +225,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     }
   }
 
-  // Método para dar de baja un sobre (solo maquetado)
-  public async darDeBajaSobre(ordenNo: string) {
-    // TODO: Implementar lógica para dar de baja el sobre
-    this.ordenBaja.set(ordenNo);
-    // const {isConfirmed,  value  } = await this._uiService.mostrarAlertaConfirmacion('Confirmar', `¿Está seguro de que desea dar de baja el sobre con orden ${ordenNo}?`, 'Sí, dar de baja', 'Cancelar');
-    // if (!isConfirmed) {
-    //   return;
-    // }    
   
+
+  public async darDeBajaSobre(ordenNo: string) {    
+    this.ordenBaja.set(ordenNo);      
   }
 
 
@@ -237,7 +239,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     }
     try {
       const id_usuario = this._usuarioService.StatusSesion().usuario?.id;          
-     // await firstValueFrom(this._sobreService.darDeBaja(ordenNo, id_usuario!.toString()));      
+      await firstValueFrom(this._sobreService.eliminar(ordenNo, id_usuario!.toString()));      
       this._uiService.mostrarAlertaSuccess('', `El sobre con orden ${ordenNo} ha sido dado de baja correctamente`);
       this.cargarInformacion(); 
       this.ordenBaja.set(null);
@@ -249,6 +251,27 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   public cerrarBajaSobre(){
     this.ordenBaja.set(null);
+  }
+
+  public asociarOrden(){
+    this.estaAsociandoOP.set(true);
+    this.cerrarBajaSobre();
+
+
+  }
+
+  public cerrarAsociacionOP(){
+    this.estaAsociandoOP.set(false);
+  }
+
+
+  public onAsociarOrder(orden:OrdenMetrics | null){
+    if (!orden){
+      return;
+    }
+    this.opPorAsociar.set(orden);
+    console.log(orden);
+
   }
 
 

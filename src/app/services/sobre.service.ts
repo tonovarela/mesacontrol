@@ -40,6 +40,10 @@ export class SobreService {
   
   }
 
+  eliminar(orden:string,id_usuario:string){
+    return this.http.put(`${this.API_URL}/api/sobreteca/sobre/eliminar/${orden}`, {id_usuario});
+  }
+
   solicitarAprobacion(orden:string,
                       id_usuario:string) {        
     return this.http.post(`${this.API_URL}/api/sobreteca/sobre/revision`,{orden,id_usuario});

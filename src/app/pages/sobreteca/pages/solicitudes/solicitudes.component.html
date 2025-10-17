@@ -168,7 +168,7 @@
                       <h1 class="text-2xl">Desea asociar esta sobre con otra orden de produccion?</h1>
                       <div class="flex flex-row justify-center mt-9">
                         <div class="gap-4 flex flex-row">
-                      <button class=" px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Sí</button>
+                      <button (click)="asociarOrden()"  class=" px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Sí</button>
                       <button (click)="confirmarBajaSobre()" class=" px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2">No, solo darlo de baja</button>
                       <button (click)="cerrarBajaSobre()" class=" px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 ml-2">Cancelar</button>
                         </div>
@@ -178,3 +178,89 @@
                     </div>
                   </ng-template>
                   </p-dialog>
+
+<p-dialog header="Asociar Op " 
+                [visible]="estaAsociandoOP()"
+                [modal]="true"                
+                 [closable]="false" [responsive]="true" [style]="{width: '900px'}">
+                  <ng-template #headless >
+                    <div class="px-12 py-5 text-center">
+                      <h1 class="text-2xl">Asociar OP</h1>                      
+                      <search-metrics *ngIf="opPorAsociar()==null"  placeholder="Buscar orden de produccion" [typeSearch]="typeSearch"  (onSelectOrder)="onAsociarOrder($event)" />
+                      <!-- Información de la OP seleccionada -->
+<div class="card mt-6" *ngIf="opPorAsociar()">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
+        
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Número de Orden -->
+      <div class="flex flex-col">
+        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">No. Orden</span>
+        <span class="text-lg font-semibold text-blue-600 dark:text-blue-400">{{ opPorAsociar()?.NoOrden }}</span>
+      </div>
+      
+      <!-- Nombre del Trabajo -->
+      <div class="flex flex-col">
+        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Nombre del Trabajo</span>
+        <span class="text-base text-gray-800 dark:text-gray-100">{{ opPorAsociar()?.NombreTrabajo }}</span>
+      </div>
+      
+     
+
+
+
+    </div>    
+    <!-- Selector de Tipo de Material -->
+    <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Tipo de Material <span class="text-red-500">*</span>
+        </label>        
+        <select 
+        [(ngModel)]="tipoMaterialSeleccionado"
+        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm 
+               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 
+               bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100
+               disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:text-gray-500"
+        required>
+        <option value="" disabled selected>Seleccione el tipo de material</option>
+        @for (tipo of catalogoTiposProductos(); track tipo.id) {
+          <option [value]="tipo.id">{{tipo.value}}</option>
+        }
+      </select>
+      </div>
+      </div>
+
+
+      <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex flex-col sm:flex-row gap-3 justify-around">
+                  
+          <button             
+            class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+            <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            Cancelar
+          </button>
+          <button             
+            [disabled]="!tipoMaterialSeleccionado() || tipoMaterialSeleccionado() === ''"
+            [class]="(tipoMaterialSeleccionado() && tipoMaterialSeleccionado() !== '') 
+              ? 'px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm'
+              : 'px-6 py-3 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed font-medium shadow-sm'"
+            >
+            <svg class="w-4 h-4 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            Asociar OP
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+</div>
+                  </ng-template>
+</p-dialog>
+
+                  
