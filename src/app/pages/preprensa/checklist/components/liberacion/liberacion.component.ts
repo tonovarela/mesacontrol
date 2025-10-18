@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -16,21 +15,23 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ComponenteSobre } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import {
   ElementoItem,
+  EventoRevision,
   OrdenLiberacionSobre,
   Ruta,
   RutaElemento,
 } from '@app/interfaces/responses/ResponseRutaComponentes';
 import { PrimeModule } from '@app/lib/prime.module';
-import { CheckListService, MetricsService, PdfService, PreprensaService, UiService, UsuarioService } from '@app/services';
-import { firstValueFrom, switchMap } from 'rxjs';
-import { LoginLitoapps } from '@app/utils/loginLitoapps';
 import { columnas } from '@app/pages/data/columnas';
-import { ComponenteSobre } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { InfoLiberacion } from '../../../../../interfaces/responses/ResponseOrdenMetrics';
+import { CheckListService, MetricsService, PdfService, PreprensaService, UiService, UsuarioService } from '@app/services';
 import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
+import { LoginLitoapps } from '@app/utils/loginLitoapps';
+import { firstValueFrom } from 'rxjs';
+import Swal from 'sweetalert2';
+import { InfoLiberacion } from '../../../../../interfaces/responses/ResponseOrdenMetrics';
+
 
 
 
@@ -45,6 +46,7 @@ export  class LiberacionComponent implements OnInit {
 
 
   orden = input<string>();
+  
   onClose = output<void>();
   columnasAuditoria = columnas;;
   private pdfService = inject(PdfService);
@@ -53,10 +55,9 @@ export  class LiberacionComponent implements OnInit {
   private prePrensaService = inject(PreprensaService);
   private uiService = inject(UiService);
   private checkListService = inject(CheckListService);
-//  private router = inject(Router);
 
-
-  private ultimoModulo = 'pendientes';
+  revision = signal<EventoRevision|null>(null);
+  //private ultimoModulo = 'pendientes';
   stateOptions: any[] = [
     { label: 'Si', value: 1 },
     { label: 'No', value: 0 },
@@ -112,6 +113,7 @@ export  class LiberacionComponent implements OnInit {
   async cargarInformacion() {
     const orden = this.orden() || '';
     const resp = await firstValueFrom(this.prePrensaService.obtenerComponentes(orden));    
+    this.revision.set(resp.revision || null);
     if (resp.rutas.length === 0) {
        this.regresar();
       return;

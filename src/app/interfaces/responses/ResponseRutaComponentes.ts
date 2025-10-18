@@ -1,8 +1,14 @@
 export interface ResponseRutaComponentes {
     rutas: Ruta[];
-    orden?:OrdenLiberacionSobre
+    orden?:OrdenLiberacionSobre,
+    revision?:EventoRevision
 }
 
+
+export interface EventoRevision{
+  nombre:string;
+  fecha_registro:Date;
+}
 
 export interface OrdenLiberacionSobre {
     orden:string;
