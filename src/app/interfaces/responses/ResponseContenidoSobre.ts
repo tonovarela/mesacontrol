@@ -1,6 +1,7 @@
 export interface ResponseContenidoSobre {
     contenido: DetalleSobre[];
     autorizacion?: Autorizacion;
+    activo: boolean;
 }
 
 export interface Autorizacion {    

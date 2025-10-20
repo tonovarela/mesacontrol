@@ -43,6 +43,14 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   private _metricsService = inject(MetricsService);
   private _ordenes = signal<any[]>([]);
 
+  public puedePrestarseOp  = computed(() => {
+     return this._puedePrestarseOp();
+  });
+
+  private _puedePrestarseOp = signal<boolean>(false);
+  
+
+
 
   public ordenBaja = signal<string | null>(null);
   public tipoMaterialSeleccionado = signal<string>(''); // Cambiar de null a string vacío
@@ -95,6 +103,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   cerrarDetalle(){
     this.ordenActual.set(null);
     this.componentesAgrupados.set([]);
+    this._puedePrestarseOp.set(false);
   }
 
   async verDetalle(orden:OrdenMetrics){
@@ -114,6 +123,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
      const numero_orden = orden.NoOrden;
      const responseOrden = await firstValueFrom(this._sobreService.contenido(numero_orden));
      const { enPrestamo, solicitante } = await firstValueFrom(this._prestamoService.informacion(numero_orden));
+     this._puedePrestarseOp.set(responseOrden.activo);     
      const contenido = responseOrden.contenido.map((item:any) => ({...item,a: item.aplica == '1'}));
      this.ordenActual.set({...orden,enPrestamo,solicitante});                                                                
      if (contenido.length > 0) {

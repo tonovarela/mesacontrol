@@ -152,10 +152,15 @@
 
 <sobre-detalle  *ngIf="tieneOrdenSeleccionada()"
                 [ordenActual]="ordenActual()"
+                [puedePrestarse]="puedePrestarseOp()"
                 [componentesAgrupados]="componentesAgrupados()"
                 (onCerrarDetalle)="cerrarDetalle()"
                 (onDevolverPrestamo)="devolverPrestamo()"
                 (onSolicitarPrestamo)="solicitarPrestamo()"/>  
+               
+               
+               
+               
                 <p-dialog  header="Confirmar Dar de Baja" 
                 [visible]="ordenBaja()!==null"
                 [modal]="true"                

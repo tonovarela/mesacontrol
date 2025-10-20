@@ -17,6 +17,7 @@ export class SobreDetalleComponent implements OnInit,AfterViewInit {
 
   
   public ordenActual = input<any | null>(null);
+  public puedePrestarse = input<boolean>(false);
   public componentesAgrupados = input<ComponenteAgrupado[]>([]);
   public onCerrarDetalle = output<void>();
   public onDevolverPrestamo = output<void>();

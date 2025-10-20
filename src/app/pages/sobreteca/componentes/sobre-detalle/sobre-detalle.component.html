@@ -18,9 +18,22 @@
       <div class=" w-full "> 
          <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>    
       </div>       
-      <div class="flex justify-end w-full mb-4 ">
+      <div class="flex justify-end w-full mb-4  gap-2">
+        @if(!puedePrestarse())
+         {        
+        <div class="flex items-center p-2.5 rounded-lg bg-red-50 border border-red-200 shadow-sm dark:bg-red-900/20 dark:border-red-800 transition-all duration-300">
+          <svg class="w-5 h-5 mr-2 text-red-600 dark:text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <span class="text-sm font-medium text-red-600 dark:text-red-400">
+            El material no está disponible para préstamo.
+          </span>
+        </div>
+         }        
         @if(!ordenActual()!.enPrestamo){
-           <button (click)="solicitarPrestamo()"  class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
+           <button (click)="solicitarPrestamo()" 
+           [disabled]="!puedePrestarse()"
+            class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
             Prestar Material
           </button>
           }@else
@@ -46,7 +59,9 @@
         <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.nombre }}</p>        
       </div>                  
       <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">        
-        <button (click)="devolverPrestamo()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm">
+        <button (click)="devolverPrestamo()"
+        [disabled]="!puedePrestarse()"
+         class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
           </svg>
