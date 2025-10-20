@@ -94,12 +94,12 @@ export class SidebarComponent   implements OnInit {
       path: '/sobreteca/solicitudes',
       claseSize: 'w-8 h-8 svg-icon',
     },
-    // {
-    //   nombre: 'Histórico',
-    //   icono: 'assets/img/historico-prestamo.svg',
-    //   path: '/sobreteca/historico',
-    //   claseSize: 'w-8 h-8 svg-icon',
-    // }
+    {
+      nombre: 'Histórico',
+      icono: 'assets/img/historico-prestamo.svg',
+      path: '/sobreteca/historico',
+      claseSize: 'w-8 h-8 svg-icon',
+    }
   ]);
 
   

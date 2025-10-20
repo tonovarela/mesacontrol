@@ -49,9 +49,10 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   private _puedePrestarseOp = signal<boolean>(false);
   
+  //public verSobresPendientes = signal<boolean>(true);
 
 
-
+  
   public ordenBaja = signal<string | null>(null);
   public tipoMaterialSeleccionado = signal<string>(''); // Cambiar de null a string vacío
   public estatusAsociacion = signal({asociando:false,op:''});
@@ -64,7 +65,8 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   public mostrarBitacora = signal(false)
   public tieneOrdenSeleccionada = computed(() => this.ordenActual() !== null);  
   public ordenActual = signal<OrdenPrestamo | null>(null);
-  public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);   
+  public titulo = computed(() => this._activatedRouter.snapshot.data['titulo']);  
+  public verSobresActivos  =computed(()=> this._activatedRouter.snapshot.data['activos'] ?? true);
   public ordenes = computed(()=>{return this._ordenes();});
   public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
   public componentesAgrupados = signal<ComponenteAgrupado[]>([]);    
@@ -84,14 +86,14 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   ngOnInit(): void {
     this.autoFitColumns=false;
     this.iniciarResizeGrid(this.minusHeight, true);  
-    this.cargarInformacion();          
+    this.cargarInformacion();        
   }
 
 
   async cargarInformacion(){
 
     try {
-    const response =await firstValueFrom( this._sobreService.conGaveta())
+    const response =await firstValueFrom( this._sobreService.conGaveta(this.verSobresActivos()));
     const ordenes = response.ordenes.map(orden=>({...orden,enPrestamo:orden.enPrestamo==="1"}))    
     this._ordenes.set(ordenes);    
     }catch(error){

@@ -27,8 +27,8 @@ export class SobreService {
     return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/sobreteca/sobre?pendientes=${pendientes}`);
   }
 
-  conGaveta(){
-    return this.http.get<ResponseSobreConGaveta>(`${this.API_URL}/api/sobreteca/sobre/conGaveta`);
+  conGaveta(activos:boolean=true) {
+    return this.http.get<ResponseSobreConGaveta>(`${this.API_URL}/api/sobreteca/sobre/conGaveta?activos=${activos}`);
   }
 
   contenido(orden:string) {        

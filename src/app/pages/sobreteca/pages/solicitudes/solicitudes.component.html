@@ -3,11 +3,14 @@
 <div id="initial" class="dark:bg-gray-900 h-screen flex flex-col ">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-1">      
       <div class="  py-1 px-2 flex sm:flex-row flex-col sm:space-x-6 items-center">
-  <h1 class="text-2xl text-center  text-slate-500">{{ titulo() }}</h1>
+  <h1 class="text-2xl text-center  text-slate-500">{{ titulo() }}    
+  </h1>
   
+  @if(verSobresActivos()){
   <div class="w-3/4">
       <search-metrics  placeholder="Buscar sobre por OP" [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)"  />
     </div>
+  }
   
   </div>
       <ejs-grid #grid 
@@ -87,6 +90,7 @@
                   </a>
                   </ng-template>
                 </e-column>
+                @if(verSobresActivos()){
                 <e-column headerText='Estado' width='250' >
                   <ng-template #template let-data>
                     <div class="flex flex-row items-center justify-start  gap-3 ">                                            
@@ -104,12 +108,20 @@
                       }
                     </div>
                   </ng-template>
-                </e-column>                
+                </e-column>             
+              }   
                 <e-column  width='100'>
                   <ng-template #template let-data>
                     <div class="flex flex-row items-center justify-center gap-2">
-<a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer group">
-                      @if(data.enPrestamo) {
+                         <a  (click)="verDetalle(data)" class="flex items-center justify-start gap-1 text-blue-500 hover:underline hover:cursor-pointer group">
+                         @if(!verSobresActivos()){
+                          <svg class="w-4 h-4 text-blue-500 fill-none stroke-current transform transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                          </svg>
+                           <span class="ml-1">Detalle</span>
+                         }@else{
+                          @if(data.enPrestamo) {
                         <svg class="w-4 h-4 text-blue-500 fill-none stroke-current transform transition-transform duration-200 group-hover:scale-110 group-hover:translate-x-[-2px]" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
                         </svg>
@@ -120,10 +132,14 @@
                         </svg>
                         <span>Prestar</span>
                       }
+                         }
+
+                      
                   </a>                                    
                     </div>                    
                   </ng-template>
                 </e-column>
+                @if(verSobresActivos()){                
                 <e-column>
                   <ng-template #template let-data>
                     <button 
@@ -140,6 +156,7 @@
                     </button>
                   </ng-template>
                 </e-column>
+              }
                 </e-columns>
          </ejs-grid>
     </div>    
