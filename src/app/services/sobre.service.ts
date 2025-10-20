@@ -72,8 +72,8 @@ export class SobreService {
     return this.http.put(`${this.API_URL}/api/sobreteca/sobre/vigencia`, { orden, vigencia, id_usuario });
   }
 
-  asociar(orden:string,asociada:string,id_usuario:string){  
-    return this.http.post(`${this.API_URL}/api/sobreteca/sobre/asociar`,{orden,asociada,id_usuario});
+  asociar(orden:string,asociada:string,tipo_producto:string,id_usuario:string){  
+    return this.http.post(`${this.API_URL}/api/sobreteca/sobre/asociar`,{orden,asociada,id_usuario, tipo_producto});
 
   }
 
