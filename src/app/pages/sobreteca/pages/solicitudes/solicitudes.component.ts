@@ -29,7 +29,7 @@ interface OrdenPrestamo  extends OrdenMetrics {
   selector: 'app-solicitudes-sobre',
   imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,BitacoraEventoComponent,SobreDetalleComponent,TruncatePipe,SearchMetricsComponent],
   templateUrl: './solicitudes.component.html',
-  styleUrl: './solicitudes.component.css',
+  styleUrl: './solicitudes.component.css',  
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class SolicitudesComponent extends BaseGridComponent implements OnInit { 
@@ -49,7 +49,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   private _puedePrestarseOp = signal<boolean>(false);
   
-  //public verSobresPendientes = signal<boolean>(true);
+
 
 
   
