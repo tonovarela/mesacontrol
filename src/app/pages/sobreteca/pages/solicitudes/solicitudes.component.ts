@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -31,6 +31,7 @@ interface OrdenPrestamo  extends OrdenMetrics {
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css',  
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export default class SolicitudesComponent extends BaseGridComponent implements OnInit { 
   
