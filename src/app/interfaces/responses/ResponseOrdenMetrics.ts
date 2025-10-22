@@ -52,6 +52,7 @@ export interface OrdenMetrics {
     viajeroDummyVestido_idEstado?: string;
     viajeroLiberacion_checkList?: string;
     viajeroLiberacion_idEstado?: string;
+    orden_prensa?:string;
 }
 
 

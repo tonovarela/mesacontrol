@@ -241,6 +241,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 
       <div class="flex flex-col ">
+        
         <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Sobre sálida</span>
         <span class="text-lg font-semibold text-blue-600 dark:text-blue-400">{{ estatusAsociacion().op }}</span>
       </div>
@@ -258,6 +259,7 @@
 
     </div>    
     <!-- Selector de Tipo de Material -->
+     @if(opPorAsociar()?.orden_prensa==null){
     <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
       <div class="flex flex-col">
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -277,7 +279,18 @@
       </select>
       </div>
       </div>
+    }
 
+    @if(opPorAsociar()?.orden_prensa!=null){
+  <div class="mt-6 pt-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-md p-4 flex items-center">
+    <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-3 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span class="text-sm text-yellow-700 dark:text-yellow-300">
+      Esta orden de producción ya está registrada como orden de prensa. No es necesario especificar el tipo de material.
+    </span>
+  </div>
+}
 
       <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
         <div class="flex flex-col sm:flex-row gap-3 justify-around">
@@ -290,9 +303,10 @@
             </svg>
             Cancelar
           </button>
-          <button             
+          @if(opPorAsociar()?.orden_prensa==null){
+            <button             
           (click)="confirmarAsociacionOP()"
-            [disabled]="!tipoMaterialSeleccionado() || tipoMaterialSeleccionado() === ''"
+            [disabled]="(!tipoMaterialSeleccionado() || tipoMaterialSeleccionado() === '')  "
             [class]="(tipoMaterialSeleccionado() && tipoMaterialSeleccionado() !== '') 
               ? 'px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm group'
               : 'px-6 py-3 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed font-medium shadow-sm'"
@@ -302,6 +316,18 @@
             </svg>
             Asociar OP
           </button>
+          }@else{
+              <button             
+              (click)="confirmarAsociacionOP()"                                     
+              class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 font-medium shadow-sm group"
+            >
+            <svg class="w-4 h-4 inline-block mr-2 text-white fill-none stroke-current transform transition-transform duration-200 group-hover:scale-110" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+            Asociar OP Sin Especificar Tipo Material
+          </button>
+          }
+          
         </div>
       </div>
     </div>

@@ -294,6 +294,9 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     const ordenBaja = this.estatusAsociacion().op;
     const { NoOrden:ordenAsociada, TipoProd:tipoProd} = this.opPorAsociar()!;
     const id_usuario = this._usuarioService.StatusSesion().usuario?.id;
+      console.log({ordenBaja,ordenAsociada,tipoProd,id_usuario});
+
+    return;
     try{
       await firstValueFrom(this._sobreService.asociar(ordenBaja,ordenAsociada, tipoProd, `${id_usuario}`));
       await firstValueFrom(this._sobreService.eliminar(ordenBaja, `${id_usuario}`));  
