@@ -19,6 +19,11 @@ export interface ResponseSobreConGaveta {
   ordenes: OrdenConGaveta[];
 }
 
+export interface EstatusAsociacion {
+  asociando: boolean;
+  op: string;
+}
+
 export interface OrdenConGaveta {
   NoOrden:       string;
   NombreTrabajo: string;

@@ -13,7 +13,6 @@ import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Autorizacion } from '@app/interfaces/responses/ResponseContenidoSobre';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
-//import { LoadingComponent } from '@app/shared/loading/loading.component';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
@@ -73,11 +72,14 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   public async verDetalle(orden: OrdenMetrics) {
     this.dialogModal.maximized = true;
     const response = await firstValueFrom(this._sobreService.contenido(orden.NoOrden));
+    
     const contenido = response.contenido.map((item) => ({
       ...item,
       aplica: item.aplica == '1',
     }));
-    this.ordenActual.set(orden);    
+    
+    this.ordenActual.set({...orden,orden_prensa:response.activo?'ACTIVO':'INACTIVO'});    
+    console.log(this.ordenActual());
     this._autorizacion.set(response.autorizacion || null);
     this.contenidoSobre.set(contenido);
 

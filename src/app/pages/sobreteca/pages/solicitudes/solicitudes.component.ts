@@ -15,9 +15,10 @@ import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metric
 import { TruncatePipe } from '@app/pipes/truncate.pipe';
 import { MetricsService, PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
+
 import { BitacoraEventoComponent } from '../../componentes/bitacora-evento/bitacora-evento.component';
 import { SobreDetalleComponent } from '../../componentes/sobre-detalle/sobre-detalle.component';
-import { Bitacora, ComponenteAgrupado, Solicitante } from '../../interface/interface';
+import { Bitacora, ComponenteAgrupado, EstatusAsociacion, Solicitante } from '../../interface/interface';
 
 interface OrdenPrestamo  extends OrdenMetrics {
   enPrestamo:boolean,
@@ -27,7 +28,7 @@ interface OrdenPrestamo  extends OrdenMetrics {
 
 @Component({
   selector: 'app-solicitudes-sobre',
-  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,BitacoraEventoComponent,SobreDetalleComponent,TruncatePipe,SearchMetricsComponent],
+  imports: [SynfusionModule,SearchMetricsComponent,CommonModule,PrimeModule,FormsModule,BitacoraEventoComponent,SobreDetalleComponent,TruncatePipe],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css',  
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -56,7 +57,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   
   public ordenBaja = signal<string | null>(null);
   public tipoMaterialSeleccionado = signal<string>(''); // Cambiar de null a string vacío
-  public estatusAsociacion = signal({asociando:false,op:''});
+  public estatusAsociacion = signal<EstatusAsociacion>({asociando:false,op:''});
   public opPorAsociar = signal<OrdenMetrics | null>(null);  
 
   public typeSearch = TypeSearchMetrics.PREPRENSA;
@@ -71,7 +72,6 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   public ordenes = computed(()=>{return this._ordenes();});
   public readonly type = TypeSearchMetrics.CON_GAVETA_ASIGNADA;
   public componentesAgrupados = signal<ComponenteAgrupado[]>([]);    
-
   public catalogoTiposProductos = computed(() => this._metricsService.TipoMateriales());
 
 
@@ -268,21 +268,20 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     this.ordenBaja.set(null);
   }
 
-  public asociarOrden(){
-    
+  public asociarOrden(){    
     const ordenBaja = this.ordenBaja();  
     this.estatusAsociacion.set({asociando:true,op:ordenBaja!});
     this.cerrarBajaSobre();
 
 
-  }
+   }
 
   public cerrarAsociacionOP(){
     this.estatusAsociacion.set({asociando:false,op:''});
   }
 
 
-  public onAsociarOrder(orden:OrdenMetrics | null){
+  public onSelectAsociarOrder(orden:OrdenMetrics | null){
     if (!orden){
       return;
     }

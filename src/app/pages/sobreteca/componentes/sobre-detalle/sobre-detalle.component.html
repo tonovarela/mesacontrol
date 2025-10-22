@@ -19,58 +19,64 @@
          <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>    
       </div>       
       <div class="flex justify-end w-full mb-4  gap-2">
-        @if(!puedePrestarse())
+        @if(!estaActivo())
          {        
-        <div class="flex items-center p-2.5 rounded-lg bg-red-50 border border-red-200 shadow-sm dark:bg-red-900/20 dark:border-red-800 transition-all duration-300">
-          <svg class="w-5 h-5 mr-2 text-red-600 dark:text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-          </svg>
-          <span class="text-sm font-medium text-red-600 dark:text-red-400">
-            El material no está disponible para préstamo.
-          </span>
-        </div>
-         }        
-        @if(!ordenActual()!.enPrestamo){
-           <button (click)="solicitarPrestamo()" 
-           [disabled]="!puedePrestarse()"
-            class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
-            Prestar Material
-          </button>
-          }@else
-           {
-        <div class="w-full max-w-2xl  bg-blue-50  dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg  p-2">        
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">      
-      <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
-        <div class="flex items-center">
-          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-          </svg>
-          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Fecha de Préstamo</span>
-        </div>
-        <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.fecha_prestamo | date: 'dd/MM/yyyy - HH:mm' }}</p>
-      </div>      
-      <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
-        <div class="flex  items-center">
-          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-          </svg>
-          <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Prestado a</span>
-        </div>
-        <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.nombre }}</p>        
-      </div>                  
-      <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">        
-        <button (click)="devolverPrestamo()"
-        [disabled]="!puedePrestarse()"
-         class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
-          </svg>
-          Devolver 
-        </button>
-      </div>  
-      </div>
-        </div>
-        }  
+          <div class="inline-block px-3  w-72  rounded-md text-md font-semibold bg-red-100 text-red-700 border-red-200 dark:bg-red-900 dark:text-gray-200 dark:border-gray-700">
+            <div class="flex justify-center items-center space-x-2 text-red-600 dark:text-gray-400 py-3  ">                          
+                <span class="text-sm font-semibold text-red-800 dark:text-gray-200">Sobre Inactivo</span>                              
+              </div>
+          </div>
+          } @else{
+
+            @if(!ordenActual()!.enPrestamo) {
+              <button (click)="solicitarPrestamo()" 
+              [disabled]="!estaActivo()"
+               class="w-44 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-1 px-2 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">            
+               Prestar Material
+             </button>
+             }@else
+              {
+           <div class="w-full max-w-2xl  bg-blue-50  dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-lg  p-2">        
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">      
+         <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
+           <div class="flex items-center">
+             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+             </svg>
+             <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Fecha de Préstamo</span>
+           </div>
+           <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.fecha_prestamo | date: 'dd/MM/yyyy - HH:mm' }}</p>
+         </div>      
+         <div class="bg-white dark:bg-gray-800 rounded-lg p-1 border border-gray-200 dark:border-gray-700">
+           <div class="flex  items-center">
+             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+             </svg>
+             <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Prestado a</span>
+           </div>
+           <p class="text-sm text-center font-semibold text-gray-800 dark:text-gray-200 mt-1">{{ ordenActual()?.solicitante?.nombre }}</p>        
+         </div>                  
+         <div class="bg-white dark:bg-gray-800 rounded-lg p-2 border border-gray-200 dark:border-gray-700">        
+           <button (click)="devolverPrestamo()"
+           [disabled]="!estaActivo()"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-3 rounded-md shadow-sm hover:shadow-md transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 text-sm">
+             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+             </svg>
+             Devolver 
+           </button>
+         </div>  
+         </div>
+           </div>
+           }  
+
+          }
+
+        
+
+
+
+
       </div>      
     </div>    
        <div class="bg-slate-300   dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-160px)] overflow-y-auto flex flex-wrap gap-4   mx-5 ">               

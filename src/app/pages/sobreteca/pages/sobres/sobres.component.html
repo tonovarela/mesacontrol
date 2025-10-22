@@ -70,37 +70,44 @@
 </div>
 </div>
 
+
 <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"   [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">
-<ng-template #headless >        
-  
-        <div class="w-full p-1  mx-auto mt-2">        
+<ng-template #headless >          
+<div class="w-full p-1  mx-auto mt-2">        
   <div class="flex flex-col md:flex-row justify-between items-center space-x-10 px-3">            
     <div class="flex flex-col">
       <h1 class="text-lg font-bold pb-2 ">{{ nombreTrabajo() }}</h1>      
     </div>             
     @if(ordenActual()!.id_estado !='2'){       
       <div class="p-2 text-xs font-semibold rounded-lg"
-          [ngClass]="{
-            'bg-green-100 text-green-800': ordenActual()!.id_estado == '2',
+          [ngClass]="{            
             'bg-yellow-100 text-yellow-800': ordenActual()!.id_estado == '1',
             'bg-red-100 text-red-800': ordenActual()!.id_estado == '3',
             'bg-gray-100 text-gray-800': ordenActual()!.id_estado == '5'
-          }">{{ ordenActual()!.descripcion }}</div>
+          }">
+          {{ ordenActual()!.descripcion }}
+        </div>
     }
     
 <div class="flex flex-row justify-end items-center space-x-4">      
 <div class="flex flex-wrap items-center justify-center gap-1 ">      
+  @if(ordenActual()!.orden_prensa == 'INACTIVO'){
+    <div class="inline-block px-3  w-72  rounded-md text-md font-semibold bg-red-100 text-red-700 border-red-200 dark:bg-red-900 dark:text-gray-200 dark:border-gray-700">
+      <div class="flex items-center space-x-2 text-red-600 dark:text-gray-400 py-3 ">          
+          <div class="flex flex-col">
+          <span class="text-sm font-semibold text-red-800 dark:text-gray-200">Sobre Inactivo</span>              
+          </div>
+        </div>
+    </div>
+  }
   @if(ordenActual()!.id_estado =='2'){
           @if(ordenActual()!.no_gaveta)  {
                 <div class="inline-block px-3  w-72  rounded-md text-md font-semibold bg-green-100 text-green-700 border-green-200 dark:bg-green-900 dark:text-green-200 dark:border-green-700">
                     <div class="flex items-center space-x-2 text-green-600 dark:text-green-400 py-1 ">
-                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <!-- Drawer/box -->
+                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">                                
                                 <rect x="3" y="6" width="18" height="12" rx="2" ry="2"/>
-                                <rect x="5" y="8" width="14" height="8" rx="1" ry="1" fill="none"/>
-                                <!-- Handle -->
-                                <circle cx="18" cy="12" r="1" fill="currentColor"/>
-                                <!-- Check mark -->
+                                <rect x="5" y="8" width="14" height="8" rx="1" ry="1" fill="none"/>                                
+                                <circle cx="18" cy="12" r="1" fill="currentColor"/>                                
                                 <path d="m9 12 2 2 4-4" stroke="#10b981" stroke-width="2.5"/>
                             </svg>
                         <div class="flex flex-col">
@@ -162,14 +169,13 @@
     </div>         
   </div>
        </div>  
-    <div class="bg-slate-300   dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-100px)] overflow-y-auto flex flex-wrap gap-4   mx-5 ">               
+    <div class="bg-slate-300   dark:bg-gray-700 rounded-lg px-4 py-2 h-[calc(100vh-100px)] overflow-y-auto flex flex-wrap gap-4  mx-5 ">               
         @for(grupo of componentesAgrupados();track grupo.nombre;let i=$index) {
     <div class="bg-white border h-fit   dark:border-white dark:bg-slate-800 rounded shadow  w-full max-w-96   md:w-62 sm:w-60">
       <div class="w-full bg-slate-700  border-0 rounded  flex justify-between items-center">        
           <h2 class="text-lg font-bold  px-2 py-1 text-white dark:text-slate-100 ">{{ grupo.nombre }}</h2>
           <div class="px-4">
-           <p-checkbox     
-           
+           <p-checkbox                
           [binary]="true" 
           (onChange)="toggleGrupo(i,$event)"
           [disabled]="!estaPendiente()">
