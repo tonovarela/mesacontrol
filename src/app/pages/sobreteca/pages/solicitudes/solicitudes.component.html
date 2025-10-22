@@ -90,6 +90,9 @@
                   </a>
                   </ng-template>
                 </e-column>
+                @if(!verSobresActivos()){
+                <e-column field='ordenAsociada' headerText='Orden Asociada' width='100' textAlign='Center'  ></e-column>
+                }
                 @if(verSobresActivos()){
                 <e-column headerText='Estado' width='250' >
                   <ng-template #template let-data>
@@ -132,9 +135,7 @@
                         </svg>
                         <span>Prestar</span>
                       }
-                         }
-
-                      
+                         }                      
                   </a>                                    
                     </div>                    
                   </ng-template>
@@ -223,12 +224,8 @@
                   </p-dialog>
 
 
-                  <!-- <asociacion-op *ngIf="estatusAsociacion().asociando"                  
-                  [catalogoTiposProductos]="catalogoTiposProductos()"
-                  [opPorAsociar]="opPorAsociar()"
-                  (onCerrarAsociacionOP)="cerrarAsociacionOP()"
-                  (onConfirmarAsociacionOP)="confirmarAsociacionOP()"
-                  ></asociacion-op> -->
+
+
 <p-dialog header="Asociar Op " 
                 [visible]="estatusAsociacion().asociando"
                 [modal]="true"                
