@@ -53,6 +53,7 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
 
   // Dividir las tablas en cuatro columnas
   const cuarto = Math.ceil(tablasComponentes.length / 4);
+  
   const columna1 = tablasComponentes.slice(0, cuarto);
   const columna2 = tablasComponentes.slice(cuarto, 2 * cuarto);
   const columna3 = tablasComponentes.slice(2 * cuarto, 3 * cuarto);
@@ -96,9 +97,7 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
         columns: [          
           { width: '*', text: 'LIBERADO POR MESA DE CONTROL', fontSize: 10, alignment: 'center', margin: [0, 10, 0, 0] }
         ]
-      },
-
-      // Información básica
+      },      
       {
         style: 'containerTiny',
         layout :'noBorders',
