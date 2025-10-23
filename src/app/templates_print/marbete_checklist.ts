@@ -17,9 +17,7 @@ export interface MarbeteProps {
 
 export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
   // Asegurarse que contenidoSobre existe
-  const componentes = props.contenidoSobre || [];
-  
-
+  const componentes = props.contenidoSobre || [];  
   // Crear tablas individuales para cada componente (más simple y fiable)
   const tablasComponentes = componentes.map(componente => {
     // Verificar que componente.elementos sea un array
@@ -53,6 +51,12 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
 
   // Dividir las tablas en cuatro columnas
   const cuarto = Math.ceil(tablasComponentes.length / 4);
+  console.log('Total componentes:', tablasComponentes.length);
+  console.log('Cuarto:', cuarto);  
+  console.log({columna1:{x:0,y:cuarto}});
+  console.log({columna2:{x:cuarto,y:2*cuarto}});
+  console.log({columna3:{x:2*cuarto,y:3*cuarto}});
+  console.log({columna4:{x:3*cuarto}});
   
   const columna1 = tablasComponentes.slice(0, cuarto);
   const columna2 = tablasComponentes.slice(cuarto, 2 * cuarto);
