@@ -49,7 +49,20 @@ export class PdfService {
 
 
   public async obtenerPDF(cuerpoMarbeteProps: MarbeteProps) {
+    // const n  = {...cuerpoMarbeteProps,contenidoSobre:[ ...cuerpoMarbeteProps.contenidoSobre,
+    //   ...cuerpoMarbeteProps.contenidoSobre,
+    //   ...cuerpoMarbeteProps.contenidoSobre,
+    //   ...cuerpoMarbeteProps.contenidoSobre,
+    //   ...cuerpoMarbeteProps.contenidoSobre,
+    //   ...cuerpoMarbeteProps.contenidoSobre,
+    //   ...cuerpoMarbeteProps.contenidoSobre,
+    //   ...cuerpoMarbeteProps.contenidoSobre,
+    //   ...cuerpoMarbeteProps.contenidoSobre,...cuerpoMarbeteProps.contenidoSobre
+
+    // ]    }
     const doc = cuerpoMarbete(cuerpoMarbeteProps);
+
+    
     const documento = pdfMake.createPdf(doc);
     documento.open(); // Abre el PDF directamente en una nueva pestaña
   }
