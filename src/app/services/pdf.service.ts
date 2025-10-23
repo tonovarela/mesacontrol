@@ -59,7 +59,7 @@ export class PdfService {
     //   ...cuerpoMarbeteProps.contenidoSobre,
     //   ...cuerpoMarbeteProps.contenidoSobre,...cuerpoMarbeteProps.contenidoSobre
 
-    // ]    }
+    //  ]    }
     const doc = cuerpoMarbete(cuerpoMarbeteProps);
 
     

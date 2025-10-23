@@ -1,4 +1,3 @@
-
 import { ComponenteSobre } from "@app/interfaces/responses/ResponseOrdenMetrics";
 import { TDocumentDefinitions } from "pdfmake/interfaces";
 
@@ -50,13 +49,30 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
   });
 
   // Dividir las tablas en cuatro columnas
-  const cuarto = Math.ceil(tablasComponentes.length / 4);
-  
-  
-  const columna1 = tablasComponentes.slice(0, cuarto);
-  const columna2 = tablasComponentes.slice(cuarto, 2 * cuarto);
-  const columna3 = tablasComponentes.slice(2 * cuarto, 3 * cuarto);
-  const columna4 = tablasComponentes.slice(3 * cuarto);
+  // Distribuir las tablas en cuatro columnas intentando balancear la altura (greedy bin-packing)
+  const columns: any[][] = [[], [], [], []];
+  const heights: number[] = [0, 0, 0, 0];
+
+  // Crear una lista de índices y tamaños (número de filas) para cada tabla
+  const tablasConAltura = tablasComponentes.map((tabla, i) => {
+    const filas = (tabla && tabla.table && Array.isArray((tabla.table as any).body)) ? (tabla.table as any).body.length : 1;
+    return { tabla, index: i, filas };
+  });
+
+  // Ordenar descendentemente por filas para colocar primero las tablas más altas
+  tablasConAltura.sort((a, b) => b.filas - a.filas);
+
+  // Colocar cada tabla en la columna con menor altura acumulada
+  tablasConAltura.forEach(item => {
+    const minCol = heights.indexOf(Math.min(...heights));
+    columns[minCol].push(item.tabla);
+    heights[minCol] += item.filas;
+  });
+
+  const columna1 = columns[0];
+  const columna2 = columns[1];
+  const columna3 = columns[2];
+  const columna4 = columns[3];
 
   const date = new Date();
   const formatedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()} `;
@@ -64,7 +80,7 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
   const docDefinition: TDocumentDefinitions = {
     pageSize: 'A6',
     pageOrientation: 'landscape',    
-    pageMargins: [8, 90, 5, 42],
+    pageMargins: [12, 90, 5, 42],
     content: [      
       // Título del contenido
       {
