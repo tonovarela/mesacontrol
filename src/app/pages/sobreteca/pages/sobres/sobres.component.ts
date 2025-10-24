@@ -11,19 +11,20 @@ import Swal from 'sweetalert2';
 
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Autorizacion } from '@app/interfaces/responses/ResponseContenidoSobre';
-import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { ComponenteSobre, OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
-import { SobreService, UiService, UsuarioService } from '@app/services';
+import { MetricsService, PdfService, SobreService, UiService, UsuarioService } from '@app/services';
+import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
 import { ComponenteAgrupado } from '../../interface/interface';
 
 
 @Component({
   selector: 'app-sobres',
-  imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent],
+  imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent,PdfComponent],
   templateUrl: './sobres.component.html',
   styleUrl: './sobres.component.css',
   providers:[],  
@@ -53,6 +54,9 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   private _activatedRouter = inject(ActivatedRoute);
   private _uiService = inject(UiService);
   private _usuarioService = inject(UsuarioService);
+  private _pdfService = inject(PdfService);
+  private _metricsService = inject(MetricsService);
+
   private _ordenes = signal<OrdenMetrics[]>([]);
   
   constructor() {
@@ -78,8 +82,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       aplica: item.aplica == '1',
     }));
     
-    this.ordenActual.set({...orden,orden_prensa:response.activo?'ACTIVO':'INACTIVO'});    
-    console.log(this.ordenActual());
+    this.ordenActual.set({...orden,orden_prensa:response.activo?'ACTIVO':'INACTIVO'});        
     this._autorizacion.set(response.autorizacion || null);
     this.contenidoSobre.set(contenido);
 
@@ -255,11 +258,13 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       await firstValueFrom(this._sobreService.aprobar(orden!,`${id_usuario!}`));
     } catch (error) {
       console.error('Error al aprobar:', error);
+      return;
     }
     this._uiService.mostrarAlertaSuccess(
       '',
       'Se ha aprobado la solicitud de aprobación'
     );
+    this.verEtiqueta(this.ordenActual()!);
     this.cerrarDetalle();
     this.cargarInformacion();
   }
@@ -311,6 +316,24 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       console.error('Error al actualizar gaveta:', error);
       this._uiService.mostrarAlertaError('', 'Error al actualizar el número de gaveta');
     }
+  
+  }
+
+
+  public async verEtiqueta(orden:OrdenMetrics) {
+                
+    const response = await firstValueFrom(this._sobreService.contenido(orden.NoOrden));    
+    const contenido = response.contenido.map((item) => ({...item,aplica: item.aplica == '1'}));
+    if (contenido.length > 0) {
+
+    const componentes = new Set([ ...contenido.map((item) => item.componente)]);   
+    const componentesAgrupado:ComponenteSobre[]=  Array.from(componentes)
+                                                       .map((componente) => ({  componente, elementos :  contenido.filter((item) => item.componente === componente)
+                                                       .map(el => el.elemento) }));    
+    this._pdfService.descargaSobrePDF(orden,componentesAgrupado);     
+
+    }
+    
   }
 
 
@@ -323,6 +346,8 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       console.error('Error al cargar la información:', error);
     }
   }
+
+  
   
 
 }

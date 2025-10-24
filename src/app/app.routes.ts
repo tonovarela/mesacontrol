@@ -36,7 +36,7 @@ export const routes: Routes = [
     children:[
       { path: "sobres", data:{pendientes:true,titulo:'Sobres'}, loadComponent: () => import('./pages/sobreteca/pages/sobres/sobres.component') },
       { path: "sobres-confirmados",data:{pendientes:false,titulo:'Sin gaveta asignada'}, loadComponent: () => import('./pages/sobreteca/pages/sobres/sobres.component') },
-      { path:'solicitudes', data:{titulo:'Prestamo de sobres',activos:true}, loadComponent: () => import('./pages/sobreteca/pages/solicitudes/solicitudes.component') },
+      { path:'solicitudes', data:{titulo:'Sobreteca',activos:true}, loadComponent: () => import('./pages/sobreteca/pages/solicitudes/solicitudes.component') },
       { path: "historico", data:{titulo:'Histórico de sobres',activos:false}, loadComponent: () => import('./pages/sobreteca/pages/solicitudes/solicitudes.component') },
       { path: '**', redirectTo: 'sobres' }
     ]     

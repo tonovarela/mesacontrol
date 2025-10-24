@@ -1,27 +1,27 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  OnInit,
-  output,
-  signal,
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    inject,
+    input,
+    OnInit,
+    output,
+    signal,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
+    FormBuilder,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
 } from '@angular/forms';
 import { ComponenteSobre } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import {
-  ElementoItem,
-  EventoRevision,
-  OrdenLiberacionSobre,
-  Ruta,
-  RutaElemento,
+    ElementoItem,
+    EventoRevision,
+    OrdenLiberacionSobre,
+    Ruta,
+    RutaElemento,
 } from '@app/interfaces/responses/ResponseRutaComponentes';
 import { PrimeModule } from '@app/lib/prime.module';
 import { columnas } from '@app/pages/data/columnas';
@@ -194,7 +194,7 @@ export  class LiberacionComponent implements OnInit {
     const id_usuario = this.usuarioService.StatusSesion().usuario?.id;    
     const { orden } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
     const { componentesSobre,infoLiberacion} = this.preSobreContenido();          
-    this.pdfService.descargarPDF(orden,componentesSobre,infoLiberacion.usuarioLibero ,true);  
+    this.pdfService.descargarMarbetePDF(orden,componentesSobre,infoLiberacion.usuarioLibero ,true);  
   }
 
 
@@ -238,7 +238,7 @@ export  class LiberacionComponent implements OnInit {
     //Obtencion de la orden para generar el PDF
     const { orden,infoLiberacion,sobreContenido } = await firstValueFrom(this.metricsService.obtener(this.orden()!));        
     const { usuarioLibero } = infoLiberacion!;    
-    this.pdfService.descargarPDF(orden,sobreContenido,usuarioLibero || '' );  
+    this.pdfService.descargarMarbetePDF(orden,sobreContenido,usuarioLibero || '' );  
     this.uiService.mostrarAlertaSuccess('','Se ha aprobado la solicitud de aprobación');
     this.checkListService.updateListCheckList();
     this.regresar();

@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, computed, input, OnInit, output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PrimeModule } from '@app/lib/prime.module';
+import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
 import { ComponenteAgrupado } from '../../interface/interface';
 
 @Component({
   selector: 'sobre-detalle',
-  imports: [CommonModule,PrimeModule,FormsModule],
+  imports: [CommonModule,PrimeModule,FormsModule,PdfComponent],
   templateUrl: './sobre-detalle.component.html',
   styleUrl: './sobre-detalle.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +23,7 @@ export class SobreDetalleComponent implements OnInit,AfterViewInit {
   public onCerrarDetalle = output<void>();
   public onDevolverPrestamo = output<void>();
   public onSolicitarPrestamo = output<void>();
+  public onVerEtiqueta = output<any>();
 
 
 
@@ -50,5 +52,10 @@ export class SobreDetalleComponent implements OnInit,AfterViewInit {
   solicitarPrestamo(){
     this.onSolicitarPrestamo.emit();
   }
+  verEtiqueta(){
+    this.onVerEtiqueta.emit(this.ordenActual());
+  }
+
+  
 
 }

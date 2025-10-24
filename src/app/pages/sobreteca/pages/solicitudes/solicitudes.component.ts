@@ -6,14 +6,14 @@ import { ActivatedRoute } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
-import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { ComponenteSobre, OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 
 import { TruncatePipe } from '@app/pipes/truncate.pipe';
-import { MetricsService, PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
+import { MetricsService, PdfService, PrestamoSobreService, SobreService, UiService, UsuarioService } from '@app/services';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
 import { BitacoraEventoComponent } from '../../componentes/bitacora-evento/bitacora-evento.component';
@@ -43,6 +43,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
   private _prestamoService  =  inject(PrestamoSobreService);
   private _usuarioService = inject(UsuarioService);
   private _metricsService = inject(MetricsService);
+  private _pdfService = inject(PdfService);
   private _ordenes = signal<any[]>([]);
 
   public puedePrestarseOp  = computed(() => {
@@ -289,13 +290,27 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
 
   }
 
+   public async verEtiqueta() {
+       const orden = this.ordenActual()!;                  
+      const response = await firstValueFrom(this._sobreService.contenido(orden.NoOrden));    
+      const contenido = response.contenido.map((item) => ({...item,aplica: item.aplica == '1'}));
+      if (contenido.length > 0) {
+  
+      const componentes = new Set([ ...contenido.map((item) => item.componente)]);   
+      const componentesAgrupado:ComponenteSobre[]=  Array.from(componentes)
+                                                         .map((componente) => ({  componente, elementos :  contenido.filter((item) => item.componente === componente)
+                                                         .map(el => el.elemento) }));    
+      this._pdfService.descargaSobrePDF(orden,componentesAgrupado);     
+  
+      }
+      
+    }
+
   public async confirmarAsociacionOP(){
     const ordenBaja = this.estatusAsociacion().op;
     const { NoOrden:ordenAsociada, TipoProd:tipoProd} = this.opPorAsociar()!;
     const id_usuario = this._usuarioService.StatusSesion().usuario?.id;
-      console.log({ordenBaja,ordenAsociada,tipoProd,id_usuario});
-
-    return;
+//      console.log({ordenBaja,ordenAsociada,tipoProd,id_usuario});    
     try{
       await firstValueFrom(this._sobreService.asociar(ordenBaja,ordenAsociada, tipoProd, `${id_usuario}`));
       await firstValueFrom(this._sobreService.eliminar(ordenBaja, `${id_usuario}`));  
