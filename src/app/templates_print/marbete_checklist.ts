@@ -53,6 +53,7 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
       columnaContenido: { fontSize: 8, margin: [0, 0, 0, 0.5] as [number, number, number, number] }// Corrección de tipo
     },
  header: function(currentPage, pageCount, pageSize) {    
+  
     return [
         {
         columns: [          
@@ -123,9 +124,7 @@ export const cuerpoMarbete = (props: MarbeteProps): TDocumentDefinitions => {
       }    
     ]:[];
       return body;
-  
-  
-      
+        
      },
     defaultStyle: { fontSize: 8}
   };
@@ -156,7 +155,7 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
             fillColor: '#e6e6e6',
             bold: true,            
             alignment: 'center',
-            fontSize: 8
+            fontSize: 6
           }, 
         ],
           ...elementos.map((elemento: string) => [            
@@ -204,36 +203,11 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
   const docDefinition: TDocumentDefinitions = {
     pageSize: 'A6',
     pageOrientation: 'portrait',    
-    pageMargins: [12, 90, 5, 42],
+    pageMargins: [12, 10, 5, 0],
     content: [      
-      // Título del contenido
-      {
-        style: 'containerTiny',
-        layout:   'noBorders',
-        table: {
-          
-          widths: ['*'],
-          body: [[{ text: 'CONTENIDO DEL SOBRE', bold: true, alignment: 'center', fontSize: 8 }]]
-        },
-        margin: [0, 0, 0, 0] as [number, number, number, number] ,// Corrección de tipo
-      },      
-      {
-        columns: [
-          { width: '23%', stack: columna1, margin: [0, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo
-          { width: '23%', stack: columna2, margin: [2, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo
-          { width: '23%', stack: columna3, margin: [2, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo          
-        ]
-      },      
-    ],
-    styles: {
-      containerTiny: { fontSize: 8, margin: [0, 0.5, 0, 0.5] as [number, number, number, number] },// Corrección de tipo
-      columnaContenido: { fontSize: 8, margin: [0, 0, 0, 0.5] as [number, number, number, number] }// Corrección de tipo
-    },
- header: function(currentPage, pageCount, pageSize) {    
-    return [
-        {
+       {
         columns: [          
-          { width: '*', text: 'SOBRETECA', fontSize: 10, alignment: 'center', margin: [0, 10, 0, 0] }
+          { width: '*', text: 'SOBRETECA', fontSize: 10, alignment: 'center', margin: [0, 5, 0, 0] }
         ]
       },      
       {
@@ -244,8 +218,7 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
           body: [
             [
               { text: `OP: ${props.numero_orden}`,bold:true, fontSize: 8 },
-              { text: `Fecha: ${formatedDate}`, bold:true, fontSize: 8 },              
-              { text: `Página  ${currentPage} de ${pageCount} `,bold:true, fontSize: 6,alignment:'right' }
+              { text: `Fecha: ${formatedDate}`, bold:true, fontSize: 8 },                           
             ]
           ]
         },
@@ -264,7 +237,39 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
         },
         margin: [10, 0, 10, 0] as [number, number, number, number] ,// Corrección de tipo
       },
-    ]
+      // Título del contenido
+      {
+        style: 'containerTiny',
+        layout:   'noBorders',
+        table: {
+          
+          widths: ['*'],
+          body: [[{ text: 'CONTENIDO DEL SOBRE', bold: true, alignment: 'center', fontSize: 8 }]]
+        },
+        margin: [0, 0, 0, 0] as [number, number, number, number] ,// Corrección de tipo
+      },      
+      {
+        columns: [
+          { width: '33%', stack: columna1, margin: [0, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo
+          { width: '33%', stack: columna2, margin: [2, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo
+          { width: '33%', stack: columna3, margin: [2, 0, 2, 0] as [number, number, number, number] },// Corrección de tipo          
+        ]
+      },      
+    ],
+    styles: {
+      containerTiny: { fontSize: 8, margin: [0, 0.1, 0, 0.1] as [number, number, number, number] },// Corrección de tipo
+      columnaContenido: { fontSize: 8, margin: [0, 0, 0, 0.5] as [number, number, number, number] }// Corrección de tipo
+    },
+ header: function(currentPage, pageCount, pageSize) {      
+    return [{
+      margin: [10, 0, 10, 0],
+      columns:[         
+          { text: `OP  ${props.numero_orden} `,bold:true, fontSize: 6,alignment:'left' },
+          { text: `Página  ${currentPage} de ${pageCount} `,bold:true, fontSize: 6,alignment:'right' }
+      ]       
+    }];
+  
+    
   },
   
     defaultStyle: { fontSize: 8}

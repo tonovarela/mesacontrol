@@ -295,11 +295,12 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
       const response = await firstValueFrom(this._sobreService.contenido(orden.NoOrden));    
       const contenido = response.contenido.map((item) => ({...item,aplica: item.aplica == '1'}));
       if (contenido.length > 0) {
+        console.log(contenido);
   
       const componentes = new Set([ ...contenido.map((item) => item.componente)]);   
       const componentesAgrupado:ComponenteSobre[]=  Array.from(componentes)
                                                          .map((componente) => ({  componente, elementos :  contenido.filter((item) => item.componente === componente)
-                                                         .map(el => el.elemento) }));    
+                                                         .map(el  => `${el.elemento} ${el.proceso || ''} `) }));    
       this._pdfService.descargaSobrePDF(orden,componentesAgrupado);     
   
       }

@@ -14,6 +14,7 @@ export interface DetalleSobre {
     orden_metrics: string;
     componente:    string;
     elemento:      string;
+    proceso?:     string;
     aplica:      string ;
 }
 

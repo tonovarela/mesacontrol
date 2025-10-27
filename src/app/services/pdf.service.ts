@@ -82,7 +82,18 @@ export class PdfService {
 
   public async generarSobre(cuerpoSobreProps: MarbeteProps) {
 
-        const doc = cuerpoSobre(cuerpoSobreProps);    
+    const n  = {...cuerpoSobreProps,contenidoSobre:[ ...cuerpoSobreProps.contenidoSobre,
+      ...cuerpoSobreProps.contenidoSobre,
+      ...cuerpoSobreProps.contenidoSobre,
+      ...cuerpoSobreProps.contenidoSobre,
+      ...cuerpoSobreProps.contenidoSobre,
+      ...cuerpoSobreProps.contenidoSobre,
+      ...cuerpoSobreProps.contenidoSobre,
+      ...cuerpoSobreProps.contenidoSobre,
+      ...cuerpoSobreProps.contenidoSobre,...cuerpoSobreProps.contenidoSobre
+     ]    }   
+
+        const doc = cuerpoSobre(n);    
         const documento = pdfMake.createPdf(doc);
         documento.open(); // Abre el PDF directamente en una nueva pestaña
   }
