@@ -159,7 +159,7 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
           }, 
         ],
           ...elementos.map((elemento: string) => [            
-            { text: elemento, fontSize: 6 , alignment: 'center'}
+            { text: elemento, fontSize: 6, alignment: 'start'}
 
           ],
         ),
@@ -203,7 +203,7 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
   const docDefinition: TDocumentDefinitions = {
     pageSize: 'A6',
     pageOrientation: 'portrait',    
-    pageMargins: [12, 10, 5, 0],
+    pageMargins: [12, 15, 5, 0],
     content: [      
        {
         columns: [          
@@ -262,11 +262,12 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
     },
  header: function(currentPage, pageCount, pageSize) {      
     return [{
-      margin: [10, 0, 10, 0],
+      
       columns:[         
           { text: `OP  ${props.numero_orden} `,bold:true, fontSize: 6,alignment:'left' },
-          { text: `Página  ${currentPage} de ${pageCount} `,bold:true, fontSize: 6,alignment:'right' }
-      ]       
+          { text: `Página  ${currentPage} de ${pageCount} `,bold:true, fontSize: 6,alignment:'right' },          
+      ]   ,
+      margin: [10, 5, 10, 0],    
     }];
   
     
