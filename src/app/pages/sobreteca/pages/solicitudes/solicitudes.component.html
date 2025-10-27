@@ -5,7 +5,6 @@
       <div class="  py-1 px-2 flex sm:flex-row flex-col sm:space-x-6 items-center">
   <h1 class="text-2xl text-center  text-slate-500">{{ titulo() }}    
   </h1>
-  
   @if(verSobresActivos()){
   <div class="w-3/4">
       <search-metrics  placeholder="Buscar sobre por OP" [typeSearch]="type" (onSelectOrder)="onSelectOrder($event)"  />
@@ -78,14 +77,7 @@
                         }
                         
                       </div>
-                    }
-
-                    
-                    
-
-
-
-
+                    }                                  
                   </ng-template>
                 </e-column>
                 <e-column headerText='Bitacora' width='100' textAlign='Center'>
@@ -236,7 +228,7 @@
 
 
 
-<p-dialog header="Asociar Op " 
+<p-dialog header="Asociar Op" 
                 [visible]="estatusAsociacion().asociando"
                 [modal]="true"                
                  [closable]="false" [responsive]="true" [style]="{width: '900px'}">
@@ -245,16 +237,11 @@
                       <h1 class="text-2xl">Asociar OP</h1>                      
                       <div *ngIf="opPorAsociar()==null" class="mb-2">                        
                         <search-metrics   placeholder="Buscar orden de produccion" [typeSearch]="typeSearch"  (onSelectOrder)="onSelectAsociarOrder($event)" />
-                      </div>
-                      
-                      
+                      </div>                                            
 <div class="card mt-6" *ngIf="opPorAsociar()">
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">
-        
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-6">        
     <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-
-      <div class="flex flex-col ">
-        
+      <div class="flex flex-col ">        
         <span class="text-sm font-medium text-gray-500 dark:text-gray-400">Sobre sálida</span>
         <span class="text-lg font-semibold text-blue-600 dark:text-blue-400">{{ estatusAsociacion().op }}</span>
       </div>
@@ -287,7 +274,7 @@
       </div>
     }
 
-    @if(opPorAsociar()?.orden_prensa!=null){
+@if(opPorAsociar()?.orden_prensa!=null){
   <div class="mt-6 pt-4 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-md p-4 flex items-center">
     <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-3 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

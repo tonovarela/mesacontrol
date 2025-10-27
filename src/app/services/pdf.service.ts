@@ -12,12 +12,9 @@ import 'pdfmake/build/vfs_fonts'; // Carga las fuentes predeterminadas de pdfMak
 })
 export class PdfService {
 
-  constructor() { }
+  constructor() { }  
 
-  
  columnasAuditoria = columnas;
-
- 
 
  async descargarMarbetePDF(data: any,sobreContenido:ComponenteSobre[],nombreUsuario:string,preMarbete =false) {    
     if (sobreContenido.length==0) {
@@ -63,37 +60,14 @@ export class PdfService {
   // }
 
   private async generarMarbete(cuerpoMarbeteProps: MarbeteProps) {
-
-    // const n  = {...cuerpoMarbeteProps,contenidoSobre:[ ...cuerpoMarbeteProps.contenidoSobre,
-    //   ...cuerpoMarbeteProps.contenidoSobre,
-    //   ...cuerpoMarbeteProps.contenidoSobre,
-    //   ...cuerpoMarbeteProps.contenidoSobre,
-    //   ...cuerpoMarbeteProps.contenidoSobre,
-    //   ...cuerpoMarbeteProps.contenidoSobre,
-    //   ...cuerpoMarbeteProps.contenidoSobre,
-    //   ...cuerpoMarbeteProps.contenidoSobre,
-    //   ...cuerpoMarbeteProps.contenidoSobre,...cuerpoMarbeteProps.contenidoSobre
-    //  ]    }    
     const doc = cuerpoMarbete(cuerpoMarbeteProps);    
     const documento = pdfMake.createPdf(doc);
     documento.open(); // Abre el PDF directamente en una nueva pestaña
   }
 
 
-  public async generarSobre(cuerpoSobreProps: MarbeteProps) {
-
-    const n  = {...cuerpoSobreProps,contenidoSobre:[ ...cuerpoSobreProps.contenidoSobre,
-      ...cuerpoSobreProps.contenidoSobre,
-      ...cuerpoSobreProps.contenidoSobre,
-      ...cuerpoSobreProps.contenidoSobre,
-      ...cuerpoSobreProps.contenidoSobre,
-      ...cuerpoSobreProps.contenidoSobre,
-      ...cuerpoSobreProps.contenidoSobre,
-      ...cuerpoSobreProps.contenidoSobre,
-      ...cuerpoSobreProps.contenidoSobre,...cuerpoSobreProps.contenidoSobre
-     ]    }   
-
-        const doc = cuerpoSobre(n);    
+  private async generarSobre(cuerpoSobreProps: MarbeteProps) {      
+        const doc = cuerpoSobre(cuerpoSobreProps);    
         const documento = pdfMake.createPdf(doc);
         documento.open(); // Abre el PDF directamente en una nueva pestaña
   }
