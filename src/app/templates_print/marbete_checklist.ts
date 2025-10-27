@@ -203,7 +203,7 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
   const docDefinition: TDocumentDefinitions = {
     pageSize: 'A6',
     pageOrientation: 'portrait',    
-    pageMargins: [12, 15, 5, 0],
+    pageMargins: [15, 15, 5, 0],
     content: [      
        {
         columns: [          
@@ -235,7 +235,7 @@ export const cuerpoSobre = (props: MarbeteProps): TDocumentDefinitions => {
             [{ text: `Vendedor:`, fillColor: '#cccccc', fontSize: 8,bold:true }, { text: `${(props.vendedor || '').toUpperCase()}`, fontSize: 7 }]
           ]
         },
-        margin: [10, 0, 10, 0] as [number, number, number, number] ,// Corrección de tipo
+        margin: [2, 0, 10, 0] as [number, number, number, number] ,// Corrección de tipo
       },
       // Título del contenido
       {
