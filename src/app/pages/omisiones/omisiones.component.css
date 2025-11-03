@@ -1,44 +1,19 @@
-
-.dossier{
-    height: 500px;
-}
-.center {
-    padding: 200px;
-    display: flex;justify-content: center;
+:host {
+  display: block;
 }
 
-:host ::ng-deep .custom-spinner .p-progress-spinner-circle {
-    animation: custom-progress-spinner-dash 1.5s ease-in-out infinite, custom-progress-spinner-color 6s ease-in-out infinite;
+.e-grid .e-rowcell {
+  font-size: 10px; 
+  @apply  font-roboto;
+  
 }
 
-@keyframes custom-progress-spinner-color {
-    100%,
-    0% {
-        stroke: #16697A;
-    }
-    40% {
-        stroke: #489FB5;
-    }
-    66% {
-        stroke: #82C0CC;
-    }
-    80%,
-    90% {
-        stroke: #FFA62B;
-    }
+.e-grid .e-gridheader{
+  font-size: 10px;
+  @apply rounded-t-lg;
 }
 
-@keyframes custom-progress-spinner-dash {
-    0% {
-        stroke-dasharray: 1, 200;
-        stroke-dashoffset: 0;
-    }
-    50% {
-        stroke-dasharray: 89, 200;
-        stroke-dashoffset: -35px;
-    }
-    100% {
-        stroke-dasharray: 89, 200;
-        stroke-dashoffset: -124px;
-    }
+.e-grid .e-headertext{  
+  font-size: 9px;  
+  @apply font-roboto;
 }

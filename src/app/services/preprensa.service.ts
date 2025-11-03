@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { ResponseOmitidas } from '@app/interfaces/responses/ResponseOmitidas';
 import { ResponseRutaComponentes, Ruta } from '@app/interfaces/responses/ResponseRutaComponentes';
 import { environment } from '@environments/environment.development';
 
@@ -30,5 +31,8 @@ export class PreprensaService {
 
   rechazarRevision(orden:string, motivo:string,id_usuario:string){  
     return this.http.post(`${this.API_URL}/api/preprensa/rechazar-revision`,{orden,motivo,id_usuario});
+  }
+  obtenerOmisiones(){
+    return this.http.get<ResponseOmitidas>(`${this.API_URL}/api/preprensa/omitidas`);
   }
 }
