@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { OrdenOmision } from '@app/interfaces/responses/ResponseOmitidas';
 
@@ -22,6 +23,7 @@ export default class Omisiones extends BaseGridComponent implements OnInit {
   cargando = signal<boolean>(false);
   public wrapSettings?: TextWrapSettingsModel;
   ordenesOmitidas = computed(() =>  this._ordenes());
+  router = inject(Router);
   private _ordenes = signal<OrdenOmision[]>([]);
   prePrensaService = inject(PreprensaService);
 
@@ -51,6 +53,7 @@ export default class Omisiones extends BaseGridComponent implements OnInit {
 
   definirOrden(ordenOmision:OrdenOmision){
     const {orden } = ordenOmision;
+    this.router.navigate(['/preprensa'], { queryParams: { orden } });    
 
   }
 

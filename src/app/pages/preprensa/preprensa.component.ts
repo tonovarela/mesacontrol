@@ -51,9 +51,8 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   private uiService = inject(UiService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
   private _verPendientes = signal<boolean>(true);
-  //private router = inject(Router);
-  private activatedRouter = inject(ActivatedRoute);
-  //private usuarioService = inject(UsuarioService);
+  private activatedRouter = inject(ActivatedRoute);  
+   
   public mostrarCheckList  = computed(()=>this.checkListService.checkList() !==null);
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
   public ordenesMetrics = computed(() => {    
@@ -96,11 +95,14 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   public titulo = signal<string>('');
 
   columnasAuditoria = columnas;
-
-
   constructor() {
     super();
     this.checkListService.removeActiveCheckList();
+
+     this.activatedRouter.queryParamMap.subscribe(params => {            
+      this.cargarInformacionPorQueryParam(params.get('orden'));   
+    });
+
 
     effect(async() => {
       if (this.checkListService.checklistSaved()){         
@@ -111,6 +113,23 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
         this._ordenesMetrics.set([...response.ordenes])
        }
   });    
+  }
+
+
+
+  cargarInformacionPorQueryParam = async(orden:string|null) => {
+    
+    if (orden) {
+      const response = await firstValueFrom(this.metricsService.buscarPorPatron(orden));      
+      const ordenMetrics = response.ordenes.find(o => o.NoOrden === orden);      
+       if (ordenMetrics) {
+         this.onSelectOrder(ordenMetrics);
+      } else {
+        this.uiService.mostrarAlertaError('Orden no encontrada', `No se encontró la orden con número ${orden}. Por favor, verifique el número e intente nuevamente.`);
+      }
+    }
+
+
   }
 
 
@@ -150,9 +169,6 @@ ngOnInit(): void {
     }
     return col.check(data);
   }
-
-
-  
 
   actualizarTipoProd(tipo: string) {
     this.ordenMetricsPorDefinir.update((ordenMetrics) => {
