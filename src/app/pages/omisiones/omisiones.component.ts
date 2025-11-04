@@ -18,14 +18,17 @@ import { firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class Omisiones extends BaseGridComponent implements OnInit {
-
   protected minusHeight = 0.1;
-  cargando = signal<boolean>(false);
+
+  public cargando = computed(() => this._cargando());  
   public wrapSettings?: TextWrapSettingsModel;
-  ordenesOmitidas = computed(() =>  this._ordenes());
-  router = inject(Router);
+  public ordenesOmitidas = computed(() =>  this._ordenes());
+
+  private _cargando = signal<boolean>(false);  
+
+  private _router = inject(Router);
   private _ordenes = signal<OrdenOmision[]>([]);
-  prePrensaService = inject(PreprensaService);
+  private _prePrensaService = inject(PreprensaService);
 
   ngOnInit(): void {
     this.autoFitColumns = false;
@@ -39,22 +42,22 @@ export default class Omisiones extends BaseGridComponent implements OnInit {
 
 
   async cargarInformacion(){
-    this.cargando.set(true);
-    try {
-    const response =await firstValueFrom( this.prePrensaService.obtenerOmisiones());
+    this._cargando.set(true);
+    try {      
+
+    const response =await firstValueFrom( this._prePrensaService.obtenerOmisiones());
     this._ordenes.set(response.ordenes);  
-    }catch(error){
+    } catch(error){
       console.error('Error al cargar omisiones', error);
     }finally{
-      this.cargando.set(false);
-    }
-    
+      this._cargando.set(false);
+    }    
   }
 
-  definirOrden(ordenOmision:OrdenOmision){
+public definirOrden(ordenOmision:OrdenOmision){
     const {orden } = ordenOmision;
-    this.router.navigate(['/preprensa'], { queryParams: { orden } });    
-
-  }
+    this._prePrensaService.setOrdenPorDefinir(orden);
+    this._router.navigate(['/preprensa'] );    
+}
 
 }

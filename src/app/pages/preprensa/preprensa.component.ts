@@ -14,7 +14,7 @@ import { SynfusionModule } from '@app/lib/synfusion.module';
 // Componentes Base
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 // Servicios
-import { CheckListService, MetricsService, PdfService, UiService } from '@app/services';
+import { CheckListService, MetricsService, PdfService, PreprensaService, UiService } from '@app/services';
 // Interfaces y Tipos
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
@@ -44,16 +44,18 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
   public type = TypeSearchMetrics.PREPRENSA;
   protected minusHeight = 0.30;
-  private metricsService = inject(MetricsService);
+
+  private _metricsService = inject(MetricsService);
   private _ordenLiberacion =  signal<OrdenMetrics | null>(null);
-  private checkListService = inject(CheckListService);
-  private pdfService = inject(PdfService);
-  private uiService = inject(UiService);
+  private _checkListService = inject(CheckListService);
+  private _pdfService = inject(PdfService);
+  private _uiService = inject(UiService);
+  private _prePrensaService= inject(PreprensaService);
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
   private _verPendientes = signal<boolean>(true);
-  private activatedRouter = inject(ActivatedRoute);  
-   
-  public mostrarCheckList  = computed(()=>this.checkListService.checkList() !==null);
+  private _activatedRouter = inject(ActivatedRoute);     
+
+  public mostrarCheckList  = computed(()=>this._checkListService.checkList() !==null);
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
   public ordenesMetrics = computed(() => {    
     const ordenes= this._ordenesMetrics().map( (orden:any) =>{
@@ -90,25 +92,26 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   public cargando = signal(false);
   public guardandoOrdenMetrics = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
-  public catalogoTiposProductos = computed(() => this.metricsService.TipoMateriales());
+  public catalogoTiposProductos = computed(() => this._metricsService.TipoMateriales());
 
   public titulo = signal<string>('');
 
   columnasAuditoria = columnas;
   constructor() {
     super();
-    this.checkListService.removeActiveCheckList();
+    this._checkListService.removeActiveCheckList();
 
-     this.activatedRouter.queryParamMap.subscribe(params => {            
-      this.cargarInformacionPorQueryParam(params.get('orden'));   
-    });
+    if (this._prePrensaService.ordenPorDefinir()){
+      this.cargarInformacionPorQueryParam(this._prePrensaService.ordenPorDefinir());
+    }
+    
 
 
     effect(async() => {
-      if (this.checkListService.checklistSaved()){         
+      if ( this._checkListService.checklistSaved()){                 
         this._ordenesMetrics.set([]);
         this.grid.showSpinner();        
-        const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))
+        const response = await firstValueFrom(this._metricsService.listar(this.verPendientes()))
         this.grid.hideSpinner();
         this._ordenesMetrics.set([...response.ordenes])
        }
@@ -117,15 +120,14 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
 
 
-  cargarInformacionPorQueryParam = async(orden:string|null) => {
-    
+  cargarInformacionPorQueryParam = async(orden:string|null) => {    
     if (orden) {
-      const response = await firstValueFrom(this.metricsService.buscarPorPatron(orden));      
+      const response = await firstValueFrom(this._metricsService.buscarPorPatron(orden));      
       const ordenMetrics = response.ordenes.find(o => o.NoOrden === orden);      
        if (ordenMetrics) {
          this.onSelectOrder(ordenMetrics);
       } else {
-        this.uiService.mostrarAlertaError('Orden no encontrada', `No se encontró la orden con número ${orden}. Por favor, verifique el número e intente nuevamente.`);
+        this._uiService.mostrarAlertaError('Orden no encontrada', `No se encontró la orden con número ${orden}. Por favor, verifique el número e intente nuevamente.`);
       }
     }
 
@@ -136,7 +138,9 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 ngOnInit(): void {
     this.autoFitColumns = false;
     setTimeout(() => { this.iniciarResizeGrid(this.minusHeight) });
-    this.activatedRouter.data.subscribe((data) => {
+
+
+    this._activatedRouter.data.subscribe((data) => {
       this.titulo.set(data['titulo'] || '');
       const pendientes = data['pendientes'] || false;
       this._verPendientes.set(pendientes);
@@ -146,10 +150,10 @@ ngOnInit(): void {
   
   async descargarPDF(data: any) {
     const { NoOrden }= data    
-    const { infoLiberacion,sobreContenido } =await firstValueFrom(this.metricsService.obtener(NoOrden));    
+    const { infoLiberacion,sobreContenido } =await firstValueFrom(this._metricsService.obtener(NoOrden));    
       
     const { usuarioLibero } = infoLiberacion!;    
-    this.pdfService.descargarMarbetePDF(data,sobreContenido, usuarioLibero || '' );
+    this._pdfService.descargarMarbetePDF(data,sobreContenido, usuarioLibero || '' );
   }
 
   fechaLiberacion(data: any, col: any) {
@@ -185,14 +189,20 @@ ngOnInit(): void {
   }
 
   async cargarInformacion() {
+      console.log('Cargando información de preprensa');
+      console.log('Orden por definir:', this._prePrensaService.ordenPorDefinir());
+    if (this._prePrensaService.ordenPorDefinir()){
+       return;
+    }
+
     this.cargando.set(true);
     try {
       this._ordenesMetrics.set([]); // Limpiar la lista antes de cargar nuevos datos            
-      const response = await firstValueFrom(this.metricsService.listar(this.verPendientes()))
+      const response = await firstValueFrom(this._metricsService.listar(this.verPendientes()))
       this._ordenesMetrics.set([...response.ordenes])
     }
     catch (error) {
-      this.uiService.mostrarAlertaError('Error al cargar la información', 'No se pudo cargar la información de las órdenes de métricas. Por favor, inténtelo más tarde.');
+      this._uiService.mostrarAlertaError('Error al cargar la información', 'No se pudo cargar la información de las órdenes de métricas. Por favor, inténtelo más tarde.');
     }
     finally {
       this.cargando.set(false);
@@ -206,30 +216,36 @@ ngOnInit(): void {
   async ir(ordenMetrics: OrdenMetrics, actual: { id_checkActual: string, liberacion?: Date }) {
     const { id_checkActual, liberacion } = actual;
     const { id_checklist_actual } = ordenMetrics;
-    this.checkListService.currentMetricsOP.set(ordenMetrics);
+    this._checkListService.currentMetricsOP.set(ordenMetrics);
     if (liberacion) {
-      this.checkListService.id_checkListCurrent = id_checkActual;
+      this._checkListService.id_checkListCurrent = id_checkActual;
     } else {
-      this.checkListService.id_checkListCurrent = id_checklist_actual;
+      this._checkListService.id_checkListCurrent = id_checklist_actual;
     }
-    await this.checkListService.loadChecklist();    
+    await this._checkListService.loadChecklist();    
   
   }
 
   cerrarModalCheckList(){
-    this.checkListService.removeActiveCheckList();
+    this._checkListService.removeActiveCheckList();
   }
 
   cerrarOrdenMetricsPorDefinir() {
+    if (this._prePrensaService.ordenPorDefinir()){
+      this._prePrensaService.setOrdenPorDefinir(null);
+      this.cargarInformacion();
+    }
+    
     this.ordenMetricsPorDefinir.set(null);
   }
 
   async guardarOrdenMetricsPorDefinir() {
     this.guardandoOrdenMetrics.set(true);
     const ordenMetrics = this.ordenMetricsPorDefinir();
-    await firstValueFrom(this.metricsService.agregarOrden(ordenMetrics!));
+    await firstValueFrom(this._metricsService.agregarOrden(ordenMetrics!));
     this.guardandoOrdenMetrics.set(false);
-    this.cargarInformacion();
+    this._prePrensaService.setOrdenPorDefinir(null);
+    this.cargarInformacion();    
     this.ordenMetricsPorDefinir.set(null);
   }
 

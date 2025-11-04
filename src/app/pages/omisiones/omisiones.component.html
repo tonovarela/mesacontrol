@@ -49,20 +49,15 @@
         </e-column>
         <e-column field="tipo" headerText="Tipo" width="150" >
           <ng-template #template let-data>
-            <div class="text-wrap">{{data.tipo  }}</div>
+            <div class="text-wrap">{{data.tipo}}</div>
           </ng-template>
         </e-column>
-        <e-column field="fechaplaca" [allowFiltering]="false" headerText="Fecha placa" width="150" format="yMd" ></e-column>
+        <e-column field="fechaPlaca" [allowFiltering]="false" headerText="Fecha placa" width="150" format="yMd" ></e-column>
       </e-columns>
       </ejs-grid>
-
-
-
     </div>      
-
     </div>
- }
- 
+} 
     </div>
 
       

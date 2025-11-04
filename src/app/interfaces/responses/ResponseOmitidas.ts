@@ -3,7 +3,7 @@ export interface ResponseOmitidas {
 }
 export interface OrdenOmision {
   orden:        string;
-  fechaplaca:   Date;
+  fechaPlaca:   Date;
   Trabajo:      string;
   tipo:         string;
   Cliente:      string;  

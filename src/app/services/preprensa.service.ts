@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { ResponseOmitidas } from '@app/interfaces/responses/ResponseOmitidas';
 import { ResponseRutaComponentes, Ruta } from '@app/interfaces/responses/ResponseRutaComponentes';
 import { environment } from '@environments/environment.development';
@@ -9,8 +9,18 @@ import { environment } from '@environments/environment.development';
 })
 export class PreprensaService {
  http = inject(HttpClient);
-  private readonly API_URL = environment.apiUrl;
 
+   private _ordenPorDefinir = signal<string | null>(null);
+   ordenPorDefinir = computed(() => {
+     return this._ordenPorDefinir();
+   });
+
+   setOrdenPorDefinir(orden: string | null) {
+     this._ordenPorDefinir.set(orden);
+   }
+
+  
+  private readonly API_URL = environment.apiUrl;
   constructor() { }
 
   obtenerComponentes(orden:string){
