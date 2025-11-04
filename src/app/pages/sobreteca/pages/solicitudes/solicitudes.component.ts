@@ -313,7 +313,7 @@ export default class SolicitudesComponent extends BaseGridComponent implements O
     const id_usuario = this._usuarioService.StatusSesion().usuario?.id;
 //      console.log({ordenBaja,ordenAsociada,tipoProd,id_usuario});    
     try{
-      await firstValueFrom(this._sobreService.asociar(ordenBaja,ordenAsociada, tipoProd, `${id_usuario}`));
+      await firstValueFrom(this._sobreService.asociar(ordenBaja,ordenAsociada, tipoProd!, `${id_usuario}`));
       await firstValueFrom(this._sobreService.eliminar(ordenBaja, `${id_usuario}`));  
       this._uiService.mostrarAlertaSuccess('',`La orden de producción ${ordenAsociada} ha sido asociada correctamente a la orden ${ordenBaja}`);    
     }catch(error){

@@ -26,8 +26,8 @@ export interface InfoLiberacion {
 export interface OrdenMetrics {
     NoOrden: string;
     NombreTrabajo: string;
-    TipoProd: string;
-    TipoProdReal?: string;
+    TipoProd: string | null;  
+    TipoProdReal: string | null;
     NumCliente: string;
     Vendedor: string;
     NombreCliente: string;

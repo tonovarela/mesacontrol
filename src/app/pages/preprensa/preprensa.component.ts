@@ -42,7 +42,7 @@ import { TruncatePipe } from '../../pipes/truncate.pipe';
 })
 export default class PreprensaComponent extends BaseGridComponent implements OnInit {
 
-  public type = TypeSearchMetrics.PREPRENSA;
+  
   protected minusHeight = 0.30;
 
   private _metricsService = inject(MetricsService);
@@ -55,6 +55,10 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   private _verPendientes = signal<boolean>(true);
   private _activatedRouter = inject(ActivatedRoute);     
 
+
+
+  public type = TypeSearchMetrics.PREPRENSA;
+  public mostrarModalLiberacion = computed(()=>this._ordenLiberacion()!==null);  
   public mostrarCheckList  = computed(()=>this._checkListService.checkList() !==null);
   public puedeDefinirOrdenMetrics = computed(() => this.ordenMetricsPorDefinir() !== null);
   public ordenesMetrics = computed(() => {    
@@ -67,7 +71,7 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
         sePuedeVisualizarSobre=false;
       }            
       return { ...orden ,
-        colorCheckListSobreLiberacion: this.colorLiberacion(orden.estadoRutas),
+        colorCheckListSobreLiberacion: this._colorLiberacion(orden.estadoRutas),
         sePuedeVisualizarSobre 
       }
     });    
@@ -78,15 +82,9 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 
   public ordenLiberacion = computed(()=> this._ordenLiberacion()?.NoOrden || '' );
 
-  private colorLiberacion(id_estado: string): string {
-  if (id_estado == "1" ) return 'fill-white py-1 rounded-full bg-purple-600';  
-  if (id_estado == "2") return 'fill-white py-1 rounded-full bg-lime-700';
-  if (id_estado == "3") return 'fill-white py-1 rounded-full bg-pink-600';
-  if (id_estado == "4") return 'fill-white py-1 rounded-full bg-gray-400';
-  if (id_estado == "5" ) return 'fill-white py-1 rounded-full bg-yellow-400';  
-   return 'fill-gray-400';
-    
-  }
+  
+
+
   public verPendientes = computed(() => this._verPendientes());
   public ordenMetricsPorDefinir = signal<OrdenMetrics | null>(null);
   public cargando = signal(false);
@@ -94,9 +92,10 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
   public wrapSettings?: TextWrapSettingsModel;
   public catalogoTiposProductos = computed(() => this._metricsService.TipoMateriales());
 
+  public columnasAuditoria = columnas;
   public titulo = signal<string>('');
 
-  columnasAuditoria = columnas;
+  
   constructor() {
     super();
     this._checkListService.removeActiveCheckList();
@@ -125,6 +124,8 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
       const response = await firstValueFrom(this._metricsService.buscarPorPatron(orden));      
       const ordenMetrics = response.ordenes.find(o => o.NoOrden === orden);      
        if (ordenMetrics) {
+        const existe =this.catalogoTiposProductos().some(tp => tp.value === ordenMetrics?.TipoProd);        
+        this.ordenMetricsPorDefinir.set({...ordenMetrics,TipoProd: existe ? ordenMetrics.TipoProd : null});
          this.onSelectOrder(ordenMetrics);
       } else {
         this._uiService.mostrarAlertaError('Orden no encontrada', `No se encontró la orden con número ${orden}. Por favor, verifique el número e intente nuevamente.`);
@@ -138,8 +139,6 @@ export default class PreprensaComponent extends BaseGridComponent implements OnI
 ngOnInit(): void {
     this.autoFitColumns = false;
     setTimeout(() => { this.iniciarResizeGrid(this.minusHeight) });
-
-
     this._activatedRouter.data.subscribe((data) => {
       this.titulo.set(data['titulo'] || '');
       const pendientes = data['pendientes'] || false;
@@ -184,13 +183,12 @@ ngOnInit(): void {
   onSelectOrder(ordenMetrics: OrdenMetrics | null) {
     if (!ordenMetrics) {
       return;
-    }
-    this.ordenMetricsPorDefinir.set(ordenMetrics);
+    }        
+    const existe =this.catalogoTiposProductos().some(tp => tp.value === ordenMetrics?.TipoProd);        
+    this.ordenMetricsPorDefinir.set({...ordenMetrics,TipoProd: existe ? ordenMetrics.TipoProd : null });
   }
 
-  async cargarInformacion() {
-      console.log('Cargando información de preprensa');
-      console.log('Orden por definir:', this._prePrensaService.ordenPorDefinir());
+  async cargarInformacion() {      
     if (this._prePrensaService.ordenPorDefinir()){
        return;
     }
@@ -211,6 +209,16 @@ ngOnInit(): void {
 
   irRutas(orden:OrdenMetrics){   
     this._ordenLiberacion.set(orden);    
+  }
+
+
+  private _colorLiberacion(id_estado: string): string {
+  if (id_estado == "1" ) return  'fill-white py-1 rounded-full bg-purple-600';  
+  if (id_estado == "2")  return  'fill-white py-1 rounded-full bg-lime-700';
+  if (id_estado == "3")  return  'fill-white py-1 rounded-full bg-pink-600';
+  if (id_estado == "4")  return  'fill-white py-1 rounded-full bg-gray-400';
+  if (id_estado == "5" ) return  'fill-white py-1 rounded-full bg-yellow-400';  
+   return 'fill-gray-400';    
   }
 
   async ir(ordenMetrics: OrdenMetrics, actual: { id_checkActual: string, liberacion?: Date }) {
@@ -241,15 +249,18 @@ ngOnInit(): void {
 
   async guardarOrdenMetricsPorDefinir() {
     this.guardandoOrdenMetrics.set(true);
-    const ordenMetrics = this.ordenMetricsPorDefinir();
-    await firstValueFrom(this._metricsService.agregarOrden(ordenMetrics!));
+    console.log('Guardando orden de métricas por definir...');
+    console.log(this.ordenMetricsPorDefinir());    
+     await new Promise(resolve => setTimeout(resolve,2000));
+    // const ordenMetrics = this.ordenMetricsPorDefinir();
+    // await firstValueFrom(this._metricsService.agregarOrden(ordenMetrics!));
     this.guardandoOrdenMetrics.set(false);
     this._prePrensaService.setOrdenPorDefinir(null);
     this.cargarInformacion();    
     this.ordenMetricsPorDefinir.set(null);
   }
 
-  mostrarModalLiberacion = computed(()=>this._ordenLiberacion()!==null);
+
 
 
   cerrarModalLiberacion(){
