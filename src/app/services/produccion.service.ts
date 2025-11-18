@@ -1,9 +1,9 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { ResponseBitacoraMuestra } from "@app/interfaces/responses/ResponseBitacoraMuestra";
-import { ResponseComponentes } from "@app/interfaces/responses/ResponseComponentes";
 import { ResponseElementos } from "@app/interfaces/responses/ResponseElementos";
 import { ResponseDetalleOrdenProduccion, ResponseOrdenMetrics } from "@app/interfaces/responses/ResponseOrdenMetrics";
+import { ResponseDetalleOmisiones, ResponseProduccionOmitidas } from '@app/interfaces/responses/ResponseProduccionOmitidas';
 import { environment } from "@environments/environment.development";
 
 @Injectable({
@@ -70,6 +70,14 @@ export class ProduccionService {
 
     sincronizar(orden:string){
         return this.http.get(`${this.API_URL}/api/produccion/sincronizar/${orden}`);
+    }
+
+    obtenerOmitidas(){
+        return this.http.get<ResponseProduccionOmitidas>(`${this.API_URL}/api/produccion/omitidas`);
+    }
+
+    obtenerDetalleOmisiones(orden:string){
+        return this.http.get<ResponseDetalleOmisiones>(`${this.API_URL}/api/produccion/detalle-omision/${orden}`);
     }
 
 }

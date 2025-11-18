@@ -17,6 +17,7 @@ export const routes: Routes = [
     children: [
       { path: "pendientes", data: { pendientes: true }, loadComponent: () => import('./pages/produccion/pages/produccion/produccion.component') },
       { path: "liberadas", data: { pendientes: false }, loadComponent: () => import('./pages/produccion/pages/produccion/produccion.component') },
+      { path: "omisiones", loadComponent: ()=> import("./pages/produccion/pages/omisiones/omisiones.component") },
       { path: '**', redirectTo: 'pendientes' }
     ]
   },

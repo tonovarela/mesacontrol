@@ -57,6 +57,12 @@ export class SidebarComponent   implements OnInit {
       path: '/produccion/liberadas',
       claseSize: 'w-8 h-8 svg-icon',
     },
+    {
+      nombre: 'Omisiones',
+      claseSize: 'w-8 h-8 svg-icon',
+      icono: 'assets/img/liberadas.svg',      
+      path: '/produccion/omisiones'
+    }
     
   ]);
 
