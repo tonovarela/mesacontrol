@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { ResponseBitacoraMuestra } from "@app/interfaces/responses/ResponseBitacoraMuestra";
 import { ResponseElementos } from "@app/interfaces/responses/ResponseElementos";
-import { ResponseDetalleOrdenProduccion, ResponseOrdenMetrics } from "@app/interfaces/responses/ResponseOrdenMetrics";
+import { OrdenMetrics, ResponseDetalleOrdenProduccion, ResponseOrdenMetrics } from "@app/interfaces/responses/ResponseOrdenMetrics";
 import { ResponseDetalleOmisiones, ResponseProduccionOmitidas } from '@app/interfaces/responses/ResponseProduccionOmitidas';
 import { environment } from "@environments/environment.development";
 
@@ -12,6 +12,8 @@ import { environment } from "@environments/environment.development";
 export class ProduccionService {
     private readonly API_URL = environment.apiUrl;
     http = inject(HttpClient);
+
+    ordenProduccionActual = signal<OrdenMetrics | null>(null);
 
     listar(pendientes: boolean = true) {
         return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/produccion?pendientes=${pendientes}`);

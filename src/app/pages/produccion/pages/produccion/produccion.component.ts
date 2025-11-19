@@ -7,32 +7,32 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { TypeSearchMetrics } from '@app/interfaces/type';
-import { PrimeModule } from '@app/lib/prime.module';
-import { environment } from '@environments/environment.development';
-import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { SynfusionModule } from '@app/lib/synfusion.module';
-import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
-import { UiService, ProduccionService, UsuarioService } from '@app/services';
+import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
+import { CurrentOrder } from '@app/interfaces/models/CurrrentOrder';
+import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
+import { Muestra } from '@app/interfaces/responses/ResponseBitacoraMuestra';
 import {
   Detalle,
   EstadoMuestra,
   OrdenMetrics,
 } from '@app/interfaces/responses/ResponseOrdenMetrics';
-import { RegistroMuestraComponent } from '../../componentes/registro-muestra/registro-muestra.component';
-import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
-import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
+import { TypeSearchMetrics } from '@app/interfaces/type';
+import { PrimeModule } from '@app/lib/prime.module';
+import { SynfusionModule } from '@app/lib/synfusion.module';
+import { ProduccionService, UiService, UsuarioService } from '@app/services';
+import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
+import { environment } from '@environments/environment.development';
 import {
   DetailRowService,
-  TextWrapSettingsModel,
   RecordClickEventArgs,
+  TextWrapSettingsModel,
 } from '@syncfusion/ej2-angular-grids';
-import { CurrentOrder } from '@app/interfaces/models/CurrrentOrder';
-import { DetalleProduccionComponent } from '../../componentes/detalle_produccion/detalle_produccion.component';
-import { Muestra } from '@app/interfaces/responses/ResponseBitacoraMuestra';
+import { firstValueFrom } from 'rxjs';
 import { ResponseBitacoraMuestra as BitacoraMuestra } from '../../../../interfaces/responses/ResponseBitacoraMuestra';
+import { DetalleProduccionComponent } from '../../componentes/detalle_produccion/detalle_produccion.component';
+import { RegistroMuestraComponent } from '../../componentes/registro-muestra/registro-muestra.component';
 
 @Component({
   selector: 'app-produccion',
@@ -90,6 +90,14 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
   ngOnInit(): void {
     this.iniciarResizeGrid(0.1, true);
+    const ordenActual = this.produccionService.ordenProduccionActual();
+     if (ordenActual){
+      this.actualizarProduccionMetrics(ordenActual);
+      this.grid.filterByColumn('NoOrden', 'equal', ordenActual.NoOrden);
+      this.grid.refresh()
+      this.produccionService.ordenProduccionActual.set(null);
+     }
+
     this.activatedRouter.data.subscribe((data) => {
       const pendientes = data['pendientes'] || false;
       this._verPendientes.set(pendientes);
