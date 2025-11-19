@@ -42,7 +42,7 @@
             <div (click)="verDetalle(data)" class="text-wrap text-blue-600 cursor-pointer">{{data.orden  }}</div>
           </ng-template>
         </e-column>
-        <e-column field="enMesaControl" headerText="enMesaControl" width="80" ></e-column>
+        <e-column field="enMesaControl" headerText="MC" width="80" ></e-column>
         <e-column field="faltantes" headerText="faltantes" width="80" ></e-column>
         <e-column field="Trabajo" headerText="trabajo">
           <ng-template #template let-data>
@@ -59,4 +59,15 @@
     </div>      
     </div>
 } 
+
+@if(modalVisible()){
+<detalle-omisiones 
+[detalleOmisiones]="detalleOmisiones()" 
+[visible]="modalVisible()" 
+(onCerrarModal)="cerrarModal()"
+(onRegistrarOrdenOmision)="registrarOrdenOmision($event)"
+>  
+</detalle-omisiones>
+}
+    
     </div>

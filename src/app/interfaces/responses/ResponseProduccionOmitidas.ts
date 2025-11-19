@@ -24,3 +24,10 @@ export interface DetalleOmisiones {
  entrada: string;
 }
 
+
+export interface PropsDetalleOmisiones {
+  mc:DetalleOmisiones[];
+  omisiones: DetalleOmisiones[];
+}
+
+

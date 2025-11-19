@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
-import { RowDataBoundEventArgs, TextWrapSettingsModel} from '@syncfusion/ej2-angular-grids';
+import { RowDataBoundEventArgs, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 
 
 @Component({
@@ -49,8 +49,7 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
     this.onChange.emit({ id, value: event.target.checked as boolean, tipo });    
   }
 
-  onVerHistorial(detalle: any) {  
-    
+  onVerHistorial(detalle: any) {      
     this.verHistorial.emit(detalle);
   }
 
