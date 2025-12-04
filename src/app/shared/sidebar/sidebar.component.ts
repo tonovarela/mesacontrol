@@ -58,7 +58,7 @@ export class SidebarComponent   implements OnInit {
       claseSize: 'w-8 h-8 svg-icon',
     },
     {
-      nombre: 'Omisiones',
+      nombre: 'Procesos faltantes',
       claseSize: 'w-8 h-8 svg-icon',
       icono: 'assets/img/liberadas.svg',      
       path: '/produccion/omisiones'
