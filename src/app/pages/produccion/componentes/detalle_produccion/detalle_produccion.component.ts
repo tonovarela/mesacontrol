@@ -33,7 +33,9 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
     super();
   }
   ngOnInit(): void {       
+    
     this.iniciarResizeGrid(0.28,false);
+    
   }
 
   

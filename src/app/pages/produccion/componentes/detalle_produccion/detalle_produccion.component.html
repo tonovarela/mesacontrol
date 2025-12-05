@@ -24,14 +24,28 @@
                     </ng-template>
                 </e-column>
                 <e-column field='orden_metrics' [allowFiltering]="true" headerText='Orden' width=100></e-column>
+                <e-column field='fecha_limite' [allowFiltering]="true" headerText='Fecha Límite' >
+                    <ng-template #template let-data>
+                        <div class="flex flex-col">
+                            <span>{{data.fecha_limite | date:'dd-MM-yyyy hh:mm '}}</span>
+                        </div>
+                    </ng-template>
+                </e-column>
                 <e-column [allowFiltering]="false" width=100>
                     <ng-template #template let-detalle>
-                        @if(detalle.id_estado=="1"){
-                        <button class="bg-blue-500 m-1 text-white px-2 py-1 rounded hover:bg-blue-600"
-                            (click)="selectMuestra.emit(detalle)">Muestra</button>
-                        }@else{
-                        <div class="text-gray-500 px-2 py-1 dark:text-gray-400">Cerrado</div>
-                        }
+                        
+                            @if(detalle.id_estado=="1") {
+                                @if(detalle.puedeCapturarMuestras =="1"){
+                                <button class="bg-blue-500 m-1 text-white px-2 py-1 rounded hover:bg-blue-600" (click)="selectMuestra.emit(detalle)">Muestra</button>
+                                }@else
+                                {
+                                    <span class="text-gray-500 px-2 py-1 text-sm dark:text-gray-400">---</span>                                    
+                                }
+                            }@else{
+                                <div class="text-gray-500 px-2 py-1 dark:text-gray-400">Cerrado</div>
+                                }                        
+                                                    
+                        
                     </ng-template>
                 </e-column>
                 <e-column [allowFiltering]="false" width=100>
@@ -72,28 +86,41 @@
                 </e-column>
                 <e-column [allowFiltering]="false" textAlign="Center" width=70 headerText='VoBo'>
                     <ng-template #template let-detalle>
+                        @if(detalle.puedeCapturarMuestras=="1"){
                         <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"
                             [(ngModel)]="detalle.voBo" (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
                             class="cursor-pointer   disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-500 dark:disabled:bg-gray-400" />
+
+                        }@else{
+                             <div class="text-gray-500 px-2 py-1 dark:text-gray-400">-----</div>
+                        }
                     </ng-template>
                 </e-column>                
                 <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">                
-                    <ng-template #template let-detalle>                            
+                    <ng-template #template let-detalle> 
+                        @if(detalle.puedeCapturarMuestras=="1"){                           
                         <input *ngIf="detalle.puedeRegistrarOffset" type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
                             (change)="updateCheck(detalle.id_produccion, $event,'trazo')"
                              class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-500 dark:disabled:bg-gray-400" />
+                        }@else{
+                            <div class="text-gray-500 px-2 py-1 dark:text-gray-400">-----</div>   
+                        }
                     </ng-template>
                 </e-column>
                 <e-column [allowFiltering]="false" width=100 headerText='Carta color' textAlign="Center">                    
                     <ng-template #template let-detalle>                                            
+                        @if(detalle.puedeCapturarMuestras=="1"){  
                         <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox"  [id]="detalle.id_produccion" 
                             [disabled]="detalle.id_estado != '1'" 
                             [(ngModel)]="detalle.carta_color"
                             (change)="updateCheck(detalle.id_produccion, $event,'carta')"
                              class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-500 dark:disabled:bg-gray-400" />
+                        }@else{
+                            <div class="text-gray-500 px-2 py-1 dark:text-gray-400">-----</div>   
+                        }
                     </ng-template>
                 </e-column>
-                
+                                
 
 
                 

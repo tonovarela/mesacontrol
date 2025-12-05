@@ -65,16 +65,19 @@
                         [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'
                         >
                         <e-columns>
-                            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="40">
+                            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="20">
                                 <ng-template #template let-data>                            
                                         <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>                            
                                 </ng-template>
                             </e-column>
-                            <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="150">
-                            </e-column>                            
-                            <e-column field='Vendedor' [allowFiltering]="true" width="80">
-                            </e-column>                            
-                            <e-column field='tieneInfo' headerText="Tiene info" textAlign="Center" [allowFiltering]="false" width="40">
+                            <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="35">
+                                <ng-template #template let-data>
+                                    <div>
+                                        <span >{{data.NombreTrabajo | truncate:25}}</span>                                        
+                                    </div>
+                                </ng-template>
+                            </e-column>                                                        
+                            <e-column field='tieneInfo' headerText="Tiene info" textAlign="Center" [allowFiltering]="false" width="20">
                                 <ng-template #template let-data>
                                     <div class="flex  items-center justify-center w-full">
                                         @if(data.tieneInfo == '1') {
@@ -93,6 +96,16 @@
                                     </div>
                                 </ng-template>                                
                             </e-column>
+                            <!-- <e-column field='tieneInfo' headerText="omisiones" textAlign="Center" [allowFiltering]="false" width="40">
+                                <ng-template #template let-data>
+                                    <div class="flex  items-center justify-center w-full">
+                                        Pendiente                                      
+                                        
+                                    </div>
+                                </ng-template>                                
+                            </e-column> -->
+
+
                             <e-column  [allowFiltering]="true" headerText='Metrics' width="50">
                                 <ng-template #template let-data>
                                     <div class="flex flex-col p-1">

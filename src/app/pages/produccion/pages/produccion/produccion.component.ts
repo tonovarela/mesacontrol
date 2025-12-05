@@ -21,6 +21,7 @@ import {
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
+import { TruncatePipe } from '@app/pipes/truncate.pipe';
 import { ProduccionService, UiService, UsuarioService } from '@app/services';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { environment } from '@environments/environment.development';
@@ -41,6 +42,7 @@ import { RegistroMuestraComponent } from '../../componentes/registro-muestra/reg
     SearchMetricsComponent,
     FormsModule,
     CommonModule,
+    TruncatePipe,
     PrimeModule,
     SynfusionModule,
     DetalleProduccionComponent,
