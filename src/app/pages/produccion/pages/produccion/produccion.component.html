@@ -96,14 +96,15 @@
                                     </div>
                                 </ng-template>                                
                             </e-column>
-                            <!-- <e-column field='tieneInfo' headerText="omisiones" textAlign="Center" [allowFiltering]="false" width="40">
-                                <ng-template #template let-data>
-                                    <div class="flex  items-center justify-center w-full">
-                                        Pendiente                                      
+                            <e-column field='tieneOmision' headerText="Tiene omisión" textAlign="Center" [allowFiltering]="true" width="20">
+                                <ng-template #template let-data>    
+                                    
+                                    
+                                        {{data.tieneOmision}}                                                                            
+
                                         
-                                    </div>
                                 </ng-template>                                
-                            </e-column> -->
+                            </e-column>
 
 
                             <e-column  [allowFiltering]="true" headerText='Metrics' width="50">
