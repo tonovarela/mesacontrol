@@ -9,6 +9,15 @@
   @apply rounded-t-lg;
 }
 
+.blink {
+  animation: blink-animation 1s steps(2, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
 /* Estilo general para el modal */
 p-dialog {
   font-family: 'Arial', sans-serif;

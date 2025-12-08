@@ -19,7 +19,7 @@
                 <!-- <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=100>
                 </e-column> -->
                 <e-column field='Vendedor' [allowFiltering]="true" width=50>
-                </e-column>
+                </e-column>                  
                 <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true" headerText='Cant' width=50>
                     <ng-template #template let-data>                        
                             <span>{{data.CantidadEntregar | number}}</span>
@@ -70,6 +70,7 @@
                                         <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>                            
                                 </ng-template>
                             </e-column>
+
                             <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="35">
                                 <ng-template #template let-data>
                                     <div>
@@ -77,6 +78,7 @@
                                     </div>
                                 </ng-template>
                             </e-column>                                                        
+
                             <e-column field='tieneInfo' headerText="Tiene info" textAlign="Center" [allowFiltering]="false" width="20">
                                 <ng-template #template let-data>
                                     <div class="flex  items-center justify-center w-full">
@@ -96,13 +98,19 @@
                                     </div>
                                 </ng-template>                                
                             </e-column>
-                            <e-column field='tieneOmision' headerText="Tiene omisión" textAlign="Center" [allowFiltering]="true" width="20">
-                                <ng-template #template let-data>    
-                                    
-                                    
-                                        {{data.tieneOmision}}                                                                            
 
-                                        
+                            <e-column field='tieneOmision' headerText="" textAlign="Center" [allowFiltering]="true" width="20">
+                                <ng-template #template let-data>    
+                                                                        
+                                    @if(data.tieneOmision == '1') {
+                                        <span class="blink text-red-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 fill-red-600 " viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" />
+                      </svg> OMISIÓN
+                                        </span>
+                                    } 
+
+
                                 </ng-template>                                
                             </e-column>
 
