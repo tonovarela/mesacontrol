@@ -50,6 +50,7 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
 
   
   updateCheck(id: string, event: any, tipo:string) {    
+    
     this.onChange.emit({ id, value: event.target.checked as boolean, tipo });    
   }
 

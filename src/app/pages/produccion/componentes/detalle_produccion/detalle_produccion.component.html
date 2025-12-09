@@ -90,13 +90,14 @@
                         
                         @if(detalle.puedeCapturarMuestras=="1"){
                             
-                        <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"
-                            [(ngModel)]="detalle.vobo" (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
+                        <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"                            
+                            [checked]="detalle.vobo=='1'"
+                            (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
                             class="cursor-pointer  disabled:opacity-50  disabled:cursor-not-allowed " />
 
                         }@else{                            
                             <input type="checkbox" [id]="detalle.id_produccion" 
-                            [checked]="detalle.vobo" disabled
+                            [checked]="detalle.vobo=='1'" disabled
                             class="cursor-pointer  disabled:opacity-50   disabled:cursor-not-allowed"  />
                         }
                     </ng-template>
@@ -104,12 +105,14 @@
                 <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">                
                     <ng-template #template let-detalle> 
                         @if(detalle.puedeCapturarMuestras=="1"){                           
-                        <input *ngIf="detalle.puedeRegistrarOffset" type="checkbox" [disabled]="detalle.id_estado != '1'" [(ngModel)]="detalle.trazo"
+                        <input *ngIf="detalle.puedeRegistrarOffset" type="checkbox" [disabled]="detalle.id_estado != '1'" 
+                            [id]="detalle.id_produccion" 
+                            [checked]="detalle.trazo =='1'"                            
                             (change)="updateCheck(detalle.id_produccion, $event,'trazo')"
                              class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed" />
                         }@else{
                             <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox" [id]="detalle.id_produccion" 
-                            [checked]="detalle.trazo" disabled
+                            [checked]="detalle.trazo=='1'" disabled
                             class="cursor-pointer  disabled:opacity-50   disabled:cursor-not-allowed"  />
                         }
                     </ng-template>
@@ -119,7 +122,7 @@
                         @if(detalle.puedeCapturarMuestras=="1"){  
                         <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox"  [id]="detalle.id_produccion" 
                             [disabled]="detalle.id_estado != '1'" 
-                            [(ngModel)]="detalle.carta_color"
+                            [checked]="detalle.carta_color=='1'"
                             (change)="updateCheck(detalle.id_produccion, $event,'carta')"
                              class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed" />
                         }@else{
