@@ -23,11 +23,12 @@ import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { TruncatePipe } from '@app/pipes/truncate.pipe';
 import { ProduccionService, UiService, UsuarioService } from '@app/services';
+import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { environment } from '@environments/environment.development';
 import {
   DetailRowService,
   RecordClickEventArgs,
-  TextWrapSettingsModel,
+  TextWrapSettingsModel
 } from '@syncfusion/ej2-angular-grids';
 import { firstValueFrom } from 'rxjs';
 import { ResponseBitacoraMuestra as BitacoraMuestra } from '../../../../interfaces/responses/ResponseBitacoraMuestra';
@@ -40,6 +41,7 @@ import { RegistroMuestraComponent } from '../../componentes/registro-muestra/reg
     RegistroMuestraComponent,    
     FormsModule,
     CommonModule,
+    SearchMetricsComponent,
     TruncatePipe,
     PrimeModule,
     SynfusionModule,

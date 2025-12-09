@@ -49,10 +49,11 @@
                     <button class="p-1 text-sm font-medium text-gray-900 dark:text-gray-100 border-b-2 border-blue-500 dark:border-blue-400" [ngClass]="{'border-blue-500 text-blue-600': activeTab === 'tab1', 'border-transparent text-gray-500 dark:text-gray-400': activeTab !== 'tab1'}"
                         (click)="activeTab = 'tab1'">
             Ordenes Pendientes
-          </button>
-                    <button class="p-1 text-sm font-medium text-gray-900 dark:text-gray-100 border-b-2 border-transparent" [ngClass]="{'border-blue-500 text-blue-600': activeTab === 'tab2', 'border-transparent text-gray-500 dark:text-gray-400': activeTab !== 'tab2'}" (click)="activeTab = 'tab2'">
+          </button>           
+          <button class="p-1 text-sm font-medium text-gray-900 dark:text-gray-100 border-b-2 border-blue-500 dark:border-blue-400" [ngClass]="{'border-blue-500 text-blue-600': activeTab === 'tab2', 'border-transparent text-gray-500 dark:text-gray-400': activeTab !== 'tab2'}"
+                        (click)="activeTab = 'tab2'">
             Procesos pendientes
-          </button>
+          </button>                    
                 </nav>
             </div>
             <div class="mt-3">
@@ -100,7 +101,7 @@
                             <e-column field='tieneOmision' headerText="" textAlign="Center" [allowFiltering]="true" width="20">
                                 <ng-template #template let-data>                                                                            
                                     @if(data.tieneOmision == '1') {
-                                        <span class="blink text-red-600">
+                                        <span class=" text-red-600">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 fill-red-600 " viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10" />
                       </svg> OMISIÓN
@@ -128,17 +129,15 @@
                         </e-columns>
                     </ejs-grid>
                 </div>
-                <div *ngIf="activeTab === 'tab2'" class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow h-full">
-                    <p class="text-gray-700 dark:text-gray-300 text-2xl font-semibold mb-4 p-2">
-                        Aquí se mostrarán los procesos pendientes. Actualmente no hay datos para mostrar.
-                    </p>
-
+                <div *ngIf="activeTab=='tab2'"  class=" bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <div _ngcontent-ng-c2908303711="" class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow h-full "><p class="text-gray-700 dark:text-gray-300 text-2xl font-semibold mb-4 p-2"> Aquí se mostrarán los procesos pendientes. Actualmente no hay datos para mostrar. </p></div>
                 </div>
+                
             </div>
         </div>
         <div>
-            <div class="py-1 px-2 mt-9 w-full">
-                <!-- <search-metrics [typeSearch]="type" placeholder="Registrar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics> -->
+            <div class="py-1 px-2  w-full">
+                <search-metrics [typeSearch]="type" placeholder="Buscar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
             </div>
             <detalle-produccion [orden]="currentOrder()" [detalles]="currentDetail()" [selectedId]="selectedMuestra()?.id_produccion || null" (selectMuestra)="onSelectMuestra($event)" (verHistorial)="onVerHistorial($event)" (cerrarMuestra)="cerrarMuestra($event)"                
                 (onChange)="change($event.id, $event.value, $event.tipo)">
