@@ -3,6 +3,7 @@ export interface ResponseBitacoraMuestra {
     trazo?:EventoActividad;
     voBo?:EventoActividad;
     carta?:EventoActividad;
+    infoCierre?:EventoActividad;
 }
 
 export interface EventoActividad {

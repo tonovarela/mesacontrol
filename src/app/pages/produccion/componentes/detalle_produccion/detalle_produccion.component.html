@@ -88,8 +88,7 @@
                 <e-column [allowFiltering]="false" textAlign="Center" width=70 headerText='VoBo'>
                     <ng-template #template let-detalle>
                         
-                        @if(detalle.puedeCapturarMuestras=="1"){
-                            
+                        @if(detalle.puedeCapturarMuestras=="1"){                            
                         <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"                            
                             [checked]="detalle.vobo=='1'"
                             (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
