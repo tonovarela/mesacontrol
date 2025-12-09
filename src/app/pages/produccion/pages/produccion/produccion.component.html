@@ -9,15 +9,13 @@
             <e-columns>
                 <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=40>
      <ng-template #template let-data>
-                                    <!-- <div class="flex flex-col justify-start items-start"> -->
+                                    
                                         <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>
-                                    <!-- </div> -->
+                                    
                                 </ng-template>
                 </e-column>
                 <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="10">
-                </e-column>
-                <!-- <e-column field='NombreCliente' [allowFiltering]="true" headerText='Cliente' width=100>
-                </e-column> -->
+                </e-column>                
                 <e-column field='Vendedor' [allowFiltering]="true" width=50>
                 </e-column>                  
                 <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true" headerText='Cant' width=50>
@@ -139,8 +137,8 @@
             </div>
         </div>
         <div>
-            <div class="py-1 px-2 w-full">
-                <search-metrics [typeSearch]="type" placeholder="Registrar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
+            <div class="py-1 px-2 mt-9 w-full">
+                <!-- <search-metrics [typeSearch]="type" placeholder="Registrar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics> -->
             </div>
             <detalle-produccion [orden]="currentOrder()" [detalles]="currentDetail()" [selectedId]="selectedMuestra()?.id_produccion || null" (selectMuestra)="onSelectMuestra($event)" (verHistorial)="onVerHistorial($event)" (cerrarMuestra)="cerrarMuestra($event)"                
                 (onChange)="change($event.id, $event.value, $event.tipo)">
@@ -150,7 +148,6 @@
     }
 
 </div>
-<!-- Usa el nuevo componente de diálogo -->
 
 @if(selectedMuestra()){
 <registro-muestra [muestra]="selectedMuestra()" (onClose)="onCloseDialog()" (onVerHistorial)="onVerHistorial($event)" (onSave)="onSaveMuestra($event)">

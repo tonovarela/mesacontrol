@@ -23,7 +23,6 @@ import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { TruncatePipe } from '@app/pipes/truncate.pipe';
 import { ProduccionService, UiService, UsuarioService } from '@app/services';
-import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { environment } from '@environments/environment.development';
 import {
   DetailRowService,
@@ -38,8 +37,7 @@ import { RegistroMuestraComponent } from '../../componentes/registro-muestra/reg
 @Component({
   selector: 'app-produccion',
   imports: [
-    RegistroMuestraComponent,
-    SearchMetricsComponent,
+    RegistroMuestraComponent,    
     FormsModule,
     CommonModule,
     TruncatePipe,
