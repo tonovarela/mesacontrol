@@ -154,47 +154,49 @@
 </registro-muestra>
 }
 <p-dialog header="Historial de Muestras" [(visible)]="mostrarModalBitacora" [modal]="true" [style]="{width: '60vw'}">
-    <div class="flex flex-row  justify-between gap-4">
+    <div class="flex sm:flex-row  flex-col sm:justify-between">
+        
         @if(bitacoraMuestras()?.infoCierre !=null){
-            <div class="flex col items-center w-1/4 p-4 bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 rounded-lg shadow-md">
-            <div class="flex flex-col">
+           <div class="flex flex-col  items-center w-1/4 px-2 bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 rounded-lg shadow-md">
+            <div>
                 <span class="text-xs font-bold text-gray-600 dark:text-gray-400">{{ bitacoraMuestras()?.infoCierre!.descripcion}}</span>
             </div>
-            <div class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+            
+            <div class="text-xs  dark:text-gray-400">
                 {{ bitacoraMuestras()?.infoCierre!.fecha_registro | date: 'dd-MM-yyyy hh:mm a' }}
             </div>
         </div>
 
         }
         @if(bitacoraMuestras()?.trazo !=null){
-        <div class="flex items-center w-1/4 p-4 bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 rounded-lg shadow-md">
-            <div class="flex flex-col">
+        <div class="flex flex-col items-center w-1/4 px-2 bg-gradient-to-r from-blue-100 to-blue-50 dark:from-blue-900 dark:to-blue-800 rounded-lg shadow-md">
+            <div >
                 <span class="text-xs font-bold text-gray-600 dark:text-gray-400">{{ bitacoraMuestras()?.trazo!.descripcion
           }}</span>
             </div>
-            <div class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+            <div class="text-xs text-gray-500 dark:text-gray-400">
                 {{ bitacoraMuestras()?.trazo!.fecha_registro | date: 'dd-MM-yyyy hh:mm a' }}
             </div>
         </div>
         } 
         @if(bitacoraMuestras()?.voBo != null) {
-        <div class="flex items-center w-1/4 p-4 bg-gradient-to-r from-green-100 to-green-50 dark:from-green-900 dark:to-green-800 rounded-lg shadow-md">
-            <div class="flex flex-col">
+        <div class="flex flex-col items-center w-1/4 px-2 bg-gradient-to-r from-green-100 to-green-50 dark:from-green-900 dark:to-green-800 rounded-lg shadow-md">
+            <div >
                 <span class="text-xs font-bold  text-gray-600 dark:text-gray-400">{{ bitacoraMuestras()?.voBo!.descripcion
           }}</span>
             </div>
-            <div class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+            <div class=" text-xs text-gray-500 dark:text-gray-400">
                 {{ bitacoraMuestras()?.voBo!.fecha_registro | date: 'dd-MM-yyyy hh:mm a' }}
             </div>
         </div>
         }
         @if(bitacoraMuestras()?.carta != null) {
-            <div class="flex items-center w-1/4 p-4 bg-gradient-to-r from-purple-100 to-purple-50 dark:from-purple-900 dark:to-purple-800 rounded-lg shadow-md">
-                <div class="flex flex-col">
+            <div class="flex flex-col items-center w-1/4 px-2 bg-gradient-to-r from-purple-100 to-purple-50 dark:from-purple-900 dark:to-purple-800 rounded-lg shadow-md">
+                <div >
                     
                     <span class="text-xs font-bold text-gray-600 dark:text-gray-400">{{ bitacoraMuestras()?.carta!.descripcion }}</span>
                 </div>
-                <div class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+                <div class=" text-xs text-gray-500 dark:text-gray-400">
                     {{ bitacoraMuestras()?.carta!.fecha_registro | date: 'dd-MM-yyyy hh:mm a' }}
                 </div>
             </div>
