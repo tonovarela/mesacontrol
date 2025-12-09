@@ -100,8 +100,7 @@
                             </e-column>
 
                             <e-column field='tieneOmision' headerText="" textAlign="Center" [allowFiltering]="true" width="20">
-                                <ng-template #template let-data>    
-                                                                        
+                                <ng-template #template let-data>                                                                            
                                     @if(data.tieneOmision == '1') {
                                         <span class="blink text-red-600">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 fill-red-600 " viewBox="0 0 24 24">
@@ -152,6 +151,7 @@
 
 </div>
 <!-- Usa el nuevo componente de diálogo -->
+
 @if(selectedMuestra()){
 <registro-muestra [muestra]="selectedMuestra()" (onClose)="onCloseDialog()" (onVerHistorial)="onVerHistorial($event)" (onSave)="onSaveMuestra($event)">
 </registro-muestra>

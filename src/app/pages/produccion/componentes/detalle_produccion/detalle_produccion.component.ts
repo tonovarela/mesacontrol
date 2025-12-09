@@ -26,6 +26,8 @@ export class DetalleProduccionComponent extends BaseGridComponent  implements On
   @Output() onChange = new EventEmitter<{ id: string, value: boolean,tipo:string }>();
   @Output() verHistorial = new EventEmitter<any>();
   protected minusHeight = 0.30;
+
+  
   
  public wrapSettings?: TextWrapSettingsModel;
 
