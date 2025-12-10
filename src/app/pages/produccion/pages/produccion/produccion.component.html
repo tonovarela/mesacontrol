@@ -9,19 +9,16 @@
             <e-columns>
                 <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width=40>
      <ng-template #template let-data>
-                                    
-                                        <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>
-                                    
-                                </ng-template>
+     <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>                                    
+     </ng-template>
                 </e-column>
                 <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="10">
                 </e-column>                
                 <e-column field='Vendedor' [allowFiltering]="true" width=50>
                 </e-column>                  
                 <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true" headerText='Cant' width=50>
-                    <ng-template #template let-data>                        
-                            <span>{{data.CantidadEntregar | number}}</span>
-                        
+                    <ng-template #template let-data>
+                        <span>{{data.CantidadEntregar | number}}</span>
                     </ng-template>
                 </e-column>           
             </e-columns>
@@ -101,11 +98,11 @@
                             <e-column field='tieneOmision' headerText="" textAlign="Center" [allowFiltering]="true" width="20">
                                 <ng-template #template let-data>                                                                            
                                     @if(data.tieneOmision == '1') {
-                                        <span class=" text-red-600">
+                                        <div class=" text-red-600 ">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="inline h-6 w-6 fill-red-600 " viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10" />
-                      </svg> OMISIÓN
-                                        </span>
+                      </svg> Omisión
+                    </div>
                                     } 
 
 
@@ -130,7 +127,7 @@
                     </ejs-grid>
                 </div>
                 <div *ngIf="activeTab=='tab2'"  class=" bg-white dark:bg-gray-800 rounded-lg shadow">
-                    <div _ngcontent-ng-c2908303711="" class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow h-full "><p class="text-gray-700 dark:text-gray-300 text-2xl font-semibold mb-4 p-2"> Aquí se mostrarán los procesos pendientes. Actualmente no hay datos para mostrar. </p></div>
+                    <div  class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow h-full "><p class="text-gray-700 dark:text-gray-300 text-2xl font-semibold mb-4 p-2"> Aquí se mostrarán los procesos pendientes. Actualmente no hay datos para mostrar. </p></div>
                 </div>
                 
             </div>
