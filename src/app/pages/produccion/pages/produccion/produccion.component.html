@@ -13,7 +13,14 @@
      </ng-template>
                 </e-column>
                 <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="10">
-                </e-column>                
+                </e-column>       
+                <e-column field='FechaEmision' [allowFiltering]="true" headerText='Emisión' width="20">
+                                <ng-template #template let-data>
+                                    <div>
+                                        <span >{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>                                        
+                                    </div>
+                                </ng-template>
+                            </e-column>                
                 <e-column field='Vendedor' [allowFiltering]="true" width=50>
                 </e-column>                  
                 <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true" headerText='Cant' width=50>
@@ -71,6 +78,13 @@
                                 <ng-template #template let-data>
                                     <div>
                                         <span >{{data.NombreTrabajo | truncate:25}}</span>                                        
+                                    </div>
+                                </ng-template>
+                            </e-column>                                                        
+                            <e-column field='FechaEmision' [allowFiltering]="true" headerText='Emisión' width="25">
+                                <ng-template #template let-data>
+                                    <div>
+                                        <span >{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>                                        
                                     </div>
                                 </ng-template>
                             </e-column>                                                        
