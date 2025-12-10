@@ -33,26 +33,23 @@
                     </ng-template>
                 </e-column>
                 <e-column [allowFiltering]="false" width=100>
-                    <ng-template #template let-detalle>
-                        
+                    <ng-template #template let-detalle>                        
                             @if(detalle.id_estado=="1") {
                                 @if(detalle.puedeCapturarMuestras =="1"){
                                 <button class="bg-blue-500 m-1 text-white px-2 py-1 rounded hover:bg-blue-600" (click)="selectMuestra.emit(detalle)">Muestra</button>
                                 }@else
                                 {
-                                    <span class="text-gray-500 px-2 py-1 text-sm dark:text-gray-400">---</span>                                    
+                                    <div class="text-red-500 font-semibold px-2 py-1">Omisión</div>                                    
                                 }
                             }@else{
                                 <div class="text-gray-500 px-2 py-1 dark:text-gray-400">Cerrado</div>
-                                }                        
-                                                    
-                        
+                                }                                                                                                    
                     </ng-template>
                 </e-column>
                 <e-column [allowFiltering]="false" width=100>
                     <ng-template #template let-detalle>
                         @if(detalle.id_estado=="1"){
-                        <button class="bg-pink-500 text-white px-2 py-1 rounded hover:bg-pink-600"
+                        <button class="bg-pink-500 text-white px-2  rounded hover:bg-pink-600"
                             (click)="cerrarMuestra.emit(detalle.id_produccion)">Finalizar</button>
                         }@else{
                         <div class="text-green-500 px-2 py-1 dark:text-green-400">Finalizado</div>
