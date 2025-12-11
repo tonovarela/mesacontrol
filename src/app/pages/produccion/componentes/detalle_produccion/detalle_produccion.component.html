@@ -36,7 +36,7 @@
                     <ng-template #template let-detalle>                        
                             @if(detalle.id_estado=="1") {
                                 @if(detalle.puedeCapturarMuestras =="1"){
-                                <button class="bg-blue-500 m-1 text-white px-2 py-1 rounded hover:bg-blue-600" (click)="selectMuestra.emit(detalle)">Muestra</button>
+                                <button class="bg-blue-500 m-1 text-white px-1 rounded hover:bg-blue-600" (click)="selectMuestra.emit(detalle)">Muestra</button>
                                 }@else
                                 {
                                     <div class="text-red-500 font-semibold px-2 py-1">Omisión</div>                                    
