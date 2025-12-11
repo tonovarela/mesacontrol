@@ -35,11 +35,16 @@
                 <e-column [allowFiltering]="false" width=100>
                     <ng-template #template let-detalle>                        
                             @if(detalle.id_estado=="1") {
-                                @if(detalle.puedeCapturarMuestras =="1"){
+                                @if(detalle.puedeCapturarMuestras =="1" ) {
                                 <button class="bg-blue-500 m-1 text-white px-1 rounded hover:bg-blue-600" (click)="selectMuestra.emit(detalle)">Muestra</button>
                                 }@else
                                 {
-                                    <div class="text-red-500 font-semibold px-2 py-1">Omisión</div>                                    
+                                    @if(detalle.esOmision=="1"){
+                                        <div class="text-red-500 font-semibold px-2 py-1">Omisión </div>                                    
+                                    }@else{
+                                        <div class="text-gray-500 px-2 py-1 dark:text-gray-400">--</div>
+                                    }
+                                    
                                 }
                             }@else{
                                 <div class="text-gray-500 px-2 py-1 dark:text-gray-400">Cerrado</div>
@@ -74,7 +79,7 @@
                         </div>
                     </ng-template>
                 </e-column>
-                <e-column field='acum.' [allowFiltering]="true" textAlign="Right" width=50>
+                <e-column field='acumulado'  headerText="acum." [allowFiltering]="true" textAlign="Right" width=50>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.acumulado | number}}</span>

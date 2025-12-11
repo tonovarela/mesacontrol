@@ -1,23 +1,12 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { CurrentOrder } from '@app/interfaces/models/CurrrentOrder';
 import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
 import { Muestra } from '@app/interfaces/responses/ResponseBitacoraMuestra';
-import {
-  Detalle,
-  EstadoMuestra,
-  OrdenMetrics,
-} from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { Detalle, EstadoMuestra, OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
 import { PrimeModule } from '@app/lib/prime.module';
 import { SynfusionModule } from '@app/lib/synfusion.module';
@@ -25,11 +14,7 @@ import { TruncatePipe } from '@app/pipes/truncate.pipe';
 import { ProduccionService, UiService, UsuarioService } from '@app/services';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { environment } from '@environments/environment.development';
-import {
-  DetailRowService,
-  RecordClickEventArgs,
-  TextWrapSettingsModel
-} from '@syncfusion/ej2-angular-grids';
+import { DetailRowService, RecordClickEventArgs, TextWrapSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { firstValueFrom } from 'rxjs';
 import { ResponseBitacoraMuestra as BitacoraMuestra } from '../../../../interfaces/responses/ResponseBitacoraMuestra';
 import { DetalleProduccionComponent } from '../../componentes/detalle_produccion/detalle_produccion.component';
@@ -58,14 +43,22 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   public selectedMuestra = signal<Detalle | null>(null);
   public currentDetail = computed(() => this._currentOrder()?.detalle || []);
   public currentOrder = computed(() => this._currentOrder()?.order || null);
+
+
   public ordenesMetrics = computed(() => this._ordenesMetrics());
+  public ordenesVigentes= computed(() => this._ordenesVigentes()); 
+
+
   public bitacoraMuestras = computed(() => this._bitacoraMuestras());
   public mostrarModalBitacora = signal(false);
   public cargando = signal(false);
   public cargandoDetalle = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
   public verPendientes = computed(() => this._verPendientes());
+
   private _ordenesMetrics = signal<OrdenMetrics[]>([]);
+  private _ordenesVigentes = signal<OrdenMetrics[]>([]);
+
   private _bitacoraMuestras = signal<BitacoraMuestra | null>(null);
   private produccionService = inject(ProduccionService);
   private usuarioService = inject(UsuarioService);
@@ -79,10 +72,10 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
 
 
-  async onSelectOrder(order: any) {
+  async onSelectOrder(order: any,vigentes=false) {
     this._currentOrder.set({ order, detalle: [] });
     const { NoOrden: orden } = order;
-    await this.loadDataOrder(orden);
+    await this.loadDataOrder(orden,vigentes);
     await this.cargarOrdenes();
   }
 
@@ -107,22 +100,22 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     });
   }
 
-  onCellClick(args: RecordClickEventArgs): void {
+  onCellClick(args: RecordClickEventArgs, vigentes=false): void {
     const {rowData:orden,  cellIndex} =  args;
    if (cellIndex !== 0) {
     return;
    }        
-      this.onSelectOrder(orden);
+      this.onSelectOrder(orden,vigentes);
   }
 
  
 
   async cargarOrdenes() {
     try {
-      const response = await firstValueFrom(
-        this.produccionService.listar(this._verPendientes())
-      );
+      const response = await firstValueFrom(this.produccionService.listar(this._verPendientes()));
+      const responseVigentes= await firstValueFrom(this.produccionService.vigentes());      
       this._ordenesMetrics.set(response.ordenes);
+      this._ordenesVigentes.set(responseVigentes.ordenes);
     } catch (error) {
       this.uiService.mostrarAlertaError(
         'Error al cargar las órdenes de producción',
@@ -143,8 +136,9 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       
   }
 
-  async loadDataOrder(orden: string) {
+  async loadDataOrder(orden: string,vigentes=false) {
     this.cargandoDetalle.set(true);
+    
     const response = await firstValueFrom(
       this.produccionService.detalle(orden)
     );
@@ -155,9 +149,17 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       carta_color: item.carta_color === '1' ? true : false, // Convertir el valor a booleano,
       puedeRegistrarOffset: item.proceso.includes('OFFSET'),
     }));
+    const detalle= vigentes?newData.filter(item=>item.puedeCapturarMuestras=="1" && item.fecha_limite !=null && item.id_estado=="1"):newData ;
     this._currentOrder.update((orderModel) => {
-      return { ...orderModel, detalle: newData };
+      return { ...orderModel, detalle };
     });
+    
+    
+    
+    //console.log('Detalle de producción cargado:', f);
+
+    
+    
     this.cargandoDetalle.set(false);
     this.estadosMuestra.set(response.estadoMuestras);
   }
@@ -186,9 +188,9 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       await this.loadDataOrder(orden);
     } catch (error) {
       this.uiService.mostrarAlertaError(
-        'Error al registrar muestra',
-        'No se pudo registrar la muestra. Inténtalo de nuevo más tarde.'
-      );
+                                        'Error al registrar muestra',
+                                        'No se pudo registrar la muestra. Inténtalo de nuevo más tarde.'
+                                      );
     }
   }
 

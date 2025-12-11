@@ -19,6 +19,9 @@ export class ProduccionService {
         return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/produccion?pendientes=${pendientes}`);
     }
 
+    vigentes(){
+        return this.http.get<ResponseOrdenMetrics>(`${this.API_URL}/api/produccion/vigentes`);
+    }
 
     obtenerElementos(orden: string) {
         return this.http.get<ResponseElementos>(`${this.API_URL}/api/produccion/elementos/${orden}`);

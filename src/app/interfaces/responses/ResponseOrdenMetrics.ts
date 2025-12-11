@@ -82,7 +82,9 @@ export interface Detalle {
     voBo:          boolean | string; // Puede ser booleano o string dependiendo del origen de los datos
     carta_color:   boolean | string; // Cambiado a booleano
     id_estado_muestra: number;
+    fecha_limite: Date | null;
     puedeRegistrarOffset: boolean;
+    puedeCapturarMuestras: string;
 }
 
 
