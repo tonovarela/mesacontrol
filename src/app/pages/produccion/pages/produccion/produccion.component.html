@@ -142,7 +142,7 @@
                 </div>
                 <div *ngIf="activeTab=='tab2'"  class=" bg-white dark:bg-gray-800 rounded-lg shadow">
                       <ejs-grid #grid [dataSource]='ordenesVigentes()'
-                     (recordClick)='onCellClick($event,true)'
+                     (recordClick)='onCellClick($event)'
                      [textWrapSettings]='wrapSettings'  [filterSettings]="filterSettings " [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
                         [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'
                         >
@@ -152,7 +152,6 @@
                                         <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>                            
                                 </ng-template>
                             </e-column>
-
                             <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="35">
                                 <ng-template #template let-data>
                                     <div>
@@ -167,7 +166,6 @@
                                     </div>
                                 </ng-template>
                             </e-column>                                                        
-
                             <e-column field='tieneInfo' headerText="Tiene info" textAlign="Center" [allowFiltering]="false" width="20">
                                 <ng-template #template let-data>
                                     <div class="flex  items-center justify-center w-full">
@@ -187,7 +185,6 @@
                                     </div>
                                 </ng-template>                                
                             </e-column>
-
                             <!-- <e-column field='tieneOmision' headerText="" textAlign="Center" [allowFiltering]="true" width="20">
                                 <ng-template #template let-data>                                                                            
                                     @if(data.tieneOmision == '1') {
@@ -197,12 +194,8 @@
                       </svg> Omisión
                     </div>
                                     } 
-
-
                                 </ng-template>                                
                             </e-column> -->
-
-
                             <e-column  [allowFiltering]="true" headerText='Metrics' width="50">
                                 <ng-template #template let-data>
                                     <div class="flex flex-col p-1">

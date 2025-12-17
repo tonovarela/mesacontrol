@@ -72,10 +72,10 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
 
 
-  async onSelectOrder(order: any,vigentes=false) {
+  async onSelectOrder(order: any) {    
     this._currentOrder.set({ order, detalle: [] });
     const { NoOrden: orden } = order;
-    await this.loadDataOrder(orden,vigentes);
+    await this.loadDataOrder(orden);
     await this.cargarOrdenes();
   }
 
@@ -84,6 +84,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   }
 
   ngOnInit(): void {
+
     this.iniciarResizeGrid(0.1, true);
     const ordenActual = this.produccionService.ordenProduccionActual();
      if (ordenActual){
@@ -100,15 +101,14 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     });
   }
 
-  onCellClick(args: RecordClickEventArgs, vigentes=false): void {
+  onCellClick(args: RecordClickEventArgs): void {
     const {rowData:orden,  cellIndex} =  args;
    if (cellIndex !== 0) {
     return;
    }        
-      this.onSelectOrder(orden,vigentes);
+      this.onSelectOrder(orden);
   }
 
- 
 
   async cargarOrdenes() {
     try {
@@ -124,9 +124,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     } finally {
       this.cargando.set(false);
       this.autoFitColumns = false;
-
-    }
-    
+    }    
     setTimeout(() => this.iniciarResizeGrid(this.minusHeight));
   }
 
@@ -136,12 +134,10 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       
   }
 
-  async loadDataOrder(orden: string,vigentes=false) {
-    this.cargandoDetalle.set(true);
-    
-    const response = await firstValueFrom(
-      this.produccionService.detalle(orden)
-    );
+  async loadDataOrder(orden: string) {
+    const  vigentes= this.activeTab==="tab2"?true:false;
+    this.cargandoDetalle.set(true);    
+    const response = await firstValueFrom(this.produccionService.detalle(orden));
     const newData = response.detalle.map((item: Detalle) => ({
       ...item,
       trazo: item.trazo === '1' ? true : false, // Convertir el valor a booleano
@@ -152,14 +148,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     const detalle= vigentes?newData.filter(item=>item.puedeCapturarMuestras=="1" && item.fecha_limite !=null && item.id_estado=="1"):newData ;
     this._currentOrder.update((orderModel) => {
       return { ...orderModel, detalle };
-    });
-    
-    
-    
-    //console.log('Detalle de producción cargado:', f);
-
-    
-    
+    });      
     this.cargandoDetalle.set(false);
     this.estadosMuestra.set(response.estadoMuestras);
   }
@@ -172,7 +161,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     this.selectedMuestra.set(null);
   }
 
-  async onSaveMuestra(registro: RegistroMuestra) {
+  async onSaveMuestra(registro: RegistroMuestra) {    
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id;
     const { detalle, muestraRegistrada, operador, supervisor } = registro;
     const request = {
