@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { PrimeModule } from '@app/lib/prime.module';
 
-import { environment } from '@environments/environment.development';
-import { Detalle } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { FormsModule } from '@angular/forms';
-import { SearchEmployeeComponent } from '@app/shared/search-employee/search-employee.component';
 import { RegistroMuestra } from '@app/interfaces/models/RegistroMuestra';
+import { Detalle } from '@app/interfaces/responses/ResponseOrdenMetrics';
+import { SearchEmployeeComponent } from '@app/shared/search-employee/search-employee.component';
+import { environment } from '@environments/environment.development';
 
 interface Operador {
   NoOperador: string;
@@ -70,15 +70,16 @@ export class RegistroMuestraComponent {
     this.onClose.emit();
   }
   processSamples() {
-    if (isNaN(this.numMuestras) || +this.numMuestras <= 0) {
-      return;
-    }
-    this.onSave.emit({ 
+
+    if (isNaN(this.numMuestras) || +this.numMuestras < 0) { return; }
+     const numMuestras = Math.trunc(+this.numMuestras);
+     this.onSave.emit({
       detalle: this.selectedMuestra()!,
-      muestraRegistrada: +this.numMuestras,
+      muestraRegistrada: numMuestras,
       operador: this.selectedOperador()?.NoOperador || '-1',
       supervisor: this.selectedSupervisor()?.NoOperador || '-1'
      });
+
     this.closeDialog();
   }
 

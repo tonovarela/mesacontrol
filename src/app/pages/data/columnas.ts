@@ -71,14 +71,13 @@ const columnasConfig: ColumnaConfig[] = [
 ];
 
 function  puedeVerHistorico(estadoKey:string){
- return estadoKey=="1" || estadoKey=="2" 
-
+ return estadoKey=="1" || estadoKey=="2"
 }
 
 
 // Función utilitaria para colorImagen
 function getColorImagen(data: any, estadoKey: string, checklistKey: string, estadoExtra?: string) {
-  const estado = data[estadoKey];  
+  const estado = data[estadoKey];
   if (estado == "2") return 'fill-white py-1 rounded-full bg-lime-700';
   if (estado == "3") return 'fill-white py-1 rounded-full bg-pink-600';
   if (estado == "4") return 'fill-white py-1 rounded-full bg-gray-400';

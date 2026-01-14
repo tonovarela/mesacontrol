@@ -7,7 +7,7 @@
                 <h2 class="text-xl font-medium text-gray-800 dark:text-gray-200">Registro de muestras</h2>
                 <div class="absolute bottom-0 left-0 w-16 h-1 bg-blue-500 dark:bg-blue-400 rounded"></div>
             </div>
-            
+
             <!-- Información de muestra con diseño de tarjeta mejorado -->
             @if(selectedMuestra()) {
                 <div class="rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
@@ -24,7 +24,7 @@
                             {{ selectedMuestra()?.proceso }}
                         </span>
                     </div>
-                    
+
                     <!-- Contenido de la tarjeta -->
                     <div class="px-4 py-3">
                         <div class="grid grid-cols-3 gap-4 text-sm">
@@ -51,7 +51,7 @@
                             <div class="p-2 rounded-md bg-gray-50 dark:bg-gray-700">
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Acumuladas</p>
                                 <p class="font-medium text-gray-800 dark:text-gray-200">
-                                    
+
                                     {{ selectedMuestra()?.acumulado }}
                                 </p>
                             </div>
@@ -59,7 +59,7 @@
                     </div>
                 </div>
             }
-            
+
             <!-- Campos adicionales con estilo mejorado -->
             <div class="space-y-4">
                 <!-- Número de muestras -->
@@ -71,17 +71,17 @@
                                 <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
                             </svg>
                         </div>
-                        <input 
-                            type="number" 
-                            id="numMuestras" 
+                        <input
+                            type="number"
+                            id="numMuestras"
                             min="1"
                             [(ngModel)]="numMuestras"
                             class="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                             placeholder="Ingrese el número de muestras"
                         >
                     </div>
-                </div>                                               
-            </div>            
+                </div>
+            </div>
             <!-- Selección de personal con diseño de tarjeta mejorado -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                 <!-- Operador -->
@@ -108,7 +108,7 @@
                         <search-employee [isSupervisor]="false" placeholder="Buscar operador" (onSelectEmployee)="onSelectOperador($event)" class="block w-full"></search-employee>
                     }
                 </div>
-                
+
                 <!-- Supervisor -->
                 <div class="w-full">
                     <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Supervisor</p>
@@ -134,10 +134,10 @@
                     }
                 </div>
             </div>
-            
+
             <!-- Acciones con botones mejorados -->
             <div class="pt-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
-                <button 
+                <button
                     class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                     (click)="closeDialog()">
                     <svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -145,7 +145,7 @@
                     </svg>
                     Cancelar
                 </button>
-                <button 
+                <button
                     class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800 dark:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     [disabled]="!selectedOperador() || !selectedSupervisor() "
                     (click)="processSamples()">
@@ -155,6 +155,6 @@
                     Guardar registro
                 </button>
             </div>
-        </div>            
+        </div>
     </ng-template>
 </p-dialog>
