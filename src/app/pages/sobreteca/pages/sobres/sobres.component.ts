@@ -65,6 +65,7 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
 
 
   ngOnInit(): void {
+    
     this.iniciarResizeGrid(this.minusHeight, true);
     this._activatedRouter.data.subscribe((data:any) => {
       const pendientes = data['pendientes'] || false;
