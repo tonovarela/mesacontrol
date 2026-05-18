@@ -140,15 +140,16 @@ export default class ProduccionComponent extends BaseGridComponent implements On
     const response = await firstValueFrom(this.produccionService.detalle(orden));
     const newData = response.detalle.map((item: Detalle) => ({
       ...item,
-      trazo: item.trazo === '1' ? true : false, // Convertir el valor a booleano
-      voBo: item.voBo === '1' ? true : false, // Convertir el valor a booleano
+      trazo: item.trazo === '1' ? true : false,  // Convertir el valor a booleano
+      voBo: item.voBo === '1' ? true : false,    // Convertir el valor a booleano
       carta_color: item.carta_color === '1' ? true : false, // Convertir el valor a booleano,
       puedeRegistrarOffset: item.proceso.includes('OFFSET'),
     }));
+
     const detalle= vigentes?newData.filter(item=>item.puedeCapturarMuestras=="1" && item.fecha_limite !=null && item.id_estado=="1"):newData ;
     this._currentOrder.update((orderModel) => {
       return { ...orderModel, detalle };
-    });      
+    });          
     this.cargandoDetalle.set(false);
     this.estadosMuestra.set(response.estadoMuestras);
   }
@@ -163,14 +164,15 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
   async onSaveMuestra(registro: RegistroMuestra) {    
     const id_usuario = this.usuarioService.StatusSesion()?.usuario?.id;
-    const { detalle, muestraRegistrada, operador, supervisor } = registro;
+    const { detalle, muestraRegistrada, operador, supervisor,observaciones } = registro;
     const request = {
       id_produccion: detalle.id_produccion,
       id_operador: operador,
       id_supervisor: supervisor,
       id_usuario,
       muestra: muestraRegistrada,
-    };
+      observaciones,
+    };    
     try {
       await firstValueFrom(this.produccionService.registrarMuestra(request));
       const orden = this.currentDetail()[0].orden_metrics;

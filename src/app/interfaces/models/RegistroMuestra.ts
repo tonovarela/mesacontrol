@@ -4,5 +4,6 @@ export interface RegistroMuestra {
     detalle: Detalle,
     muestraRegistrada: number,
     operador: string,
-    supervisor: string
+    supervisor: string,
+    observaciones?: string
   }

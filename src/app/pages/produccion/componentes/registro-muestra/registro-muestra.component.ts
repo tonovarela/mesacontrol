@@ -44,6 +44,7 @@ export class RegistroMuestraComponent {
   selectedSupervisor = signal<Operador | null>(null);
 
   numMuestras: number = 0;
+  observaciones: string = '';
   vobo: boolean = false;
 
   onSelectOperador(operador: any) {
@@ -66,6 +67,8 @@ export class RegistroMuestraComponent {
     this.selectedMuestra.set(null);
     this.selectedOperador.set(null);
     this.selectedSupervisor.set(null);
+    this.observaciones = '';
+    this.numMuestras = 0;
     this.visible.set(false);
     this.onClose.emit();
   }
@@ -77,7 +80,8 @@ export class RegistroMuestraComponent {
       detalle: this.selectedMuestra()!,
       muestraRegistrada: numMuestras,
       operador: this.selectedOperador()?.NoOperador || '-1',
-      supervisor: this.selectedSupervisor()?.NoOperador || '-1'
+      supervisor: this.selectedSupervisor()?.NoOperador || '-1',
+      observaciones: this.observaciones
      });
 
     this.closeDialog();
