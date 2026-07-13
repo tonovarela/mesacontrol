@@ -17,7 +17,11 @@
   </svg>
 </button> -->
         <a href="#" class="flex ml-12">
-          <img src="https://servicios.litoprocess.com/colaboradores/assets/_images/logoLito.svg" class="h-12  " />
+          @if(isDebug()){
+          <img  src="https://servicios.litoprocess.com/static/assets/img/lito-dark.png" class="h-10  " />
+          }@else{
+          <img  src="/static/assets/img/lito-dark.png" class="h-10" />
+          }
         </a>
         
       </div>

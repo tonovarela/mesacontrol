@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
+import { UsuarioService } from '@app/services/usuario.service';
 import { environment } from '../../../environments/environment.development';
 import { UiService } from '../../services';
-import { UsuarioService } from '@app/services/usuario.service';
-import { Usuario } from '../../interfaces/models/Usuario';
+
 
 @Component({
   selector: 'app-header',
@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
   esDark = false;
   linksThemeMap: Map<string, HTMLLinkElement> = new Map();
 
-
+  isDebug= computed(() => !environment.production);
   Username = computed(() => this.usuarioService.StatusSesion().usuario?.nombre);
 
   ngOnInit(): void {
