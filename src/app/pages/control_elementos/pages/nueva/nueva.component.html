@@ -1,12 +1,26 @@
 <div id="initial" class="dark:bg-gray-900 h-screen p-4">
   <div class="flex sm:flex-row flex-col justify-between items-center p-1">
-     <h2 class="text-2xl font-semibold mb-2 text-gray-800 dark:text-gray-100 tracking-tight">Prestamo de elementos</h2>
-     <button (click)="regresar()" class="flex items-center gap-2 px-2 py-1 bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white text-sm rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1">
+     <div class="flex items-center gap-3">
+       <button (click)="regresar()" class="flex items-center gap-2 px-2 py-1 bg-slate-500 hover:bg-slate-600 active:bg-slate-700 text-white text-sm rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-1">
+         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+         </svg>
+         
+       </button>
+       <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 tracking-tight">Prestamo de elementos</h2>
+     </div>
+     @if(solicitudActual().orderSelected){
+     <button
+       [disabled]="!tieneInformacionSeleccionado() || tieneAreaSinElemento()"
+       (click)="registrarPrestamo()"
+       class="flex items-center gap-2 px-2 py-1 bg-purple-500 hover:bg-purple-600 active:bg-purple-700 text-white text-sm rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-1 disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
+     >
        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
        </svg>
-       Regresar
+       Registrar prestamo
      </button>
+     }
 
 
   </div>
@@ -131,69 +145,92 @@
       </div>
     </div>
     @if(componenteSeleccionado()){
-    <div
-      class="w-full mx-auto mt-4 bg-white dark:bg-slate-800 rounded-xl shadow-lg col-span-3"
-    >
-      <div class="py-6 px-6">
-        <div class="flex items-center justify-between">
-          <h1 class="text-lg font-bold text-slate-900 dark:text-white">
-            Elementos
-          </h1>
-          <button
-            [disabled]="!tieneInformacionSeleccionado()"
-            (click)="registrarPrestamo()"
-            class="border border-slate-300 rounded-md px-2 py-1 text-sm bg-purple-500 text-white disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-slate-700 dark:disabled:text-slate-500"
-          >
-            Registrar prestamo
-          </button>          
-        </div>
-        <hr class="my-4 border-slate-200 dark:border-slate-700" />
-        <div class="flex flex-col gap-4 text-sm mt-6">          
-          <div>
-          
-            <ul class="space-y-1">
-              @for( item of componenteSeleccionado(); track
-              item.componente) {
-              <li class="border-b border-slate-200 dark:border-slate-700 pb-2">
-                <div class="flex justify-between">
-                  <h2 class="text-xl text-purple-500 ">{{ item.componente }}</h2>                
-                   <button  (click)="toogleSeleccion()" class="border border-slate-300 w-36 rounded-md px-2 py-1  text-bold">
-                  <span >
-                    {{ !todos ? 'Desmarcar todos' : 'Marcar todos' }}
-                  </span>
-        </button>
-                </div>                
-                <div class="border rounded-sm mt-2 p-2">
-                  <p-selectbutton
-                  (onChange)="seleccionarElemento($event,item.componente)" 
-                    [options]="item.elementos"
-                    [ngModel]="item.idSeleccionados"
-                    optionDisabled="isDisabled"
-                    size="small"                    
-                    [multiple]="true"
-                    optionLabel="descripcion"
-                    size="small"
-                  >    
-                  <ng-template #item let-item>
-                    <div class="flex flex-col justify-center items-center w-full  uppercase text-[10px]">                      
-                      <div >{{item.descripcion}}</div> 
-                      @if(item.isDisabled){
-                      <div class="text-[9px] text-gray-500 dark:text-gray-400 uppercase">{{`PRESTADO A ${item.usuarioPosee}`}}</div>  
-                    }@else {
-                        <div class="text-[9px] text-green-500 ">
-                          DISPONIBLE
-                        </div>  
-                    }
-                    </div>           
-                  </ng-template>                
-                  </p-selectbutton>
-                </div>                
-              </li>
-              }
-            </ul>
+    <div class="col-span-3 mt-4 flex flex-col gap-4">
+      @for( item of componenteSeleccionado(); track item.componente) {
+
+      <!-- Tarjeta Área -->
+      <div class="w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg">
+        <div class="py-6 px-6">
+          <div class="flex items-center justify-between">
+            <h1 class="text-lg font-bold text-slate-900 dark:text-white">
+              Área
+            </h1>
+            <h2 class="text-xl text-purple-500">{{ item.componente }}</h2>
+          </div>
+          <hr class="my-4 border-slate-200 dark:border-slate-700" />
+          <div class="flex flex-col gap-2 text-sm">
+            <label class="font-medium text-slate-500 dark:text-slate-400">
+               <span class="text-slate-400">(Opcional)</span>
+            </label>
+            <p-selectbutton
+              [options]="listadoAreas()"
+              [ngModel]="item.area"
+              (onChange)="seleccionarArea($event.value, item.componente)"
+              optionLabel="descripcion"
+              optionValue="id_area"
+              [multiple]="false"
+              [allowEmpty]="true"
+              size="small"
+              styleClass="flex flex-wrap"
+            />
+            @if(item.area && item.idSeleccionados.length === 0){
+            <div class="flex items-center gap-2 mt-1 text-red-600 dark:text-red-400">
+              <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+              </svg>
+              <span class="text-xs font-medium">
+                Debe seleccionar al menos un elemento para el área seleccionada.
+              </span>
+            </div>
+            }
           </div>
         </div>
       </div>
+
+      <!-- Tarjeta Elementos -->
+      <div class="w-full bg-white dark:bg-slate-800 rounded-xl shadow-lg">
+        <div class="py-6 px-6">
+          <div class="flex items-center justify-between">
+            <h1 class="text-lg font-bold text-slate-900 dark:text-white">
+              Elementos
+            </h1>
+            <div class="flex items-center gap-2">
+              <button (click)="toogleSeleccion()" class="border border-slate-300 w-36 rounded-md px-2 py-1 text-bold">
+                <span>{{ !todos ? 'Desmarcar todos' : 'Marcar todos' }}</span>
+              </button>
+            </div>
+          </div>
+          <hr class="my-4 border-slate-200 dark:border-slate-700" />
+          <div class="border rounded-sm p-2">
+            <p-selectbutton
+            (onChange)="seleccionarElemento($event,item.componente)"
+              [options]="item.elementos"
+              [ngModel]="item.idSeleccionados"
+              optionDisabled="isDisabled"
+              size="small"
+              [multiple]="true"
+              optionLabel="descripcion"
+              size="small"
+            >
+            <ng-template #item let-item>
+                            
+              <div class="flex flex-col justify-center items-center w-full  uppercase text-[10px]">
+                <div >{{item.descripcion}}</div>
+                @if(item.isDisabled){
+                <div class="text-[9px] text-gray-500 dark:text-gray-400 uppercase">{{`PRESTADO A ${item.usuarioPosee}`}}</div>
+              }@else {
+                  <div class="text-[9px] text-green-500 ">
+                    DISPONIBLE
+                  </div>
+              }
+              </div>
+            </ng-template>
+            </p-selectbutton>
+          </div>
+        </div>
+      </div>
+
+      }
     </div>
     }
   </div> 

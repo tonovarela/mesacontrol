@@ -4,46 +4,43 @@ import {
   Component,
   computed,
   inject,
-  effect,
   OnInit,
-  signal,
+  signal
 } from '@angular/core';
-import { PrimeModule } from '@app/lib/prime.module';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OrdenMetrics } from '@app/interfaces/responses/ResponseOrdenMetrics';
 import { TypeSearchMetrics } from '@app/interfaces/type';
+import { PrimeModule } from '@app/lib/prime.module';
+import { SolicitudComponentService } from '@app/pages/control_elementos/services/solicitudcomponente.service';
 import {
   ProduccionService,
-  SolicitudService,
   UiService,
-  UsuarioService,
+  UsuarioService
 } from '@app/services';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { firstValueFrom } from 'rxjs';
-import { ComponenteView, Solicitud } from '../../interfaces/interface';
-import { MultiSelect, MultiSelectChangeEvent } from 'primeng/multiselect';
-import { SolicitudComponentService } from '@app/pages/control_elementos/services/solicitudcomponente.service';
-import { FormsModule } from '@angular/forms';
+import { Area, Solicitud } from '../../interfaces/interface';
 
-import { SelectButtonChangeEvent } from 'primeng/selectbutton';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
+import { SelectButtonChangeEvent } from 'primeng/selectbutton';
 
-if (!Object.groupBy) {
-  Object.groupBy = <K extends PropertyKey, V>(
-    list: V[],
-    keyGetter: (obj: V, index: number) => K
-  ): Partial<Record<K, V[]>> => {
-    const map: Partial<Record<K, V[]>> = {};
-    list.forEach((item, index) => {
-      const key = keyGetter(item, index);
-      if (!map[key]) {
-        map[key] = [];
-      }
-      map[key].push(item);
-    });
-    return map;
-  };
-}
+// if (!Object.groupBy) {
+//   Object.groupBy = <K extends PropertyKey, V>(
+//     list: V[],
+//     keyGetter: (obj: V, index: number) => K
+//   ): Partial<Record<K, V[]>> => {
+//     const map: Partial<Record<K, V[]>> = {};
+//     list.forEach((item, index) => {
+//       const key = keyGetter(item, index);
+//       if (!map[key]) {
+//         map[key] = [];
+//       }
+//       map[key].push(item);
+//     });
+//     return map;
+//   };
+// }
 
 
 interface ComponenteV {
@@ -63,12 +60,13 @@ export default class NuevaComponent implements OnInit {
 
   public todos = true;
   public isLoading= false;
+  public listadoAreas = signal<Area[]>([]);
 
+ 
 
   private usuarioService = inject(UsuarioService);
   private produccionService = inject(ProduccionService);
-  private solicitudComponenteService = inject(SolicitudComponentService);
-  private solicitudService = inject(SolicitudService);
+  private solicitudComponenteService = inject(SolicitudComponentService); 
   private router = inject(Router);
   private uiService = inject(UiService);
   private _currentComponente = signal<string | null>(null);
@@ -104,15 +102,22 @@ export default class NuevaComponent implements OnInit {
     );
   });
 
+  public tieneAreaSinElemento = computed(() => {
+    return this.solicitudActual().componentes.some(
+      (x) => !!x.area && x.idSeleccionados.length === 0
+    );
+  });
+
   ngOnInit(): void {
     this._componentes.set( []);
+     this.solicitudComponenteService.obtenerAreas().subscribe((resp) => {      
+      this.listadoAreas.set(resp.areas);
+    });
   }
 
 
   async onSelectOrder(orden: OrdenMetrics | null) {
     const resp = await firstValueFrom(this.produccionService.obtenerElementos(orden!.NoOrden) );    
-
-
     const agrupado = Object.groupBy(resp.componentes, (c) => c.componente);
     this._componentes.set([]);
     const componentes: any[] = Object.entries(agrupado).map(
@@ -129,6 +134,7 @@ export default class NuevaComponent implements OnInit {
         return {
           componente,
           idSeleccionados: [],
+          area: null,
           elementos: _elementos,
         };
       }
@@ -163,7 +169,7 @@ export default class NuevaComponent implements OnInit {
 
   clearSelectedOrder(): void {
     this._componentes.set([]);
-    this._currentComponente.set(null);    
+    this._currentComponente.set(null);
     this.solicitudActual.set({
       orderSelected: null,
       componentes: [],
@@ -189,6 +195,16 @@ export default class NuevaComponent implements OnInit {
       componentes: componentesActualizados,
     });
      this.actualizarToogleSeleccion();
+  }
+
+  seleccionarArea(area: string | null, componente: string) {
+    const componentes = this.solicitudActual().componentes.map((x) =>
+      x.componente === componente ? { ...x, area } : x
+    );
+    this.solicitudActual.set({
+      ...this.solicitudActual(),
+      componentes,
+    });
   }
 
 
@@ -226,15 +242,15 @@ toogleSeleccion() {
 
   async registrarPrestamo() {
     const seleccionados = this.solicitudActual().componentes
-                                                .filter((x) => x.idSeleccionados.length > 0).map((x) => ({ componente: x.componente, elementos: x.idSeleccionados.map((el:any) => el.id_elemento) }));
+                                                .filter((x) => x.idSeleccionados.length > 0)
+                                                .map((x) => ({ componente: x.componente, area: x.area ?? null, elementos: x.idSeleccionados.map((el:any) => el.id_elemento) }));
         
     const orden = this.solicitudActual().orderSelected?.NoOrden;
     const { value, isDismissed } = await LoginLitoapps(this.usuarioService);
     if (isDismissed) {
       return;
-    }
-    const id_usuario = value;
-
+    }    
+    const id_usuario = value;      
     try {
       this.isLoading = true;
       const response = await firstValueFrom(

@@ -3,7 +3,8 @@ import { OrdenMetrics } from "@app/interfaces/responses/ResponseOrdenMetrics";
 export interface ComponenteView {
   componente:string,
   idSeleccionados: Elemento[],
-  elementos:Elemento[]
+  elementos:Elemento[],
+  area?: string | null
 }
 
 
@@ -54,10 +55,20 @@ export interface Prestamo {
   solicitante:    string;
   Personal:       string;
   elemento:       string;
+  area: string;
   liga_avatar?:string;
   fecha_registro: Date;
   personalDevolucion?: string;
   usuarioDevolucion?: string;
   fechaDevolucion?: Date;
 
+}
+
+export interface ResponseAreas {
+  areas: Area[];
+}
+
+export interface Area {
+  id_area: string;
+  descripcion: string;
 }

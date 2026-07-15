@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal,computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BaseGridComponent } from '@app/abstract/BaseGrid.component';
 import { Estado, Solicitud } from '@app/interfaces/responses/SolicitudResponse';
 import { SynfusionModule } from '@app/lib/synfusion.module';
 import { SolicitudService, UiService, UsuarioService } from '@app/services';
-import { firstValueFrom } from 'rxjs';
-import { SolicitudComponentService } from '../../services/solicitudcomponente.service';
-import { Prestamo } from '../../interfaces/interface';
 import { environment } from '@environments/environment.development';
+import { firstValueFrom } from 'rxjs';
+import { Prestamo } from '../../interfaces/interface';
+import { SolicitudComponentService } from '../../services/solicitudcomponente.service';
 
 @Component({
   selector: 'app-solicitudes',
