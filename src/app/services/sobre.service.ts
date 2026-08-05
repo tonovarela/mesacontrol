@@ -62,8 +62,8 @@ export class SobreService {
     return this.http.put(`${this.API_URL}/api/sobreteca/sobre/gaveta`, { orden, no_gaveta,id_usuario });
   }
 
-  bitacora(orden:string) {
 
+  bitacora(orden:string) {
     return this.http.get<ResponseBitacoraSobre>(`${this.API_URL}/api/sobreteca/sobre/bitacora/${orden}`);
     
   }

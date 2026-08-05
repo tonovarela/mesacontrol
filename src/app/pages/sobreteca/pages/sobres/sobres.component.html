@@ -17,6 +17,16 @@
         >
             <e-columns>
                 <e-column field='NoOrden' headerText='OP' width='120' textAlign='Center' ></e-column>
+                <e-column  headerText='Logs' allowFiltering="false" width='120' >
+                  <ng-template #template let-data>
+                    <a  (click)="verBitacora(data)" title="Ver bitácora" class="flex items-center justify-center gap-1 text-blue-500 hover:text-blue-700 hover:cursor-pointer">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"/>
+                        <path d="M12 7v5l3 2"/>
+                      </svg>
+                    </a>
+                  </ng-template>
+                </e-column>
                 <e-column field='descripcion' headerText='Estado' width='120'  >
                   <ng-template #template let-data>
                   <span class="px-2 inline-flex  leading-5 font-semibold rounded-full"
@@ -72,6 +82,13 @@
     </div>    
 </div>
 </div>
+
+
+@if (mostrarBitacora()) {
+  <bitacora-evento [bitacoraSobre]="registroSobre()"
+                   [orden]="ordenBitacora()"
+                   (onCerrarBitacora)="cerrarBitacora()" />
+}
 
 
 <p-dialog  #dialogModal [visible]="tieneOrdenSeleccionada()"   [maximizable]="true"  [showHeader]="false" [closeOnEscape]="false">

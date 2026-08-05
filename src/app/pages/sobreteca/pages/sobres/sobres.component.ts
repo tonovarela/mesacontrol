@@ -16,15 +16,18 @@ import { TypeSearchMetrics } from '@app/interfaces/type';
 import { SearchMetricsComponent } from '@app/shared/search-metrics/search-metrics.component';
 import { LoginLitoapps } from '@app/utils/loginLitoapps';
 
-import { MetricsService, PdfService, SobreService, UiService, UsuarioService } from '@app/services';
+import { PdfService, SobreService, UiService, UsuarioService } from '@app/services';
 import { PdfComponent } from '@app/shared/svg/pdf/pdf.component';
 import { CheckboxChangeEvent } from 'primeng/checkbox';
-import { ComponenteAgrupado } from '../../interface/interface';
+import { BitacoraEventoComponent } from '../../componentes/bitacora-evento/bitacora-evento.component';
+import { Bitacora, ComponenteAgrupado } from '../../interface/interface';
+
+
 
 
 @Component({
   selector: 'app-sobres',
-  imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent,PdfComponent],
+  imports: [SynfusionModule,PrimeModule,CommonModule,FormsModule,SearchMetricsComponent,PdfComponent,BitacoraEventoComponent],
   templateUrl: './sobres.component.html',
   styleUrl: './sobres.component.css',
   providers:[],  
@@ -48,14 +51,20 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
   public liberacionInfo = computed(() =>  this._autorizacion());
 
 
+ public registroSobre = signal<Bitacora[]>([]);
+ public ordenBitacora = signal<string>('');
+ public mostrarBitacora = signal<boolean>(false);
+
   private _autorizacion = signal<Autorizacion | null>(null);
   private _verPendientes = signal<boolean>(true);
+
   private _sobreService = inject(SobreService);
   private _activatedRouter = inject(ActivatedRoute);
   private _uiService = inject(UiService);
   private _usuarioService = inject(UsuarioService);
   private _pdfService = inject(PdfService);
-  private _metricsService = inject(MetricsService);
+
+  //private _metricsService = inject(MetricsService);
 
   private _ordenes = signal<OrdenMetrics[]>([]);
   
@@ -72,6 +81,25 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
       this._verPendientes.set(pendientes);
       this.cargarInformacion();   
   });
+  }
+
+
+  public async verBitacora(orden: OrdenMetrics) {
+    try {
+      const response = await firstValueFrom(this._sobreService.bitacora(orden.NoOrden));
+      this.registroSobre.set(response.bitacora ?? []);
+      this.ordenBitacora.set(orden.NoOrden);
+      this.mostrarBitacora.set(true);
+    } catch (error) {
+      console.error('Error al cargar la bitácora:', error);
+      this._uiService.mostrarAlertaError('', 'No se pudo cargar la bitácora del sobre');
+    }
+  }
+
+  public cerrarBitacora() {
+    this.mostrarBitacora.set(false);
+    this.registroSobre.set([]);
+    this.ordenBitacora.set('');
   }
 
   public async verDetalle(orden: OrdenMetrics) {
