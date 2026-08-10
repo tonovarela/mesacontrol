@@ -131,9 +131,10 @@ export default class SobresComponent extends BaseGridComponent implements OnInit
     if (orden === null) {
       return;
     }
+    const id_usuario = this._usuarioService.StatusSesion().usuario?.id || 0;
     try {
       const response = await firstValueFrom(
-        this._sobreService.registrar(orden.NoOrden)
+        this._sobreService.registrar(orden.NoOrden,`${id_usuario}`)
       );
       this.cargarInformacion();
     } catch (error) {

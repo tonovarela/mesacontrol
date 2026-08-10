@@ -18,8 +18,8 @@ export class SobreService {
 
   
   
-  registrar(orden:string){
-    return this.http.post(`${this.API_URL}/api/sobreteca/sobre`,{orden});
+  registrar(orden:string,id_usuario:string) {
+    return this.http.post(`${this.API_URL}/api/sobreteca/sobre`,{orden,id_usuario});
   }
 
 
