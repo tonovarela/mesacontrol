@@ -67,6 +67,8 @@ export default class ProduccionComponent extends BaseGridComponent implements On
   private _currentOrder = signal<CurrentOrder | null>(null);
   private _verPendientes = signal<boolean>(true);
   protected minusHeight = 0.3;
+  // Las columnas declaran anchos en % + minWidth, asi que no se auto-ajustan al contenido.
+  protected override autoFitColumns = false;
   activeTab: string = 'tab1'; // Tab activo por defecto
   public type = TypeSearchMetrics.PRODUCCION;
 
@@ -123,7 +125,6 @@ export default class ProduccionComponent extends BaseGridComponent implements On
       );
     } finally {
       this.cargando.set(false);
-      this.autoFitColumns = false;
     }    
     setTimeout(() => this.iniciarResizeGrid(this.minusHeight));
   }

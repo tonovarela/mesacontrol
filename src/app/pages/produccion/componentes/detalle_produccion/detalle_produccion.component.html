@@ -9,7 +9,7 @@
             [allowFiltering]='true' allowPaging="true " allowResizing="true" allowSorting="true"
             [pageSettings]='pageSettings'>
             <e-columns>
-                <e-column [allowFiltering]="false" width=100 headerText='Detalles'>
+                <e-column [allowFiltering]="false" width=70 minWidth=60 headerText='Detalles'>
                     <ng-template #template let-detalle>
                         <div class="flex justify-center items-center cursor-pointer">
                             <svg (click)="onVerHistorial(detalle)" class="w-6 h-6 fill-current dark:fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,15 +24,15 @@
                         </div>
                     </ng-template>
                 </e-column>
-                <e-column field='orden_metrics' [allowFiltering]="true" headerText='Orden' width=100></e-column>
-                <e-column field='fecha_limite' [allowFiltering]="true" headerText='Fecha Límite' >
+                <e-column field='orden_metrics' [allowFiltering]="true" headerText='Orden' width=90 minWidth=80 hideAtMedia="(min-width: 1536px)"></e-column>
+                <e-column field='fecha_limite' [allowFiltering]="true" headerText='Fecha Límite' width=120 minWidth=110>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.fecha_limite | date:'dd-MM-yyyy hh:mm '}}</span>
                         </div>
                     </ng-template>
                 </e-column>
-                <e-column [allowFiltering]="false" width=100>
+                <e-column [allowFiltering]="false" width=90 minWidth=85>
                     <ng-template #template let-detalle>
                             @if(detalle.id_estado=="1") {
                                 @if(detalle.puedeCapturarMuestras =="1" ) {
@@ -51,7 +51,7 @@
                                 }
                     </ng-template>
                 </e-column>
-                <e-column [allowFiltering]="false" width=100>
+                <e-column [allowFiltering]="false" width=90 minWidth=85>
                     <ng-template #template let-detalle>
                         @if(detalle.id_estado=="1"){
                         <button class="bg-pink-500 text-white px-2  rounded hover:bg-pink-600"
@@ -61,32 +61,31 @@
                         }
                     </ng-template>
                 </e-column>
-                <e-column field='proceso' [allowFiltering]="true" width=50></e-column>
-                <e-column field='componente' [allowFiltering]="true" headerText="Comp" width=50></e-column>
-                <e-column field='pliego' [allowFiltering]="true" headerText='pli.' width=10></e-column>
-                <e-column field='entrada' [allowFiltering]="true" headerText='ent.' width=25></e-column>
-                <e-column field='cantProd' [allowFiltering]="true" headerText='c.p' width=25>
+                <e-column field='proceso' [allowFiltering]="true" width=110 minWidth=90 clipMode="EllipsisWithTooltip"></e-column>
+                <e-column field='componente' [allowFiltering]="true" headerText="Comp" width=90 minWidth=70 clipMode="EllipsisWithTooltip"></e-column>
+                <e-column field='pliego' [allowFiltering]="true" headerText='pli.' width=55 minWidth=50 hideAtMedia="(min-width: 1280px)"></e-column>
+                <e-column field='entrada' [allowFiltering]="true" headerText='ent.' width=60 minWidth=50 hideAtMedia="(min-width: 1280px)"></e-column>
+                <e-column field='cantProd' [allowFiltering]="true" textAlign="Right" headerText='c.p' width=75 minWidth=65 hideAtMedia="(min-width: 1536px)">
                   <ng-template #template let-data>
                     <div class="flex flex-col">
                             <span>{{data.cantProd | number}}</span>
                         </div>
                   </ng-template>
                 </e-column>
-                <e-column field='tiros' [allowFiltering]="true" textAlign="Right" headerText='ti' width=50>
+                <e-column field='tiros' [allowFiltering]="true" textAlign="Right" headerText='ti' width=70 minWidth=60>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.tiros | number}}</span>
                         </div>
                     </ng-template></e-column>
-                <e-column field='muestra' [allowFiltering]="true" textAlign="Right" width=50 headerText='Mues. Req.'
-                    width=100>
+                <e-column field='muestra' [allowFiltering]="true" textAlign="Right" headerText='Mues. Req.' width=95 minWidth=85>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.muestra | number}}</span>
                         </div>
                     </ng-template>
                 </e-column>
-                <e-column field='acumulado'  headerText="acum." [allowFiltering]="true" textAlign="Right" width=50>
+                <e-column field='acumulado'  headerText="acum." [allowFiltering]="true" textAlign="Right" width=75 minWidth=65>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.acumulado | number}}</span>
@@ -94,7 +93,7 @@
                     </ng-template>
 
                 </e-column>
-                <e-column [allowFiltering]="false" textAlign="Center" width=70 headerText='VoBo'>
+                <e-column [allowFiltering]="false" textAlign="Center" width=60 minWidth=55 headerText='VoBo'>
                     <ng-template #template let-detalle>
 
                         @if(detalle.puedeCapturarMuestras=="1"){
@@ -110,7 +109,7 @@
                         }
                     </ng-template>
                 </e-column>
-                <e-column [allowFiltering]="false" width=70 headerText='Trazo' textAlign="Center">
+                <e-column [allowFiltering]="false" width=60 minWidth=55 headerText='Trazo' textAlign="Center">
                     <ng-template #template let-detalle>
                         @if(detalle.puedeCapturarMuestras=="1"){
                         <input *ngIf="detalle.puedeRegistrarOffset" type="checkbox" [disabled]="detalle.id_estado != '1'"
@@ -125,7 +124,7 @@
                         }
                     </ng-template>
                 </e-column>
-                <e-column [allowFiltering]="false" width=100 headerText='Carta color' textAlign="Center">
+                <e-column [allowFiltering]="false" width=85 minWidth=75 headerText='Carta color' textAlign="Center" hideAtMedia="(min-width: 1280px)">
                     <ng-template #template let-detalle>
                         @if(detalle.puedeCapturarMuestras=="1"){
                         <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox"  [id]="detalle.id_produccion"

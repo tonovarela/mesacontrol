@@ -49,27 +49,19 @@ export abstract class BaseGridComponent implements OnDestroy {
     }
 
 
-    protected dataBound() {    
+    protected dataBound() {
 
+        if (this.grid == undefined) {
+            return;
+        }
+        this.grid.enableStickyHeader = true;
+        this.grid.resizeSettings = { mode: 'Auto' }
+        // Las grids con anchos declarados (%, minWidth) no deben auto-ajustarse:
+        // autoFitColumns reescribe los anchos a px segun el contenido.
         if (!this.autoFitColumns) {
             return;
         }
-        if (this.grid == undefined){
-            return;
-        }
-        //(this.grid as GridComponent).enableStickyHeader =
-        this.grid.enableStickyHeader = true;
-        this.grid.resizeSettings = { mode: 'Auto' }
         this.grid.autoFitColumns();
-        if (window.innerWidth < 2000) {
-            this.grid.autoFitColumns();
-        } else {
-            this.grid.resizeSettings = { mode: 'Auto' }
-        }
-
-        
-        
-        
     }
 
 }
