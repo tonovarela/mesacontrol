@@ -18,6 +18,81 @@
   }
 }
 
+/* Deja que el panel de sugerencias del autocomplete se vea fuera del modal de búsqueda */
+::ng-deep .search-op-dialog.p-dialog,
+::ng-deep .search-op-dialog .p-dialog-content {
+  overflow: visible;
+}
+
+/* Botón de búsqueda de OP */
+.search-op-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.search-op-btn:hover {
+  background-color: #1d4ed8;
+}
+
+/* Tabs de la vista de producción */
+.tabs-bar {
+  border-bottom: 1px solid #e5e7eb;
+}
+:host-context(.dark) .tabs-bar {
+  border-bottom-color: #374151;
+}
+
+.tabs-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.tab-btn:hover {
+  color: #2563eb;
+  background-color: #f3f4f6;
+}
+
+.tab-btn.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+  font-weight: 600;
+}
+
+:host-context(.dark) .tab-btn {
+  color: #9ca3af;
+}
+:host-context(.dark) .tab-btn:hover {
+  color: #60a5fa;
+  background-color: #1f2937;
+}
+:host-context(.dark) .tab-btn.active {
+  color: #60a5fa;
+  border-bottom-color: #60a5fa;
+}
+
 /* Estilo general para el modal */
 p-dialog {
   font-family: 'Arial', sans-serif;
@@ -71,13 +146,13 @@ p-dialog {
   margin-right: 10px;
 }
 
-/* Flexbox para alinear avatar y texto */
-.flex {
+/* Flexbox para alinear avatar y texto (bitácora) */
+.table .flex {
   display: flex;
   align-items: center;
 }
 
-.ml-2 {
+.table .ml-2 {
   margin-left: 8px;
 }
 

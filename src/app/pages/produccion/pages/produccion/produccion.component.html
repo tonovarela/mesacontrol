@@ -1,4 +1,4 @@
-<div id="initial" class="dark:bg-gray-900 h-screen overflow-hidden relative">
+<div id="initial" class="dark:bg-gray-900 h-[calc(100vh-4rem)] overflow-hidden relative">
 
     @if(cargando() && !mostrarModalDetalle()){
     <div class="absolute inset-0 z-50 flex items-center justify-center bg-white/70 dark:bg-gray-900/70">
@@ -49,28 +49,31 @@
     
     @if(verPendientes()){
     <div class="h-full min-h-0 flex flex-col">
-        <div class="py-1 px-2 w-full shrink-0">
-            <search-metrics [typeSearch]="type" placeholder="Buscar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
-        </div>
         <div class="dark:bg-gray-900 p-1 min-w-0 min-h-0 flex-1 flex flex-col overflow-hidden">
-            <div class="border-b border-gray-200 dark:border-gray-700 shrink-0">
-                <nav class="flex  space-x-4" aria-label="Tabs">
-                    <button class="p-1 text-sm font-medium text-gray-900 dark:text-gray-100 border-b-2 border-blue-500 dark:border-blue-400" [ngClass]="{'border-blue-500 text-blue-600': activeTab === 'tab1', 'border-transparent text-gray-500 dark:text-gray-400': activeTab !== 'tab1'}"
+            <div class="tabs-bar shrink-0 flex items-center justify-between">
+                <nav class="tabs-nav" aria-label="Tabs">
+                    <button class="tab-btn" [class.active]="activeTab === 'tab1'"
                         (click)="activeTab = 'tab1'">
             Ordenes
-          </button>           
-          <button class="p-1 text-sm font-medium text-gray-900 dark:text-gray-100 border-b-2 border-blue-500 dark:border-blue-400" [ngClass]="{'border-blue-500 text-blue-600': activeTab === 'tab2', 'border-transparent text-gray-500 dark:text-gray-400': activeTab !== 'tab2'}"
+          </button>
+          <button class="tab-btn" [class.active]="activeTab === 'tab2'"
                         (click)="activeTab = 'tab2'">
             Ordenes con procesos vigentes
-          </button>                    
+          </button>
                 </nav>
+                <button type="button" class="search-op-btn" (click)="mostrarModalBusqueda.set(true)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+                    </svg>
+                    Buscar OP
+                </button>
             </div>
             <div class="mt-3 flex-1 min-h-0 min-w-0">
                 <div *ngIf="activeTab === 'tab1'" class="h-full min-w-0 overflow-hidden bg-white dark:bg-gray-800 rounded-lg shadow">
                     <ejs-grid #grid [dataSource]='ordenesMetrics()'
                      (recordClick)='onCellClick($event)'
                      [textWrapSettings]='wrapSettings'  [filterSettings]="filterSettings" [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-                        [allowExcelExport]='true'  allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'
+                        [allowExcelExport]='true' [height]="'100%'" allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'
                         >
                         <e-columns>
                             <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="10%" >
@@ -94,9 +97,9 @@
                                 </ng-template>
                             </e-column>                                                        
 
-                            <e-column field='tieneInfo' headerText="Tiene info" textAlign="Center" [allowFiltering]="false" width="10%" >
+                            <e-column field='tieneInfo' headerText="Tiene info" [allowFiltering]="false" width="10%" >
                                 <ng-template #template let-data>
-                                    <div class="flex  items-center justify-center w-full">
+                                    <div class="flex  justify-start w-full">
                                         @if(data.tieneInfo == '1') {
                                         <div class="flex flex-row w-full justify-start gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-yellow-300" viewBox="0 0 24 24">
@@ -143,7 +146,7 @@
                         </e-columns>
                     </ejs-grid>
                 </div>
-                <div *ngIf="activeTab=='tab2'"  class="h-full min-w-0 overflow-hidden bg-white dark:bg-gray-800 rounded-lg shadow">
+                <div *ngIf="activeTab=='tab2'" class="h-full min-w-0 overflow-hidden bg-white dark:bg-gray-800 rounded-lg shadow">
                       <ejs-grid #grid [dataSource]='ordenesVigentes()'
                      (recordClick)='onCellClick($event)'
                      [textWrapSettings]='wrapSettings'  [filterSettings]="filterSettings" [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
@@ -173,13 +176,13 @@
                                 <ng-template #template let-data>
                                     <div class="flex  items-center justify-center w-full">
                                         @if(data.tieneInfo == '1') {
-                                        <div class="flex flex-row w-full justify-start gap-2">
+                                        <div class="flex flex-row w-full justify-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-yellow-300" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10" />
                       </svg> SI
                                         </div>
                                         }@else {
-                                        <div class="flex flex-row w-full justify-start gap-2">
+                                        <div class="flex flex-row w-full justify-center gap-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-red-600 " viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10" />
                       </svg> NO
@@ -222,6 +225,10 @@
     }
 
 </div>
+
+<p-dialog header="Buscar orden" [(visible)]="mostrarModalBusqueda" [modal]="true" styleClass="search-op-dialog" [style]="{width: '52.8vw'}" [breakpoints]="{'960px': '75vw', '640px': '95vw'}">
+    <search-metrics [typeSearch]="type" placeholder="Buscar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
+</p-dialog>
 
 <p-dialog header="Detalle de la orden" [(visible)]="mostrarModalDetalle" [modal]="true" [style]="{width: '100vw', height: '100vh', maxWidth: '100vw', maxHeight: '100vh'}" (onHide)="onCloseDetalle()">
     <div class="h-full min-h-0 min-w-0">

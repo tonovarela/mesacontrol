@@ -1,6 +1,6 @@
 <div class="flex flex-col  ">
-  <p-autoComplete [(ngModel)]="valorQuery" styleClass="w-full " baseZIndex="9999" 
-  [placeholder]="placeholder()" 
+  <p-autoComplete [(ngModel)]="valorQuery" styleClass="w-full " baseZIndex="9999"
+  [placeholder]="placeholder()"
   lazy="true"
   scrollHeight="500px" 
   (onSelect)="onSelect($event)" 
@@ -9,28 +9,25 @@
   [emptyMessage]="cargandoBusqueda()?'Buscando':'No se encontraron resultados'" field="op"
   [suggestions]="OPsBusqueda()" (completeMethod)="OnQueryChanged()">
   <ng-template let-op pTemplate="item">
-    <div class="grid grid-cols-2   cursor-pointer rounded-lg p-1  text-center ">
-      <div class="flex justify-start items-center text-gray-900 text-sm font-semibold ">
-        <div class="flex space-x-2 items-center " >          
-          @if(esBusquedaConGavetaAsignada()){                        
+    <div class="cursor-pointer rounded-lg p-1 w-full max-w-full">
+      <div class="flex items-center gap-2 text-gray-900 text-sm font-semibold w-full min-w-0">
+          @if(esBusquedaConGavetaAsignada()){
              @if(op.no_gaveta) {
-              <img [src]="gavetaAsignadaSvg" alt="Gaveta asignada" class="w-6 h-6" />
+              <img [src]="gavetaAsignadaSvg" alt="Gaveta asignada" class="w-6 h-6 shrink-0" />
              }@else{
-              <img [src]="gavetaSinAsignarSvg" alt="Gaveta sin asignar" class="w-6 h-6" />
-             }                      
-          }             
-          <div class=" dark:text-white text-sm  font-bold ">
+              <img [src]="gavetaSinAsignarSvg" alt="Gaveta sin asignar" class="w-6 h-6 shrink-0" />
+             }
+          }
+          <div class="dark:text-white text-sm font-bold shrink-0">
             {{op.NoOrden}}
           </div>
-          <div class=" dark:text-white text-sm  font-medium font-roboto">
+          <div class="dark:text-white text-sm font-medium font-roboto truncate min-w-0 flex-1" [title]="op.NombreTrabajo">
             {{op.NombreTrabajo}}
-          </div>        
-          <div class="  dark:text-white text-sm font-light">
+          </div>
+          <div class="dark:text-white text-sm font-light shrink-0 whitespace-nowrap">
             {{op.CantidadEntregar | number:'1.0-0'}} piezas
-          </div>               
-        </div>      
-      </div>              
-            
+          </div>
+      </div>
     </div>
   </ng-template>
   </p-autoComplete>
