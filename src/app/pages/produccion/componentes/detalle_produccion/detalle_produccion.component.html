@@ -62,30 +62,30 @@
                     </ng-template>
                 </e-column>
                 <e-column field='proceso' [allowFiltering]="true" width=110 minWidth=90 clipMode="EllipsisWithTooltip"></e-column>
-                <e-column field='componente' [allowFiltering]="true" headerText="Comp" width=90 minWidth=70 clipMode="EllipsisWithTooltip"></e-column>
-                <e-column field='pliego' [allowFiltering]="true" headerText='pli.' width=55 minWidth=50 hideAtMedia="(min-width: 1280px)"></e-column>
-                <e-column field='entrada' [allowFiltering]="true" headerText='ent.' width=60 minWidth=50 hideAtMedia="(min-width: 1280px)"></e-column>
-                <e-column field='cantProd' [allowFiltering]="true" textAlign="Right" headerText='c.p' width=75 minWidth=65 hideAtMedia="(min-width: 1536px)">
+                <e-column field='componente' [allowFiltering]="true" headerText="Componente" width=90 minWidth=70 clipMode="EllipsisWithTooltip"></e-column>
+                <e-column field='pliego' [allowFiltering]="true" headerText='Pliego' width=55 minWidth=50 hideAtMedia="(min-width: 1280px)"></e-column>
+                <e-column field='entrada' [allowFiltering]="true" headerText='Entrada' width=60 minWidth=50 hideAtMedia="(min-width: 1280px)"></e-column>
+                <e-column field='cantProd' [allowFiltering]="true" textAlign="Right" headerText='Cantidad Producida' width=75 minWidth=65 hideAtMedia="(min-width : 1536px)">
                   <ng-template #template let-data>
                     <div class="flex flex-col">
                             <span>{{data.cantProd | number}}</span>
                         </div>
                   </ng-template>
                 </e-column>
-                <e-column field='tiros' [allowFiltering]="true" textAlign="Right" headerText='ti' width=70 minWidth=60>
+                <e-column field='tiros' [allowFiltering]="true" textAlign="Right" headerText='Tiros' width=70 minWidth=60>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.tiros | number}}</span>
                         </div>
                     </ng-template></e-column>
-                <e-column field='muestra' [allowFiltering]="true" textAlign="Right" headerText='Mues. Req.' width=95 minWidth=85>
+                <e-column field='muestra' [allowFiltering]="true" textAlign="Right" headerText='Muestra Requerida' width=95 minWidth=85>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.muestra | number}}</span>
                         </div>
                     </ng-template>
                 </e-column>
-                <e-column field='acumulado'  headerText="acum." [allowFiltering]="true" textAlign="Right" width=75 minWidth=65>
+                <e-column field='acumulado'  headerText="Acumulado" [allowFiltering]="true" textAlign="Right" width=75 minWidth=65>
                     <ng-template #template let-data>
                         <div class="flex flex-col">
                             <span>{{data.acumulado | number}}</span>

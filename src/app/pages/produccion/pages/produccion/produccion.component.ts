@@ -51,6 +51,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
   public bitacoraMuestras = computed(() => this._bitacoraMuestras());
   public mostrarModalBitacora = signal(false);
+  public mostrarModalDetalle = signal(false);
   public cargando = signal(false);
   public cargandoDetalle = signal(false);
   public wrapSettings?: TextWrapSettingsModel;
@@ -74,11 +75,18 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
 
 
-  async onSelectOrder(order: any) {    
+  async onSelectOrder(order: any) {
     this._currentOrder.set({ order, detalle: [] });
     const { NoOrden: orden } = order;
+    this.mostrarModalDetalle.set(true);
     await this.loadDataOrder(orden);
     await this.cargarOrdenes();
+  }
+
+  onCloseDetalle() {
+    this.mostrarModalDetalle.set(false);
+    this.cargandoDetalle.set(false);
+    this.cargando.set(false);
   }
 
   constructor() {
@@ -113,6 +121,7 @@ export default class ProduccionComponent extends BaseGridComponent implements On
 
 
   async cargarOrdenes() {
+    this.cargando.set(true);
     try {
       const response = await firstValueFrom(this.produccionService.listar(this._verPendientes()));
       const responseVigentes= await firstValueFrom(this.produccionService.vigentes());      

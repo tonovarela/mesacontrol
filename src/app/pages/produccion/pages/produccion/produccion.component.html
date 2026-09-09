@@ -1,57 +1,58 @@
-<div id="initial" class="dark:bg-gray-900 h-screen overflow-hidden">
+<div id="initial" class="dark:bg-gray-900 h-screen overflow-hidden relative">
 
-    @if(!verPendientes()){        
-    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-2 h-full min-h-0">
-        <div class="min-w-0 min-h-0 overflow-hidden">
-        <ejs-grid #grid [dataSource]='ordenesMetrics()' 
+    @if(cargando() && !mostrarModalDetalle()){
+    <div class="absolute inset-0 z-50 flex items-center justify-center bg-white/70 dark:bg-gray-900/70">
+        <div class="flex flex-col items-center gap-2">
+            <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            <span class="text-sm text-gray-600 dark:text-gray-300">Cargando órdenes...</span>
+        </div>
+    </div>
+    }
+
+    @if(!verPendientes()){
+    <div class="h-full min-h-0">
+        <div class="min-w-0 min-h-0 h-full overflow-hidden">
+        <ejs-grid #grid [dataSource]='ordenesMetrics()'
         (recordClick)='onCellClick($event)'
          [textWrapSettings]='wrapSettings' [filterSettings]="filterSettings" [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-            [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
+            [allowExcelExport]='true' [height]="'100%'" allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'>
             <e-columns>
                 <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="15%" minWidth="80">
      <ng-template #template let-data>
-     <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>                                    
+     <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>
      </ng-template>
                 </e-column>
                 <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="38%" minWidth="150" clipMode="EllipsisWithTooltip">
-                </e-column>       
+                </e-column>
                 <e-column field='FechaEmision' [allowFiltering]="true" headerText='Emisión' width="17%" minWidth="95" hideAtMedia="(min-width: 1024px)">
                                 <ng-template #template let-data>
                                     <div>
-                                        <span >{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>                                        
+                                        <span >{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>
                                     </div>
                                 </ng-template>
-                            </e-column>                
+                            </e-column>
                 <e-column field='Vendedor' [allowFiltering]="true" width="18%" minWidth="110" clipMode="EllipsisWithTooltip" hideAtMedia="(min-width: 1280px)">
-                </e-column>                  
+                </e-column>
                 <e-column field='CantidadEntregar' textAlign="Right" [allowFiltering]="true" headerText='Cant' width="12%" minWidth="75">
                     <ng-template #template let-data>
                         <span>{{data.CantidadEntregar | number}}</span>
                     </ng-template>
-                </e-column>           
+                </e-column>
             </e-columns>
         </ejs-grid>
         </div>
-
-        <div class="min-w-0 min-h-0 overflow-hidden">
-        <detalle-produccion 
-        [orden]="currentOrder()" 
-              [detalles]="currentDetail()" 
-              [selectedId]="selectedMuestra()?.id_produccion || null" 
-             (selectMuestra)="onSelectMuestra($event)"              
-             (verHistorial)="onVerHistorial($event)" 
-             (cerrarMuestra)="cerrarMuestra($event)"
-            (onChange)="change($event.id, $event.value, $event.tipo)"
-            
-            >
-        </detalle-produccion>
-        </div>
     </div>
-    } 
+    }
     
     @if(verPendientes()){
-    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-2 h-full min-h-0">
-        <div class="dark:bg-gray-900 p-1 min-w-0 min-h-0 flex flex-col overflow-hidden">
+    <div class="h-full min-h-0 flex flex-col">
+        <div class="py-1 px-2 w-full shrink-0">
+            <search-metrics [typeSearch]="type" placeholder="Buscar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
+        </div>
+        <div class="dark:bg-gray-900 p-1 min-w-0 min-h-0 flex-1 flex flex-col overflow-hidden">
             <div class="border-b border-gray-200 dark:border-gray-700 shrink-0">
                 <nav class="flex  space-x-4" aria-label="Tabs">
                     <button class="p-1 text-sm font-medium text-gray-900 dark:text-gray-100 border-b-2 border-blue-500 dark:border-blue-400" [ngClass]="{'border-blue-500 text-blue-600': activeTab === 'tab1', 'border-transparent text-gray-500 dark:text-gray-400': activeTab !== 'tab1'}"
@@ -69,23 +70,23 @@
                     <ejs-grid #grid [dataSource]='ordenesMetrics()'
                      (recordClick)='onCellClick($event)'
                      [textWrapSettings]='wrapSettings'  [filterSettings]="filterSettings" [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-                        [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'
+                        [allowExcelExport]='true'  allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'
                         >
                         <e-columns>
-                            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="14%" minWidth="80">
+                            <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="10%" >
                                 <ng-template #template let-data>                            
                                         <span class="font-bold text-blue-600 cursor-pointer hover:underline" >{{data.NoOrden}}</span>                            
                                 </ng-template>
                             </e-column>
 
-                            <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="32%" minWidth="150" clipMode="EllipsisWithTooltip">
+                            <e-column field='NombreTrabajo' [allowFiltering]="true" headerText='Trabajo' width="40%"  clipMode="EllipsisWithTooltip">
                                 <ng-template #template let-data>
                                     <div>
-                                        <span >{{data.NombreTrabajo | truncate:25}}</span>                                        
+                                        <span >{{data.NombreTrabajo | truncate:60}}</span>                                        
                                     </div>
                                 </ng-template>
                             </e-column>                                                        
-                            <e-column field='FechaEmision' [allowFiltering]="true" headerText='Emisión' width="16%" minWidth="95" hideAtMedia="(min-width: 1024px)">
+                            <e-column field='FechaEmision' [allowFiltering]="true" headerText='Emisión' width="10%" >
                                 <ng-template #template let-data>
                                     <div>
                                         <span >{{data.FechaEmision | date:'dd-MM-yyyy'}}</span>                                        
@@ -93,7 +94,7 @@
                                 </ng-template>
                             </e-column>                                                        
 
-                            <e-column field='tieneInfo' headerText="Tiene info" textAlign="Center" [allowFiltering]="false" width="15%" minWidth="85">
+                            <e-column field='tieneInfo' headerText="Tiene info" textAlign="Center" [allowFiltering]="false" width="10%" >
                                 <ng-template #template let-data>
                                     <div class="flex  items-center justify-center w-full">
                                         @if(data.tieneInfo == '1') {
@@ -113,7 +114,7 @@
                                 </ng-template>                                
                             </e-column>
 
-                            <e-column field='tieneOmision' headerText="" textAlign="Center" [allowFiltering]="true" width="14%" minWidth="90" hideAtMedia="(min-width: 1280px)">
+                            <e-column field='tieneOmision' headerText="" textAlign="Center" [allowFiltering]="true" width="10%">
                                 <ng-template #template let-data>                                                                            
                                     @if(data.tieneOmision == '1') {
                                         <div class=" text-red-600 ">
@@ -128,7 +129,7 @@
                             </e-column>
 
 
-                            <e-column  [allowFiltering]="true" headerText='Metrics' textAlign="Center" width="9%" minWidth="60">
+                            <e-column  [allowFiltering]="true" headerText='Metrics' textAlign="Center" width="10%" minWidth="60">
                                 <ng-template #template let-data>
                                     <div class="flex flex-col items-center p-1">
                                         <button  (click)="actualizarProduccionMetrics(data)" class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded">
@@ -146,7 +147,7 @@
                       <ejs-grid #grid [dataSource]='ordenesVigentes()'
                      (recordClick)='onCellClick($event)'
                      [textWrapSettings]='wrapSettings'  [filterSettings]="filterSettings" [allowTextWrap]='true' [enableAdaptiveUI]='false' [enableHover]='true' rowHeight='30' (dataBound)='dataBound()'
-                        [allowExcelExport]='true' [height]="heightGrid" allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'
+                        [allowExcelExport]='true' [height]="'100%'" allowReordering='true' [allowFiltering]=true allowPaging="true" allowResizing="true" allowSorting="true" [pageSettings]='pageSettings'
                         >
                         <e-columns>
                             <e-column field='NoOrden' [allowFiltering]="true" headerText='Orden' width="15%" minWidth="80">
@@ -214,23 +215,27 @@
                         </e-columns>
                     </ejs-grid>
                 </div>
-                
-            </div>
-        </div>
-        <div class="min-w-0 min-h-0 flex flex-col overflow-hidden">
-            <div class="py-1 px-2  w-full shrink-0">
-                <search-metrics [typeSearch]="type" placeholder="Buscar OP" (onSelectOrder)="onSelectOrder($event)"></search-metrics>
-            </div>
-            <div class="flex-1 min-h-0 min-w-0">
-            <detalle-produccion [orden]="currentOrder()" [detalles]="currentDetail()" [selectedId]="selectedMuestra()?.id_produccion || null" (selectMuestra)="onSelectMuestra($event)" (verHistorial)="onVerHistorial($event)" (cerrarMuestra)="cerrarMuestra($event)"                
-                (onChange)="change($event.id, $event.value, $event.tipo)">
-            </detalle-produccion>
+
             </div>
         </div>
     </div>
     }
 
 </div>
+
+<p-dialog header="Detalle de la orden" [(visible)]="mostrarModalDetalle" [modal]="true" [style]="{width: '100vw', height: '100vh', maxWidth: '100vw', maxHeight: '100vh'}" (onHide)="onCloseDetalle()">
+    <div class="h-full min-h-0 min-w-0">
+        <detalle-produccion
+            [orden]="currentOrder()"
+            [detalles]="currentDetail()"
+            [selectedId]="selectedMuestra()?.id_produccion || null"
+            (selectMuestra)="onSelectMuestra($event)"
+            (verHistorial)="onVerHistorial($event)"
+            (cerrarMuestra)="cerrarMuestra($event)"
+            (onChange)="change($event.id, $event.value, $event.tipo)">
+        </detalle-produccion>
+    </div>
+</p-dialog>
 
 @if(selectedMuestra()){
 <registro-muestra [muestra]="selectedMuestra()" (onClose)="onCloseDialog()" (onVerHistorial)="onVerHistorial($event)" (onSave)="onSaveMuestra($event)">
