@@ -9,7 +9,9 @@
             [allowFiltering]='true' allowPaging="true " allowResizing="true" allowSorting="true"
             [pageSettings]='pageSettings'>
             <e-columns>
-                <e-column [allowFiltering]="false" width=70 minWidth=60 headerText='Detalles'>
+               
+
+                <e-column [allowFiltering]="false" width=85 minWidth=75 headerText='Detalles'>
                     <ng-template #template let-detalle>
                         <div class="flex justify-center items-center cursor-pointer">
                             <svg (click)="onVerHistorial(detalle)" class="w-6 h-6 fill-current dark:fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,6 +63,52 @@
                         }
                     </ng-template>
                 </e-column>
+                 <e-column [allowFiltering]="false" textAlign="Center" width=60 minWidth=55 headerText='VoBo'>
+                    <ng-template #template let-detalle>
+
+                        @if(detalle.puedeCapturarMuestras=="1"){
+                        <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"
+                            [checked]="detalle.vobo=='1'"
+                            (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
+                            class="cursor-pointer  disabled:opacity-50  disabled:cursor-not-allowed " />
+
+                        }@else{
+                            <input type="checkbox" [id]="detalle.id_produccion"
+                            [checked]="detalle.vobo=='1'" disabled
+                            class="cursor-pointer  disabled:opacity-50   disabled:cursor-not-allowed"  />
+                        }
+                    </ng-template>
+                </e-column>
+                <e-column [allowFiltering]="false" width=85 minWidth=75 headerText='Trazo' textAlign="Center">
+                    <ng-template #template let-detalle>
+                        @if(detalle.puedeCapturarMuestras=="1"){
+                        <input *ngIf="detalle.puedeRegistrarOffset" type="checkbox" [disabled]="detalle.id_estado != '1'"
+                            [id]="detalle.id_produccion"
+                            [checked]="detalle.trazo =='1'"
+                            (change)="updateCheck(detalle.id_produccion, $event,'trazo')"
+                             class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed" />
+                        }@else{
+                            <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox" [id]="detalle.id_produccion"
+                            [checked]="detalle.trazo=='1'" disabled
+                            class="cursor-pointer  disabled:opacity-50   disabled:cursor-not-allowed"  />
+                        }
+                    </ng-template>
+                </e-column>
+                <e-column [allowFiltering]="false" width=85 minWidth=75 headerText='Carta color' textAlign="Center" >
+                    <ng-template #template let-detalle>
+                        @if(detalle.puedeCapturarMuestras=="1"){
+                        <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox"  [id]="detalle.id_produccion"
+                            [disabled]="detalle.id_estado != '1'"
+                            [checked]="detalle.carta_color=='1'"
+                            (change)="updateCheck(detalle.id_produccion, $event,'carta')"
+                             class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed" />
+                        }@else{
+                            <input *ngIf="detalle.puedeRegistrarOffset"   type="checkbox" [id]="detalle.id_produccion"
+                            [checked]="detalle.carta_color" disabled
+                            class="cursor-pointer  disabled:opacity-50   disabled:cursor-not-allowed"  />
+                        }
+                    </ng-template>
+                </e-column>
                 <e-column field='proceso' [allowFiltering]="true" width=110 minWidth=90 clipMode="EllipsisWithTooltip"></e-column>
                 <e-column field='componente' [allowFiltering]="true" headerText="Componente" width=90 minWidth=70 clipMode="EllipsisWithTooltip"></e-column>
                 <e-column field='pliego' [allowFiltering]="true" headerText='Pliego' width=55 minWidth=50 ></e-column>
@@ -93,53 +141,7 @@
                     </ng-template>
 
                 </e-column>
-                <e-column [allowFiltering]="false" textAlign="Center" width=60 minWidth=55 headerText='VoBo'>
-                    <ng-template #template let-detalle>
-
-                        @if(detalle.puedeCapturarMuestras=="1"){
-                        <input type="checkbox" [id]="detalle.id_produccion" [disabled]="detalle.id_estado != '1'"
-                            [checked]="detalle.vobo=='1'"
-                            (change)="updateCheck(detalle.id_produccion, $event,'voBo')"
-                            class="cursor-pointer  disabled:opacity-50  disabled:cursor-not-allowed " />
-
-                        }@else{
-                            <input type="checkbox" [id]="detalle.id_produccion"
-                            [checked]="detalle.vobo=='1'" disabled
-                            class="cursor-pointer  disabled:opacity-50   disabled:cursor-not-allowed"  />
-                        }
-                    </ng-template>
-                </e-column>
-                <e-column [allowFiltering]="false" width=60 minWidth=55 headerText='Trazo' textAlign="Center">
-                    <ng-template #template let-detalle>
-                        @if(detalle.puedeCapturarMuestras=="1"){
-                        <input *ngIf="detalle.puedeRegistrarOffset" type="checkbox" [disabled]="detalle.id_estado != '1'"
-                            [id]="detalle.id_produccion"
-                            [checked]="detalle.trazo =='1'"
-                            (change)="updateCheck(detalle.id_produccion, $event,'trazo')"
-                             class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed" />
-                        }@else{
-                            <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox" [id]="detalle.id_produccion"
-                            [checked]="detalle.trazo=='1'" disabled
-                            class="cursor-pointer  disabled:opacity-50   disabled:cursor-not-allowed"  />
-                        }
-                    </ng-template>
-                </e-column>
-                <e-column [allowFiltering]="false" width=85 minWidth=75 headerText='Carta color' textAlign="Center" >
-                    <ng-template #template let-detalle>
-                        @if(detalle.puedeCapturarMuestras=="1"){
-                        <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox"  [id]="detalle.id_produccion"
-                            [disabled]="detalle.id_estado != '1'"
-                            [checked]="detalle.carta_color=='1'"
-                            (change)="updateCheck(detalle.id_produccion, $event,'carta')"
-                             class="cursor-pointer  disabled:opacity-50 disabled:cursor-not-allowed" />
-                        }@else{
-                            <input *ngIf="detalle.puedeRegistrarOffset"   type="checkbox" [id]="detalle.id_produccion"
-                            [checked]="detalle.carta_color" disabled
-                            class="cursor-pointer  disabled:opacity-50   disabled:cursor-not-allowed"  />
-                        }
-                    </ng-template>
-                </e-column>
-
+                
 
 
 
