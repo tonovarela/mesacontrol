@@ -63,9 +63,9 @@
                 </e-column>
                 <e-column field='proceso' [allowFiltering]="true" width=110 minWidth=90 clipMode="EllipsisWithTooltip"></e-column>
                 <e-column field='componente' [allowFiltering]="true" headerText="Componente" width=90 minWidth=70 clipMode="EllipsisWithTooltip"></e-column>
-                <e-column field='pliego' [allowFiltering]="true" headerText='Pliego' width=55 minWidth=50 hideAtMedia="(min-width: 1280px)"></e-column>
-                <e-column field='entrada' [allowFiltering]="true" headerText='Entrada' width=60 minWidth=50 hideAtMedia="(min-width: 1280px)"></e-column>
-                <e-column field='cantProd' [allowFiltering]="true" textAlign="Right" headerText='Cantidad Producida' width=75 minWidth=65 hideAtMedia="(min-width : 1536px)">
+                <e-column field='pliego' [allowFiltering]="true" headerText='Pliego' width=55 minWidth=50 ></e-column>
+                <e-column field='entrada' [allowFiltering]="true" headerText='Entrada' width=60 minWidth=50 ></e-column>
+                <e-column field='cantProd' [allowFiltering]="true" textAlign="Right" headerText='Cantidad Producida' width=75 minWidth=65 >
                   <ng-template #template let-data>
                     <div class="flex flex-col">
                             <span>{{data.cantProd | number}}</span>
@@ -124,7 +124,7 @@
                         }
                     </ng-template>
                 </e-column>
-                <e-column [allowFiltering]="false" width=85 minWidth=75 headerText='Carta color' textAlign="Center" hideAtMedia="(min-width: 1280px)">
+                <e-column [allowFiltering]="false" width=85 minWidth=75 headerText='Carta color' textAlign="Center" >
                     <ng-template #template let-detalle>
                         @if(detalle.puedeCapturarMuestras=="1"){
                         <input *ngIf="detalle.puedeRegistrarOffset"  type="checkbox"  [id]="detalle.id_produccion"
